@@ -1,0 +1,73 @@
+{
+  "header": {
+    "title": "世界上第一个也是唯一的护身符持有者验证系统和经过科学和专家流程验证的真实护身符市场",
+    "home": "家",
+    "loginToUse": "登錄使用",
+    "userName": "用戶名",
+    "password": "密碼",
+    "register": "注册",
+    "login": "登錄",
+
+    "myPage":"我的頁面",
+    "personalInformation":"個人信息",
+    "registrationStatus":"註冊狀態",
+    "logOut":"登出",
+
+    "registerToConfirmTheAmulet": "登记确认护身符",
+
+    "identityVerificationService": "身份驗證和認證服務",
+    "amuletMarket": "护身符市场 暹罗护身符",
+
+    "news": "新聞",
+    "aboutUs": "關於我們",
+    "aboutCon": "Siam Amulet Collection 這是一個確認泰國護身符和護身符持有者的系統，是一個可通過網站獲得的護身符租賃市場佛牌擁有者確認系統中的每一個佛牌和護身符都經過科學流程和專家意見創建身份的過程，以確認佛牌和護身符在科學和佛教藝術方面是一致的在創作者記錄的時代創造的護身符和聖物，即使是您自己記錄的，以及泰國接受的記錄並且只有進入系統確認其持有者的護身符和聖物才能在市場上宣佈出售供供奉護身符，以引起可以證明的護身符和護身符的交換意思是拜佛的房客會收到護身符和護身符，護身符的身份可以驗證收到的護身符和聖物是否正確擁有泰國數量最多的護身符並且它必須與出租廣告完全一致\n此外，Siam Amulet Collection 护身符租赁市场是一个由护身符的主人自行宣布租赁的市场 这是一个已经保存了很长时间的集合 目前，這是泰國經科學驗證的護身符數量最多的護身符和聖物租賃市場\n",
+    "": ""
+  },
+  "footer": {
+    "app": "footer"
+  },
+  "index": {
+    "title": "Nuxt.js multiple language with i18n",
+    "news": "新聞",
+    "seeMore": "查看更多"
+  },
+  "items_list": {
+    "phimPhra": "护身符的印刷品",
+    "buddhistArt": "佛教藝術",
+    "amuletInformation": "護身符資訊",
+    "additionalDetails": "額外詳情",
+    "contactToBuy": "聯繫租和尚",
+    "announcer": "宣布者",
+    "announcementNo": "公告号码",
+    "sellingPrice": "售价",
+    "announcementDate": "公告制作日期",
+    "allResponses": "所有的回应",
+    "post": "訊息",
+    "typeComment": "輸入評論"
+  },
+  "identity": {
+    "title": "身份驗證和認證服務"
+  },
+  "verification": {
+    "certificateSample": "證書樣本",
+    "howToSubmit": "佛牌如何送檢及發證",
+    "serviceFee": "服務費及出證期限",
+    "listOfAmulets": "待认证的护身符列表",
+    "operatingHours": "工作时间",
+    "askForMore": "詢問更多信息並預約檢查護身符",
+    "consultationAbout": "预约前咨询佛艺"
+  },
+  "contactUs": {
+    "title": "聯繫我們",
+    "contact1": "聯繫租和尚",
+    "contact2": "聯繫以驗證護身符並在系統中註冊已驗證的護身符",
+    "contact3": "聯繫洽談、諮詢佛像印刷事宜- 僅限會員",
+    "contact4": "与办公室联系",
+    "operatingHours": "工作时间",
+    "askForMore": "詢問更多信息並預約檢查護身符",
+    "consultation": "预约前咨询佛艺",
+    "tel": "電話",
+    "monFri": "週一至週五",
+    "everyDay": "每天"
+  }
+}
