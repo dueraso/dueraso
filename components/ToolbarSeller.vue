@@ -2,23 +2,27 @@
   <b-navbar
     toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner"
     variant="white">
+      dueraso
+    <v-spacer/>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav class="container">
+    <b-collapse id="nav-collapse" is-nav class="ma-2">
 <!--    <v-spacer/>-->
-      <b-navbar-nav class="ml-auto pl-0" fixed-top  style="width: 1440px">
+      <b-navbar-nav class="ml-auto pl-0" fixed-top>
         <b-nav-item
           v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link" style="padding-right: 0"
           @click="$router.push(itemBar.route)"
-          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}
+          :active='$route.path === itemBar.route.name'>{{ itemBar.name }}
         </b-nav-item>
         <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              type="submit" outlined color="#7b1817" @click="$router.push('login')" v-b-hover=""
-              style="padding: 6px; text-transform: capitalize"
-              v-show="!$auth.loggedIn" class="mx-auto">
-              login
-<!--              {{ $i18n.t("header").login }}-->
+              type="submit" text
+              v-bind="attrs" v-on="on" v-b-hover=""
+              style="text-transform: capitalize"
+              v-show="!$auth.loggedIn" class="mx-auto p-1 pb-0">
+              <v-icon>mdi-account-circle-outline</v-icon>
+              โปรไฟล์
+              <!--              {{ $i18n.t("header").login }}-->
             </v-btn>
           </template>
           <v-card>
@@ -26,7 +30,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title align="center">
-<!--                    <p style="color: #7b1817; font-size: 18px">{{$i18n.t("header").loginToUse}}</p>-->
+                    <!--                    <p style="color: #7b1817; font-size: 18px">{{$i18n.t("header").loginToUse}}</p>-->
                   </v-list-item-title>
                   <!--                    <v-form-->
                   <!--                      ref="form"-->
@@ -36,7 +40,7 @@
                   <!--                    >-->
                   <v-list-item-subtitle>
                     <v-text-field
-                       light dense style="margin-top: 12px"
+                      light dense style="margin-top: 12px"
                       prepend-inner-icon="mdi-account-outline"
                       type="name" @keydown.enter="validate"
                       v-model="username"
@@ -45,7 +49,7 @@
                   </v-list-item-subtitle>
                   <v-list-item-subtitle>
                     <v-text-field
-                       light dense style="margin-top: 12px"
+                      light dense style="margin-top: 12px"
                       prepend-inner-icon="mdi-lock-outline" type="password"
                       v-model="password"
                       :rules="[rules.required]" @keydown.enter="validate">
@@ -55,12 +59,12 @@
                   <v-list-item-subtitle align="center">
                     <v-col align="center" style="padding: 0">
                       <v-btn @click="register" text style="padding: 12px;">
-<!--                        {{$i18n.t('header').register}}-->
+                        <!--                        {{$i18n.t('header').register}}-->
                         register
                       </v-btn>
                       <v-btn color="#7b1817" dark style="padding: 12px;" @click="validate">
                         login
-<!--                        {{$i18n.t('header').login}}-->
+                        <!--                        {{$i18n.t('header').login}}-->
                       </v-btn>
                     </v-col>
                   </v-list-item-subtitle>
@@ -69,28 +73,10 @@
             </v-list>
           </v-card>
         </v-menu>
-<!--        <v-menu offset-y left v-model="myPage">-->
-<!--          <template v-slot:activator="{ on, attrs }" style="padding-right: 0px">-->
-<!--            <b-nav-item v-bind="attrs" v-on="on" :active="active()" v-show="$auth.loggedIn">-->
-<!--              {{ $i18n.t('header').myPage }}-->
-<!--              <v-badge :value="active()" style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
-<!--                       v-show="showBadge()"></v-badge>-->
-<!--            </b-nav-item>-->
-<!--          </template>-->
-<!--          <v-card>-->
-<!--            <v-list>-->
-<!--              <v-list-item-->
-<!--                v-for="(item, index) in items"-->
-<!--                :key="index" @click="changePage(item.route)">-->
-<!--                <v-list-item-title>{{ item.name }}</v-list-item-title>-->
-<!--              </v-list-item>-->
-<!--            </v-list>-->
-<!--          </v-card>-->
-<!--        </v-menu>-->
       </b-navbar-nav>
     </b-collapse>
 <!--    <Register :callback="register" :overlay="overlay"/>-->
-<!--    <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>-->
+    <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>
   </b-navbar>
 </template>
 <style>
@@ -115,11 +101,15 @@
 <script>
 import axios from "~/api/config";
 // import Register from "~/components/Register";
-// import DialogCon from "./DialogCon";
+import DialogCon from "./DialogCon";
 // import DialogRegister from "./DialogRegister";
 
 export default {
-  // components: {DialogRegister, DialogCon, Register},
+  components: {
+    // DialogRegister,
+    // Register
+    DialogCon,
+  },
   data() {
     return {
       textBtn: undefined,
@@ -136,50 +126,21 @@ export default {
       password: '',
       itemsBar: [
         {
-          name: "หน้าแรก",
+          name: 'หน้าแรก',
           route: '/'
-        },{
-          name: "ร้านของฉัน",
-          route: '/my-shops'
         },
-        // {
-        //   name: this.$i18n.t("header").amuletMarket,
-        //   route: this.localeLocation("/post")
-        // },
-        // {
-        //   name: this.$i18n.t("header").identityVerificationService,
-        //   route: this.localeLocation("my-shops")
-        // },
-        // {
-        //   name: this.$i18n.t("header").news,
-        //   route: this.localeLocation("events")
-        // },
-        // {
-        //   name: this.$i18n.t("contactUs").title,
-        //   route: this.localeLocation("contact-us")
-        // },
-        // {
-        //   name: this.$i18n.t("header").registerToConfirmTheAmulet,
-        //   route: this.localeLocation("items_list")
-        // }
-      ],
-      items: [
-        // {
-        //   name: this.$i18n.t('header').personalInformation,
-        //   route: this.localeLocation("profile")
-        // },
-        // // {
-        // //   name: 'แจ้งเรื่อง',
-        // //   route: 'admin'
-        // // },
-        // {
-        //   name: this.$i18n.t('header').registrationStatus,
-        //   route: this.localeLocation('status')
-        // },
-        // {
-        //   name: this.$i18n.t('header').logOut,
-        //   route: 'logout'
-        // },
+        {
+          name: 'รายงาน',
+          route: `/my-shops/report`
+        },
+        {
+          name: 'รายรับ-รายจ่าย',
+          route: '/event'
+        },
+        {
+          name: 'ผู้ใช้งาน',
+          route: `/my-shops/users`
+        },
       ],
       itemsPost: [
         {
@@ -226,7 +187,7 @@ export default {
     close() {
       if (this.$auth.user !== undefined && this.$auth.user !== null) {
         if (this.$auth.user.mobile === '') {
-          this.$router.push(this.localePath("index")+'/profile/edit')
+          this.$router.push('/profile/edit')
         }
       }
       this.snackbar = false
@@ -243,9 +204,6 @@ export default {
         // console.log("else<")
         this.$router.push(val)
       }
-    },
-    active() {
-      return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
     },
     async validate() {
       this.$nuxt.$loading.start()

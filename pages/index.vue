@@ -1,255 +1,175 @@
 <template>
   <div id="app">
-    <v-app style="background-color: transparent">
-      <v-main>
-        <div v-if="loading">
-          <v-col align="center">
-            Loading..
+    <v-main>
+      <v-card elevation="0">
+        <v-card-title style="margin: 12px; background-color: #EEF7F6;">
+          <v-row style="padding: 12px">
+            <v-col cols="12" sm="3" style="padding: 0">
+              <h4
+                style="align-self: center; color: #2096f3;  font-size: 20px">
+                หน้าแรก
+              </h4>
+            </v-col>
+            <v-spacer/>
+            <v-col cols="12" sm="9" align="right" style="padding: 0">
+              <v-btn
+                outlined color="#2096f3" @click="()=>this.$router.push('/add-booking')" class="me-lg-3"
+                v-show="$auth.loggedIn">
+                <v-icon>mdi-plus</v-icon>
+                เพิ่มรายการ
+              </v-btn>
+              <v-btn outlined color="#2096f3" @click="()=>this.$router.push('/my-booking')" v-show="$auth.loggedIn">
+                <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
+                การจองของฉัน
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-title>
+        <v-row style="padding: 12px;" v-show="zoom">
+          <v-col cols="12" sm="4">
+            <v-card color="#ff9800" dark>
+              <v-card-title class="text-h5">
+                ห้องสำหรับ 300 อุปกรณ์
+              </v-card-title>
+              <v-spacer></v-spacer>
+              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.small }}</v-card-subtitle>
+            </v-card>
           </v-col>
-        </div>
-<!--        <v-container style="max-width: 1730px;" v-if="!loading">-->
-<!--&lt;!&ndash;          <Header :title="this.$i18n.t('header').home"/>&ndash;&gt;-->
-<!--          <v-row-->
-<!--            style="padding-top: 12px; padding-bottom: 12px;padding-right: 12px; background-color: #7b1817;-->
-<!--            margin-top: 12px; margin-right: 0; margin-left: 0;">-->
-<!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-<!--              {{this.$i18n.t("header").amuletMarket}}-->
-<!--            </p>-->
-<!--            <v-spacer/>-->
-<!--            <v-btn text dark @click="$router.push(localeLocation('/post'))" style="padding: 12px">-->
-<!--              {{ this.$i18n.t("index").seeMore }}-->
-<!--              <v-icon>mdi-chevron-right</v-icon>-->
-<!--            </v-btn>-->
-<!--          </v-row>-->
-<!--          <v-row style="padding-bottom: 24px">-->
-<!--            <v-col v-for="i in itemsPsda.data" :key="i.newsId" sm="3" align="center">-->
-<!--              <ItemsHire :item="i" :exchange="exchange"/>-->
-<!--            </v-col>-->
-<!--          </v-row>-->
-<!--&lt;!&ndash;          <v-row style="padding-bottom: 24px">&ndash;&gt;-->
-<!--&lt;!&ndash;            <v-col v-for="i in itemsSale.data" :key="i.newsId" sm="3" align="center">&ndash;&gt;-->
-<!--&lt;!&ndash;              <ItemsHire :item="i" :exchange="exchange"/>&ndash;&gt;-->
-<!--&lt;!&ndash;            </v-col>&ndash;&gt;-->
-<!--&lt;!&ndash;            <v-col style="padding-right: 12px;" v-show="itemsSale.data.length === 0">&ndash;&gt;-->
-<!--&lt;!&ndash;              <v-card class="d-flex align-center" flat height="300">&ndash;&gt;-->
-<!--&lt;!&ndash;                <v-col align="center">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <p>ไม่มีข้อมูล</p>&ndash;&gt;-->
-<!--&lt;!&ndash;                </v-col>&ndash;&gt;-->
-<!--&lt;!&ndash;              </v-card>&ndash;&gt;-->
-<!--&lt;!&ndash;            </v-col>&ndash;&gt;-->
-<!--&lt;!&ndash;          </v-row>&ndash;&gt;-->
-<!--          <v-row-->
-<!--            style="padding-top: 12px; padding-bottom: 12px;padding-right: 12px; background-color: #7b1817;-->
-<!--            margin-top: 12px; margin-right: 0; margin-left: 0;">-->
-<!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-<!--              {{ this.$i18n.t("header").news }}-->
-<!--            </p>-->
-<!--            <v-spacer/>-->
-<!--&lt;!&ndash;            <v-select&ndash;&gt;-->
-<!--&lt;!&ndash;              label="เลือกข่าวที่ต้องการ" :items="templeItems" required return-object dense&ndash;&gt;-->
-<!--&lt;!&ndash;              item-text="title" item-value="templeId" v-model="temple" @change="getEvens"&ndash;&gt;-->
-<!--&lt;!&ndash;              style="max-width: 357px; padding-right: 24px" hide-details dark&ndash;&gt;-->
-<!--&lt;!&ndash;            ></v-select>&ndash;&gt;-->
-<!--            <v-btn text dark @click="$router.push(localeLocation('events'))" style="padding: 12px">-->
-<!--              {{ this.$i18n.t("index").seeMore }}-->
-<!--              <v-icon>mdi-chevron-right</v-icon>-->
-<!--            </v-btn>-->
-<!--          </v-row>-->
-<!--          <v-row>-->
-<!--            <v-col v-for="i in items.data" :key="i.newsId" sm="3" align="center">-->
-<!--              <ItemEvents :item="i"/>-->
-<!--            </v-col>-->
-<!--          </v-row>-->
-<!--          <v-row style="margin-top: 12px;" class="m-0 pt-2">-->
-<!--              <v-img src="/banner.png" class="m-0" @click="$router.push(localeLocation('/verification'))"></v-img>-->
-<!--          </v-row>-->
-<!--          <v-row-->
-<!--            style="background-color: #7b1817;"-->
-<!--            class="p-2 mt-2 ml-0 mr-0 mb-0">-->
-<!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-<!--              {{ this.$i18n.t("header").aboutUs }}-->
-<!--            </p>-->
-<!--          </v-row>-->
-<!--          <v-row class="p-0 m-0 mb-2">-->
-<!--            <v-card class="d-flex p-2" flat>-->
-<!--              {{ this.$i18n.t("header").aboutCon }}-->
-<!--            </v-card>-->
-<!--          </v-row>-->
-<!--          <v-img src="/owner.png"></v-img>-->
-<!--        </v-container>-->
-      </v-main>
-    </v-app>
+          <v-col cols="12" sm="4">
+            <v-card color="#4caf50" dark>
+              <v-card-title class="text-h5">
+                ห้องสำหรับ 500 อุปกรณ์
+              </v-card-title>
+              <v-spacer></v-spacer>
+              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.medium }}</v-card-subtitle>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-card color="#2196f3" dark>
+              <v-card-title class="text-h5">
+                ห้องสำหรับ 1,000 อุปกรณ์
+              </v-card-title>
+              <v-spacer></v-spacer>
+              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.big }}</v-card-subtitle>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-col style="padding-left: 0px; padding-right: 0px">
+          <v-sheet height="64" v-if="!loading">
+            <v-toolbar flat>
+              <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
+                วันนี้
+              </v-btn>
+              <v-btn fab text small color="grey darken-2" @click="prev">
+                <v-icon small> mdi-chevron-left</v-icon>
+              </v-btn>
+              <v-btn fab text small color="grey darken-2" @click="next">
+                <v-icon small> mdi-chevron-right</v-icon>
+              </v-btn>
+              <v-toolbar-title v-if="$refs.calendar">
+                {{ $refs.calendar.title }}
+              </v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-menu bottom right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
+                    <span>{{ typeToLabel[type] }}</span>
+                    <v-icon right> mdi-menu-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="type = 'day'">
+                    <v-list-item-title>วัน</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="type = 'week'">
+                    <v-list-item-title>สัปดาห์</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="type = 'month'">
+                    <v-list-item-title>เดือน</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-toolbar>
+          </v-sheet>
+          <v-sheet height="600" style="padding: 12px;">
+            <v-calendar
+              locale="th"
+              ref="calendar"
+              v-model="focus"
+              color="primary"
+              :events="events"
+              :event-color="getEventColor"
+              :type="type"
+              category-show-all
+              @click:event="showEvent"
+              @click:more="viewDay"
+              @click:date="viewDay"
+              @change="updateRange"
+            >
+              <template v-slot:day-body="{ date, week }">
+                <div
+                  class="v-current-time"
+                  :class="{ first: date === week[0].date }"
+                  :style="{ top: nowY }"
+                ></div>
+              </template>
+            </v-calendar>
+            <v-menu
+              v-model="selectedOpen"
+              :close-on-content-click="false"
+              :activator="selectedElement"
+              offset-x
+            >
+              <v-card color="grey lighten-4" min-width="350px" max-width="450px" flat>
+                <v-toolbar :color="selectedEvent.color" dark>
+
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-toolbar-title v-html="selectedEvent.name" v-bind="attrs" v-on="on"></v-toolbar-title>
+                    </template>
+                    <span>{{ selectedEvent.name }}</span>
+                  </v-tooltip>
+                  <v-spacer></v-spacer>
+                  <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        icon v-show="ishide" @click="status = true"
+                        v-bind="attrs"
+                        v-on="on">
+                        <v-icon>mdi-minus-circle</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>ยกเลิกการจอง</span>
+                  </v-tooltip>
+                </v-toolbar>
+                <v-card-text>
+                  ชื่อ-สกุล:
+                  <span v-html="selectedEvent.bookingName"></span>
+                  <v-spacer></v-spacer>
+                  สังกัด:
+                  <span v-html="selectedEvent.masterdepartmentname"></span>
+                  <v-spacer></v-spacer>
+                  Meeting ID:
+                  <span v-html="selectedEvent.meeting_id"></span>
+                  <v-spacer></v-spacer>
+                  Passcode:
+                  <span v-html="selectedEvent.password"></span>
+                  <v-spacer></v-spacer>
+                  เวลา:
+                  <span v-html="selectedEvent.timer"></span>
+                  <v-spacer></v-spacer>
+                </v-card-text>
+              </v-card>
+            </v-menu>
+          </v-sheet>
+        </v-col>
+      </v-card>
+      <DialogCon
+        :callback="close" :confirm="confirm" :status="status" textBtn="ยกเลิก"
+        detail="คุณต้องการลบรายการนี้ใช่หรือไม่"/>
+      <DialogCon :callback="close" :confirm="register" :status="statusUser" :detail="detailUser"/>
+    </v-main>
   </div>
 </template>
-<style>
-.cut-text-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-iframe {
-  width: 100%;
-  max-height: 650px;
-}
-</style>
-<script>
-import axios from "~/api/config";
-import serve from "~/api/server";
-import Register from "../components/Register";
-import ItemEvents from "../components/ItemEvents";
-import Vue from 'vue'
-
-import VueYouTubeEmbed from 'vue-youtube-embed'
-import ItemsHire from "../components/ItemsHire";
-import {getUpdateInDay} from "@/utils/exchangeRates";
-
-Vue.use(VueYouTubeEmbed)
-
-Vue.use(VueYouTubeEmbed, {global: true, componentId: "youtube-media"})
-
-export default {
-  components: {
-    ItemsHire,
-    ItemEvents,
-    Register
-  },
-  async created() {
-    this.$nextTick(function () {
-      this.loading = false
-    })
-    if(this.$i18n.locale !== "th") {
-      this.exchange = await getUpdateInDay(this.$i18n.locale)
-    }
-    this.$nuxt.$on('register', () => {
-      this.overlay = !this.overlay
-    })
-  },
-  data() {
-    return {
-      loading:true,
-      videoId: null,
-      startTime: null,
-      exchange:{},
-      itemsSale: {
-        data: [],
-      },
-      itemsPsda: {
-        data: [],
-      },
-      count: 1,
-      count1: 1,
-      overlay: false,
-      temple: {
-        templeId: ''
-      },
-      templeItems: [],
-      items: [],
-      contact: "สยามอมูเลทคอลเลคชั่น  : www.siamamuletcollection.com<br>" +
-        "บริษัท เอ็กซ์เปอร์ทิส (ประเทศไทย) จำกัด<br>" +
-        "42 ซอยโชคอำนวย ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10310",
-      about: "สยามอมูเลทคอลเลคชั่น เป็นระบบยืนยันผู้ถือครองพระเครื่องและวัตถุมงคลไทย และเป็นตลาดเช่าบูชาพระเครื่องที่ให้บริการผ่านเว็บไซต์ โดยพระเครื่องและวัตถุมงคลทุกชิ้นในระบบยืนยันผู้ถือครองพระเครื่องได้ผ่านกระบวนการสร้างอัตลักษณ์ด้วยกระบวนการทางวิทยาศาสตร์และความเห็นจากผู้เชี่ยวชาญเพื่อยืนยันว่าพระเครื่องและวัตถุมงคลมีความสอดคล้องทั้งเชิงวิทยาศาสตร์และเชิงพุทธศิลป์ว่าจะเป็นพระเครื่องและวัตถุมงคลที่สร้างในยุคที่เกจิผู้สร้างได้บันทึกไว้ ทั้งที่ท่านบันทึกไว้เอง และบันทึกที่เป็นที่ยอมรับในประเทศไทย และเฉพาะพระเครื่องและวัตถุมงคลที่เข้าระบบยืนยันผู้ถือครองแล้วเท่านั้น จึงจะสามารถประกาศขายในตลาดเช่าบูชาพระเครื่องได้ เพื่อให้เกิดการเเลกเปลี่ยนพระเครื่องและวัตถุมงคลที่สามารถพิสูจน์ได้ หมายถึง ผู้เช่าบูชาจะได้รับการส่งมอบพระเครื่องและวัตถุมงคลพร้อมอัตลักษณ์พระเครื่องที่สามารถนำไปตรวจสอบได้ว่าพระเครื่องและวัตถุมงคลที่ได้รับถูกต้องตรงตามที่ประกาศให้เช่าหรือไม่ ยิ่งไปกว่านั้นตลาดเช่าบูชาพระเครื่องของสยามอมูเลทคอลเลคชั่น เป็นตลาดที่เจ้าของวัตถุมงคลเป็นผู้ประกาศให้เช่าบูชาด้วยตนเอง เป็นของสะสมที่ถือครองมายาวนาน ปัจจุบันเป็นตลาดเช่าบูชาพระเครื่องและวัตถุมงคลที่มีจำนวนพระเครื่องที่ได้รับการตรวจพิสูจน์อัตลักษณ์ทางวิทยาศาสตร์แล้ว มากที่สุดในประเทศไทย"
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-    })
-    this.getCount()
-    this.getEvens()
-    this.getTemple()
-    this.getSalePsda()
-    this.getSale()
-  },
-  methods: {
-    getCount() {
-      let _c = localStorage.getItem("countPsda")
-      this.count = _c === undefined ? 1 : _c
-      localStorage.setItem("countPsda", (Math.floor(this.count) + 1))
-
-      let _c1 = localStorage.getItem("count")
-      this.count1 = _c1 === undefined ? 1 : _c1
-      localStorage.setItem("count", (Math.floor(this.count1) + 1))
-    },
-    async getSalePsda() {
-      await this.$axios.get(`/sacred-object-out/forsale`, {
-        params: {
-          keyword: '',
-          page: this.count,
-          limit: 4,
-          all: 1,
-          isLabNo: 1,
-          dateCreateSort: 'asc',
-          priceMin: '',
-          priceMax: '',
-          priceSort: '',
-          lab_typeId: 1
-        }
-      }).then((res) => {
-        this.itemsPsda = res.data
-        if (localStorage.getItem("countPsda") > this.itemsPsda.pageTotal) {
-          localStorage.setItem("countPsda", 1)
-        }
-        // console.log(JSON.stringify(res.data))
-      }).catch((e) => {
-        console.log(e)
-      })
-    },
-    async getSale() {
-      await this.$axios.get(`/sacred-object-out/forsale`, {
-        params: {
-          keyword: '',
-          page: this.count1,
-          limit: 4,
-          all: 1,
-          isLabNo: 'all',
-          dateCreateSort: 'asc',
-          priceMin: '',
-          priceMax: '',
-          priceSort: '',
-          lab_typeId: '',
-          categoryId: ''
-        }
-      }).then((res) => {
-        this.itemsSale = res.data
-        if (localStorage.getItem("count") > this.itemsSale.pageTotal) {
-          localStorage.setItem("count", 1)
-        }
-        // console.log(JSON.stringify(res.data))
-      }).catch((e) => {
-        console.log(e)
-      })
-    },
-    async getEvens() {
-      await axios.get(`/news/list`, {
-        params: {
-          keyword: '',
-          page: 1,
-          limit: 4,
-          templeId: this.temple.templeId
-        }
-      }).then((res) => {
-        this.items = res.data
-        this.$nuxt.$loading.finish()
-      }).catch((error) => {
-        console.log(error.message)
-      })
-    },
-    async getTemple() {
-      await axios.get(`/temple/list`).then((res) => {
-        if (res.data.status) {
-          let temp = res.data.data
-          temp.push({
-            templeId: "",
-            title: "ทั้งหมด"
-          })
-          this.templeItems = temp
-        }
-      }).catch((error) => {
-        console.log(error.message)
-      })
-    }
-  }
-}
-</script>
+<style lang="scss" src="./index.scss"/>
+<script src="./index.js"/>

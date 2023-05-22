@@ -43,14 +43,16 @@
   </div>
 </template>
 <script>
-import axios from "~/api/config";
-import Register from "~/components/Register";
-import DialogCon from "~/components/DialogCon";
+import axios from "@/api/config";
+// import Register from "@/components/Register.vue";
+import DialogCon from "@/components/DialogCon.vue";
 
 export default {
   layout: 'auth-layout',
   middleware: 'isLoggedIn',
-  components: {DialogCon, Register},
+  components: {DialogCon,
+    // Register
+  },
   data: () => ({
     version:"2.3.0",
     overlay: false,

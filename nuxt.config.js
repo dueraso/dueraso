@@ -1,142 +1,135 @@
 import colors from "vuetify/es5/util/colors";
 import server from "./api/server";
+// import serve from "~/api/server";
 
 export default {
-  target: 'static',
   loading: '~/components/LoadingBar.vue',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'siam amulet collection',
+    titleTemplate: "%s - Zoom ระบบจอง",
+    title: "YRU Zoom",
     htmlAttrs: {
-      lang: 'th'
+      lang: "en"
     },
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
+      { name: "format-detection", content: "telephone=no" }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      // {
-      //   rel:"preconnect",
-      //   href:"https://fonts.googleapis.com"
-      // },
-      // {
-      //   rel:"preconnect",
-      //   href:"https://fonts.gstatic.com"
-      // },
+      {
+        rel: "icon", type: "image/x-icon", href: "/logo.ico"
+      },
       {
         rel: "stylesheet",
-        // href: "https://fonts.googleapis.com/css2?family=Sarabun&display=swap",
-        href: "https://fonts.googleapis.com/css2?family=Sarabun:wght@500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap",
       },
-    ],
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
+      }]
   },
-
+  target: "static",
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '~/assets/css/main.css'
-  ],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // Simple usage
-    '@nuxtjs/vuetify',
-
-    '@nuxtjs/google-fonts',
-    'nuxt-font-loader',
+    // https://go.nuxtjs.dev/vuetify
+    "@nuxtjs/vuetify"
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    // Doc: https://github.com/nuxt/content
-    '@nuxt/content',
-    '@nuxtjs/auth',
-    // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
-    '@nuxtjs/dayjs',
-    '@nuxtjs/i18n',
+    '@nuxtjs/auth-next',
+    "bootstrap-vue/nuxt",
   ],
-  i18n: {
-    locales: ['th', 'en', 'ch'],
-    legacy: false,
-    globalInjection: true,
-    defaultLocale: 'th',
-    vueI18n: {
-      fallbackLocale: 'th',
-      messages: {
-        // eslint-disable-next-line global-require
-        th: require('./assets/lang/th.json'),
-        // eslint-disable-next-line global-require
-        en: require('./assets/lang/en.json'),
-        ch: require('./assets/lang/ch.json')
-      }
-    }
-  },
 
-  dayjs: {
-    locales: ['th'],
-    defaultLocale: 'th',
-    defaultTimeZone: 'asia/Bangkok',
-    plugins: [
-      'utc', // import 'dayjs/plugin/utc'
-      'timezone' // import 'dayjs/plugin/timezone'
-    ] // Your Day.js plugin
-  },
-
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
   axios: {
+    // baseURL: ' https://nuxtjs-portfolio-workshop.herokuapp.com/api',
     baseURL: server.api,
   },
 
   auth: {
+    // cookie: true,
     strategies: {
+      social: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: 'https://passport.yru.ac.th/oauth/authorize',
+          userInfo: 'https://passport.yru.ac.th/apis/v1/identity/userinfo',
+          logout: `https://passport.yru.ac.th/auth/client-logout?redirect_uri=${server.redirectUri}?logout`
+        },
+        responseType: 'code',
+        redirectUri: server.redirectUri,
+        clientId: server.clientId,
+        scope: ['*'],
+      },
       local: {
+        token: {
+          property: "access_token",
+        },
+        user: {
+          property: "data",
+        },
         endpoints: {
           login: {
             method: 'post',
-            url: '/member/login',
-            propertyName: 'tokens.code',
+            url: 'https://passport.yru.ac.th/oauth/token',
+            propertyName: 'access_token',
           },
           user: {
             method: 'get',
-            url: '/member/profile',
+            url: 'https://passport.yru.ac.th/apis/v1/identity/userinfo',
             propertyName: 'data',
           },
-          logout: false,
         },
       },
     },
     redirect: {
       login: '/login',
-      logout: '/',
-      callback: '/login',
-      home: '/'
+      // logout: `https://passport.yru.ac.th/auth/client-logout?redirect_uri=${server.redirectUri}?logout`,
     },
-    // plugins: ['@/plugins/auth-lang-redirect.js']
   },
 
-  fontLoader: {
-    url: 'https://fonts.googleapis.com/css2?family=Sarabun:wght@500&display=swap',
+  // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+  vuetify: {
+    customVariables: ["~/assets/variables.scss"],
+    theme: {
+      dark: false,
+      themes: {
+        dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
+        }
+      }
+    }
+  },
 
-    prefetch: true,
-    preconnect: true
+  bootstrapVue: {
+    bootstrapCSS: false, // Or `css: false`
+    bootstrapVueCSS: false, // Or `bvCSS: false`
+    // componentPlugins: [
+    //   'VBBButtonPlugin'
+    // ],
+    // directivePlugins: []
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vue-youtube-embed']
-  },
-}
+  }
+};

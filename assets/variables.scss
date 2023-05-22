@@ -2,14 +2,17 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
-//@import "~vuetify/src/styles/styles.sass";
-//@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500&display=swap');
-//$body-font-family: 'Saraban', sans-serif;
-//
-//
-//.v-application {
-//  font-family: "Sarabun",sans-serif;
-//}
-//.body{
-//  font-family: "Sarabun",sans-serif;
-//}
+@import "~vuetify/src/styles/styles.sass";
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500&display=swap');
+$body-font-family: 'Saraban', sans-serif;
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300&display=swap');
+$font-family: 'IBM Plex Sans Thai', sans-serif;
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap');
+$font-family: 'Dancing Script', cursive;
+
+
+.v-application {
+  font-family: "Sarabun",sans-serif;
+}
