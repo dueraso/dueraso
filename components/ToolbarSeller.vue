@@ -135,7 +135,7 @@ export default {
         },
         {
           name: 'รายรับ-รายจ่าย',
-          route: '/event'
+          route: '/my-shops/events'
         },
         {
           name: 'ผู้ใช้งาน',

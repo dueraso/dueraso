@@ -10,8 +10,8 @@
         <v-container fluid v-if="!loading">
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
-              <v-icon x-large>mdi-account-group-outline</v-icon>
-              ผู้ใช้งานทั้งหมด
+              <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
+              รายรับ-รายจ่าย
             </h5>
             <v-spacer/>
             <v-btn outlined @click="openItem({})" class="mr-3">
@@ -107,17 +107,106 @@
     </v-app>
   </div>
 </template>
-<style>
-.cut-text-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+<script>
+import dayjs from "dayjs";
 
-iframe {
-  width: 100%;
-  max-height: 650px;
-}
-</style>
-<script src="./index.js"/>
+export default {
+  // middleware: ['auth','isAdmin'],
+  layout: "seller-layout",
+  data() {
+    return {
+      loading: true,
+      search: "",
+      dialog: false,
+      tableHead: [
+        {
+          title: "ชื่อ-สกุล",
+          width: ""
+        },
+        {
+          title: "ผู้ใช้งาน",
+          width: "15%"
+        },
+        {
+          title: "สร้างโดย",
+          width: ""
+        },
+        {
+          title: "สถานะ",
+          width: "5%"
+        },
+        {
+          title: "สิทธิ์",
+          width: "10%"
+        },
+        {
+          title: "สร้างเมื่อ",
+          width: "10%"
+        },
+      ],
+      desserts: {
+        data: [
+          {
+            name: "super_admin",
+            user: "super_admin",
+            create_by: {
+              name: "super_admin",
+            },
+            status: "1",
+            permissions: "super_admin",
+            created_at: "12:29:00 2023/12/23"
+          },
+          {
+            name: "arthit dueraso",
+            user: "dueraso",
+            create_by: {
+              name: "arthit dueraso",
+            },
+            status: "1",
+            permissions: "admin",
+            created_at: "12:29:00 2023/12/23"
+          },
+        ]
+      },
+      item: {},
+    };
+  },
+  created() {
+    this.$nextTick(() => {
+      this.loading = false
+    })
+  },
+  mounted() {
+      // this.getRoom();
+  },
+  methods: {
+    convertDay(val) {
+      if (val == undefined) return
+      return dayjs(val).format('HH:mm')
+    },
+    getColor(val) {
+      return (val !== 1) ? 'green' : 'red'
+    },
+    async getRoom() {
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/getLicensed").then((res) => {
+        this.desserts = res.data.data
+        this.$nuxt.$loading.finish()
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
+    confirm() {
+      if (this.item.id) {
+        console.log("Update> " + this.item.id)
+        this.onUpdate()
+      } else {
+        console.log("Create> " + this.item.id)
+        this.onCreate()
+      }
+    },
+
+  }
+};
+</script>
