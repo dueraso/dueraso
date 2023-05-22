@@ -40,7 +40,7 @@
                   <td>{{ item.permissions }}</td>
                   <td>{{ item.created_at }}</td>
                   <td class="p-0 text-right">
-                    <v-btn fab small text @click="openItem(item)">
+                    <v-btn fab small text @click="dd.openItem(item)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
                     <v-btn fab small text @click="onDelete(item)">
@@ -109,10 +109,15 @@
 </template>
 <script>
 import dayjs from "dayjs";
+import B from "@/utils/myFunction";
 
 export default {
   // middleware: ['auth','isAdmin'],
   layout: "seller-layout",
+  // extends:B,
+  // mixins:
+  //   B
+  // ,
   data() {
     return {
       loading: true,
@@ -176,8 +181,18 @@ export default {
       this.loading = false
     })
   },
+  props:{
+
+  },
   mounted() {
       // this.getRoom();
+
+    // this.test()
+  },
+  computed:{
+    dd(){
+      return new B()
+    },
   },
   methods: {
     convertDay(val) {

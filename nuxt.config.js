@@ -1,6 +1,5 @@
 import colors from "vuetify/es5/util/colors";
 import server from "./api/server";
-// import serve from "~/api/server";
 
 export default {
   loading: '~/components/LoadingBar.vue',
