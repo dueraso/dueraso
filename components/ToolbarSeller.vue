@@ -131,15 +131,23 @@ export default {
         },
         {
           name: 'รายงาน',
-          route: `/my-shops/report`
+          route: `/dashboard/report`
+        },
+        {
+          name: 'จัดการร้าน',
+          route: '/dashboard/outlets'
+        },
+        {
+          name: 'จัดการสาขา',
+          route: '/dashboard/branch'
         },
         {
           name: 'รายรับ-รายจ่าย',
-          route: '/my-shops/events'
+          route: '/dashboard/events'
         },
         {
           name: 'ผู้ใช้งาน',
-          route: `/my-shops/users`
+          route: `/dashboard/users`
         },
       ],
       itemsPost: [

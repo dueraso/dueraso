@@ -140,7 +140,7 @@ export default {
           route: '/'
         },{
           name: "ร้านของฉัน",
-          route: '/my-shops'
+          route: '/dashboard'
         },
         // {
         //   name: this.$i18n.t("header").amuletMarket,
@@ -148,7 +148,7 @@ export default {
         // },
         // {
         //   name: this.$i18n.t("header").identityVerificationService,
-        //   route: this.localeLocation("my-shops")
+        //   route: this.localeLocation("dashboard")
         // },
         // {
         //   name: this.$i18n.t("header").news,

@@ -142,7 +142,7 @@
         <!--            </v-col>-->
         <!--          </v-row>-->
         <!--          <v-row style="margin-top: 12px;" class="m-0 pt-2">-->
-        <!--              <v-img src="/banner.png" class="m-0" @click="$router.push(localeLocation('/my-shops'))"></v-img>-->
+        <!--              <v-img src="/banner.png" class="m-0" @click="$router.push(localeLocation('/dashboard'))"></v-img>-->
         <!--          </v-row>-->
         <!--          <v-row-->
         <!--            style="background-color: #7b1817;"-->
