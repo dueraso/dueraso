@@ -54,31 +54,65 @@
             <div class="text-center">
               <v-dialog
                 v-model="dialog"
-                width="500"
                 persistent
               >
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    Privacy Policy
+                    เพิ่ม/แก้ไขผู้ใช้งาน
                   </v-card-title>
 
                   <v-card-text>
                     <v-text-field
                       v-model="item.title"
-                      label="title"
+                      label="ชื่อ-สกุล"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
                     <v-text-field
-                      v-model="item.detail"
-                      label="detail"
+                      v-model="item.email"
+                      label="อีเมล"
+                      type="email"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="item.password"
+                      label="รหัสผ่าน"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="item.phone"
+                      label="เบอร์"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="item.salary_id"
+                      label="เงินเดือน"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="item.roles_id"
+                      label="สถานะ"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="item.roles_id"
+                      label="สิทธิ์"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
                   </v-card-text>
-
                   <v-divider></v-divider>
 
                   <v-card-actions>
