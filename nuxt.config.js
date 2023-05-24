@@ -1,36 +1,50 @@
 import colors from "vuetify/es5/util/colors";
-import server from "./api/server";
 
 export default {
-  loading: '~/components/LoadingBar.vue',
+  loading: "~/components/LoadingBar.vue",
+  // serverMiddleware: ["~/api/auth.js"],
+  /*
+   ** Nuxt rendering mode
+   ** See https://nuxtjs.org/api/configuration-mode
+   */
+  // mode: 'universal',
+  /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  // target: 'server',
+  target: "static",
+  /*
+   ** Headers of the page
+   ** See https://nuxtjs.org/api/configuration-head
+   */
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - Zoom ระบบจอง",
-    title: "YRU Zoom",
+    titleTemplate: "%s - admin",
+    title: "GPS",
     htmlAttrs: {
-      lang: "en"
+      lang: "en",
     },
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" }
+      { name: "format-detection", content: "telephone=no" },
     ],
     link: [
-      {
-        rel: "icon", type: "image/x-icon", href: "/logo.ico"
-      },
+      { rel: "icon", type: "image/x-icon", href: "/icon1.ico" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap",
       },
       {
-        rel: 'stylesheet',
-        type: 'text/css',
-        href: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
-      }]
+        rel: "stylesheet",
+        type: "text/css",
+        href: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+      },
+    ],
   },
-  target: "static",
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -43,19 +57,28 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    "@nuxtjs/vuetify"
+    "@nuxtjs/vuetify",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
+    // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/axios",
+    // Doc: https://github.com/nuxt/content
+    "@nuxt/content",
+    "@nuxtjs/auth",
+
     "bootstrap-vue/nuxt",
   ],
 
+  /*
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
+  // baseURL: ' https://nuxtjs-portfolio-workshop.herokuapp.com/api',
   axios: {
-    // baseURL: ' https://nuxtjs-portfolio-workshop.herokuapp.com/api',
-    baseURL: server.api,
+    baseURL: "http://localhost:8000/api/v1",
+    // baseURL: 'http://183.88.227.207:81/gps-api/public/api',
   },
 
   auth: {
@@ -63,27 +86,28 @@ export default {
       local: {
         endpoints: {
           login: {
-            method: 'post',
-            url: 'login',
-            propertyName: 'token',
+            method: "post",
+            url: "login",
+            propertyName: "token",
           },
           user: {
-            method: 'get',
-            url: 'user',
-            propertyName: '',
+            method: "get",
+            url: "user",
+            propertyName: "",
           },
           logout: false,
         },
       },
     },
     redirect: {
-      login: '/login',
+      login: "/login",
     },
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
+    treeShake: true,
     theme: {
       dark: false,
       themes: {
@@ -94,10 +118,10 @@ export default {
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
+          success: colors.green.accent3,
+        },
+      },
+    },
   },
 
   bootstrapVue: {
@@ -111,5 +135,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+    postcss: {
+      preset: {
+        features: {
+          customProperties: false,
+        },
+      },
+    },
+  },
 };

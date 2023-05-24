@@ -1,82 +1,155 @@
 <template>
   <div id="app">
-    <v-app style="background-image: url('/bg.jpg');background-size: cover;background-repeat: no-repeat">
+    <v-app
+      style="
+        background-image: url('/bg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
       <v-row justify="center">
-        <v-col cols="12" sm="6">
-          <v-container fill-height style="max-width:632px">
+        <v-col cols="5">
+          <v-container fill-height>
             <v-layout wrap align-center>
-              <v-flex>
-                <v-card elevation="4" light tag="section" style="border-radius:15px">
+              <v-flex style="max-width: 632px; max-height: 504px">
+                <v-card
+                  elevation="4"
+                  light
+                  tag="section"
+                  style="border-radius: 15px"
+                >
                   <v-card-title>
                     <v-col>
-                      <h3 align="center">
-                        เข้าสู่ระบบ
-                      </h3>
+                      <h3 align="center">เข้าสู่ระบบ</h3>
                     </v-col>
                   </v-card-title>
                   <v-card-text>
                     <v-col align="center">
-                      <v-form ref="form" v-model="valid" lazy-validation style="max-width: 484px">
+                      <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                        style="max-width: 484px"
+                      >
                         <v-text-field
-                          outlined dense v-model="username" :rules="userNameRules"
-                          label="ชื่อผู้ใช้" required>
-                        </v-text-field>
-                        <v-text-field
-                          outlined dense v-model="password" :rules="passwordRules"
-                          label="รหัสผ่าน" type="password" required @keydown.enter="validate"
+                          outlined
+                          dense
+                          v-model="userName"
+                          :rules="userNameRules"
+                          label="ชื่อผู้ใช้งาน"
+                          required
+                          color="#38857D"
                         ></v-text-field>
-                        <v-btn :disabled="!valid" color="#7b1817" light @click="validate" block>
-                          <p style="color: white; margin: 0">เข้าสู่ระบบ</p>
+                        <v-text-field
+                          outlined
+                          dense
+                          v-model="password"
+                          :rules="passwordRules"
+                          label="ระบุรหัสผ่าน"
+                          type="password"
+                          required
+                          color="#38857D"
+                          @keydown.enter="validate"
+                        ></v-text-field>
+
+                        <p style="color: red" v-show="again" align="left">
+                          user หรือ password
+                          ของท่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง
+                        </p>
+
+                        <v-checkbox
+                          v-model="remember"
+                          label="จดจำรหัสผ่าน"
+                          color="#38857D"
+                          style="margin: 0px; padding: 0px"
+                        ></v-checkbox>
+
+                        <v-btn
+                          :disabled="!valid"
+                          color="#54B6C8"
+                          dark
+                          @click="validate"
+                          block
+                        >
+                          เข้าสู่ระบบ
                         </v-btn>
                       </v-form>
-                        <p class="mb-0 mt-2" style="font-size: 12px">version {{this.version}}</p>
                     </v-col>
                   </v-card-text>
+                  <v-row align="center">
+                    <v-col>
+                      <p class="text-center">
+                        <a href="/_TourAlam_Admin.apk"
+                          >กดเพื่อโหลดแอพใช้สำหรับผู้ดูแลระบบ</a
+                        >
+                      </p>
+                      <p class="text-center">
+                        <a href="/_TourAlam_User.apk"
+                          >กดเพื่อโหลดแอพใช้สำหรับผู้ใช้งานทั่วไป</a
+                        >
+                      </p>
+                    </v-col>
+                  </v-row>
                 </v-card>
               </v-flex>
             </v-layout>
           </v-container>
         </v-col>
       </v-row>
-      <DialogCon :detail="messages" :callback="close" :status="snackbar"/>
+      <v-overlay :value="overlay">
+        <v-card width="500px" light align="center" v-if="profile.active === 1">
+          <v-card-title>สถานะของคุณคือ</v-card-title>
+          <br />
+          <v-card-subtitle v-if="profile.status.id === 2"
+            ><h1 style="color: orange">{{ profile.status.name }}</h1>
+          </v-card-subtitle>
+          <v-card-subtitle v-else
+            ><h1 style="color: red">
+              {{ profile.status.name }}
+            </h1></v-card-subtitle
+          >
+          <v-card-actions align="center">
+            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-card width="500px" light align="center" v-else>
+          <v-card-title>สถานะของคุณคือ</v-card-title>
+          <br />
+          <v-card-subtitle
+            ><h3 style="color: red">
+              ผู้ใช้ของท่านถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ
+            </h3>
+          </v-card-subtitle>
+          <v-card-actions align="center">
+            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-overlay>
     </v-app>
   </div>
 </template>
 <script>
-import axios from "@/api/config";
-// import Register from "@/components/Register.vue";
-import DialogCon from "@/components/DialogCon.vue";
-
 export default {
-  layout: 'auth-layout',
-  middleware: 'isLoggedIn',
-  components: {DialogCon,
-    // Register
-  },
+  layout: "auth-layout",
+  middleware: "isLoggedIn",
   data: () => ({
-    version:"2.3.0",
     overlay: false,
     valid: true,
-    email: '',
+    email: "",
     again: false,
     stat: false,
     remember: false,
-    snackbar: false,
-    vertical: true,
     profile: {},
     emailRules: [
-      v => !!v || 'จำเป็น',
-      v => /.+@.+\..+/.test(v) || 'รูปแบบอีเมลไม่ถูกต้อง',
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
-    userNameRules: [
-      v => !!v || 'จำเป็น',
-    ],
-    username: '',
-    password: '',
-    messages: '',
+    userNameRules: [(v) => !!v || "is required"],
+    userName: "",
+    password: "",
     passwordRules: [
-      v => !!v || 'จำเป็น',
-      v => (v && v.length > 5) || 'รหัสผ่าน 6 ตัวขึ้นไป',
+      (v) => !!v || "Password is required",
+      (v) => (v && v.length > 5) || "Password must have 6 characters",
       // v => /(?=.*[A-Z])/.test(v) || 'Must have one uppercase character',
       // v => /(?=.*\d)/.test(v) || 'Must have one number',
       // v => /([!@$%])/.test(v) || 'Must have one special character [!@#$%]'
@@ -84,74 +157,65 @@ export default {
     error: null,
   }),
   mounted() {
-    // let data = JSON.parse(localStorage.getItem('remember'))
-    // if (data != null) {
-    //   this.userName = data.user_name
-    //   this.password = data.password
-    // }
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    // })
+    let data = JSON.parse(localStorage.getItem("remember"));
+    if (data != null) {
+      this.userName = data.user_name;
+      this.password = data.password;
+    }
   },
+
   methods: {
-    close() {
-      this.snackbar = false
-    },
     async validate() {
-      this.$nuxt.$loading.start()
-      this.login()
-      // await axios.post('/login', {
-      //   email: this.username,
-      //   password: this.password,
-      // }).then((res) => {
-      //     this.login()
-      //   // if (res.data.status) {
-      //   // } else {
-      //   //   this.messages = res.data.message
-      //   //   this.$nuxt.$loading.finish()
-      //   //   this.snackbar = true
-      //   // }
-      // }).catch((e) => {
-      //   console.log("e>" + JSON.stringify(e))
-      // })
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start();
+      });
+      this.$refs.form.validate();
+
+      await this.$axios
+        .get(`check/${this.userName}`)
+        .then((res) => {
+          this.profile = res.data;
+          if (res.data.status.id === 1 && res.data.active === 1) {
+            this.login();
+          } else {
+            this.overlay = true;
+          }
+        })
+        .catch((error) => {
+          this.$nuxt.$loading.finish();
+          console.log(error);
+          this.again = true;
+        });
     },
     async login() {
       const payload = {
         data: {
-          email: this.username,
+          user_name: this.userName,
           password: this.password,
         },
-      }
+      };
 
-      await this.$auth.loginWith('local', payload).then((res) => {
-        if (this.remember) {
-          let data = {
-            email: this.username,
-            password: this.password,
+      await this.$auth
+        .loginWith("local", payload)
+        .then((res) => {
+          if (this.remember) {
+            let data = {
+              user_name: this.userName,
+              password: this.password,
+            };
+            localStorage.setItem("remember", JSON.stringify(data));
           }
-          console.log(res)
-          localStorage.setItem('remember', JSON.stringify(data))
-        }
-        this.$nuxt.$loading.finish()
-      }).catch((error) => {
-        this.$nuxt.$loading.finish()
-        console.log(error)
-        // this.again = true
-      })
-      // try {
-      //   const login = {
-      //     email: this.username,
-      //     password: this.password
-      //   }
-      //   // let response =
-      //   this.$auth.loginWith('local', {data: login}).then((res)=>{
-      //     this.$nuxt.$loading.finish()
-      //     this.menu = false
-      //     this.$auth.$storage.setLocalStorage('token',res.data.token)
-      //     // console.log(res.data)
-      //   })
-      //   // console.log('response', response)
-      // } catch (e) {
-      //   console.log('Error Response', JSON.stringify(e))
-      // }
+          this.$nuxt.$loading.finish();
+        })
+        .catch((error) => {
+          this.$nuxt.$loading.finish();
+          console.log(error);
+          this.again = true;
+        });
     },
   },
-}
+};
 </script>

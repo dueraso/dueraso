@@ -18,6 +18,10 @@
               <v-icon>mdi-plus</v-icon>
               เพิ่ม
             </v-btn>
+            <v-btn outlined @click="$router.push($route.fullPath+'/role')" class="mr-3">
+              <v-icon>mdi-lock</v-icon>
+              จัดการสิทธิ์
+            </v-btn>
           </v-row>
           <v-col>
             <v-simple-table fixed-header>

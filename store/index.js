@@ -1,23 +1,29 @@
 export const state = () => ({
-  counter: 0,
-  faqCategory: ""
-});
+  myState: 0,
+  places: {},
+  readOnly: true,
+  editedIndex: -1,
+  placeId: null,
+  urlImgTopic: '',
+})
 
 export const mutations = {
   increment(state) {
-    state.counter++;
+    state.counter++
   },
-  setFaqCatagory(state, payload) {
-    state.faqCategory = payload;
-  }
-};
-
-export const getters = {
-  isAuthenticated(state){
-    return state.auth.loggedIn
+  setPlaces(state, payload) {
+    state.places = payload
   },
-
-  loggedUser(state){
-    return state.auth.user
-  }
-};
+  setReadOnly(state, payload) {
+    state.readOnly = payload
+  },
+  setEditedIndex(state, payload) {
+    state.editedIndex = payload
+  },
+  setPlaceId(state, payload) {
+    state.placeId = payload
+  },
+  setUrlImgTopic(state, payload) {
+    state.urlImgTopic = payload
+  },
+}

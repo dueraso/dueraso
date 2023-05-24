@@ -1,175 +1,242 @@
 <template>
-  <div id="app">
-    <v-main>
-      <v-card elevation="0">
-        <v-card-title style="margin: 12px; background-color: #EEF7F6;">
-          <v-row style="padding: 12px">
-            <v-col cols="12" sm="3" style="padding: 0">
-              <h4
-                style="align-self: center; color: #2096f3;  font-size: 20px">
-                หน้าแรก
-              </h4>
-            </v-col>
-            <v-spacer/>
-            <v-col cols="12" sm="9" align="right" style="padding: 0">
-              <v-btn
-                outlined color="#2096f3" @click="()=>this.$router.push('/add-booking')" class="me-lg-3"
-                v-show="$auth.loggedIn">
-                <v-icon>mdi-plus</v-icon>
-                เพิ่มรายการ
-              </v-btn>
-              <v-btn outlined color="#2096f3" @click="()=>this.$router.push('/my-booking')" v-show="$auth.loggedIn">
-                <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
-                การจองของฉัน
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-title>
-        <v-row style="padding: 12px;" v-show="zoom">
-          <v-col cols="12" sm="4">
-            <v-card color="#ff9800" dark>
-              <v-card-title class="text-h5">
-                ห้องสำหรับ 300 อุปกรณ์
-              </v-card-title>
-              <v-spacer></v-spacer>
-              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.small }}</v-card-subtitle>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="4">
-            <v-card color="#4caf50" dark>
-              <v-card-title class="text-h5">
-                ห้องสำหรับ 500 อุปกรณ์
-              </v-card-title>
-              <v-spacer></v-spacer>
-              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.medium }}</v-card-subtitle>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="4">
-            <v-card color="#2196f3" dark>
-              <v-card-title class="text-h5">
-                ห้องสำหรับ 1,000 อุปกรณ์
-              </v-card-title>
-              <v-spacer></v-spacer>
-              <v-card-subtitle>วันนี้จองแล้ว {{ zoomLicense.big }}</v-card-subtitle>
-            </v-card>
-          </v-col>
+  <v-card elevation="0">
+    <v-card-title style="background-color: #eef7f6; height: 100px">
+      <v-container>
+        <v-row>
+          <h4 style="align-self: center; color: #5561b0">
+            รายชื่อข้อมูลสถานที่
+          </h4>
+          <v-spacer />
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            label="ค้นหา"
+            single-line
+            hide-details
+            outlined
+            dense
+            v-model="search"
+            color="#54B6C8"
+            style="max-width: 336px"
+            @keydown.enter="searchPlaces"
+          ></v-text-field>
+          <v-btn
+            to="/update"
+            style="align-self: center; margin-left: 12px"
+            color="#54B6C8"
+            dark
+          >
+            เพิ่มสถานที่
+          </v-btn>
         </v-row>
-        <v-col style="padding-left: 0px; padding-right: 0px">
-          <v-sheet height="64" v-if="!loading">
-            <v-toolbar flat>
-              <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-                วันนี้
-              </v-btn>
-              <v-btn fab text small color="grey darken-2" @click="prev">
-                <v-icon small> mdi-chevron-left</v-icon>
-              </v-btn>
-              <v-btn fab text small color="grey darken-2" @click="next">
-                <v-icon small> mdi-chevron-right</v-icon>
-              </v-btn>
-              <v-toolbar-title v-if="$refs.calendar">
-                {{ $refs.calendar.title }}
-              </v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-menu bottom right>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-                    <span>{{ typeToLabel[type] }}</span>
-                    <v-icon right> mdi-menu-down</v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click="type = 'day'">
-                    <v-list-item-title>วัน</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="type = 'week'">
-                    <v-list-item-title>สัปดาห์</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="type = 'month'">
-                    <v-list-item-title>เดือน</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-toolbar>
-          </v-sheet>
-          <v-sheet height="600" style="padding: 12px;">
-            <v-calendar
-              locale="th"
-              ref="calendar"
-              v-model="focus"
-              color="primary"
-              :events="events"
-              :event-color="getEventColor"
-              :type="type"
-              category-show-all
-              @click:event="showEvent"
-              @click:more="viewDay"
-              @click:date="viewDay"
-              @change="updateRange"
-            >
-              <template v-slot:day-body="{ date, week }">
-                <div
-                  class="v-current-time"
-                  :class="{ first: date === week[0].date }"
-                  :style="{ top: nowY }"
-                ></div>
-              </template>
-            </v-calendar>
-            <v-menu
-              v-model="selectedOpen"
-              :close-on-content-click="false"
-              :activator="selectedElement"
-              offset-x
-            >
-              <v-card color="grey lighten-4" min-width="350px" max-width="450px" flat>
-                <v-toolbar :color="selectedEvent.color" dark>
+      </v-container>
+    </v-card-title>
+    <v-card-text>
+      <v-container style="padding: 0">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left" style="color: #38857d; font-size: 16px">
+                  ชื่อสถานที่
+                </th>
+                <th class="text-left" style="color: #38857d; font-size: 16px">
+                  พิกัด
+                </th>
+                <th class="text-left" style="color: #38857d; font-size: 16px">
+                  ระดับสถานที่
+                </th>
+                <th class="text-left" style="color: #38857d; font-size: 16px">
+                  การแก้ไขล่าสุด
+                </th>
+                <th style="max-width: 50px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in desserts" :key="item.name">
+                <td>{{ item.topic }}</td>
+                <td>{{ item.latitude + "," + item.longitude }}</td>
+                <td width="11%">{{ item.priority }}</td>
+                <td width="20%">{{ convertDay(item.updated_at) }}</td>
+                <th class="text-left" width="8%">
+                  <v-icon color="#38857D" @click="editItem(item)"
+                    >mdi-pencil-outline</v-icon
+                  >
+                  <v-icon color="#38857D" v-if="roles" @click="deleteItem(item)"
+                    >mdi-delete-outline</v-icon
+                  >
+                </th>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-container>
+    </v-card-text>
+    <v-dialog v-model="dialog" width="535" style="height: 215px">
+      <v-card>
+        <v-card-text style="padding: 24px">
+          <h3 style="font-size: 20px; padding-bottom: 12px" class="text-center">
+            ยืนยันการลบข้อมูล
+          </h3>
 
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-toolbar-title v-html="selectedEvent.name" v-bind="attrs" v-on="on"></v-toolbar-title>
-                    </template>
-                    <span>{{ selectedEvent.name }}</span>
-                  </v-tooltip>
-                  <v-spacer></v-spacer>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        icon v-show="ishide" @click="status = true"
-                        v-bind="attrs"
-                        v-on="on">
-                        <v-icon>mdi-minus-circle</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>ยกเลิกการจอง</span>
-                  </v-tooltip>
-                </v-toolbar>
-                <v-card-text>
-                  ชื่อ-สกุล:
-                  <span v-html="selectedEvent.bookingName"></span>
-                  <v-spacer></v-spacer>
-                  สังกัด:
-                  <span v-html="selectedEvent.masterdepartmentname"></span>
-                  <v-spacer></v-spacer>
-                  Meeting ID:
-                  <span v-html="selectedEvent.meeting_id"></span>
-                  <v-spacer></v-spacer>
-                  Passcode:
-                  <span v-html="selectedEvent.password"></span>
-                  <v-spacer></v-spacer>
-                  เวลา:
-                  <span v-html="selectedEvent.timer"></span>
-                  <v-spacer></v-spacer>
-                </v-card-text>
-              </v-card>
-            </v-menu>
-          </v-sheet>
-        </v-col>
+          <v-col align="center">
+            <v-btn
+              color="#54B6C8"
+              dark
+              style="padding-right: 35px; padding-left: 35px"
+              @click="dialog = false"
+            >
+              ยกเลิก
+            </v-btn>
+            <v-btn
+              color="#54B6C8"
+              dark
+              style="margin-left: 24px; padding-right: 35px; padding-left: 35px"
+              @click="deleteItemConfirm"
+            >
+              ยืนยัน
+            </v-btn>
+          </v-col>
+        </v-card-text>
       </v-card>
-      <DialogCon
-        :callback="close" :confirm="confirm" :status="status" textBtn="ยกเลิก"
-        detail="คุณต้องการลบรายการนี้ใช่หรือไม่"/>
-      <DialogCon :callback="close" :confirm="register" :status="statusUser" :detail="detailUser"/>
-    </v-main>
-  </div>
+    </v-dialog>
+  </v-card>
 </template>
-<style lang="scss" src="./index.scss"/>
-<script src="./index.js"/>
+<style>
+.truncate {
+  max-width: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+<script>
+import dayjs from "dayjs";
+import log from "./log";
+
+export default {
+  middleware: "auth",
+  data: () => ({
+    config: {},
+    dialog: false,
+    isDisabled: false,
+    slide_show: false,
+    search: "",
+    dialogDelete: false,
+    desserts: [],
+    place_type: [],
+    type_select: "",
+    editedIndex: -1,
+    editedItem: {},
+    defaultItem: {},
+  }),
+  computed: {
+    roles() {
+      return this.$auth.user.roles <= 2;
+    },
+  },
+  watch: {
+    // dialog(val) {
+    //   val || this.close()
+    // },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  created() {
+    // this.getData();
+  },
+
+  mounted() {},
+
+  methods: {
+    convertDay(day) {
+      return dayjs(day).format("DD-MM-YYYY HH:mm:ss");
+    },
+
+    async getData() {
+      await this.$axios
+        .get("/full_places")
+        .then((response) => {
+          this.desserts = response.data;
+          // console.log(JSON.stringify(this.desserts))
+          // this.desserts = this.$auth.user.id === 1 ? response.data:
+          //   response.data.filter((d)=>d.create_by === this.$auth.user.id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async deleteItemConfirm() {
+      console.log(JSON.stringify(this.editedItem));
+      await this.$axios
+        .delete(`/places/${this.editedItem.id}`)
+        .then(() => {
+          this.getData();
+          this.closeDelete();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async getType() {
+      await this.$axios
+        .get("/place_type")
+        .then((response) => {
+          this.place_type = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async searchPlaces() {
+      console.log("สสส");
+      await this.$axios
+        .get(`/filter_places`, {
+          params: {
+            search: this.search,
+          },
+        })
+        .then((response) => {
+          this.desserts = response.data;
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+        });
+    },
+
+    async createItem() {
+      await this.getPlaceList();
+      this.$store.commit("setReadOnly", false);
+      await this.$router.push("/update");
+    },
+
+    async editItem(item) {
+      await this.$router.push({
+        path: "/update",
+        query: {
+          edite: Object.assign({}, item).id,
+        },
+      });
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    closeDelete() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+  },
+};
+</script>

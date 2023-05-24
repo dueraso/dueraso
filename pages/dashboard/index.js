@@ -2,6 +2,8 @@
 export default {
   layout:"seller-layout",
   name: "IndexPage",
+  middleware: "auth",
+
   data() {
     return {
       loading: true,
