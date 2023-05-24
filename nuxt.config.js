@@ -59,44 +59,25 @@ export default {
   },
 
   auth: {
-    // cookie: true,
     strategies: {
-      social: {
-        scheme: 'oauth2',
-        endpoints: {
-          authorization: 'https://passport.yru.ac.th/oauth/authorize',
-          userInfo: 'https://passport.yru.ac.th/apis/v1/identity/userinfo',
-          logout: `https://passport.yru.ac.th/auth/client-logout?redirect_uri=${server.redirectUri}?logout`
-        },
-        responseType: 'code',
-        redirectUri: server.redirectUri,
-        clientId: server.clientId,
-        scope: ['*'],
-      },
       local: {
-        token: {
-          property: "access_token",
-        },
-        user: {
-          property: "data",
-        },
         endpoints: {
           login: {
             method: 'post',
-            url: 'https://passport.yru.ac.th/oauth/token',
-            propertyName: 'access_token',
+            url: 'login',
+            propertyName: 'token',
           },
           user: {
             method: 'get',
-            url: 'https://passport.yru.ac.th/apis/v1/identity/userinfo',
-            propertyName: 'data',
+            url: 'user',
+            propertyName: '',
           },
+          logout: false,
         },
       },
     },
     redirect: {
       login: '/login',
-      // logout: `https://passport.yru.ac.th/auth/client-logout?redirect_uri=${server.redirectUri}?logout`,
     },
   },
 

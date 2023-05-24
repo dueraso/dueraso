@@ -11,3 +11,13 @@ export const mutations = {
     state.faqCategory = payload;
   }
 };
+
+export const getters = {
+  isAuthenticated(state){
+    return state.auth.loggedIn
+  },
+
+  loggedUser(state){
+    return state.auth.user
+  }
+};

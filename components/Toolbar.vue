@@ -249,7 +249,7 @@ export default {
     },
     async validate() {
       this.$nuxt.$loading.start()
-      await axios.post('/member/login', {
+      await axios.post('/login', {
         username: this.username,
         password: this.password,
       }).then((res) => {

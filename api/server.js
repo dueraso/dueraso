@@ -3,7 +3,7 @@ const local = {
   clientSecret: "Qq195wleaTkVtVFX7ArDKTG6jpU8p3AaHogQaMke",
   redirectUri: "http://localhost:3000/auth/callback",
   url: "http://localhost:3000",
-  api: "http://localhost:8000/api"
+  api: "http://localhost:8000/api/v1"
 };
 const yru = {
   clientId: 67,
@@ -13,4 +13,4 @@ const yru = {
   api: "https://api.ebooking.yru.ac.th/public/api"
 };
 
-module.exports = yru;
+module.exports = local;

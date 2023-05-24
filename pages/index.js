@@ -26,9 +26,10 @@ export default {
       this.loading = false
     })
     // this.$nuxt.$on('adduser', () => this.addUser())
-    this.countRoom()
+    // this.countRoom()
   },
   mounted() {
+    console.log(this.$auth.user)
     // console.log(this.$auth.user)
     this.ready = true
     if (this.$auth.loggedIn) this.getUser()
@@ -273,11 +274,11 @@ export default {
 
     async updateRange({start, end}) {
       this.$nextTick(() => {
-        this.$nuxt.$loading.start()
+        // this.$nuxt.$loading.start()
       })
       this.start = start
       this.end = end
-      await this.getBooking()
+      // await this.getBooking()
 
       // await this.getRoom()
     },

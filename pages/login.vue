@@ -96,38 +96,61 @@ export default {
     },
     async validate() {
       this.$nuxt.$loading.start()
-      await axios.post('/member/login', {
-        username: this.username,
-        password: this.password,
-      }).then((res) => {
-        if (res.data.status) {
-          this.login()
-        } else {
-          this.messages = res.data.message
-          this.$nuxt.$loading.finish()
-          this.snackbar = true
-        }
-      }).catch((e) => {
-        console.log("e>" + JSON.stringify(e))
-      })
+      this.login()
+      // await axios.post('/login', {
+      //   email: this.username,
+      //   password: this.password,
+      // }).then((res) => {
+      //     this.login()
+      //   // if (res.data.status) {
+      //   // } else {
+      //   //   this.messages = res.data.message
+      //   //   this.$nuxt.$loading.finish()
+      //   //   this.snackbar = true
+      //   // }
+      // }).catch((e) => {
+      //   console.log("e>" + JSON.stringify(e))
+      // })
     },
-    login() {
-      try {
-        const login = {
-          username: this.username,
-          password: this.password
-        }
-        // let response =
-        this.$auth.loginWith('local', {data: login}).then((res)=>{
-          this.$nuxt.$loading.finish()
-          this.menu = false
-          this.$auth.$storage.setLocalStorage('token',res.data.tokens.code)
-          // console.log(res.data)
-        })
-        // console.log('response', response)
-      } catch (e) {
-        console.log('Error Response', JSON.stringify(e))
+    async login() {
+      const payload = {
+        data: {
+          email: this.username,
+          password: this.password,
+        },
       }
+
+      await this.$auth.loginWith('local', payload).then((res) => {
+        if (this.remember) {
+          let data = {
+            email: this.username,
+            password: this.password,
+          }
+          console.log(res)
+          localStorage.setItem('remember', JSON.stringify(data))
+        }
+        this.$nuxt.$loading.finish()
+      }).catch((error) => {
+        this.$nuxt.$loading.finish()
+        console.log(error)
+        // this.again = true
+      })
+      // try {
+      //   const login = {
+      //     email: this.username,
+      //     password: this.password
+      //   }
+      //   // let response =
+      //   this.$auth.loginWith('local', {data: login}).then((res)=>{
+      //     this.$nuxt.$loading.finish()
+      //     this.menu = false
+      //     this.$auth.$storage.setLocalStorage('token',res.data.token)
+      //     // console.log(res.data)
+      //   })
+      //   // console.log('response', response)
+      // } catch (e) {
+      //   console.log('Error Response', JSON.stringify(e))
+      // }
     },
   },
 }
