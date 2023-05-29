@@ -5,6 +5,48 @@ export default {
     return {
       loading: true,
       dialog: false,
+      tableHeadRole: [
+        {
+          title: "ชื่อสิทธิการใช้",
+          width: ""
+        },
+        {
+          title: "รายละเอียด",
+          width: ""
+        },
+        {
+          title: "สถานะ",
+          width: "10%"
+        },
+        {
+          title: "สร้างเมื่อ",
+          width: "10%%"
+        },
+        {
+          title: "แก้ไขเมื่อ",
+          width: "10%"
+        },
+      ],
+      dessertsRole: {
+        data: [
+          {
+            id:0,
+            name: 'super_admin',
+            detail: '/',
+            status: '/',
+            created_at: '/',
+            updated_at: '/',
+          },
+          {
+            id:1,
+            name: 'admin',
+            detail: '/',
+            status: '/',
+            created_at: '/',
+            updated_at: '/',
+          },
+        ]
+      },
       tableHead: [
         {
           title: "ชื่อ-สกุล",
@@ -34,30 +76,42 @@ export default {
       desserts: {
         data: [
           {
+            id:0,
             name: 'หน้าแรก',
             route: '/'
           },
           {
+            id:1,
             name: 'รายงาน',
-            route: `/dashboard/report`
+            route: `/dashboard`
           },
           {
+            id:2,
             name: 'จัดการร้าน',
             route: '/dashboard/outlets'
           },
           {
+            id:3,
             name: 'จัดการสาขา',
             route: '/dashboard/branch'
           },
           {
+            id:4,
             name: 'รายรับ-รายจ่าย',
             route: '/dashboard/events'
           },
           {
+            id:5,
             name: 'ผู้ใช้งาน',
             route: `/dashboard/users`
           },
         ]
+      },
+      per:{
+        read: [],
+        write:[],
+        edit:[],
+        remove: [],
       },
       item: {},
       switch1:false
@@ -69,9 +123,13 @@ export default {
     })
   },
   mounted() {
+    console.log(JSON.stringify(this.$auth.user))
     // this.getData()
   },
   methods: {
+    changeSwitch(val){
+      console.log(JSON.stringify(this.per)+"<<<")
+    },
     async getData() {
       await this.$axios.get("/post", {
         params: {
@@ -86,13 +144,15 @@ export default {
     },
 
     confirm() {
-      if (this.item.id) {
-        console.log("Update> " + this.item.id)
-        this.onUpdate()
-      } else {
-        console.log("Create> " + this.item.id)
-        this.onCreate()
-      }
+      console.log(JSON.stringify(this.per))
+      // console.log(JSON.stringify(this.item))
+      // if (this.item.id) {
+      //   console.log("Update> " + this.item.id)
+      //   this.onUpdate()
+      // } else {
+      //   console.log("Create> " + this.item.id)
+      //   this.onCreate()
+      // }
     },
 
     openItem(val) {

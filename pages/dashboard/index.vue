@@ -1,178 +1,263 @@
 <template>
   <div id="app">
-    <v-app style="background-color: transparent">
-      <v-main>
-        <div v-if="loading">
-          <v-col align="center">
-            Loading..
+    <v-main>
+      <v-card elevation="0">
+        <v-card-title style="margin: 12px; background-color: #EEF7F6;">
+          <v-row style="padding: 12px">
+            <h4 style="align-self: center; color: #2096f3; font-size: 20px">
+              รายงานผู้ใช้งาน
+            </h4>
+          </v-row>
+        </v-card-title>
+        <v-row style="padding: 12px">
+          <v-col cols="12" sm="4">
+            <v-autocomplete
+              outlined
+              auto-select-first
+              :items="typeRoom"
+              v-model="typeRoomSelect"
+              @change="getLogStaff"
+              return-object
+              item-text="title"
+              item-value="id"
+              label="ชื่อประเภทห้อง"
+              dense
+              hide-details
+            ></v-autocomplete>
           </v-col>
-        </div>
-        <div v-if="!loading" class="pt-1">
-          <v-simple-table fixed-header>
-            <template v-slot:default>
-              <thead>
-              <tr>
-                <th class="text-left">Name</th>
-                <th class="text-left">Calories</th>
-                <th width="110">
-                  <v-btn outlined @click="openItem({})">
-                    <v-icon>mdi-plus</v-icon>
-                    เพิ่ม
-                  </v-btn>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
-                <td>{{ item.title }}</td>
-                <td>{{ item.detail }}</td>
-                <td>
-                  <v-btn fab small text @click="openItem(item)">
-                    <v-icon>mdi-pen</v-icon>
-                  </v-btn>
-                  <v-btn fab small text @click="onDelete(item)">
-                    <v-icon>mdi-delete-outline</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-          <div class="text-center">
-            <v-dialog
-              v-model="dialog"
-              persistent
+          <v-col cols="12" sm="4" v-show="typeRoomSelect.id === 1">
+            <v-autocomplete
+              outlined
+              auto-select-first
+              :items="typeChart"
+              v-model="typeChartSelect"
+              @change="changeType"
+              return-object
+              item-text="name"
+              item-value="id"
+              label="ประเภทผู้ใช้งาน"
+              dense
+              hide-details
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <v-menu
+              ref="menu"
+              v-model="menuDate"
+              :close-on-content-click="false"
+              :return-value.sync="date"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="auto"
             >
-              <v-card>
-                <v-card-title class="text-h5 grey lighten-2 mb-3">
-                  Privacy Policy
-                </v-card-title>
-
-                <v-card-text>
-                  <v-text-field
-                    v-model="item.title"
-                    label="title"
-                    outlined
-                    clearable
-                    dense
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="item.detail"
-                    label="detail"
-                    outlined
-                    clearable
-                    dense
-                  ></v-text-field>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="confirm"
-                  >
-                    ok
-                  </v-btn>
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="dialog = false"
-                  >
-                    cancel
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </div>
-        </div>
-        <!--        <v-container style="max-width: 1730px;" v-if="!loading">-->
-        <!--&lt;!&ndash;          <Header :title="this.$i18n.t('header').home"/>&ndash;&gt;-->
-        <!--          <v-row-->
-        <!--            style="padding-top: 12px; padding-bottom: 12px;padding-right: 12px; background-color: #7b1817;-->
-        <!--            margin-top: 12px; margin-right: 0; margin-left: 0;">-->
-        <!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-        <!--              {{this.$i18n.t("header").amuletMarket}}-->
-        <!--            </p>-->
-        <!--            <v-spacer/>-->
-        <!--            <v-btn text dark @click="$router.push(localeLocation('/post'))" style="padding: 12px">-->
-        <!--              {{ this.$i18n.t("index").seeMore }}-->
-        <!--              <v-icon>mdi-chevron-right</v-icon>-->
-        <!--            </v-btn>-->
-        <!--          </v-row>-->
-        <!--          <v-row style="padding-bottom: 24px">-->
-        <!--            <v-col v-for="i in itemsPsda.data" :key="i.newsId" sm="3" align="center">-->
-        <!--              <ItemsHire :item="i" :exchange="exchange"/>-->
-        <!--            </v-col>-->
-        <!--          </v-row>-->
-        <!--&lt;!&ndash;          <v-row style="padding-bottom: 24px">&ndash;&gt;-->
-        <!--&lt;!&ndash;            <v-col v-for="i in itemsSale.data" :key="i.newsId" sm="3" align="center">&ndash;&gt;-->
-        <!--&lt;!&ndash;              <ItemsHire :item="i" :exchange="exchange"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;            </v-col>&ndash;&gt;-->
-        <!--&lt;!&ndash;            <v-col style="padding-right: 12px;" v-show="itemsSale.data.length === 0">&ndash;&gt;-->
-        <!--&lt;!&ndash;              <v-card class="d-flex align-center" flat height="300">&ndash;&gt;-->
-        <!--&lt;!&ndash;                <v-col align="center">&ndash;&gt;-->
-        <!--&lt;!&ndash;                  <p>ไม่มีข้อมูล</p>&ndash;&gt;-->
-        <!--&lt;!&ndash;                </v-col>&ndash;&gt;-->
-        <!--&lt;!&ndash;              </v-card>&ndash;&gt;-->
-        <!--&lt;!&ndash;            </v-col>&ndash;&gt;-->
-        <!--&lt;!&ndash;          </v-row>&ndash;&gt;-->
-        <!--          <v-row-->
-        <!--            style="padding-top: 12px; padding-bottom: 12px;padding-right: 12px; background-color: #7b1817;-->
-        <!--            margin-top: 12px; margin-right: 0; margin-left: 0;">-->
-        <!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-        <!--              {{ this.$i18n.t("header").news }}-->
-        <!--            </p>-->
-        <!--            <v-spacer/>-->
-        <!--&lt;!&ndash;            <v-select&ndash;&gt;-->
-        <!--&lt;!&ndash;              label="เลือกข่าวที่ต้องการ" :items="templeItems" required return-object dense&ndash;&gt;-->
-        <!--&lt;!&ndash;              item-text="title" item-value="templeId" v-model="temple" @change="getEvens"&ndash;&gt;-->
-        <!--&lt;!&ndash;              style="max-width: 357px; padding-right: 24px" hide-details dark&ndash;&gt;-->
-        <!--&lt;!&ndash;            ></v-select>&ndash;&gt;-->
-        <!--            <v-btn text dark @click="$router.push(localeLocation('events'))" style="padding: 12px">-->
-        <!--              {{ this.$i18n.t("index").seeMore }}-->
-        <!--              <v-icon>mdi-chevron-right</v-icon>-->
-        <!--            </v-btn>-->
-        <!--          </v-row>-->
-        <!--          <v-row>-->
-        <!--            <v-col v-for="i in items.data" :key="i.newsId" sm="3" align="center">-->
-        <!--              <ItemEvents :item="i"/>-->
-        <!--            </v-col>-->
-        <!--          </v-row>-->
-        <!--          <v-row style="margin-top: 12px;" class="m-0 pt-2">-->
-        <!--              <v-img src="/banner.png" class="m-0" @click="$router.push(localeLocation('/dashboard'))"></v-img>-->
-        <!--          </v-row>-->
-        <!--          <v-row-->
-        <!--            style="background-color: #7b1817;"-->
-        <!--            class="p-2 mt-2 ml-0 mr-0 mb-0">-->
-        <!--            <p style="margin-bottom: 0; padding-left: 12px; color: white; align-self: center" align="center">-->
-        <!--              {{ this.$i18n.t("header").aboutUs }}-->
-        <!--            </p>-->
-        <!--          </v-row>-->
-        <!--          <v-row class="p-0 m-0 mb-2">-->
-        <!--            <v-card class="d-flex p-2" flat>-->
-        <!--              {{ this.$i18n.t("header").aboutCon }}-->
-        <!--            </v-card>-->
-        <!--          </v-row>-->
-        <!--          <v-img src="/owner.png"></v-img>-->
-        <!--        </v-container>-->
-      </v-main>
-    </v-app>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  outlined
+                  dense
+                  label="เลือกเดือน/ปี"
+                  append-icon="mdi-calendar-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                  hide-details
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                :allowed-dates="allowedDates"
+                locale="th"
+                v-model="date"
+                type="month"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menuDate = false">
+                  ยกเลิก
+                </v-btn>
+                <v-btn text color="primary" @click="getRoom(date)">
+                  ตกลง
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col cols="12">
+            <b-tabs align="left">
+              <b-tab title="กราฟ" active @click="getLogStaff">
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <GChart
+                      type="ColumnChart"
+                      :data="chartData"
+                      :options="chartOptions">
+                    </GChart>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <GChart
+                      :type="type"
+                      :data="pieChartData"
+                      :options="pieChartOptions"
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <GChart type="BarChart" :data="data" :options="options"/>
+                  </v-col>
+                </v-row>
+              </b-tab>
+              <b-tab title="ตาราง" @click="getLogStaff">
+                <v-col style="background-color: #EEF7F6;" class="mt-3">
+                  <h6 class="mb-0" style="color: #2196f3">ตาราง{{ chartOptions.title }}</h6>
+                </v-col>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                    <tr>
+                      <th class="text-left" style="color: #2196f3; font-size: 16px" v-for="(item, i) in headerTable"
+                          :key="i" :width="item.width">
+                        {{ item.name }}
+                      </th>
+                      <th class="text-left" style="color: #2196f3; font-size: 16px">
+                        จำนวน
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, i) in desserts" :key="i">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ item.master_department_name }}</td>
+                      <td>{{ item.small }}</td>
+                      <td>{{ item.medium }}</td>
+                      <td>{{ item.big }}</td>
+                      <td>{{ Number(item.total.toFixed(1)).toLocaleString() }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <h6>รวม</h6>
+                      </td>
+                      <td>
+                        <h6>
+                          {{ desserts.map(d => Object.keys(d).length).indexOf(2) > -1 ? "" : Number(desserts.reduce((n, {small}) => n + small, 0).toFixed(1)).toLocaleString() }}
+                        </h6>
+                      </td>
+                      <td>
+                        <h6>
+                          {{
+                            desserts.map(d => Object.keys(d).length).indexOf(2) > -1 ? "" : Number(desserts.reduce((n, {medium}) => n + medium, 0).toFixed(1)).toLocaleString()
+                          }}
+                        </h6>
+                      </td>
+                      <td>
+                        <h6>
+                          {{
+                            desserts.map(d => Object.keys(d).length).indexOf(2) > -1 ? "" : Number(desserts.reduce((n, {big}) => n + big, 0).toFixed(1)).toLocaleString()
+                          }}
+                        </h6>
+                      </td>
+                      <td>
+                        <h6>
+                          {{ Number(desserts.reduce((n, {total}) => n + total, 0).toFixed(1)).toLocaleString() }}
+                        </h6>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </b-tab>
+            </b-tabs>
+          </v-col>
+          <!--          <v-col cols="12" sm="4">-->
+          <!--            <v-autocomplete-->
+          <!--              outlined-->
+          <!--              auto-select-first-->
+          <!--              :items="typeRoom"-->
+          <!--              v-model="typeRoomSelect"-->
+          <!--              @change="getLogStaff"-->
+          <!--              return-object-->
+          <!--              item-text="title"-->
+          <!--              item-value="id"-->
+          <!--              label="ชื่อประเภทห้อง"-->
+          <!--              dense-->
+          <!--              hide-details-->
+          <!--            ></v-autocomplete>-->
+          <!--          </v-col>-->
+          <!--          <v-col cols="12" sm="4" v-show="typeRoomSelect.id === 1">-->
+          <!--            <v-autocomplete-->
+          <!--              outlined-->
+          <!--              auto-select-first-->
+          <!--              :items="typeChart"-->
+          <!--              v-model="typeChartSelect"-->
+          <!--              @change="changeType"-->
+          <!--              return-object-->
+          <!--              item-text="name"-->
+          <!--              item-value="id"-->
+          <!--              label="ประเภทผู้ใช้งาน"-->
+          <!--              dense-->
+          <!--              hide-details-->
+          <!--            ></v-autocomplete>-->
+          <!--          </v-col>-->
+          <!--          <v-col cols="12" sm="4">-->
+          <!--            <v-menu-->
+          <!--              ref="menu"-->
+          <!--              v-model="menuDate"-->
+          <!--              :close-on-content-click="false"-->
+          <!--              :return-value.sync="date"-->
+          <!--              transition="scale-transition"-->
+          <!--              offset-y-->
+          <!--              max-width="290px"-->
+          <!--              min-width="auto"-->
+          <!--            >-->
+          <!--              <template v-slot:activator="{ on, attrs }">-->
+          <!--                <v-text-field-->
+          <!--                  v-model="date"-->
+          <!--                  outlined-->
+          <!--                  dense-->
+          <!--                  label="เลือกเดือน/ปี"-->
+          <!--                  append-icon="mdi-calendar-outline"-->
+          <!--                  readonly-->
+          <!--                  v-bind="attrs"-->
+          <!--                  v-on="on"-->
+          <!--                ></v-text-field>-->
+          <!--              </template>-->
+          <!--              <v-date-picker-->
+          <!--                :allowed-dates="allowedDates"-->
+          <!--                locale="th"-->
+          <!--                v-model="date"-->
+          <!--                type="month"-->
+          <!--                no-title-->
+          <!--                scrollable-->
+          <!--              >-->
+          <!--                <v-spacer></v-spacer>-->
+          <!--                <v-btn text color="primary" @click="menuDate = false">-->
+          <!--                  Cancel-->
+          <!--                </v-btn>-->
+          <!--                <v-btn text color="primary" @click="getRoom(date)">-->
+          <!--                  OK-->
+          <!--                </v-btn>-->
+          <!--              </v-date-picker>-->
+          <!--            </v-menu>-->
+          <!--          </v-col>-->
+          <!--          <v-col cols="12" sm="6">-->
+          <!--            <GChart-->
+          <!--              type="ColumnChart"-->
+          <!--              :data="chartData"-->
+          <!--              :options="chartOptions">-->
+          <!--            </GChart>-->
+          <!--          </v-col>-->
+          <!--          <v-col cols="12" sm="6">-->
+          <!--            <GChart-->
+          <!--              :type="type"-->
+          <!--              :data="pieChartData"-->
+          <!--              :options="pieChartOptions"-->
+          <!--            />-->
+          <!--          </v-col>-->
+          <!--          <v-col cols="12">-->
+          <!--            <GChart type="BarChart" :data="data" :options="options"/>-->
+          <!--          </v-col>-->
+        </v-row>
+      </v-card>
+    </v-main>
   </div>
 </template>
-<style>
-.cut-text-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-iframe {
-  width: 100%;
-  max-height: 650px;
-}
-</style>
 <script src="./index.js"/>
+<style src="./index.css"/>

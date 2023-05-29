@@ -9,8 +9,8 @@ const production = {
   // clientId : 81,
   // clientSecret : "WiNO7B4RZLD7p8p2sqsOuESPYyhOhIlE1q6Ug3EW",
   // redirectUri : "https://sign.yru.ac.th/callback",
-  url: "https://sign.yru.ac.th",
-  api: "http://183.88.227.207:81/gps-api/public/api",
+  url: "https://dueraso.com",
+  api: "https://api.ebooking.yru.ac.th/public/api",
 };
 
 module.exports = production;

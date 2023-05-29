@@ -1,17 +1,16 @@
 <template>
   <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner"
-    variant="white">
-      dueraso
+    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner" variant="white">
+    dueraso
     <v-spacer/>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav class="ma-2">
-<!--    <v-spacer/>-->
+      <!--    <v-spacer/>-->
       <b-navbar-nav class="ml-auto pl-0" fixed-top>
         <b-nav-item
-          v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link" style="padding-right: 0"
-          @click="$router.push(itemBar.route)"
-          :active='$route.path === itemBar.route.name'>{{ itemBar.name }}
+          v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link pr-0" @click="addCircle(itemBar)"
+          :active='selectedLetter === itemBar.route'>{{ itemBar.name }}
+          <v-badge :value="selectedLetter === itemBar.route" class="circle" bottom dot v-show="showBadge()"/>
         </b-nav-item>
         <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
           <template v-slot:activator="{ on, attrs }">
@@ -75,11 +74,19 @@
         </v-menu>
       </b-navbar-nav>
     </b-collapse>
-<!--    <Register :callback="register" :overlay="overlay"/>-->
+    <!--    <Register :callback="register" :overlay="overlay"/>-->
     <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>
   </b-navbar>
 </template>
 <style>
+.circle {
+  position: absolute;
+  bottom: -10px;
+  left: calc(-50% - 5px);
+  background-color: #7b1817;
+}
+
+
 .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active >
 .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
   color: rgb(123, 24, 23);
@@ -92,11 +99,6 @@
 .v-badge__wrapper {
   top: 5px;
 }
-
-/*.navbar-expand-lg .navbar-nav .nav-link {*/
-/*  padding-right: 0.5rem;*/
-/*  padding-left: 0;*/
-/*}*/
 </style>
 <script>
 import axios from "~/api/config";
@@ -112,6 +114,7 @@ export default {
   },
   data() {
     return {
+      selectedLetter: '/dashboard',
       textBtn: undefined,
       overlay: false,
       menu: false,
@@ -131,7 +134,7 @@ export default {
         },
         {
           name: 'รายงาน',
-          route: `/dashboard/report`
+          route: `/dashboard`
         },
         {
           name: 'จัดการร้าน',
@@ -181,10 +184,15 @@ export default {
     }
   },
   methods: {
+    addCircle(val) {
+      this.selectedLetter = val.route;
+      this.$router.push(val.route)
+    },
+
     showBadge() {
       return this.$vuetify.breakpoint.width > 990
     },
-    test(i){
+    test(i) {
       console.log(this.$route.name)
       console.log(JSON.stringify(this.itemsBar[i].route.name))
     },
