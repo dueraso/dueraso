@@ -8,10 +8,10 @@
       "
     >
       <v-row justify="center">
-        <v-col cols="5">
-          <v-container fill-height>
+        <v-col cols="12" sm="6">
+          <v-container fill-height style="max-width:632px">
             <v-layout wrap align-center>
-              <v-flex style="max-width: 632px; max-height: 504px">
+              <v-flex>
                 <v-card
                   elevation="4"
                   light
@@ -162,7 +162,7 @@ export default {
     // })
     let data = JSON.parse(localStorage.getItem("remember"));
     if (data != null) {
-      this.userName = data.user_name;
+      this.userName = data.email;
       this.password = data.password;
     }
   },
@@ -174,26 +174,27 @@ export default {
       });
       this.$refs.form.validate();
 
-      await this.$axios
-        .get(`check/${this.userName}`)
-        .then((res) => {
-          this.profile = res.data;
-          if (res.data.status.id === 1 && res.data.active === 1) {
-            this.login();
-          } else {
-            this.overlay = true;
-          }
-        })
-        .catch((error) => {
-          this.$nuxt.$loading.finish();
-          console.log(error);
-          this.again = true;
-        });
+      // await this.$axios
+      //   .get(`check/${this.userName}`)
+      //   .then((res) => {
+      //     this.profile = res.data;
+      //     if (res.data.status.id === 1 && res.data.active === 1) {
+      //       this.login();
+      //     } else {
+      //       this.overlay = true;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.$nuxt.$loading.finish();
+      //     console.log(error);
+      //     this.again = true;
+      //   });
+      this.login();
     },
     async login() {
       const payload = {
         data: {
-          user_name: this.userName,
+          email: this.userName,
           password: this.password,
         },
       };
@@ -203,7 +204,7 @@ export default {
         .then((res) => {
           if (this.remember) {
             let data = {
-              user_name: this.userName,
+              email: this.userName,
               password: this.password,
             };
             localStorage.setItem("remember", JSON.stringify(data));

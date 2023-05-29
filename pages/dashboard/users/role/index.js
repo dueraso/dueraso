@@ -1,3 +1,5 @@
+// import myFunction from "~/utils/myFunction";
+import pkg from '~/package.json'
 export default {
   layout: "seller-layout",
   name: "IndexPage",
@@ -27,26 +29,7 @@ export default {
           width: "10%"
         },
       ],
-      dessertsRole: {
-        data: [
-          {
-            id:0,
-            name: 'super_admin',
-            detail: '/',
-            status: '/',
-            created_at: '/',
-            updated_at: '/',
-          },
-          {
-            id:1,
-            name: 'admin',
-            detail: '/',
-            status: '/',
-            created_at: '/',
-            updated_at: '/',
-          },
-        ]
-      },
+      dessertsRole: {},
       tableHead: [
         {
           title: "ชื่อ-สกุล",
@@ -120,13 +103,28 @@ export default {
   created() {
     this.$nextTick(() => {
       this.loading = false
+      console.log(pkg.version)
     })
   },
+  computed:{
+    convertDay() {
+      return "f"
+      // return myFunction.convertDay()
+    }
+  },
   mounted() {
-    console.log(JSON.stringify(this.$auth.user))
-    // this.getData()
+    console.log()
+    this.getRoles()
   },
   methods: {
+    async getRoles(){
+      await this.$axios.$get("/role").then((res)=>{
+        this.dessertsRole = res
+        console.log(res.data)
+      }).catch((e)=>{
+        console.log(e)
+      })
+    },
     changeSwitch(val){
       console.log(JSON.stringify(this.per)+"<<<")
     },

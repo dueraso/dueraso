@@ -1,4 +1,5 @@
 import axios from "~/api/config";
+import dayjs from "dayjs";
 class A {
   // parent method
   print() {
@@ -19,6 +20,10 @@ class A {
 }
 
 class B extends A {
+  convertDay(){
+    console.log("ddddd")
+    return dayjs()
+  }
   // override method
   getData(url, params) {
     return super.getData(url, params);
