@@ -1,5 +1,6 @@
 // import myFunction from "~/utils/myFunction";
 import pkg from '~/package.json'
+
 export default {
   layout: "seller-layout",
   name: "IndexPage",
@@ -59,45 +60,45 @@ export default {
       desserts: {
         data: [
           {
-            id:0,
+            id: 0,
             name: 'หน้าแรก',
             route: '/'
           },
           {
-            id:1,
+            id: 1,
             name: 'รายงาน',
             route: `/dashboard`
           },
           {
-            id:2,
+            id: 2,
             name: 'จัดการร้าน',
             route: '/dashboard/outlets'
           },
           {
-            id:3,
+            id: 3,
             name: 'จัดการสาขา',
             route: '/dashboard/branch'
           },
           {
-            id:4,
+            id: 4,
             name: 'รายรับ-รายจ่าย',
             route: '/dashboard/events'
           },
           {
-            id:5,
+            id: 5,
             name: 'ผู้ใช้งาน',
             route: `/dashboard/users`
           },
         ]
       },
-      per:{
+      per: {
         read: [],
-        write:[],
-        edit:[],
+        write: [],
+        edit: [],
         remove: [],
       },
       item: {},
-      switch1:false
+      switch1: false
     };
   },
   created() {
@@ -106,7 +107,7 @@ export default {
       console.log(pkg.version)
     })
   },
-  computed:{
+  computed: {
     convertDay() {
       return "f"
       // return myFunction.convertDay()
@@ -117,55 +118,45 @@ export default {
     this.getRoles()
   },
   methods: {
-    async getRoles(){
-      await this.$axios.$get("/role").then((res)=>{
+    async getRoles() {
+      await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
         console.log(res.data)
-      }).catch((e)=>{
-        console.log(e)
-      })
-    },
-    changeSwitch(val){
-      console.log(JSON.stringify(this.per)+"<<<")
-    },
-    async getData() {
-      await this.$axios.get("/post", {
-        params: {
-          page: 20
-        }
-      }).then((res) => {
-        console.log(res.data)
-        this.desserts = res.data
       }).catch((e) => {
         console.log(e)
       })
     },
+    changeSwitch(val) {
+      console.log(JSON.stringify(this.per) + "<<<")
+    },
 
     confirm() {
-      console.log(JSON.stringify(this.per))
+      // console.log(JSON.stringify(this.per))
       // console.log(JSON.stringify(this.item))
-      // if (this.item.id) {
-      //   console.log("Update> " + this.item.id)
-      //   this.onUpdate()
-      // } else {
-      //   console.log("Create> " + this.item.id)
-      //   this.onCreate()
-      // }
+      if (this.item.id) {
+        console.log("Update> " + this.item.id)
+        this.onUpdate()
+      } else {
+        console.log("Create> " + this.item.id)
+        this.onCreate()
+      }
     },
 
     openItem(val) {
-      console.log("val> " + val)
+      console.log("val> " + JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
     },
 
     async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/post/" + this.item.id, {
-        title: this.item.title,
-        detail: this.item.detail
+      await this.$axios.put("/role/" + this.item.id, {
+        name: this.item.name,
+        detail: this.item.detail,
+        status: 0,
+        policy: JSON.stringify(this.per),
       }).then((res) => {
-        this.getData()
+        this.getRoles()
         console.log(res.data)
       }).catch((e) => {
         console.log(e)
