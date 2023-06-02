@@ -2,63 +2,31 @@ import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 
 export default {
-  // middleware: ['auth','isAdmin'],
+  middleware: ['auth'],
   layout: "seller-layout",
   data() {
     return {
       loading: true,
       search: "",
       dialog: false,
+      isLoading: false,
+      instead: null,
+      insteadSelect: null,
       tableHead: [
         {
           title: "ชื่อ-สกุล",
           width: ""
         },
         {
-          title: "ผู้ใช้งาน",
-          width: "15%"
-        },
-        {
-          title: "สร้างโดย",
+          title: "รายละเอียด",
           width: ""
         },
         {
-          title: "สถานะ",
-          width: "5%"
-        },
-        {
-          title: "สิทธิ์",
-          width: "10%"
-        },
-        {
-          title: "สร้างเมื่อ",
-          width: "10%"
+          title: "สร้างโดย",
+          width: "15%"
         },
       ],
-      desserts: {
-        data: [
-          {
-            name: "super_admin",
-            user: "super_admin",
-            create_by: {
-              name: "super_admin",
-            },
-            status: "1",
-            permissions: "super_admin",
-            created_at: "12:29:00 2023/12/23"
-          },
-          {
-            name: "arthit dueraso",
-            user: "dueraso",
-            create_by: {
-              name: "arthit dueraso",
-            },
-            status: "1",
-            permissions: "admin",
-            created_at: "12:29:00 2023/12/23"
-          },
-        ]
-      },
+      desserts: {},
       item: {},
     };
   },
@@ -68,10 +36,35 @@ export default {
     })
   },
   mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+    })
+    this.getData()
   },
   computed:{
     dd(){
       return new B()
+    },
+  },
+  watch:{
+    async search(val) {
+      console.log(val)
+      if (val == null)return
+      if (val.length < 2) return
+      if (this.isLoading) return
+      this.isLoading = true
+      await this.$axios.get(`findUsers`, {
+        params: {
+          q: val
+        }
+      }).then((res) => {
+        // const {count, data} = res.data
+        // this.count = count
+        // this.entries = data
+        console.log(res)
+      }).catch((e) => {
+        console.log(e)
+      }).finally(() => (this.isLoading = false))
     },
   },
   methods: {
@@ -82,10 +75,11 @@ export default {
     getColor(val) {
       return (val !== 1) ? 'green' : 'red'
     },
-    async getRoom() {
-      this.$nuxt.$loading.start()
-      await this.$axios.get("/getLicensed").then((res) => {
-        this.desserts = res.data.data
+    async getData() {
+      await this.$axios.get("/organization").then((res) => {
+        // this.desserts = res
+        this.desserts = Object.assign({},res.data)
+        console.log(this.desserts.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -103,14 +97,14 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> "+val)
+      console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      this.item = Object.assign({}, val)
+      // this.item = Object.assign({}, val)
     },
 
     async onUpdate(){
       this.dialog = false
-      await this.$axios.put("/post/"+this.item.id,{
+      await this.$axios.put("/organization/"+this.item.id,{
         title:this.item.title,
         detail:this.item.detail
       }).then((res) => {
@@ -123,9 +117,10 @@ export default {
 
     async onCreate(){
       this.dialog = false
-      await this.$axios.post("/post",{
+      await this.$axios.post("/organization",{
         title:this.item.title,
-        detail:this.item.detail
+        detail:this.item.detail,
+        create_by:this.$auth.user.id
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -136,7 +131,7 @@ export default {
 
     async onDelete(val){
       this.dialog = false
-      await this.$axios.delete("/post/"+val.id).then((res) => {
+      await this.$axios.delete("/organization/"+val.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

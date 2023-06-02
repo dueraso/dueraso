@@ -88,19 +88,20 @@ export default {
           login: {
             method: "post",
             url: "login",
-            propertyName: "token",
+            propertyName: "data.token",
           },
           user: {
             method: "get",
             url: "user",
             propertyName: "",
           },
-          logout: false,
         },
+        scope: ['idd'],
       },
     },
     redirect: {
       login: "/login",
+      home: "/dashboard"
     },
   },
 

@@ -78,15 +78,8 @@
                   </v-card-text>
                   <v-row align="center">
                     <v-col>
-                      <p class="text-center">
-                        <a href="/_TourAlam_Admin.apk"
-                          >กดเพื่อโหลดแอพใช้สำหรับผู้ดูแลระบบ</a
-                        >
-                      </p>
-                      <p class="text-center">
-                        <a href="/_TourAlam_User.apk"
-                          >กดเพื่อโหลดแอพใช้สำหรับผู้ใช้งานทั่วไป</a
-                        >
+                      <p class="text-center" style="font-size: 10px">
+                        เวอร์ชั่น {{version}}
                       </p>
                     </v-col>
                   </v-row>
@@ -99,14 +92,14 @@
       <v-overlay :value="overlay">
         <v-card width="500px" light align="center" v-if="profile.active === 1">
           <v-card-title>สถานะของคุณคือ</v-card-title>
-          <br />
+          <br/>
           <v-card-subtitle v-if="profile.status.id === 2"
-            ><h1 style="color: orange">{{ profile.status.name }}</h1>
+          ><h1 style="color: orange">{{ profile.status.name }}</h1>
           </v-card-subtitle>
           <v-card-subtitle v-else
-            ><h1 style="color: red">
-              {{ profile.status.name }}
-            </h1></v-card-subtitle
+          ><h1 style="color: red">
+            {{ profile.status.name }}
+          </h1></v-card-subtitle
           >
           <v-card-actions align="center">
             <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
@@ -114,11 +107,11 @@
         </v-card>
         <v-card width="500px" light align="center" v-else>
           <v-card-title>สถานะของคุณคือ</v-card-title>
-          <br />
+          <br/>
           <v-card-subtitle
-            ><h3 style="color: red">
-              ผู้ใช้ของท่านถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ
-            </h3>
+          ><h3 style="color: red">
+            ผู้ใช้ของท่านถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ
+          </h3>
           </v-card-subtitle>
           <v-card-actions align="center">
             <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
@@ -129,6 +122,7 @@
   </div>
 </template>
 <script>
+import pkg from "@/package.json";
 export default {
   layout: "auth-layout",
   middleware: "isLoggedIn",
@@ -139,6 +133,7 @@ export default {
     again: false,
     stat: false,
     remember: false,
+    version:pkg.version,
     profile: {},
     emailRules: [
       (v) => !!v || "E-mail is required",
@@ -160,6 +155,8 @@ export default {
     // this.$nextTick(() => {
     //   this.$nuxt.$loading.start()
     // })
+
+    console.log(pkg.version)
     let data = JSON.parse(localStorage.getItem("remember"));
     if (data != null) {
       this.userName = data.email;
@@ -199,18 +196,17 @@ export default {
         },
       };
 
-      await this.$auth
-        .loginWith("local", payload)
-        .then((res) => {
-          if (this.remember) {
-            let data = {
-              email: this.userName,
-              password: this.password,
-            };
-            localStorage.setItem("remember", JSON.stringify(data));
-          }
-          this.$nuxt.$loading.finish();
-        })
+      await this.$auth.loginWith("local", payload).then((res) => {
+        if (this.remember) {
+          let data = {
+            email: this.userName,
+            password: this.password,
+          };
+          localStorage.setItem("remember", JSON.stringify(data));
+        }
+        console.log(res)
+        this.$nuxt.$loading.finish();
+      })
         .catch((error) => {
           this.$nuxt.$loading.finish();
           console.log(error);

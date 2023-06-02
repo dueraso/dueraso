@@ -11,7 +11,7 @@
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
               <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
-              รายรับ-รายจ่าย
+              ชื่อร้าน/ชื่อแบรนด์
             </h5>
             <v-spacer/>
             <v-btn outlined @click="openItem({})" class="mr-3">
@@ -33,12 +33,9 @@
                 </thead>
                 <tbody>
                 <tr v-for="(item, index) in desserts.data" :key="index">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.user }}</td>
-                  <td>{{ item.create_by.name }}</td>
-                  <td>{{ item.status }}</td>
-                  <td>{{ item.permissions }}</td>
-                  <td>{{ item.created_at }}</td>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.detail }}</td>
+                  <td>{{ item.create_by }}</td>
                   <td class="p-0 text-right">
                     <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
@@ -54,7 +51,6 @@
             <div class="text-center">
               <v-dialog
                 v-model="dialog"
-                width="500"
                 persistent
               >
                 <v-card>
@@ -77,6 +73,20 @@
                       clearable
                       dense
                     ></v-text-field>
+<!--                    <v-autocomplete-->
+<!--                      outlined-->
+<!--                      auto-select-first-->
+<!--                      :items="instead"-->
+<!--                      v-model="insteadSelect"-->
+<!--                      :loading="isLoading"-->
+<!--                      hide-no-data-->
+<!--                      hide-selected-->
+<!--                      :search-input.sync="search"-->
+<!--                      return-object-->
+<!--                      label="กรุณากรอกชื่อ"-->
+<!--                      dense-->
+<!--                      style="padding-right: 12px"-->
+<!--                    ></v-autocomplete>-->
                   </v-card-text>
 
                   <v-divider></v-divider>

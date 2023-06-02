@@ -12,7 +12,7 @@ export default {
       title: 'รายงาน'
     }
   },
-  // middleware: ['auth'],
+  middleware: ['auth'],
   components: {
     GChart
   },

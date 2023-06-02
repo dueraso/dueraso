@@ -72,6 +72,24 @@
             </v-list>
           </v-card>
         </v-menu>
+        <v-menu offset-y left v-model="myPage">
+          <template v-slot:activator="{ on, attrs }" style="padding-right: 0">
+            <b-nav-item v-bind="attrs" v-on="on" v-show="$auth.loggedIn">
+              โปรไฟล์
+<!--              <v-badge style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
+<!--                       v-show="showBadge()"></v-badge>-->
+            </b-nav-item>
+          </template>
+          <v-card>
+            <v-list>
+              <v-list-item
+                v-for="(item, index) in items"
+                :key="index" @click="changePage(item.route)">
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-menu>
       </b-navbar-nav>
     </b-collapse>
     <!--    <Register :callback="register" :overlay="overlay"/>-->
@@ -112,9 +130,10 @@ export default {
     // Register
     DialogCon,
   },
+  middleware: ['auth'],
   data() {
     return {
-      selectedLetter: '/dashboard',
+      selectedLetter: '',
       textBtn: undefined,
       overlay: false,
       menu: false,
@@ -153,14 +172,14 @@ export default {
           route: `/dashboard/users`
         },
       ],
-      itemsPost: [
+      items: [
         {
-          name: 'พระสมเด็จมาตรฐาน PSDA',
-          route: "1"
+          name: 'ตั้งค่า',
+          route: '/dashboard/setting'
         },
         {
-          name: 'พระเครื่องพร้อมใบตรวจอัตลักษณ์',
-          route: '2'
+          name: 'ออกจากระบบ',
+          route: 'logout'
         },
       ],
       rules: {
@@ -175,6 +194,8 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$route.path)
+    this.selectedLetter = this.$route.path
     // console.log(this.$i18n.locales)
     if (this.$auth.user === undefined || this.$auth.user === null) return
     if (this.$auth.user.mobile === '') {
