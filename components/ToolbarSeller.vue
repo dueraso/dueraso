@@ -75,7 +75,7 @@
         <v-menu offset-y left v-model="myPage">
           <template v-slot:activator="{ on, attrs }" style="padding-right: 0">
             <b-nav-item v-bind="attrs" v-on="on" v-show="$auth.loggedIn">
-              โปรไฟล์
+              หน้าของฉัน
 <!--              <v-badge style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
 <!--                       v-show="showBadge()"></v-badge>-->
             </b-nav-item>
@@ -120,9 +120,7 @@
 </style>
 <script>
 import axios from "~/api/config";
-// import Register from "~/components/Register";
 import DialogCon from "./DialogCon";
-// import DialogRegister from "./DialogRegister";
 
 export default {
   components: {
@@ -130,7 +128,6 @@ export default {
     // Register
     DialogCon,
   },
-  middleware: ['auth'],
   data() {
     return {
       selectedLetter: '',
@@ -164,18 +161,26 @@ export default {
           route: '/dashboard/branch'
         },
         {
-          name: 'รายรับ-รายจ่าย',
-          route: '/dashboard/events'
+          name: 'ประเภทรายจ่าย',
+          route: '/dashboard/type-budget'
         },
         {
-          name: 'ผู้ใช้งาน',
-          route: `/dashboard/users`
+          name: 'จัดการการใช้จ่าย',
+          route: '/dashboard/budget'
+        },
+        {
+          name: 'รายรับ-รายจ่าย',
+          route: '/dashboard/add-budget'
         },
       ],
       items: [
         {
           name: 'ตั้งค่า',
           route: '/dashboard/setting'
+        },
+        {
+          name: 'ผู้ใช้งาน',
+          route: `/dashboard/users`
         },
         {
           name: 'ออกจากระบบ',

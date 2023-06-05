@@ -11,7 +11,7 @@
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
               <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
-              รายรับ-รายจ่าย
+              จัดการการใช้จ่าย
             </h5>
             <v-spacer/>
             <v-btn outlined @click="openItem({})" class="mr-3">
@@ -34,11 +34,7 @@
                 <tbody>
                 <tr v-for="(item, index) in desserts.data" :key="index">
                   <td>{{ item.name }}</td>
-                  <td>{{ item.user }}</td>
-                  <td>{{ item.create_by.name }}</td>
-                  <td>{{ item.status }}</td>
-                  <td>{{ item.permissions }}</td>
-                  <td>{{ item.created_at }}</td>
+                  <td>{{ item.budget_type.name }}</td>
                   <td class="p-0 text-right">
                     <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
@@ -69,15 +65,20 @@
                       clearable
                       dense
                     ></v-text-field>
-                    <v-text-field
-                      v-model="item.detail"
-                      label="detail"
+                    <v-autocomplete
                       outlined
-                      clearable
+                      auto-select-first
+                      :items="instead"
+                      v-model="insteadSelect"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                      label="ชื่อร้าน"
                       dense
-                    ></v-text-field>
+                      item-text="name"
+                      item-value="id"
+                    ></v-autocomplete>
                   </v-card-text>
-
                   <v-divider></v-divider>
 
                   <v-card-actions>

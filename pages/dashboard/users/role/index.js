@@ -77,12 +77,12 @@ export default {
           {
             id: 3,
             name: 'จัดการสาขา',
-            route: '/dashboard/branch'
+            route: '/dashboard/add-budget'
           },
           {
             id: 4,
             name: 'รายรับ-รายจ่าย',
-            route: '/dashboard/events'
+            route: '/dashboard/budget'
           },
           {
             id: 5,
