@@ -20,8 +20,8 @@ export default {
    */
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - admin",
-    title: "GPS",
+    titleTemplate: "%s - ระบบรายรับ-รายจ่าย",
+    title: "dueraso",
     htmlAttrs: {
       lang: "en",
     },

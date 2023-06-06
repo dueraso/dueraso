@@ -35,7 +35,7 @@
                           outlined
                           dense
                           v-model="userName"
-                          :rules="userNameRules"
+                          :rules="emailRules"
                           label="ชื่อผู้ใช้งาน"
                           required
                           color="#38857D"
@@ -52,40 +52,47 @@
                           @keydown.enter="validate"
                         ></v-text-field>
 
-                        <p style="color: red" v-show="again" align="left">
-                          user หรือ password
-                          ของท่านไม่ถูกต้องกรุณาลองใหม่อีกครั้ง
+                        <p style="color: red" align="left">
+                          {{ message }}
                         </p>
 
                         <v-checkbox
                           v-model="remember"
                           label="จดจำรหัสผ่าน"
                           color="#38857D"
-                          style="margin: 0px; padding: 0px"
+                          class="m-0 p-0"
+                          hide-details
                         ></v-checkbox>
 
                         <v-btn
                           :disabled="!valid"
                           color="#54B6C8"
-                          dark
                           @click="validate"
                           block
+                          style="color: white"
                         >
                           เข้าสู่ระบบ
                         </v-btn>
                       </v-form>
                     </v-col>
                   </v-card-text>
-                  <v-row align="center">
-                    <v-col>
-                      <p class="text-center" style="font-size: 10px">
-                        เวอร์ชั่น {{version}}
-                      </p>
-                    </v-col>
-                  </v-row>
+                  <!--                  <v-row align="center mr-2">-->
+                  <!--                    <v-col class="p-0">-->
+                  <!--                      <p class="text-right m-0 mr-2" style="font-size: 10px">-->
+                  <!--                        เวอร์ชั่น {{ version }} เบต้า-->
+                  <!--                      </p>-->
+                  <!--                    </v-col>-->
+                  <!--                  </v-row>-->
                 </v-card>
               </v-flex>
             </v-layout>
+            <v-row align="center mr-2">
+              <v-col class="p-0">
+                <p class="text-center m-0" style="font-size: 12px">
+                  เวอร์ชั่น {{ version }} เบต้า
+                </p>
+              </v-col>
+            </v-row>
           </v-container>
         </v-col>
       </v-row>
@@ -96,11 +103,11 @@
           <v-card-subtitle v-if="profile.status.id === 2"
           ><h1 style="color: orange">{{ profile.status.name }}</h1>
           </v-card-subtitle>
-          <v-card-subtitle v-else
-          ><h1 style="color: red">
-            {{ profile.status.name }}
-          </h1></v-card-subtitle
-          >
+          <v-card-subtitle v-else>
+            <h1 style="color: red">
+              {{ profile.status.name }}
+            </h1>
+          </v-card-subtitle>
           <v-card-actions align="center">
             <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
           </v-card-actions>
@@ -110,7 +117,7 @@
           <br/>
           <v-card-subtitle
           ><h3 style="color: red">
-            ผู้ใช้ของท่านถูกระงับการใช้งาน กรุณาติดต่อผู้ดูแลระบบ
+            {{ message }}
           </h3>
           </v-card-subtitle>
           <v-card-actions align="center">
@@ -123,6 +130,7 @@
 </template>
 <script>
 import pkg from "@/package.json";
+
 export default {
   layout: "auth-layout",
   middleware: "isLoggedIn",
@@ -133,30 +141,25 @@ export default {
     again: false,
     stat: false,
     remember: false,
-    version:pkg.version,
+    version: pkg.version,
     profile: {},
     emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      (v) => !!v || "จำเป็น",
+      (v) => /.+@.+\..+/.test(v) || "รูปแบบอีเมลไม่ถูกต้อง",
     ],
-    userNameRules: [(v) => !!v || "is required"],
+    userNameRules: [(v) => !!v || "จำเป็น"],
     userName: "",
     password: "",
     passwordRules: [
-      (v) => !!v || "Password is required",
-      (v) => (v && v.length > 5) || "Password must have 6 characters",
+      (v) => !!v || "จำเป็น",
+      // (v) => (v && v.length > 5) || "Password must have 6 characters",
       // v => /(?=.*[A-Z])/.test(v) || 'Must have one uppercase character',
       // v => /(?=.*\d)/.test(v) || 'Must have one number',
       // v => /([!@$%])/.test(v) || 'Must have one special character [!@#$%]'
     ],
-    error: null,
+    message: "",
   }),
   mounted() {
-    // this.$nextTick(() => {
-    //   this.$nuxt.$loading.start()
-    // })
-
-    console.log(pkg.version)
     let data = JSON.parse(localStorage.getItem("remember"));
     if (data != null) {
       this.userName = data.email;
@@ -166,29 +169,8 @@ export default {
 
   methods: {
     async validate() {
-      this.$nextTick(() => {
-        this.$nuxt.$loading.start();
-      });
-      this.$refs.form.validate();
-
-      // await this.$axios
-      //   .get(`check/${this.userName}`)
-      //   .then((res) => {
-      //     this.profile = res.data;
-      //     if (res.data.status.id === 1 && res.data.active === 1) {
-      //       this.login();
-      //     } else {
-      //       this.overlay = true;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$nuxt.$loading.finish();
-      //     console.log(error);
-      //     this.again = true;
-      //   });
-      this.login();
-    },
-    async login() {
+      if (!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start();
       const payload = {
         data: {
           email: this.userName,
@@ -201,17 +183,16 @@ export default {
           let data = {
             email: this.userName,
             password: this.password,
-          };
+          }
           localStorage.setItem("remember", JSON.stringify(data));
         }
         console.log(res)
         this.$nuxt.$loading.finish();
-      })
-        .catch((error) => {
-          this.$nuxt.$loading.finish();
-          console.log(error);
-          this.again = true;
-        });
+      }).catch((e) => {
+        this.$nuxt.$loading.finish();
+        this.message = e.response.data.message
+        console.log(e.response.data.message);
+      });
     },
   },
 };
