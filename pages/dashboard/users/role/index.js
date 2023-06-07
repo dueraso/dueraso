@@ -150,7 +150,7 @@ export default {
 
     async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/role/" + this.item.id, {
+      await this.$axios.patch("/role/" + this.item.id, {
         id:this.item.id,
         name: this.item.name,
         detail: this.item.detail,
