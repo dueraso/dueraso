@@ -143,44 +143,11 @@ export default {
       messages: '',
       username: '',
       password: '',
-      itemsBar: [
-        {
-          name: 'หน้าแรก',
-          route: '/'
-        },
-        {
-          name: 'รายงาน',
-          route: `/dashboard`
-        },
-        {
-          name: 'จัดการร้าน',
-          route: '/dashboard/outlets'
-        },
-        {
-          name: 'จัดการสาขา',
-          route: '/dashboard/branch'
-        },
-        {
-          name: 'ประเภทรายจ่าย',
-          route: '/dashboard/type-budget'
-        },
-        {
-          name: 'จัดการการใช้จ่าย',
-          route: '/dashboard/budget'
-        },
-        {
-          name: 'รายรับ-รายจ่าย',
-          route: '/dashboard/add-budget'
-        },
-      ],
+      itemsBar: [],
       items: [
         {
           name: 'ตั้งค่า',
           route: '/dashboard/setting'
-        },
-        {
-          name: 'ผู้ใช้งาน',
-          route: `/dashboard/users`
         },
         {
           name: 'ออกจากระบบ',
@@ -198,10 +165,18 @@ export default {
       },
     }
   },
+  created() {
+  },
   mounted() {
-    console.log(this.$route.path)
+
+    this.$nextTick(()=>{
+      localStorage.setItem("policy",this.$auth.user.roles.policy)
+      this.itemsBar = JSON.parse(localStorage.getItem("policy")).read
+      this.itemsBar.sort()
+      this.$store.commit("setPlaces",this.itemsBar)
+      console.log(this.$store.state.places)
+    })
     this.selectedLetter = this.$route.path
-    // console.log(this.$i18n.locales)
     if (this.$auth.user === undefined || this.$auth.user === null) return
     if (this.$auth.user.mobile === '') {
       this.snackbar = true

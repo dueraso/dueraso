@@ -93,7 +93,7 @@ export default {
           user: {
             method: "get",
             url: "user",
-            propertyName: "",
+            propertyName: "data",
           },
         },
         scope: ['idd'],
