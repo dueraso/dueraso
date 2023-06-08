@@ -1,20 +1,15 @@
 <template>
-  <v-app dark>
-    <div style="align-self: center">
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-      <h1 v-else-if="error.statusCode === 403">
-      403
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    </div>
-<!--    <NuxtLink to="/">-->
-<!--      Home page-->
-<!--    </NuxtLink>-->
-  </v-app>
+  <div id="app">
+    <v-app style="background-color: transparent">
+      <v-main>
+        <v-img src="/404.jpg" width="100%" v-if="error.statusCode === 404"/>
+        <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 403"/>
+        <h1 v-else>
+          {{ otherError }}
+        </h1>
+      </v-main>
+    </v-app>
+  </div>
 </template>
 
 <script>
@@ -27,13 +22,16 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       pageNotFound: '404 Not Found',
       otherError: 'An error occurred'
     }
   },
-  head () {
+  mounted() {
+    console.log(JSON.stringify(this.error))
+  },
+  head() {
     const title =
       this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {

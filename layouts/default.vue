@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <Toolbar :itemModule="modules"/>
+    <Toolbar/>
     <nuxt/>
     <Footer/>
   </v-app>
@@ -19,7 +19,6 @@ export default {
   data() {
     return {
       expandOnHover: false,
-      modules: []
     };
   },
   created() {
