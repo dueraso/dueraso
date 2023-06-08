@@ -2,11 +2,13 @@
   <div id="app">
     <v-app style="background-color: transparent">
       <v-main>
-        <v-img src="/404.jpg" width="100%" v-if="error.statusCode === 404"/>
-        <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 403"/>
-        <h1 v-else>
-          {{ otherError }}
-        </h1>
+        <div v-if="error.statusCode === 403" class="text-wrapper fill-height">
+          <AccessdDenied/>
+        </div>
+        <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 404"/>
+        <div v-else>
+          <OtherError :error="otherError"/>
+        </div>
       </v-main>
     </v-app>
   </div>
@@ -44,5 +46,13 @@ export default {
 <style scoped>
 h1 {
   font-size: 20px;
+}
+
+.text-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
