@@ -1,4 +1,5 @@
 import colors from "vuetify/es5/util/colors";
+import dayjs from "dayjs";
 
 export default {
   loading: "~/components/LoadingBar.vue",

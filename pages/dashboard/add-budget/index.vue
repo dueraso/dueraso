@@ -49,10 +49,7 @@
               </template>
             </v-simple-table>
             <div class="text-center">
-              <v-dialog
-                v-model="dialog"
-                persistent
-              >
+              <v-dialog v-model="dialog" persistent>
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
                     Privacy Policy
@@ -132,18 +129,10 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="confirm"
-                    >
+                    <v-btn color="primary" text @click="confirm">
                       ok
                     </v-btn>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="dialog = false"
-                    >
+                    <v-btn color="primary" text @click="dialog = false">
                       cancel
                     </v-btn>
                   </v-card-actions>

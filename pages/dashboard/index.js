@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import 'dayjs/locale/th'
 // import { GChart } from 'vue-google-charts'
 import {GChart} from 'vue-google-charts/legacy'
+import isAdmin from "@/middleware/is-admin";
 // import { chartType, chartData, chartOptions } from './GoogleChartData';
 
 export default {
@@ -12,7 +13,7 @@ export default {
       title: 'รายงาน'
     }
   },
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   components: {
     GChart
   },

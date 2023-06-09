@@ -35,8 +35,8 @@
                     inset
                   ></v-switch>
                 </td>
-                  <td>{{ item.created_at }}</td>
-                  <td>{{ item.updated_at }}</td>
+                  <td>{{ convertDay(item.created_at) }}</td>
+                  <td>{{ convertDay(item.updated_at) }}</td>
                   <td>
                     <v-btn fab text @click="openItem(item)">
                       <v-icon>

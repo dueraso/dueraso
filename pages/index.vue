@@ -111,7 +111,6 @@
 </style>
 <script>
 import dayjs from "dayjs";
-import log from "./log";
 
 export default {
   middleware: "auth",

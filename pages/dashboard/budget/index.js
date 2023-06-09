@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
+import isAdmin from "@/middleware/is-admin";
 
 export default {
-  // middleware: ['auth','isAdmin'],
+  middleware: ['auth',isAdmin],
   layout: "seller-layout",
   data() {
     return {

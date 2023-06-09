@@ -6,7 +6,7 @@
           <AccessdDenied/>
         </div>
         <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 404"/>
-        <div v-else>
+        <div v-else class="text-wrapper fill-height">
           <OtherError :error="otherError"/>
         </div>
       </v-main>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+      otherError: 'เกิดข้อผิดพลาด'
     }
   },
   mounted() {

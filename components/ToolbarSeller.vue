@@ -10,7 +10,7 @@
         <b-nav-item
           v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link pr-0" @click="addCircle(itemBar)"
           :active='selectedLetter === itemBar.route'>{{ itemBar.name }}
-          <v-badge :value="selectedLetter === itemBar.route" class="circle" bottom dot v-show="showBadge()"/>
+          <v-badge :value="selectedLetter === itemBar.route" class="circle" style="color: #54B6C8; background: #54B6C8" bottom dot v-show="showBadge()"/>
         </b-nav-item>
         <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
           <template v-slot:activator="{ on, attrs }">
@@ -101,13 +101,12 @@
   position: absolute;
   bottom: -10px;
   left: calc(-50% - 5px);
-  background-color: #7b1817;
 }
 
 
 .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active >
 .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
-  color: rgb(123, 24, 23);
+  color: rgb(84, 182, 200);
 }
 
 .v-badge__badge {

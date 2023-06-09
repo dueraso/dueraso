@@ -1,7 +1,10 @@
+import isAdmin from "@/middleware/is-admin";
+import dayjs from "dayjs";
+
 export default {
   layout: "seller-layout",
   name: "IndexPage",
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   data() {
     return {
       loading: true,
@@ -12,16 +15,16 @@ export default {
           width: ""
         },
         {
-          title: "ผู้ใช้งาน",
+          title: "อีเมล",
           width: "15%"
         },
         {
-          title: "สร้างโดย",
+          title: "เบอร์",
           width: ""
         },
         {
           title: "สถานะ",
-          width: "5%"
+          width: "10%"
         },
         {
           title: "สิทธิ์",
@@ -32,32 +35,20 @@ export default {
           width: "10%"
         },
       ],
-      desserts: {
-        data: [
-          {
-            name: "super_admin",
-            user: "super_admin",
-            create_by: {
-              name: "super_admin",
-            },
-            status: "1",
-            permissions: "super_admin",
-            created_at: "12:29:00 2023/12/23"
-          },
-          {
-            name: "arthit dueraso",
-            user: "dueraso",
-            create_by: {
-              name: "arthit dueraso",
-            },
-            status: "1",
-            permissions: "admin",
-            created_at: "12:29:00 2023/12/23"
-          },
-        ]
-      },
+      desserts: {},
       item: {},
     };
+  },
+  computed: {
+    checkWrite() {
+      return JSON.parse(localStorage.getItem("policy")).write.find(d => d.route == this.$route.fullPath) !== undefined
+    },
+    checkEdit() {
+      return JSON.parse(localStorage.getItem("policy")).edit.find(d => d.route == this.$route.fullPath) !== undefined
+    },
+    checkDelete() {
+      return JSON.parse(localStorage.getItem("policy")).remove.find(d => d.route == this.$route.fullPath) !== undefined
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -65,16 +56,23 @@ export default {
     })
   },
   mounted() {
-    // this.getData()
+    this.getData()
+    console.log()
+    console.log(this.$route.fullPath)
   },
   methods: {
+    convertDay(val = "") {
+      return dayjs().format("DD/MM/YYYY HH:mm")
+    },
+    status(val) {
+      return val === 1 ? "ปกติ" : "ปิดใช้งาน"
+    },
     async getData() {
-      await this.$axios.get("/post", {
+      await this.$axios.get("/users", {
         params: {
           page: 20
         }
       }).then((res) => {
-        console.log(res.data)
         this.desserts = res.data
       }).catch((e) => {
         console.log(e)

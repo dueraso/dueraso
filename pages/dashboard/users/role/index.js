@@ -1,7 +1,10 @@
 // import myFunction from "~/utils/myFunction";
 import pkg from '~/package.json'
+import isAdmin from "@/middleware/is-admin";
+import dayjs from "dayjs";
 
 export default {
+  middleware: ['auth'],
   layout: "seller-layout",
   name: "IndexPage",
   data() {
@@ -107,17 +110,16 @@ export default {
       console.log(pkg.version)
     })
   },
-  computed: {
-    convertDay() {
-      return "f"
-      // return myFunction.convertDay()
-    }
+  watch: {
+
   },
   mounted() {
-    console.log()
     this.getRoles()
   },
   methods: {
+    convertDay(val = "") {
+      return dayjs().format("DD/MM/YYYY HH:mm")
+    },
     async getRoles() {
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
