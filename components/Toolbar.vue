@@ -141,14 +141,18 @@ export default {
         },
         {
           name: "ข่าว",
-          route: '/dashboard'
+          route: '/news'
         },
         {
           name: "ติดต่อ",
-          route: '/dashboard'
+          route: '/contact-us'
         },
         {
-          name: "ร้านของฉัน",
+          name: "หน้าร้านของฉัน",
+          route: '/pos-dashboard'
+        },
+        {
+          name: "หลังร้านของฉัน",
           route: '/dashboard'
         },
       ],

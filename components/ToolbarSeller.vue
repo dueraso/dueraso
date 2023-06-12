@@ -10,7 +10,8 @@
         <b-nav-item
           v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link pr-0" @click="addCircle(itemBar)"
           :active='selectedLetter === itemBar.route'>{{ itemBar.name }}
-          <v-badge :value="selectedLetter === itemBar.route" class="circle" style="color: #54B6C8; background: #54B6C8" bottom dot v-show="showBadge()"/>
+          <v-badge :value="selectedLetter === itemBar.route" class="circle" style="color: #54B6C8; background: #54B6C8"
+                   bottom dot v-show="showBadge()"/>
         </b-nav-item>
         <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
           <template v-slot:activator="{ on, attrs }">
@@ -76,8 +77,8 @@
           <template v-slot:activator="{ on, attrs }" style="padding-right: 0">
             <b-nav-item v-bind="attrs" v-on="on" v-show="$auth.loggedIn">
               หน้าของฉัน
-<!--              <v-badge style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
-<!--                       v-show="showBadge()"></v-badge>-->
+              <!--              <v-badge style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
+              <!--                       v-show="showBadge()"></v-badge>-->
             </b-nav-item>
           </template>
           <v-card>
@@ -167,14 +168,7 @@ export default {
   created() {
   },
   mounted() {
-
-    this.$nextTick(()=>{
-      localStorage.setItem("policy",this.$auth.user.roles.policy)
-      this.itemsBar = JSON.parse(localStorage.getItem("policy")).read
-      this.itemsBar.sort()
-      this.$store.commit("setPlaces",this.itemsBar)
-      console.log(this.$store.state.places)
-    })
+    this.$nextTick(() => this.savePolicy())
     this.selectedLetter = this.$route.path
     if (this.$auth.user === undefined || this.$auth.user === null) return
     if (this.$auth.user.mobile === '') {
@@ -184,6 +178,11 @@ export default {
     }
   },
   methods: {
+    savePolicy() {
+      localStorage.setItem("policy", this.$auth.user.roles.policy)
+      this.itemsBar = JSON.parse(localStorage.getItem("policy")).read
+      this.itemsBar.sort((a, b) => a.id - b.id)
+    },
     addCircle(val) {
       this.selectedLetter = val.route;
       this.$router.push(val.route)

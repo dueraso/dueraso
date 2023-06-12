@@ -76,15 +76,25 @@ export default {
           {
             id: 3,
             name: 'จัดการสาขา',
-            route: '/dashboard/add-budget'
+            route: '/dashboard/branch'
           },
           {
             id: 4,
-            name: 'รายรับ-รายจ่าย',
-            route: '/dashboard/budget'
+            name: 'ประเภทรายการ',
+            route: '/dashboard/type-budget'
           },
           {
             id: 5,
+            name: 'รายการ',
+            route: '/dashboard/budget'
+          },
+          {
+            id: 6,
+            name: 'เพิ่มรายรับ-รายจ่าย',
+            route: '/dashboard/add-budget'
+          },
+          {
+            id: 7,
             name: 'ผู้ใช้งาน',
             route: `/dashboard/users`
           },
@@ -103,11 +113,7 @@ export default {
   created() {
     this.$nextTick(() => {
       this.loading = false
-      console.log(pkg.version)
     })
-  },
-  watch: {
-
   },
   mounted() {
     this.getRoles()
