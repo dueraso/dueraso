@@ -7,7 +7,7 @@
         </div>
         <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 404"/>
         <div v-else class="text-wrapper fill-height">
-          <OtherError :error="otherError"/>
+          <OtherError :error="error" :other-error="otherError"/>
         </div>
       </v-main>
     </v-app>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       pageNotFound: '404 Not Found',
-      otherError: 'เกิดข้อผิดพลาด'
+      otherError: 'เกิดข้อผิดพลาดบ้างอย่าง'
     }
   },
   mounted() {

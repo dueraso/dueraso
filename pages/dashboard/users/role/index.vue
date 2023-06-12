@@ -22,25 +22,24 @@
                   <th v-for="(item, i) in tableHeadRole" :key="i" class="text-left" style="font-size: 14px"
                       :width="item.width">{{ item.title }}
                   </th>
-                  <th width="120px"></th>
+                  <th width="150px" class="p-0"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(item, index) in dessertsRole.data" :key="index">
                   <td>{{ item.name }}</td>
                   <td>{{ item.detail }}</td>
-                  <td>
-                  <v-switch
-                    v-model="switch1"
-                    inset
-                  ></v-switch>
-                </td>
                   <td>{{ convertDay(item.created_at) }}</td>
                   <td>{{ convertDay(item.updated_at) }}</td>
                   <td>
                     <v-btn fab text @click="openItem(item)">
                       <v-icon>
                         mdi-pen
+                      </v-icon>
+                    </v-btn>
+                    <v-btn fab text>
+                      <v-icon>
+                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </td>
@@ -55,7 +54,7 @@
                     จัดการสิทธิ์การใช้งาน
                   </v-card-title>
 
-                  <v-card-text>
+                  <v-card-text class="pb-0">
                     <v-simple-table fixed-header>
                       <template v-slot:default>
                         <thead>

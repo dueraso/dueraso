@@ -21,10 +21,6 @@ export default {
           width: ""
         },
         {
-          title: "สถานะ",
-          width: "10%"
-        },
-        {
           title: "สร้างเมื่อ",
           width: "10%%"
         },
@@ -123,7 +119,7 @@ export default {
     async getRoles() {
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
-        console.log(res.data)
+        // console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -147,7 +143,9 @@ export default {
     openItem(val) {
       console.log("val> " + JSON.stringify(val))
       this.dialog = true
+      this.per = {}
       this.item = Object.assign({}, val)
+      this.per = JSON.parse(this.item.policy)
     },
 
     async onUpdate() {
