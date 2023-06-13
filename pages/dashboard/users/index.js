@@ -41,13 +41,13 @@ export default {
   },
   computed: {
     checkWrite() {
-      return JSON.parse(localStorage.getItem("policy")).write.find(d => d.route == this.$route.fullPath) !== undefined
+      return JSON.parse(localStorage.getItem("policy")).create.find(d => d.route == this.$route.fullPath) !== undefined
     },
     checkEdit() {
-      return JSON.parse(localStorage.getItem("policy")).edit.find(d => d.route == this.$route.fullPath) !== undefined
+      return JSON.parse(localStorage.getItem("policy")).update.find(d => d.route == this.$route.fullPath) !== undefined
     },
     checkDelete() {
-      return JSON.parse(localStorage.getItem("policy")).remove.find(d => d.route == this.$route.fullPath) !== undefined
+      return JSON.parse(localStorage.getItem("policy")).delete.find(d => d.route == this.$route.fullPath) !== undefined
     }
   },
   created() {

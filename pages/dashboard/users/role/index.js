@@ -85,12 +85,12 @@ export default {
           },
           {
             id: 5,
-            name: 'รายการ',
+            name: 'รายรับ-รายจ่าย',
             route: '/dashboard/budget'
           },
           {
             id: 6,
-            name: 'เพิ่มรายรับ-รายจ่าย',
+            name: 'เพิ่มรายการ',
             route: '/dashboard/add-budget'
           },
           {
@@ -101,10 +101,10 @@ export default {
         ]
       },
       per: {
+        create: [],
         read: [],
-        write: [],
-        edit: [],
-        remove: [],
+        update: [],
+        delete: [],
       },
       item: {},
       switch1: false
@@ -121,6 +121,13 @@ export default {
   methods: {
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
+    },
+    async getModule(){
+      await this.$axios.$get("/module").then((res) => {
+        this.desserts = res
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     async getRoles() {
       await this.$axios.$get("/role").then((res) => {

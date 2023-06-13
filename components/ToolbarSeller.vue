@@ -191,10 +191,6 @@ export default {
     showBadge() {
       return this.$vuetify.breakpoint.width > 990
     },
-    test(i) {
-      console.log(this.$route.name)
-      console.log(JSON.stringify(this.itemsBar[i].route.name))
-    },
     lock() {
       this.snackbar = true
       this.messages = "ขณะนี้ระบบยังไม่เปิดใช้บริการ"

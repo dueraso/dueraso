@@ -78,7 +78,7 @@
                           </td>
                           <td>
                             <v-switch
-                              v-model="per.write"
+                              v-model="per.create"
                               @click="changeSwitch(item)"
                               inset
                               :value="item"
@@ -86,7 +86,7 @@
                           </td>
                           <td>
                             <v-switch
-                              v-model="per.edit"
+                              v-model="per.update"
                               @click="changeSwitch(item)"
                               inset
                               :value="item"
@@ -94,7 +94,7 @@
                           </td>
                           <td>
                             <v-switch
-                              v-model="per.remove"
+                              v-model="per.delete"
                               @click="changeSwitch(item)"
                               inset
                               :value="item"
