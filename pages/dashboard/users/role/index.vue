@@ -66,9 +66,9 @@
                         </thead>
                         <tbody>
                         <tr v-for="(item, index) in desserts.data" :key="index">
-                          <td>{{ item.name }}</td>
-                          <td>{{ item.route }}</td>
-                          <td :width="item">
+                          <td>{{ item.title }}</td>
+                          <td>{{ item.diractory }}</td>
+                          <td>
                             <v-switch
                               v-model="per.read"
                               @click="changeSwitch(item)"

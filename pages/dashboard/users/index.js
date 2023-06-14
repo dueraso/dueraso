@@ -1,4 +1,5 @@
 import isAdmin from "@/middleware/is-admin";
+import my from "@/utils/myFunction";
 import dayjs from "dayjs";
 
 export default {
@@ -57,8 +58,6 @@ export default {
   },
   mounted() {
     this.getData()
-    console.log()
-    console.log(this.$route.fullPath)
   },
   methods: {
     convertDay(val = "") {
