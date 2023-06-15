@@ -9,8 +9,9 @@
       <b-navbar-nav class="ml-auto pl-0" fixed-top>
         <b-nav-item
           v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link pr-0" @click="addCircle(itemBar)"
-          :active='selectedLetter === itemBar.route'>{{ itemBar.name }}
-          <v-badge :value="selectedLetter === itemBar.route" class="circle" style="color: #54B6C8; background: #54B6C8"
+          :active='selectedLetter === itemBar.diractory'>{{ itemBar.title }}
+          <v-badge :value="selectedLetter === itemBar.diractory" class="circle"
+                   style="color: #54B6C8; background: #54B6C8"
                    bottom dot v-show="showBadge()"/>
         </b-nav-item>
         <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
@@ -179,14 +180,14 @@ export default {
   },
   methods: {
     savePolicy() {
-      if (JSON.parse(localStorage.getItem("policy")) == null) return
       localStorage.setItem("policy", this.$auth.user.roles.policy)
-      this.itemsBar = JSON.parse(localStorage.getItem("policy")).read
-      this.itemsBar.sort((a, b) => a.id - b.id)
+      if (JSON.parse(localStorage.getItem("policy")) == null) return
+      this.itemsBar = JSON.parse(localStorage.getItem("policy")).titleBar
+      // this.itemsBar.sort((a, b) => a.id - b.id)
     },
     addCircle(val) {
-      this.selectedLetter = val.route;
-      this.$router.push(val.route)
+      this.selectedLetter = val.diractory;
+      this.$router.push(val.diractory)
     },
 
     showBadge() {

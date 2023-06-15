@@ -1,6 +1,7 @@
 import isAdmin from "@/middleware/is-admin";
 import my from "@/utils/myFunction";
 import dayjs from "dayjs";
+import myUtils from "@/plugins/myUtils";
 
 export default {
   layout: "seller-layout",
@@ -42,17 +43,18 @@ export default {
   },
   computed: {
     checkWrite() {
-      console.log(JSON.parse(localStorage.getItem("policy")))
-      if (JSON.parse(localStorage.getItem("policy")) == null) return
-      return JSON.parse(localStorage.getItem("policy")).create.find(d => d.route == this.$route.fullPath) !== undefined
+      myUtils("create")
+      // console.log(JSON.parse(localStorage.getItem("policy")).create.indexOf(this.$route.fullPath))
+      // if (JSON.parse(localStorage.getItem("policy")) == null) return
+      // return JSON.parse(localStorage.getItem("policy")).create.indexOf(this.$route.fullPath) !== -1
     },
     checkEdit() {
       if (JSON.parse(localStorage.getItem("policy")) == null) return
-      return JSON.parse(localStorage.getItem("policy")).update.find(d => d.route == this.$route.fullPath) !== undefined
+      return JSON.parse(localStorage.getItem("policy")).update.indexOf(this.$route.fullPath) !== -1
     },
     checkDelete() {
       if (JSON.parse(localStorage.getItem("policy")) == null) return
-      return JSON.parse(localStorage.getItem("policy")).delete.find(d => d.route == this.$route.fullPath) !== undefined
+      return JSON.parse(localStorage.getItem("policy")).delete.indexOf(this.$route.fullPath) !== -1
     }
   },
   created() {
@@ -62,8 +64,12 @@ export default {
   },
   mounted() {
     this.getData()
+    this.executeExtendedFunction()
   },
   methods: {
+    executeExtendedFunction(){
+      // myUtils.test()
+    },
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },

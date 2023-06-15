@@ -72,32 +72,29 @@
                             <v-switch
                               v-model="per.read"
                               @click="changeSwitch(item)"
-                              :value="item"
+                              :value="item.diractory"
                               inset
                             ></v-switch>
                           </td>
                           <td>
                             <v-switch
                               v-model="per.create"
-                              @click="changeSwitch(item)"
                               inset
-                              :value="item.create"
+                              :value="item.diractory"
                             ></v-switch>
                           </td>
                           <td>
                             <v-switch
                               v-model="per.update"
-                              @click="changeSwitch(item)"
                               inset
-                              :value="item"
+                              :value="item.diractory"
                             ></v-switch>
                           </td>
                           <td>
                             <v-switch
                               v-model="per.delete"
-                              @click="changeSwitch(item)"
                               inset
-                              :value="item"
+                              :value="item.diractory"
                             ></v-switch>
                           </td>
                         </tr>

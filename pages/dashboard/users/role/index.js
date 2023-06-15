@@ -101,13 +101,14 @@ export default {
         // ]
       },
       per: {
+        titleBar:[],
         create: [],
         read: [],
         update: [],
         delete: [],
       },
       item: {},
-      switch1: false
+      switch1: false,
     };
   },
   created() {
@@ -117,12 +118,13 @@ export default {
   },
   mounted() {
     this.getRoles()
+    this.getModule()
   },
   methods: {
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },
-    async getModule(){
+    async getModule() {
       await this.$axios.$get("/module").then((res) => {
         this.desserts = res
         console.log(JSON.stringify(this.desserts))
@@ -139,39 +141,43 @@ export default {
       })
     },
     changeSwitch(val) {
-      console.log(JSON.stringify(this.per) + "<<<"+JSON.stringify(val))
+      // this.d.indexOf(val.title)
+      let i = this.per.titleBar.indexOf(val)
+      // console.log(ss + "<<<>>" + this.d)
+      if (i !== -1) {
+        this.per.titleBar.splice(i, 1)
+      } else {
+        this.per.titleBar.push(val)
+      }
+      console.log(this.per.titleBar + "<<<")
+      // console.log(JSON.stringify(this.per) + "<<<"+JSON.stringify(val))
     },
 
     confirm() {
-      // console.log(JSON.stringify(this.per))
-      // console.log(JSON.stringify(this.item))
+      this.per.titleBar.sort((a, b) => a.sort - b.sort)
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
 
     openItem(val) {
-      this.getModule()
-      console.log(val.policy+ "<<val> " + JSON.stringify(val))
       this.dialog = true
-      this.per = {}
-      this.item = {}
+      // console.log(val.policy + "<<val> ")
+      // this.per = {}
+      // // this.item = {}
       if(val.policy === null) return
-      console.log("fffff")
-      // this.item = Object.assign({}, JSON.parse(val.policy))
-      this.item = Object.assign({}, JSON.parse(val.policy))
-      this.per = this.item
-      console.log(this.item)
+      this.item = Object.assign({}, val)
+      this.per = Object.assign({}, JSON.parse(this.item.policy))
     },
 
     async onUpdate() {
       this.dialog = false
       await this.$axios.patch("/role/" + this.item.id, {
-        id:this.item.id,
+        id: this.item.id,
         name: this.item.name,
         detail: this.item.detail,
         status: 0,
@@ -186,7 +192,7 @@ export default {
 
     async onCreate() {
       this.dialog = false
-      await this.$axios.post("/post", {
+      await this.$axios.post("/role", {
         title: this.item.title,
         detail: this.item.detail
       }).then((res) => {
