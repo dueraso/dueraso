@@ -156,13 +156,16 @@ export default {
 
     openItem(val) {
       this.getModule()
-      console.log("val> " + JSON.stringify(val))
+      console.log(val.policy+ "<<val> " + JSON.stringify(val))
       this.dialog = true
-      // this.per = {}
+      this.per = {}
+      this.item = {}
+      if(val.policy === null) return
+      console.log("fffff")
       // this.item = Object.assign({}, JSON.parse(val.policy))
-      this.item = Object.assign({}, val)
-      // this.per = Object.assign(this.per,JSON.parse(this.item.policy))
-      console.log(JSON.parse(val.policy))
+      this.item = Object.assign({}, JSON.parse(val.policy))
+      this.per = this.item
+      console.log(this.item)
     },
 
     async onUpdate() {

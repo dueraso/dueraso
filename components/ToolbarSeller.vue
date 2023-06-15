@@ -179,6 +179,7 @@ export default {
   },
   methods: {
     savePolicy() {
+      if (JSON.parse(localStorage.getItem("policy")) == null) return
       localStorage.setItem("policy", this.$auth.user.roles.policy)
       this.itemsBar = JSON.parse(localStorage.getItem("policy")).read
       this.itemsBar.sort((a, b) => a.id - b.id)

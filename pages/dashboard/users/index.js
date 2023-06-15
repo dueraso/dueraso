@@ -42,12 +42,16 @@ export default {
   },
   computed: {
     checkWrite() {
+      console.log(JSON.parse(localStorage.getItem("policy")))
+      if (JSON.parse(localStorage.getItem("policy")) == null) return
       return JSON.parse(localStorage.getItem("policy")).create.find(d => d.route == this.$route.fullPath) !== undefined
     },
     checkEdit() {
+      if (JSON.parse(localStorage.getItem("policy")) == null) return
       return JSON.parse(localStorage.getItem("policy")).update.find(d => d.route == this.$route.fullPath) !== undefined
     },
     checkDelete() {
+      if (JSON.parse(localStorage.getItem("policy")) == null) return
       return JSON.parse(localStorage.getItem("policy")).delete.find(d => d.route == this.$route.fullPath) !== undefined
     }
   },

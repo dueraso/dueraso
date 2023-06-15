@@ -81,7 +81,7 @@
                               v-model="per.create"
                               @click="changeSwitch(item)"
                               inset
-                              :value="item"
+                              :value="item.create"
                             ></v-switch>
                           </td>
                           <td>
