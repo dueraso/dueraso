@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
+import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth', isAdmin],
@@ -91,6 +92,7 @@ export default {
   },
 
   methods: {
+    myUtils,
     sumMoney() {
       if (Object.keys(this.money).length == 0) return 0
       var val = [];

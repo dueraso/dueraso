@@ -42,20 +42,6 @@ export default {
     };
   },
   computed: {
-    checkWrite() {
-      myUtils("create")
-      // console.log(JSON.parse(localStorage.getItem("policy")).create.indexOf(this.$route.fullPath))
-      // if (JSON.parse(localStorage.getItem("policy")) == null) return
-      // return JSON.parse(localStorage.getItem("policy")).create.indexOf(this.$route.fullPath) !== -1
-    },
-    checkEdit() {
-      if (JSON.parse(localStorage.getItem("policy")) == null) return
-      return JSON.parse(localStorage.getItem("policy")).update.indexOf(this.$route.fullPath) !== -1
-    },
-    checkDelete() {
-      if (JSON.parse(localStorage.getItem("policy")) == null) return
-      return JSON.parse(localStorage.getItem("policy")).delete.indexOf(this.$route.fullPath) !== -1
-    }
   },
   created() {
     this.$nextTick(() => {
@@ -64,12 +50,9 @@ export default {
   },
   mounted() {
     this.getData()
-    this.executeExtendedFunction()
   },
   methods: {
-    executeExtendedFunction(){
-      // myUtils.test()
-    },
+    myUtils,
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },

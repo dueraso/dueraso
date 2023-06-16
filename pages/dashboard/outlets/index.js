@@ -1,10 +1,15 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
+import myUtils from "@/plugins/myUtils";
+import DialogFull from "@/components/DialogFull.vue";
 
 export default {
   middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  components:{
+    DialogFull
+  },
   data() {
     return {
       loading: true,
@@ -69,6 +74,7 @@ export default {
     },
   },
   methods: {
+    myUtils,
     convertDay(val) {
       if (val == undefined) return
       return dayjs(val).format('HH:mm')
@@ -100,7 +106,7 @@ export default {
     openItem(val) {
       console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
     },
 
     async onUpdate(){

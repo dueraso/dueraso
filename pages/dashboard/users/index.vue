@@ -14,7 +14,7 @@
               ผู้ใช้งานทั้งหมด
             </h5>
             <v-spacer/>
-            <v-btn outlined @click="openItem({})" class="mr-3" v-show="checkWrite">
+            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
               <v-icon>mdi-plus</v-icon>
               เพิ่ม
             </v-btn>
@@ -44,10 +44,10 @@
                   <td>{{ item.roles.name }}</td>
                   <td>{{ convertDay(item.created_at) }}</td>
                   <td class="p-0 text-right">
-                    <v-btn fab small text @click="openItem(item)" :disabled="item.roles.name === 'super_admin'" v-show="checkEdit">
+                    <v-btn fab small text @click="openItem(item)" :disabled="item.roles.name === 'super_admin'" v-show="myUtils('update', $route.fullPath)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" :disabled="item.roles.name === 'super_admin'" v-show="checkDelete">
+                    <v-btn fab small text @click="onDelete(item)" :disabled="item.roles.name === 'super_admin'" v-show="myUtils('delete', $route.fullPath)">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </td>

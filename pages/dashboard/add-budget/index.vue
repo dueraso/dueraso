@@ -14,7 +14,7 @@
               รายรับ-รายจ่าย
             </h5>
             <v-spacer/>
-            <v-btn outlined @click="openItem({})" class="mr-3">
+            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
               <v-icon>mdi-plus</v-icon>
               เพิ่ม
             </v-btn>
@@ -37,10 +37,10 @@
                   <td>{{ item.detail }}</td>
                   <td>{{ item.address }}</td>
                   <td class="p-0 text-right">
-                    <v-btn fab small text @click="openItem(item)">
+                    <v-btn fab small text @click="openItem(item)" v-show="myUtils('update', $route.fullPath)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
+                    <v-btn fab small text @click="onDelete(item)" v-show="myUtils('delete', $route.fullPath)">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </td>

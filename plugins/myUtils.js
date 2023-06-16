@@ -1,15 +1,14 @@
-export default function myUtils(val) {
+export default function myUtils(val, route) {
   if (process.client) {
-    console.log(this.$route.fullPath)
     if (JSON.parse(localStorage.getItem("policy")) == null) return
 
-    let po = JSON.parse(localStorage.getItem("policy"))
+    let policy = JSON.parse(localStorage.getItem("policy"))
     if (val === "create") {
-      return po.create.indexOf(this.$route.fullPath) !== -1
+      return policy.create.indexOf(route) !== -1
     } else if (val === "update") {
-      return po.update.indexOf(this.$route.fullPath) !== -1
+      return policy.update.indexOf(route) !== -1
     } else if (val === "delete") {
-      return po.delete.indexOf(this.$route.fullPath) !== -1
+      return policy.delete.indexOf(route) !== -1
     }else return false
   }
 }
