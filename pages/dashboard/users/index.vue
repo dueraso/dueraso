@@ -105,7 +105,7 @@
                           <v-autocomplete
                             outlined
                             auto-select-first
-                            :items="roles"
+                            :items="roles.data"
                             v-model="rolesSelect"
                             hide-no-data
                             hide-selected

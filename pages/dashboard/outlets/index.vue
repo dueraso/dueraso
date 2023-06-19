@@ -18,12 +18,12 @@
               <v-icon>mdi-plus</v-icon>
               เพิ่ม
             </v-btn>
-            <DialogFull>
-              <template v-slot:content>
-                <!-- Content for the content slot -->
-                <p>This is the main content of the pageffff.</p>
-              </template>
-            </DialogFull>
+<!--            <DialogFull>-->
+<!--              <template v-slot:content>-->
+<!--                &lt;!&ndash; Content for the content slot &ndash;&gt;-->
+<!--                <p>This is the main content of the pageffff.</p>-->
+<!--              </template>-->
+<!--            </DialogFull>-->
           </v-row>
           <v-col>
             <v-simple-table fixed-header>

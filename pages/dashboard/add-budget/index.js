@@ -58,6 +58,7 @@ export default {
     this.getData()
     this.getBudget()
     this.getUser()
+    this.getBudgetList()
   },
 
   computed: {
@@ -116,8 +117,17 @@ export default {
 
     async getUser() {
       await this.$axios.get("/users").then((res) => {
-        // this.desserts = res
         this.users = res.data.data
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
+    async getBudgetList() {
+      await this.$axios.get("/budgetList").then((res) => {
+        this.desserts = res.data
+        console.log("fff>" + JSON.stringify(this.instead))
+        this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
       });

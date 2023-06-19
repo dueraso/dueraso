@@ -39,10 +39,11 @@ export default {
       ],
       desserts: {},
       item: {},
+      roles: [],
+      rolesSelect: {},
     };
   },
-  computed: {
-  },
+  computed: {},
   created() {
     console.log(this.$auth.user)
     this.$nextTick(() => {
@@ -51,6 +52,7 @@ export default {
   },
   mounted() {
     this.getData()
+    this.getRoles()
   },
   methods: {
     myUtils,
@@ -59,6 +61,14 @@ export default {
     },
     status(val) {
       return val === 1 ? "ปกติ" : "ปิดใช้งาน"
+    },
+    async getRoles() {
+      await this.$axios.get("/role").then((res) => {
+        this.roles = res.data
+        console.log(this.roles)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     async getData() {
       await this.$axios.get("/users", {
@@ -74,23 +84,23 @@ export default {
 
     confirm() {
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
 
     openItem(val) {
-      console.log("val> " + val)
+      // console.log("val> " + JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
     },
 
     async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/post/" + this.item.id, {
+      await this.$axios.put("/users/" + this.item.id, {
         title: this.item.title,
         detail: this.item.detail
       }).then((res) => {
@@ -103,7 +113,7 @@ export default {
 
     async onCreate() {
       this.dialog = false
-      await this.$axios.post("/post", {
+      await this.$axios.post("/users", {
         title: this.item.title,
         detail: this.item.detail
       }).then((res) => {
@@ -116,7 +126,7 @@ export default {
 
     async onDelete(val) {
       this.dialog = false
-      await this.$axios.delete("/post/" + val.id).then((res) => {
+      await this.$axios.delete("/users/" + val.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {
