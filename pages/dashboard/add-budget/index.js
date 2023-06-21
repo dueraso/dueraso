@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
+import convert from "@/plugins/convert";
 
 export default {
   middleware: ['auth', isAdmin],
@@ -26,22 +26,35 @@ export default {
       insteadSelect: null,
       tableHead: [
         {
-          title: "ชื่อสาขา",
+          title: "ชื่อรายการ",
           width: ""
         },
         {
-          title: "รายละเอียด",
+          title: "สาขา",
           width: ""
         },
         {
-          title: "ที่อยู่/สถานที่",
-          width: "15%"
+          title: "ผู้ขาย",
+          width: ""
+        },
+        {
+          title: "ราคา",
+          width: "10%"
+        },
+        {
+          title: "สร้างเมื่อ",
+          width: "10%"
         },
       ],
+      typeTotal: ['รวมยอดแล้ว','ยังไม่รวมยอด'],
       desserts: {},
       users: [],
       usersSelect: {},
+      branch: [],
+      branchSelect: {},
       item: {},
+      typeTotalSelect: 0,
+      total:0
     };
   },
 
@@ -55,18 +68,19 @@ export default {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
     })
-    this.getData()
+    this.getBudgetList()
+    this.getBranch()
     this.getBudget()
     this.getUser()
-    this.getBudgetList()
   },
 
   computed: {
-    dd() {
-      return new B()
+    convert() {
+      return convert
     },
     calculat() {
-      return this.sumMoney()
+      this.total = this.sumMoney()
+      return this.total
     },
   },
 
@@ -94,9 +108,13 @@ export default {
 
   methods: {
     myUtils,
+    onChangeType(d) {
+      this.total = 0
+      this.typeTotalSelect = d
+    },
     sumMoney() {
       if (Object.keys(this.money).length == 0) return 0
-      var val = [];
+      const val = [];
       val.push(this.money.val1 * 1000)
       val.push(this.money.val2 * 500)
       val.push(this.money.val3 * 100)
@@ -106,10 +124,6 @@ export default {
       val.push(this.money.val7 * 5)
       val.push(parseInt(this.money.val8))
       return val.reduce((accumulator, currentValue) => accumulator + currentValue)
-    },
-    convertDay(val) {
-      if (val == undefined) return
-      return dayjs(val).format('HH:mm')
     },
     getColor(val) {
       return (val !== 1) ? 'green' : 'red'
@@ -126,7 +140,15 @@ export default {
     async getBudgetList() {
       await this.$axios.get("/budgetList").then((res) => {
         this.desserts = res.data
-        console.log("fff>" + JSON.stringify(this.instead))
+        this.$nuxt.$loading.finish()
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
+    async getBranch() {
+      await this.$axios.get("/branch").then((res) => {
+        this.branch = res.data.data
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -135,25 +157,23 @@ export default {
 
     async getBudget() {
       await this.$axios.get("/budget").then((res) => {
-        // this.desserts = res
         this.instead = res.data.data
-        console.log("fff>" + JSON.stringify(this.instead))
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
       });
     },
 
-    async getData() {
-      await this.$axios.get("/branch").then((res) => {
-        // this.desserts = res
-        this.desserts = Object.assign({}, res.data)
-        console.log(this.desserts.data)
-        this.$nuxt.$loading.finish()
-      }).catch((e) => {
-        console.log(e);
-      });
-    },
+    // async getBranch() {
+    //   await this.$axios.get("/branch").then((res) => {
+    //     // this.desserts = res
+    //     this.desserts = Object.assign({}, res.data)
+    //     console.log(this.desserts.data)
+    //     this.$nuxt.$loading.finish()
+    //   }).catch((e) => {
+    //     console.log(e);
+    //   });
+    // },
 
     confirm() {
       if (this.item.id) {
@@ -173,12 +193,11 @@ export default {
 
     async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/branch/" + this.item.id, {
+      await this.$axios.put("/budgetList/" + this.item.id, {
         title: this.item.title,
         detail: this.item.detail
       }).then((res) => {
-        this.getData()
-        console.log(res.data)
+        this.getBudgetList()
       }).catch((e) => {
         console.log(e)
       })
@@ -186,14 +205,14 @@ export default {
 
     async onCreate() {
       this.dialog = false
-      await this.$axios.post("/branch", {
-        title: this.item.title,
-        detail: this.item.detail,
-        address: this.item.address,
-        organization_id: this.insteadSelect.id
+      await this.$axios.post("/budgetList", {
+        branch: this.branchSelect.id,
+        create_by: this.$auth.user.id,
+        employee: this.usersSelect.id,
+        budget: this.insteadSelect.id,
+        total: this.total
       }).then((res) => {
-        this.getData()
-        console.log(res.data)
+        this.getBudgetList()
       }).catch((e) => {
         console.log(e)
       })
@@ -201,9 +220,8 @@ export default {
 
     async onDelete(val) {
       this.dialog = false
-      await this.$axios.delete("/branch/" + val.id).then((res) => {
-        this.getData()
-        console.log(res.data)
+      await this.$axios.delete("/budgetList/" + val.id).then((res) => {
+        this.getBudgetList()
       }).catch((e) => {
         console.log(e)
       })

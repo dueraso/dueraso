@@ -49,23 +49,13 @@
               </template>
             </v-simple-table>
             <div class="text-center">
-              <v-dialog
-                v-model="dialog"
-                persistent
-              >
+              <v-dialog v-model="dialog" persistent>
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    Privacy Policy
+                    เพิ่ม/แก้ไขชื่อสาขา
                   </v-card-title>
 
                   <v-card-text>
-                    <v-text-field
-                      v-model="item.title"
-                      label="ชื่อสาขา"
-                      outlined
-                      clearable
-                      dense
-                    ></v-text-field>
                     <v-autocomplete
                       outlined
                       auto-select-first
@@ -80,15 +70,22 @@
                       item-value="id"
                     ></v-autocomplete>
                     <v-text-field
+                      v-model="item.title"
+                      label="ชื่อสาขา"
+                      outlined
+                      clearable
+                      dense
+                    ></v-text-field>
+                    <v-text-field
                       v-model="item.detail"
-                      label="detail"
+                      label="รายละเอียด"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
                     <v-textarea
                       v-model="item.address"
-                      label="detail"
+                      label="ที่อยู่"
                       outlined
                       clearable
                       dense
@@ -99,19 +96,11 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="confirm"
-                    >
-                      ok
+                    <v-btn color="primary" text @click="confirm">
+                      ตกลง
                     </v-btn>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="dialog = false"
-                    >
-                      cancel
+                    <v-btn color="primary" text @click="dialog = false">
+                      ยกเลิก
                     </v-btn>
                   </v-card-actions>
                 </v-card>

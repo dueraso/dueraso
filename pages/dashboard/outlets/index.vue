@@ -58,38 +58,24 @@
               <v-dialog v-model="dialog" persistent>
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    เพิ่ม/แก้ไข
+                    เพิ่ม/แก้ไขชื่อร้าน
                   </v-card-title>
 
                   <v-card-text>
                     <v-text-field
                       v-model="item.title"
-                      label="title"
+                      label="ชื่อร้าน/ชื่อแบรนด์"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
                     <v-text-field
                       v-model="item.detail"
-                      label="detail"
+                      label="รายละเอียด"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
-<!--                    <v-autocomplete-->
-<!--                      outlined-->
-<!--                      auto-select-first-->
-<!--                      :items="instead"-->
-<!--                      v-model="insteadSelect"-->
-<!--                      :loading="isLoading"-->
-<!--                      hide-no-data-->
-<!--                      hide-selected-->
-<!--                      :search-input.sync="search"-->
-<!--                      return-object-->
-<!--                      label="กรุณากรอกชื่อ"-->
-<!--                      dense-->
-<!--                      style="padding-right: 12px"-->
-<!--                    ></v-autocomplete>-->
                   </v-card-text>
 
                   <v-divider></v-divider>

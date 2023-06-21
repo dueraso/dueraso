@@ -2,6 +2,7 @@ import isAdmin from "@/middleware/is-admin";
 import my from "@/utils/myFunction";
 import dayjs from "dayjs";
 import myUtils from "@/plugins/myUtils";
+import convert from "@/plugins/convert";
 
 export default {
   layout: "seller-layout",
@@ -43,7 +44,11 @@ export default {
       rolesSelect: {},
     };
   },
-  computed: {},
+  computed: {
+    convert() {
+      return convert
+    }
+  },
   created() {
     console.log(this.$auth.user)
     this.$nextTick(() => {
@@ -53,11 +58,12 @@ export default {
   mounted() {
     this.getData()
     this.getRoles()
+    this.executeExtendedFunction()
   },
   methods: {
     myUtils,
-    convertDay(val = "") {
-      return dayjs().format("DD/MM/YYYY HH:mm")
+    executeExtendedFunction() {
+      // http.get(); // Call the extended function
     },
     status(val) {
       return val === 1 ? "ปกติ" : "ปิดใช้งาน"

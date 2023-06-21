@@ -196,7 +196,7 @@ export default {
         title: this.item.title,
         detail: this.item.detail
       }).then((res) => {
-        this.getData()
+        this.getBranch()
         console.log(res.data)
       }).catch((e) => {
         console.log(e)
@@ -206,7 +206,7 @@ export default {
     async onDelete(val) {
       this.dialog = false
       await this.$axios.delete("/post/" + val.id).then((res) => {
-        this.getData()
+        this.getBranch()
         console.log(res.data)
       }).catch((e) => {
         console.log(e)

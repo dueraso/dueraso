@@ -11,7 +11,7 @@
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
               <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
-              ประเภทรายจ่าย
+              ประเภทรายการ
             </h5>
             <v-spacer/>
             <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
@@ -53,7 +53,7 @@
               >
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    Privacy Policy
+                    เพิ่ม/แก้ไขประเภทรายการ
                   </v-card-title>
 
                   <v-card-text>
@@ -70,19 +70,11 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="confirm"
-                    >
-                      ok
+                    <v-btn color="primary" text @click="confirm">
+                      ตกลง
                     </v-btn>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="dialog = false"
-                    >
-                      cancel
+                    <v-btn color="primary" text @click="dialog = false">
+                      ยกเลิก
                     </v-btn>
                   </v-card-actions>
                 </v-card>

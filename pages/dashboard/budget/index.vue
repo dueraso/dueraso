@@ -11,7 +11,7 @@
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
               <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
-              จัดการการใช้จ่าย
+              รายรับ/รายจ่าย
             </h5>
             <v-spacer/>
             <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
@@ -54,13 +54,13 @@
               >
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    Privacy Policy
+                    เพิ่ม/แก้ไขรายรับ รายจ่าย
                   </v-card-title>
 
                   <v-card-text>
                     <v-text-field
                       v-model="item.title"
-                      label="title"
+                      label="ชื่อรายการ"
                       outlined
                       clearable
                       dense
@@ -73,7 +73,7 @@
                       hide-no-data
                       hide-selected
                       return-object
-                      label="ชื่อร้าน"
+                      label="ประเภทรายการ"
                       dense
                       item-text="name"
                       item-value="id"

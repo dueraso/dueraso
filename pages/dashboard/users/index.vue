@@ -42,7 +42,7 @@
                   <td>{{ item.phone }}</td>
                   <td>{{ status(item.status) }}</td>
                   <td>{{ item.roles.name }}</td>
-                  <td>{{ convertDay(item.created_at) }}</td>
+                  <td>{{ convert.datetime(item.created_at) }}</td>
                   <td class="p-0 text-right">
                     <v-btn fab small text @click="openItem(item)" :disabled="item.roles.name === 'super_admin'"
                            v-show="myUtils('update', $route.fullPath)">
@@ -99,6 +99,7 @@
                             outlined
                             clearable
                             dense
+                            type="number"
                           ></v-text-field>
                         </v-col>
                         <v-col class="pb-0 pt-0">
@@ -110,7 +111,7 @@
                             hide-no-data
                             hide-selected
                             return-object
-                            label="ชื่อร้าน"
+                            label="สิทธิ์การใช้งาน"
                             dense
                             item-text="name"
                             item-value="id"
