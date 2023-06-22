@@ -2,9 +2,10 @@
 import pkg from '~/package.json'
 import isAdmin from "@/middleware/is-admin";
 import dayjs from "dayjs";
+import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
   name: "IndexPage",
   data() {
@@ -56,50 +57,7 @@ export default {
           width: "5%"
         },
       ],
-      desserts: {
-        // data: [
-        //   {
-        //     id: 0,
-        //     name: 'หน้าแรก',
-        //     route: '/'
-        //   },
-        //   {
-        //     id: 1,
-        //     name: 'รายงาน',
-        //     route: `/dashboard`
-        //   },
-        //   {
-        //     id: 2,
-        //     name: 'จัดการร้าน',
-        //     route: '/dashboard/outlets'
-        //   },
-        //   {
-        //     id: 3,
-        //     name: 'จัดการสาขา',
-        //     route: '/dashboard/branch'
-        //   },
-        //   {
-        //     id: 4,
-        //     name: 'ประเภทรายการ',
-        //     route: '/dashboard/type-budget'
-        //   },
-        //   {
-        //     id: 5,
-        //     name: 'รายรับ-รายจ่าย',
-        //     route: '/dashboard/budget'
-        //   },
-        //   {
-        //     id: 6,
-        //     name: 'เพิ่มรายการ',
-        //     route: '/dashboard/add-budget'
-        //   },
-        //   {
-        //     id: 7,
-        //     name: 'ผู้ใช้งาน',
-        //     route: `/dashboard/users`
-        //   },
-        // ]
-      },
+      desserts: {},
       per: {
         titleBar:[],
         create: [],
@@ -121,6 +79,7 @@ export default {
     this.getModule()
   },
   methods: {
+    myUtils,
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },
@@ -149,17 +108,18 @@ export default {
       } else {
         this.per.titleBar.push(val)
       }
-      console.log(this.per.titleBar + "<<<")
+      console.log(JSON.stringify(this.per.titleBar) + "<<<")
+      console.log(this.item)
       // console.log(JSON.stringify(this.per) + "<<<"+JSON.stringify(val))
     },
 
     confirm() {
       this.per.titleBar.sort((a, b) => a.sort - b.sort)
       if (this.item.id) {
-        // console.log("Update> " + this.item.id)
+        console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        // console.log("Create> " + this.item.id)
+        console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -169,8 +129,9 @@ export default {
       // console.log(val.policy + "<<val> ")
       // this.per = {}
       // // this.item = {}
-      if(val.policy === null) return
       this.item = Object.assign({}, val)
+      console.log(this.item)
+      if(val.policy === null) return
       this.per = Object.assign({}, JSON.parse(this.item.policy))
     },
 

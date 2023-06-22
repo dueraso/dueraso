@@ -13,6 +13,11 @@
               <v-icon x-large>mdi-lock</v-icon>
               จัดการสิทธิ์
             </h5>
+            <v-spacer/>
+            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', '/dashboard/users')">
+              <v-icon>mdi-plus</v-icon>
+              เพิ่ม
+            </v-btn>
           </v-row>
           <v-col>
             <v-simple-table fixed-header>
@@ -32,16 +37,21 @@
                   <td>{{ convertDay(item.created_at) }}</td>
                   <td>{{ convertDay(item.updated_at) }}</td>
                   <td>
-                    <v-btn fab text @click="openItem(item)">
-                      <v-icon>
+<!--                    <v-btn fab text @click="openItem(item)">-->
+                      <v-icon @click="openItem(item)" class="p-1">
+                        mdi-shield-lock-outline
+                      </v-icon>
+<!--                    </v-btn>-->
+<!--                    <v-btn fab text @click="openItem(item)">-->
+                      <v-icon class="p-1">
                         mdi-pen
                       </v-icon>
-                    </v-btn>
-                    <v-btn fab text>
-                      <v-icon>
+<!--                    </v-btn>-->
+<!--                    <v-btn fab text>-->
+                      <v-icon class="p-1">
                         mdi-delete
                       </v-icon>
-                    </v-btn>
+<!--                    </v-btn>-->
                   </td>
                 </tr>
                 </tbody>
