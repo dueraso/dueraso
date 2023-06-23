@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: ['auth', isAdmin],
+  middleware: ['auth'],
   layout: "seller-layout",
   name: "IndexPage",
   data() {

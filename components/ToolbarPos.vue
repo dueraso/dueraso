@@ -131,7 +131,7 @@ export default {
         },
         {
           title: "จัดการรายการ",
-          directory: "/pos/order",
+          directory: "/pos/order-list",
         },
         {
           title: "จัดการส่วนลด",

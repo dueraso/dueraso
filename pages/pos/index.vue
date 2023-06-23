@@ -9,10 +9,10 @@
         </div>
         <v-container fluid v-if="!loading">
           <v-row class="m-0">
-            <v-col cols="12" md="8" style="height: 900px" class="mx-auto">
+            <v-col cols="12" md="8">
               <v-card class="p-3">
                 <p>รายการทั้งหมด</p>
-                <div style="max-height: 900px; overflow-y: auto;">
+                <div style="max-height: 600px; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards" :key="i" :cols="6" :md="card.flex" sm="2" xl="2">
                       <v-card>
@@ -34,7 +34,7 @@
                     </v-col>
                   </v-row>
                 </div>
-                <v-row>
+                <v-row class="mt-2">
                   <v-col md="2">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
@@ -62,7 +62,7 @@
             <v-col>
               <v-card class="p-3">
                 <p>รายการเลือก</p>
-                <v-simple-table fixed-header>
+                <v-simple-table fixed-header height="350px">
                   <template v-slot:default>
                     <thead>
                     <tr>
@@ -88,6 +88,7 @@
                   </template>
                 </v-simple-table>
               </v-card>
+
               <v-card class="mt-3 p-3">
                 <p class="m-0">คูปองส่วนลด</p>
                 <v-simple-table fixed-header>
@@ -129,6 +130,9 @@
                 <v-row>
                   <v-col md="2">
                     <h4 class="m-0">รวม</h4>
+                  </v-col>
+                  <v-col>
+                    <h4 class="m-0">3</h4>
                   </v-col>
                   <v-col class="text-right">
                     <h3 class="m-0">3,000.00</h3>

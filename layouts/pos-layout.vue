@@ -2,7 +2,7 @@
   <v-app dark style="background-color: white;">
     <ToolbarPos/>
     <Nuxt/>
-    <FooterBar/>
+<!--    <FooterBar/>-->
   </v-app>
 </template>
 <style>
