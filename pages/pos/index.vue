@@ -12,7 +12,7 @@
             <v-col cols="12" md="8">
               <v-card class="p-3">
                 <p>รายการทั้งหมด</p>
-                <div style="max-height: 600px; overflow-y: auto;">
+                <div style="height: 100vh; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards" :key="i" :cols="6" :md="card.flex" sm="2" xl="2">
                       <v-card>
@@ -35,25 +35,25 @@
                   </v-row>
                 </div>
                 <v-row class="mt-2">
-                  <v-col md="2">
+                  <v-col md="3" cols="6">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       ลด 10%
                     </v-card>
                   </v-col>
-                  <v-col md="2">
+                  <v-col md="3" cols="6">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       ลด 20%
                     </v-card>
                   </v-col>
-                  <v-col md="2">
+                  <v-col md="3" cols="6">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
-                      ระบุจำนวนเอง
+                      ระบุ
                     </v-card>
                   </v-col>
                 </v-row>

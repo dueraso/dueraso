@@ -3,7 +3,7 @@ import convert from "../../plugins/convert";
 import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: "auth",
+  // middleware: "auth",
   layout: "pos-layout",
   data: () => ({
     loading: false,

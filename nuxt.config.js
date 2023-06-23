@@ -74,6 +74,10 @@ export default {
     "bootstrap-vue/nuxt",
   ],
 
+  server: {
+    host: '0.0.0.0' // default: localhost
+  },
+
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
