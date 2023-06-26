@@ -35,25 +35,25 @@
                   </v-row>
                 </div>
                 <v-row class="mt-2">
-                  <v-col md="3" cols="6">
+                  <v-col md="3" cols="6" xl="2">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       ลด 10%
                     </v-card>
                   </v-col>
-                  <v-col md="3" cols="6">
+                  <v-col md="3" cols="6" xl="2">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       ลด 20%
                     </v-card>
                   </v-col>
-                  <v-col md="3" cols="6">
+                  <v-col md="3" cols="6" xl="2">
                     <v-card height="50px" class="col text-center">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
-                      ระบุ
+                      ระบุจำนวน
                     </v-card>
                   </v-col>
                 </v-row>
