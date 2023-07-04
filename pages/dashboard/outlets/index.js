@@ -75,6 +75,10 @@ export default {
   },
   methods: {
     myUtils,
+    nameCreate(val){
+      if(val === null) return
+      return val.name
+    },
     convertDay(val) {
       if (val == undefined) return
       return dayjs(val).format('HH:mm')

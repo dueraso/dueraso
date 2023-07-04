@@ -11,7 +11,20 @@
           <v-row class="m-0">
             <v-col cols="12" md="8">
               <v-card class="p-3">
-                <p>รายการทั้งหมด</p>
+
+                <v-row class="mb-0">
+                  <p class="m-2 pl-1">รายการ</p>
+                  <v-col cols="12" sm="10" md="8" class="m-0 p-0">
+                    <v-sheet class="p-0 m-0">
+                      <v-chip-group mandatory active-class="primary--text">
+                        <v-chip v-for="(tag,i) in tags" :key="i">
+                          {{ tag }}
+                        </v-chip>
+                      </v-chip-group>
+                    </v-sheet>
+                  </v-col>
+                </v-row>
+
                 <div style="height: 100vh; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards" :key="i" :cols="6" :md="card.flex" sm="2" xl="2">
@@ -35,25 +48,11 @@
                   </v-row>
                 </div>
                 <v-row class="mt-2">
-                  <v-col md="3" cols="6" xl="2">
-                    <v-card height="50px" class="col text-center">
+                  <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">
+                    <v-card height="50px" class="col text-center" @click="">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
-                      ลด 10%
-                    </v-card>
-                  </v-col>
-                  <v-col md="3" cols="6" xl="2">
-                    <v-card height="50px" class="col text-center">
-                      <v-icon>mdi-ticket-percent-outline
-                      </v-icon>
-                      ลด 20%
-                    </v-card>
-                  </v-col>
-                  <v-col md="3" cols="6" xl="2">
-                    <v-card height="50px" class="col text-center">
-                      <v-icon>mdi-ticket-percent-outline
-                      </v-icon>
-                      ระบุจำนวน
+                      {{ item.name }}
                     </v-card>
                   </v-col>
                 </v-row>

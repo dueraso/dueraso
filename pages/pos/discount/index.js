@@ -4,8 +4,8 @@ import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: ['auth', isAdmin],
-  layout: "seller-layout",
+  middleware: ['auth'],
+  layout: "pos-layout",
   data() {
     return {
       loading: true,
@@ -20,16 +20,13 @@ export default {
           width: ""
         },
         {
-          title: "รายละเอียด",
-          width: ""
-        },
-        {
-          title: "ที่อยู่/สถานที่",
-          width: "15%"
+          title: "ใช้งาน",
+          width: "5%"
         },
       ],
       desserts: {},
       item: {},
+      use:[]
     };
   },
 
@@ -44,7 +41,7 @@ export default {
       this.$nuxt.$loading.start()
     })
     this.getData()
-    this.getOutlet()
+    // this.getOutlet()
   },
 
   computed:{
@@ -97,10 +94,10 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/branch").then((res) => {
-        // this.desserts = res
-        this.desserts = Object.assign({},res.data)
-        console.log(this.desserts.data)
+      await this.$axios.get("/posDiscount").then((res) => {
+        this.desserts = res.data
+        // this.desserts = Object.assign({},res.data)
+        console.log(res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);

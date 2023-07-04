@@ -229,6 +229,12 @@ export default {
         price:89
       },
     ],
+    discount:[],
+    tags: [
+      'ทั้งหมด',
+      'เสื้อ',
+      'กางเกง',
+    ],
   }),
   computed: {
     convert() {
@@ -254,6 +260,7 @@ export default {
   },
 
   mounted() {
+    this.getData()
   },
 
   methods: {
@@ -269,10 +276,10 @@ export default {
     },
 
     async getData() {
-      await this.$axios
-        .get("/full_places")
-        .then((response) => {
-          this.desserts = response.data;
+      await this.$axios.get("/posDiscount").then((res) => {
+        this.discount = res.data
+        console.log(res.data)
+          // this.desserts = response.data;
           // console.log(JSON.stringify(this.desserts))
           // this.desserts = this.$auth.user.id === 1 ? response.data:
           //   response.data.filter((d)=>d.create_by === this.$auth.user.id);

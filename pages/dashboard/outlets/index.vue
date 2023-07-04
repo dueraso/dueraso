@@ -41,7 +41,7 @@
                 <tr v-for="(item, index) in desserts.data" :key="index">
                   <td>{{ item.title }}</td>
                   <td>{{ item.detail }}</td>
-                  <td>{{ item.create_by.name }}</td>
+                  <td>{{ nameCreate(item.create_by) }}</td>
                   <td class="p-0 text-right">
                     <v-btn fab small text @click="openItem(item)" v-show="myUtils('update', $route.fullPath)">
                       <v-icon>mdi-pen</v-icon>
