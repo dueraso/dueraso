@@ -16,16 +16,20 @@ export default {
       insteadSelect: null,
       tableHead: [
         {
-          title: "ชื่อสาขา",
+          title: "ชื่อ",
           width: ""
         },
         {
-          title: "รายละเอียด",
+          title: "ประเภท",
           width: ""
         },
         {
-          title: "ที่อยู่/สถานที่",
-          width: "15%"
+          title: "ราคา",
+          width: ""
+        },
+        {
+          title: "รูป",
+          width: "5%"
         },
       ],
       desserts: {},
@@ -87,9 +91,7 @@ export default {
 
     async getOutlet() {
       await this.$axios.get("/organization").then((res) => {
-        // this.desserts = res
         this.instead = res.data.data
-        console.log("fff>"+JSON.stringify(this.instead))
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -97,10 +99,10 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/branch").then((res) => {
+      await this.$axios.get("/posProduct").then((res) => {
         // this.desserts = res
         this.desserts = Object.assign({},res.data)
-        console.log(this.desserts.data)
+        console.log(this.desserts)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);

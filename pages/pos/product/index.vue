@@ -11,10 +11,10 @@
           <v-row class="pa-3 mt-1" style="background: #eef7f6">
             <h5 class="mb-0 ml-4" style="color: #00000080">
               <v-icon x-large>mdi-clipboard-edit-outline</v-icon>
-              ชื่อสาขา/ชื่ออีเว้นท์
+              จัดการรายการ
             </h5>
             <v-spacer/>
-            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
+            <v-btn outlined @click="openItem({})" class="mr-3">
               <v-icon>mdi-plus</v-icon>
               เพิ่ม
             </v-btn>
@@ -27,20 +27,23 @@
                   <th v-for="(item, i) in tableHead" :key="i" class="text-left" style="font-size: 14px"
                       :width="item.width">{{ item.title }}
                   </th>
-                  <th width="120">
+                  <th width="120px">
                   </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(item, index) in desserts.data" :key="index">
-                  <td>{{ item.title }}</td>
-                  <td>{{ item.detail }}</td>
-                  <td>{{ item.address }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.type.name }}</td>
+                  <td>{{ item.price }}</td>
+                  <td>
+                    <v-img :src="item.imageUrl" height="40px" width="40px" style="border-radius: 10px"></v-img>
+                  </td>
                   <td class="p-0 text-right">
-                    <v-btn fab small text @click="openItem(item)" v-show="myUtils('update', $route.fullPath)">
+                    <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" v-show="myUtils('delete', $route.fullPath)">
+                    <v-btn fab small text @click="onDelete(item)">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </td>

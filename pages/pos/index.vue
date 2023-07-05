@@ -13,12 +13,15 @@
               <v-card class="p-3">
 
                 <v-row class="mb-0">
-                  <p class="m-2 pl-1">รายการ</p>
+                  <p class="m-2 pl-1 pt-1">รายการ</p>
                   <v-col cols="12" sm="10" md="8" class="m-0 p-0">
                     <v-sheet class="p-0 m-0">
                       <v-chip-group mandatory active-class="primary--text">
-                        <v-chip v-for="(tag,i) in tags" :key="i">
-                          {{ tag }}
+                        <v-chip @click="getData()">
+                          ทั้งหมด
+                        </v-chip>
+                        <v-chip v-for="(tag,i) in tags.data" :key="i" @click="getData(tag.id)">
+                          {{ tag.name }}
                         </v-chip>
                       </v-chip-group>
                     </v-sheet>
@@ -27,16 +30,16 @@
 
                 <div style="height: 100vh; overflow-y: auto;">
                   <v-row dense>
-                    <v-col v-for="(card, i) in cards" :key="i" :cols="6" :md="card.flex" sm="2" xl="2">
-                      <v-card>
+                    <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
+                      <v-card style="border-radius:10px">
                         <a @click="onClick(card)">
                           <v-img
-                            :src="card.src"
+                            :src="card.imageUrl"
                             class="white--text align-end"
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                            height="200px"
+                            height="200px" style="border-radius:10px"
                           >
-                            <h5 class="p-1 m-0">{{ card.title }}</h5>
+                            <h5 class="p-1 m-0">{{ card.name }}</h5>
                             <h6 class="p-1 m-0">
                               <v-icon dark>mdi-tag-outline</v-icon>
                               {{ card.price }} บ.
