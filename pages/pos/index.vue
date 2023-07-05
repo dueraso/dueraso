@@ -127,7 +127,7 @@
               </v-card>
               <v-card class="mt-3 p-3">
                 <v-row>
-                  <v-col md="2">
+                  <v-col md="3">
                     <h4 class="m-0">รวม</h4>
                   </v-col>
                   <v-col>
@@ -141,9 +141,9 @@
 
               <v-card class="mt-3 p-3">
                 <v-row>
-                  <v-col>
-                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>
-                  </v-col>
+<!--                  <v-col>-->
+<!--                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>-->
+<!--                  </v-col>-->
                   <v-col class="text-right">
                     <v-btn color="primary" x-large>
                       <v-icon>
