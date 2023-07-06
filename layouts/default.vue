@@ -2,7 +2,9 @@
   <v-app dark>
     <Toolbar/>
     <nuxt/>
-    <Footer/>
+    <v-footer app>
+      <Footer/>
+    </v-footer>
   </v-app>
 </template>
 <script>
