@@ -8,18 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-<!--          <v-row class="pa-3 mt-1" style="background: #eef7f6">-->
-<!--            <h5 class="mb-0 ml-4" style="color: #00000080">-->
-<!--              <v-icon x-large>mdi-clipboard-edit-outline</v-icon>-->
-<!--              จัดการส่วนลด-->
-<!--            </h5>-->
-<!--            <v-spacer/>-->
-<!--            <v-btn outlined @click="openItem({})" class="mr-3">-->
-<!--              <v-icon>mdi-plus</v-icon>-->
-<!--              เพิ่ม-->
-<!--            </v-btn>-->
-<!--          </v-row>-->
-          <head-bar title="จัดการส่วนลด" :callback="openItem"/>
+          <HeadBar :callback="openItem" title="จัดการรายการ"/>
           <v-col>
             <v-simple-table fixed-header>
               <template v-slot:default>
@@ -28,17 +17,13 @@
                   <th v-for="(item, i) in tableHead" :key="i" class="text-left" style="font-size: 14px"
                       :width="item.width">{{ item.title }}
                   </th>
-                  <th width="120">
+                  <th width="120px">
                   </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="(item, index) in desserts.data" :key="index">
                   <td>{{ item.name }}</td>
-                  <td>
-                    <v-switch inset v-model="item.use == true?1:0" :value="item.use === '1'"
-                    ></v-switch>
-                  </td>
                   <td class="p-0 text-right">
                     <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
@@ -52,50 +37,23 @@
               </template>
             </v-simple-table>
             <div class="text-center">
-              <v-dialog v-model="dialog" persistent>
+              <v-dialog v-model="dialog" persistent width="500">
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    เพิ่ม/แก้ไขชื่อสาขา
+                    เพิ่ม/แก้ไข
                   </v-card-title>
 
-                  <v-card-text>
-                    <v-autocomplete
-                      outlined
-                      auto-select-first
-                      :items="instead"
-                      v-model="insteadSelect"
-                      hide-no-data
-                      hide-selected
-                      return-object
-                      label="ชื่อร้าน"
-                      dense
-                      item-text="title"
-                      item-value="id"
-                    ></v-autocomplete>
+                  <v-card-text class="pt-3 pb-0">
                     <v-text-field
-                      v-model="item.title"
-                      label="ชื่อสาขา"
+                      v-model="item.name"
+                      label="ชื่อ"
                       outlined
                       clearable
                       dense
                     ></v-text-field>
-                    <v-text-field
-                      v-model="item.detail"
-                      label="รายละเอียด"
-                      outlined
-                      clearable
-                      dense
-                    ></v-text-field>
-                    <v-textarea
-                      v-model="item.address"
-                      label="ที่อยู่"
-                      outlined
-                      clearable
-                      dense
-                    ></v-textarea>
                   </v-card-text>
 
-                  <v-divider></v-divider>
+                  <!--                  <v-divider></v-divider>-->
 
                   <v-card-actions>
                     <v-spacer></v-spacer>

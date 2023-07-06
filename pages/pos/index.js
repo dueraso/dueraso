@@ -93,7 +93,7 @@ export default {
     },
 
     async getDiscount() {
-      await this.$axios.get("/posDiscount").then((res) => {
+      await this.$axios.get("/getDiscountForUse").then((res) => {
         this.discount = res.data
       }).catch((error) => {
         console.log(error);

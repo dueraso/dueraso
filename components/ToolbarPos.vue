@@ -134,6 +134,10 @@ export default {
           directory: "/pos/product",
         },
         {
+          title: "จัดการประเภท",
+          directory: "/pos/product-type",
+        },
+        {
           title: "จัดการส่วนลด",
           directory: "/pos/discount",
         },
