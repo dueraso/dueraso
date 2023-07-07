@@ -104,7 +104,6 @@ export default {
 
     async getData() {
       await this.$axios.get("/posProduct").then((res) => {
-        // this.desserts = res
         this.desserts = Object.assign({},res.data)
         console.log(this.desserts)
         this.$nuxt.$loading.finish()

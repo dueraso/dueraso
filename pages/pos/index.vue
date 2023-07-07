@@ -9,9 +9,10 @@
         </div>
         <v-container fluid v-if="!loading">
           <v-row class="m-0">
+            <!--            list-->
             <v-col cols="12" md="8">
               <v-card class="p-3">
-
+                <!--                tags-->
                 <v-row class="mb-0">
                   <p class="m-2 pl-1 pt-1">รายการ</p>
                   <v-col cols="12" sm="10" md="8" class="m-0 p-0">
@@ -27,8 +28,8 @@
                     </v-sheet>
                   </v-col>
                 </v-row>
-
-                <div style="height: 100vh; overflow-y: auto;">
+                <!--content-->
+                <div style="height: 80vh; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
@@ -50,9 +51,10 @@
                     </v-col>
                   </v-row>
                 </div>
+                <!--                discount-->
                 <v-row class="mt-2">
                   <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">
-                    <v-card height="50px" class="col text-center" @click="">
+                    <v-card height="50px" class="col text-center" @click="addDiscount(item)">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       {{ item.name }}
@@ -61,6 +63,7 @@
                 </v-row>
               </v-card>
             </v-col>
+            <!--            order-->
             <v-col>
               <v-card class="p-3">
                 <p>รายการเลือก</p>
@@ -81,7 +84,6 @@
                       <td>
                         <v-text-field
                           dense hide-details v-model="item.total" type="number" :rules="[rules.min, rules.max]"
-
                         />
                       </td>
                       <td class="text-right">{{ convert.money(item.price) }}</td>
@@ -101,32 +103,18 @@
                 <v-simple-table fixed-header>
                   <template v-slot:default>
                     <tbody>
-                    <tr>
+                    <tr v-for="(item, i) in discountSel" :key="i">
                       <td>
-                        ส่วนลด 10%
+                        {{item.name}}
                       </td>
                       <td width="15%">
-                        1
+                        {{item.total}}
                       </td>
                       <td class="text-right" width="20%">
                         -199
                       </td>
                       <td width="20px">
-                        <v-icon>mdi-close</v-icon>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="pt-5">
-                        ส่วนลด 20%
-                      </td>
-                      <td class="pt-5">
-                        1
-                      </td>
-                      <td class="text-right pt-5">
-                        -299
-                      </td>
-                      <td class="pt-5">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon @click="removeDiscount(item)">mdi-close</v-icon>
                       </td>
                     </tr>
                     </tbody>

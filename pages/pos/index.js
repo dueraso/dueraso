@@ -28,8 +28,10 @@ export default {
     ],
     desserts: [],
     discount: [],
+    discountSel: [],
     tags: {},
     total:1,
+    dd:1,
     rules: {
       required: value => !!value || 'Required.',
       min: value => value >= 1,
@@ -48,6 +50,10 @@ export default {
     // dialog(val) {
     //   val || this.close()
     // },
+    countOrder(val){
+      console.log(this.desserts)
+      return '1'
+    },
     dialogDelete(val) {
       val || this.closeDelete();
     },
@@ -66,7 +72,17 @@ export default {
   },
 
   methods: {
+    addDiscount(val) {
+      val.total = 1
+      this.discountSel.push(val)
+      console.log(this.discountSel)
+    },
+    removeDiscount(val) {
+      this.discountSel.splice(this.discountSel.indexOf(val), 1)
+    },
+
     addOrder(val) {
+      val.total = 1
       this.desserts.push(val)
     },
     removeOrder(val) {
