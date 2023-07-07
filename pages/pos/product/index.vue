@@ -25,7 +25,7 @@
               <template v-slot:default>
                 <thead>
                 <tr>
-                  <th v-for="(item, i) in tableHead" :key="i" class="text-left" style="font-size: 14px"
+                  <th v-for="(item, i) in tableHead" :key="i" :class="item.text" style="font-size: 14px"
                       :width="item.width">{{ item.title }}
                   </th>
                   <th width="120px">
@@ -37,7 +37,7 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.type.name }}</td>
                   <td>{{ item.price }}</td>
-                  <td>
+                  <td align="center">
                     <v-img :src="item.imageUrl" height="40px" width="40px" style="border-radius: 10px"></v-img>
                   </td>
                   <td class="p-0 text-right">

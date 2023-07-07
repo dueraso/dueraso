@@ -26,30 +26,15 @@ export default {
         text: "text-right"
       },
     ],
-    desserts: [
-      {
-        name: "เสื้อ 89",
-        total: 1,
-        price: 89
-      },
-      {
-        name: "เสื้อ 2 ตัว 100",
-        total: 2,
-        price: 100
-      },
-      {
-        name: "เสื้อเดรส 299",
-        total: 1,
-        price: 299
-      },
-      {
-        name: "กางเกง 89",
-        total: 1,
-        price: 89
-      },
-    ],
+    desserts: [],
     discount: [],
     tags: {},
+    total:1,
+    rules: {
+      required: value => !!value || 'Required.',
+      min: value => value >= 1,
+      max: value => value <= 99,
+    }
   }),
   computed: {
     convert() {
@@ -81,9 +66,13 @@ export default {
   },
 
   methods: {
-    onClick(val) {
-      console.log("click>" + val.price)
+    addOrder(val) {
+      this.desserts.push(val)
     },
+    removeOrder(val) {
+      this.desserts.splice(this.desserts.indexOf(val), 1)
+    },
+
     onConfirm() {
       console.log("")
     },
@@ -101,9 +90,9 @@ export default {
     },
 
     async getData(_type = "") {
-      await this.$axios.get("/posProduct",{
-        params:{
-          type:_type
+      await this.$axios.get("/posProduct", {
+        params: {
+          type: _type
         }
       }).then((res) => {
         this.cards = res.data
@@ -124,7 +113,6 @@ export default {
 
     async getType() {
       await this.$axios.get("/posProductType").then((res) => {
-        console.log(res.data)
         this.tags = res.data;
       }).catch((error) => {
         console.log(error);
@@ -132,19 +120,16 @@ export default {
     },
 
     async searchPlaces() {
-      await this.$axios
-        .get(`/filter_places`, {
-          params: {
-            search: this.search,
-          },
-        })
-        .then((response) => {
-          this.desserts = response.data;
-        })
-        .catch((error) => {
-          alert(error);
-          console.log(error);
-        });
+      await this.$axios.get(`/filter_places`, {
+        params: {
+          search: this.search,
+        },
+      }).then((response) => {
+        this.desserts = response.data;
+      }).catch((error) => {
+        alert(error);
+        console.log(error);
+      });
     },
 
     async createItem() {

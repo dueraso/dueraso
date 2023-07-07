@@ -32,7 +32,7 @@
                   <v-row dense>
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
-                        <a @click="onClick(card)">
+                        <a @click="addOrder(card)">
                           <v-img
                             :src="card.imageUrl"
                             class="white--text align-end"
@@ -78,10 +78,15 @@
                     <tbody>
                     <tr v-for="(item, index) in desserts" :key="index">
                       <td>{{ item.name }}</td>
-                      <td>{{ item.total }}</td>
+                      <td>
+                        <v-text-field
+                          dense hide-details v-model="item.total" type="number" :rules="[rules.min, rules.max]"
+
+                        />
+                      </td>
                       <td class="text-right">{{ convert.money(item.price) }}</td>
                       <td class="p-0 text-right">
-                        <v-btn fab small text>
+                        <v-btn fab small text @click="removeOrder(item)">
                           <v-icon>mdi-close</v-icon>
                         </v-btn>
                       </td>
@@ -144,9 +149,9 @@
 
               <v-card class="mt-3 p-3">
                 <v-row>
-<!--                  <v-col>-->
-<!--                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>-->
-<!--                  </v-col>-->
+                  <!--                  <v-col>-->
+                  <!--                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>-->
+                  <!--                  </v-col>-->
                   <v-col class="text-right">
                     <v-btn color="primary" x-large>
                       <v-icon>

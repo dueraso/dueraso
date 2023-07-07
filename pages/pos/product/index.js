@@ -17,19 +17,23 @@ export default {
       tableHead: [
         {
           title: "ชื่อ",
-          width: ""
+          width: "",
+          text:"text-left"
         },
         {
           title: "ประเภท",
-          width: ""
+          width: "",
+          text:"text-left"
         },
         {
           title: "ราคา",
-          width: ""
+          width: "",
+          text:"text-left"
         },
         {
           title: "รูป",
-          width: "5%"
+          width: "5%",
+          text:"text-center"
         },
       ],
       desserts: {},
