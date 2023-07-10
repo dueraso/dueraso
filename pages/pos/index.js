@@ -30,13 +30,14 @@ export default {
     discount: [],
     discountSel: [],
     tags: {},
-    total:1,
-    dd:1,
+    total: 1,
     rules: {
       required: value => !!value || 'Required.',
       min: value => value >= 1,
       max: value => value <= 99,
-    }
+    },
+    priceTotal: 0.00,
+    discountTotal:0.00
   }),
   computed: {
     convert() {
@@ -47,11 +48,19 @@ export default {
     },
   },
   watch: {
+    discountSel(val) {
+      this.onDiscountTotal()
+      return val
+    },
+    desserts(val) {
+      this.priceTotal = convert.calculateArray(val, true)
+      this.onDiscountTotal()
+      return val
+    },
     // dialog(val) {
     //   val || this.close()
     // },
-    countOrder(val){
-      console.log(this.desserts)
+    countOrder(val) {
       return '1'
     },
     dialogDelete(val) {
@@ -72,19 +81,26 @@ export default {
   },
 
   methods: {
+    onDiscountTotal() {
+      if (this.discountSel.length === 0) return
+      this.discountTotal = Math.round(this.priceTotal / 100 * this.discountSel[0].total)
+      this.priceTotal -= this.discountTotal
+    },
     addDiscount(val) {
-      val.total = 1
       this.discountSel.push(val)
-      console.log(this.discountSel)
     },
     removeDiscount(val) {
+      this.priceTotal += this.discountTotal
       this.discountSel.splice(this.discountSel.indexOf(val), 1)
     },
 
     addOrder(val) {
       val.total = 1
-      this.desserts.push(val)
+      let s = this.desserts
+      s.push(val)
+      this.desserts = convert.countObjectArray(s)
     },
+
     removeOrder(val) {
       this.desserts.splice(this.desserts.indexOf(val), 1)
     },

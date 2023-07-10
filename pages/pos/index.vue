@@ -54,7 +54,7 @@
                 <!--                discount-->
                 <v-row class="mt-2">
                   <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">
-                    <v-card height="50px" class="col text-center" @click="addDiscount(item)">
+                    <v-card height="50px" class="col text-center" @click="addDiscount(item)" :disabled="discountSel.length > 0">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       {{ item.name }}
@@ -82,9 +82,7 @@
                     <tr v-for="(item, index) in desserts" :key="index">
                       <td>{{ item.name }}</td>
                       <td>
-                        <v-text-field
-                          dense hide-details v-model="item.total" type="number" :rules="[rules.min, rules.max]"
-                        />
+                        {{item.total}}
                       </td>
                       <td class="text-right">{{ convert.money(item.price) }}</td>
                       <td class="p-0 text-right">
@@ -104,14 +102,14 @@
                   <template v-slot:default>
                     <tbody>
                     <tr v-for="(item, i) in discountSel" :key="i">
-                      <td>
+                      <td colspan="2">
                         {{item.name}}
                       </td>
-                      <td width="15%">
-                        {{item.total}}
-                      </td>
+<!--                      <td width="15%">-->
+<!--                        {{item.total}}-->
+<!--                      </td>-->
                       <td class="text-right" width="20%">
-                        -199
+                        -{{discountTotal}}
                       </td>
                       <td width="20px">
                         <v-icon @click="removeDiscount(item)">mdi-close</v-icon>
@@ -120,36 +118,62 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-              </v-card>
-              <v-card class="mt-3 p-3">
+                  <v-divider></v-divider>
+
+                <p class="m-0">สรุปยอด</p>
                 <v-row>
                   <v-col md="3">
                     <h4 class="m-0">รวม</h4>
                   </v-col>
                   <v-col>
-                    <h4 class="m-0">3</h4>
+                    <h4 class="m-0">{{convert.calculateArray(this.desserts)}}</h4>
                   </v-col>
                   <v-col class="text-right">
-                    <h3 class="m-0">3,000.00</h3>
+                    <h3 class="m-0">{{convert.money(priceTotal)}}</h3>
                   </v-col>
+                  <v-btn color="primary" x-large block>
+                    <v-icon>
+                      mdi-cash-multiple
+                    </v-icon>
+                    ชำระ
+                  </v-btn>
                 </v-row>
               </v-card>
+<!--              <v-card class="mt-3 p-3">-->
+<!--                <v-row>-->
+<!--                  <v-col md="3">-->
+<!--                    <h4 class="m-0">รวม</h4>-->
+<!--                  </v-col>-->
+<!--                  <v-col>-->
+<!--                    <h4 class="m-0">{{convert.calculateArray(this.desserts)}}</h4>-->
+<!--                  </v-col>-->
+<!--                  <v-col class="text-right">-->
+<!--                    <h3 class="m-0">{{convert.money(priceTotal)}}</h3>-->
+<!--                  </v-col>-->
+<!--                  <v-btn color="primary" x-large block>-->
+<!--                    <v-icon>-->
+<!--                      mdi-cash-multiple-->
+<!--                    </v-icon>-->
+<!--                    ชำระ-->
+<!--                  </v-btn>-->
+<!--                </v-row>-->
+<!--              </v-card>-->
 
-              <v-card class="mt-3 p-3">
-                <v-row>
-                  <!--                  <v-col>-->
-                  <!--                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>-->
-                  <!--                  </v-col>-->
-                  <v-col class="text-right">
-                    <v-btn color="primary" x-large>
-                      <v-icon>
-                        mdi-cash-multiple
-                      </v-icon>
-                      ชำระ
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-card>
+<!--              <v-card class="mt-3 p-3">-->
+<!--                <v-row>-->
+<!--                  &lt;!&ndash;                  <v-col>&ndash;&gt;-->
+<!--                  &lt;!&ndash;                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>&ndash;&gt;-->
+<!--                  &lt;!&ndash;                  </v-col>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <v-col class="text-right">&ndash;&gt;-->
+<!--                    <v-btn color="primary" x-large block>-->
+<!--                      <v-icon>-->
+<!--                        mdi-cash-multiple-->
+<!--                      </v-icon>-->
+<!--                      ชำระ-->
+<!--                    </v-btn>-->
+<!--&lt;!&ndash;                  </v-col>&ndash;&gt;-->
+<!--                </v-row>-->
+<!--              </v-card>-->
             </v-col>
           </v-row>
         </v-container>
