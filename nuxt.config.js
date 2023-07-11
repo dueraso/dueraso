@@ -43,6 +43,10 @@ export default {
         type: "text/css",
         href: "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
       },
+      {
+        rel: "stylesheet",
+        href: "https://unpkg.com/swiper/swiper-bundle.min.css",
+      },
     ],
   },
 

@@ -3,29 +3,24 @@ import dayjs from "dayjs";
 export default {
   middleware: "auth",
   data: () => ({
-    config: {},
-    dialog: false,
-    landing: true,
-    isDisabled: false,
-    slide_show: false,
-    search: "",
-    dialogDelete: false,
-    desserts: [],
-    place_type: [],
-    type_select: "",
-    editedIndex: -1,
-    editedItem: {},
-    defaultItem: {},
+    items: [
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+      },
+      {
+        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+      },
+    ],
   }),
   computed: {
-    roles() {
-      return this.$auth.user.roles <= 2;
-    },
   },
   watch: {
-    // dialog(val) {
-    //   val || this.close()
-    // },
     dialogDelete(val) {
       val || this.closeDelete();
     },
@@ -38,18 +33,13 @@ export default {
   mounted() {},
 
   methods: {
-    convertDay(day) {
-      return dayjs(day).format("DD-MM-YYYY HH:mm:ss");
-    },
+
 
     async getData() {
       await this.$axios
         .get("/full_places")
         .then((response) => {
           this.desserts = response.data;
-          // console.log(JSON.stringify(this.desserts))
-          // this.desserts = this.$auth.user.id === 1 ? response.data:
-          //   response.data.filter((d)=>d.create_by === this.$auth.user.id);
         })
         .catch((error) => {
           console.log(error);

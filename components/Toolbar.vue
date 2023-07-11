@@ -1,7 +1,7 @@
 <template>
   <b-navbar
     toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner"
-    variant="white">
+    variant="white" app>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav class="container">
       <!--    <v-spacer/>-->
