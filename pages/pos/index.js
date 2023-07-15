@@ -36,8 +36,22 @@ export default {
       min: value => value >= 1,
       max: value => value <= 99,
     },
+    branch: "",
+    branchList: [],
+    branchSelect: {},
     priceTotal: 0.00,
-    discountTotal:0.00
+    discountTotal: 0.00,
+    dialog: false,
+    dialogPay: false,
+
+    tab: null,
+    price:[
+      "1,000","500","100"
+    ],
+    items: [
+      'web', 'shopping', 'videos', 'images', 'news',
+    ],
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   }),
   computed: {
     convert() {
@@ -48,6 +62,9 @@ export default {
     },
   },
   watch: {
+    branch(val) {
+      return val
+    },
     discountSel(val) {
       this.onDiscountTotal()
       return val
@@ -57,9 +74,6 @@ export default {
       this.onDiscountTotal()
       return val
     },
-    // dialog(val) {
-    //   val || this.close()
-    // },
     countOrder(val) {
       return '1'
     },
@@ -78,9 +92,31 @@ export default {
     this.getData()
     this.getDiscount()
     this.getType()
+    if (this.$auth.user.branch == null) {
+      this.getBranch()
+    } else {
+      const val = this.$auth.user.branch
+      this.branchSelect = val
+      this.convertBranchSelect()
+    }
   },
 
   methods: {
+    convertBranchSelect(){
+      this.branch = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
+    },
+    async getBranch() {
+      this.dialog = true
+      this.$axios.get("branch").then((res) => {
+        console.log(res.data)
+        this.branchList = res.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    checkBranch() {
+      return this.$auth.user
+    },
     onDiscountTotal() {
       if (this.discountSel.length === 0) return
       this.discountTotal = Math.round(this.priceTotal / 100 * this.discountSel[0].total)

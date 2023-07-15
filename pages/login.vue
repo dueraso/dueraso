@@ -96,35 +96,35 @@
           </v-container>
         </v-col>
       </v-row>
-      <v-overlay :value="overlay">
-        <v-card width="500px" light align="center" v-if="profile.active === 1">
-          <v-card-title>สถานะของคุณคือ</v-card-title>
-          <br/>
-          <v-card-subtitle v-if="profile.status.id === 2"
-          ><h1 style="color: orange">{{ profile.status.name }}</h1>
-          </v-card-subtitle>
-          <v-card-subtitle v-else>
-            <h1 style="color: red">
-              {{ profile.status.name }}
-            </h1>
-          </v-card-subtitle>
-          <v-card-actions align="center">
-            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
-          </v-card-actions>
-        </v-card>
-        <v-card width="500px" light align="center" v-else>
-          <v-card-title>สถานะของคุณคือ</v-card-title>
-          <br/>
-          <v-card-subtitle
-          ><h3 style="color: red">
-            {{ message }}
-          </h3>
-          </v-card-subtitle>
-          <v-card-actions align="center">
-            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-overlay>
+<!--      <v-overlay :value="overlay">-->
+<!--        <v-card width="500px" light align="center" v-if="profile.active === 1">-->
+<!--          <v-card-title>สถานะของคุณคือ</v-card-title>-->
+<!--          <br/>-->
+<!--          <v-card-subtitle v-if="profile.status.id === 2"-->
+<!--          ><h1 style="color: orange">{{ profile.status.name }}</h1>-->
+<!--          </v-card-subtitle>-->
+<!--          <v-card-subtitle v-else>-->
+<!--            <h1 style="color: red">-->
+<!--              {{ profile.status.name }}-->
+<!--            </h1>-->
+<!--          </v-card-subtitle>-->
+<!--          <v-card-actions align="center">-->
+<!--            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>-->
+<!--          </v-card-actions>-->
+<!--        </v-card>-->
+<!--        <v-card width="500px" light align="center" v-else>-->
+<!--          <v-card-title>สถานะของคุณคือ</v-card-title>-->
+<!--          <br/>-->
+<!--          <v-card-subtitle-->
+<!--          ><h3 style="color: red">-->
+<!--            {{ message }}-->
+<!--          </h3>-->
+<!--          </v-card-subtitle>-->
+<!--          <v-card-actions align="center">-->
+<!--            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>-->
+<!--          </v-card-actions>-->
+<!--        </v-card>-->
+<!--      </v-overlay>-->
     </v-app>
   </div>
 </template>

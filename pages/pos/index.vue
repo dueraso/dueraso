@@ -10,13 +10,13 @@
         <v-container fluid v-if="!loading">
           <v-row class="m-0">
             <!--            list-->
-            <v-col cols="12" md="8">
+            <v-col cols="12" md="8" class="d-none d-sm-flex">
               <v-card class="p-3">
                 <!--                tags-->
                 <v-row class="mb-0">
-                  <p class="m-2 pl-1 pt-1">รายการ</p>
-                  <v-col cols="12" sm="10" md="8" class="m-0 p-0">
-                    <v-sheet class="p-0 m-0">
+                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate1" style="color: #54b6c8">ร้าน {{ branch }}</h4>
+                  <v-col cols="12" sm="10" md="6" class="m-0  p-0">
+                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0">
                       <v-chip-group mandatory active-class="primary--text">
                         <v-chip @click="getData()">
                           ทั้งหมด
@@ -27,6 +27,9 @@
                       </v-chip-group>
                     </v-sheet>
                   </v-col>
+                  <v-text-field
+                    label="ค้นหาชื่อ" dense hide-details outlined append-icon="mdi-magnify"
+                    class="mr-3 ml-3 ml-lg-0 mb-3 mb-lg-0"/>
                 </v-row>
                 <!--content-->
                 <div style="height: 80vh; overflow-y: auto;">
@@ -54,7 +57,8 @@
                 <!--                discount-->
                 <v-row class="mt-2">
                   <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">
-                    <v-card height="50px" class="col text-center" @click="addDiscount(item)" :disabled="discountSel.length > 0">
+                    <v-card height="50px" class="col text-center" @click="addDiscount(item)"
+                            :disabled="discountSel.length > 0">
                       <v-icon>mdi-ticket-percent-outline
                       </v-icon>
                       {{ item.name }}
@@ -66,13 +70,19 @@
             <!--            order-->
             <v-col>
               <v-card class="p-3">
-                <p>รายการเลือก</p>
+                <v-row class="mb-0">
+                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch }}</h4>
+                  <p class="m-2 pl-1 pt-1 pb-1 d-none d-sm-flex">รายการที่เลือก</p>
+                  <v-spacer/>
+                  <v-btn outlined class="m-2 d-sm-none align-self-center">เพิ่ม</v-btn>
+                </v-row>
                 <v-simple-table fixed-header height="350px">
                   <template v-slot:default>
                     <thead>
                     <tr>
                       <th v-for="(item, i) in tableHead" :key="i" :class="item.text" style="font-size: 14px"
-                          :width="item.width">{{ item.title }}
+                          :width="item.width">
+                        {{ item.title }}
                       </th>
                       <th width="20">
                       </th>
@@ -82,7 +92,7 @@
                     <tr v-for="(item, index) in desserts" :key="index">
                       <td>{{ item.name }}</td>
                       <td>
-                        {{item.total}}
+                        {{ item.total }}
                       </td>
                       <td class="text-right">{{ convert.money(item.price) }}</td>
                       <td class="p-0 text-right">
@@ -103,13 +113,13 @@
                     <tbody>
                     <tr v-for="(item, i) in discountSel" :key="i">
                       <td colspan="2">
-                        {{item.name}}
+                        {{ item.name }}
                       </td>
-<!--                      <td width="15%">-->
-<!--                        {{item.total}}-->
-<!--                      </td>-->
+                      <!--                      <td width="15%">-->
+                      <!--                        {{item.total}}-->
+                      <!--                      </td>-->
                       <td class="text-right" width="20%">
-                        -{{discountTotal}}
+                        -{{ discountTotal }}
                       </td>
                       <td width="20px">
                         <v-icon @click="removeDiscount(item)">mdi-close</v-icon>
@@ -118,7 +128,7 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-                  <v-divider></v-divider>
+                <v-divider></v-divider>
 
                 <p class="m-0">สรุปยอด</p>
                 <v-row>
@@ -126,12 +136,12 @@
                     <h4 class="m-0">รวม</h4>
                   </v-col>
                   <v-col>
-                    <h4 class="m-0">{{convert.calculateArray(this.desserts)}}</h4>
+                    <h4 class="m-0">{{ convert.calculateArray(this.desserts) }}</h4>
                   </v-col>
                   <v-col class="text-right">
-                    <h3 class="m-0">{{convert.money(priceTotal)}}</h3>
+                    <h3 class="m-0">{{ convert.money(priceTotal) }}</h3>
                   </v-col>
-                  <v-btn color="primary" x-large block>
+                  <v-btn color="primary" x-large block @click="dialogPay = true">
                     <v-icon>
                       mdi-cash-multiple
                     </v-icon>
@@ -139,43 +149,142 @@
                   </v-btn>
                 </v-row>
               </v-card>
-<!--              <v-card class="mt-3 p-3">-->
-<!--                <v-row>-->
-<!--                  <v-col md="3">-->
-<!--                    <h4 class="m-0">รวม</h4>-->
-<!--                  </v-col>-->
-<!--                  <v-col>-->
-<!--                    <h4 class="m-0">{{convert.calculateArray(this.desserts)}}</h4>-->
-<!--                  </v-col>-->
-<!--                  <v-col class="text-right">-->
-<!--                    <h3 class="m-0">{{convert.money(priceTotal)}}</h3>-->
-<!--                  </v-col>-->
-<!--                  <v-btn color="primary" x-large block>-->
-<!--                    <v-icon>-->
-<!--                      mdi-cash-multiple-->
-<!--                    </v-icon>-->
-<!--                    ชำระ-->
-<!--                  </v-btn>-->
-<!--                </v-row>-->
-<!--              </v-card>-->
-
-<!--              <v-card class="mt-3 p-3">-->
-<!--                <v-row>-->
-<!--                  &lt;!&ndash;                  <v-col>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                    <v-btn @click="onConfirm()" text x-large>ล้าง</v-btn>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                  </v-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                  <v-col class="text-right">&ndash;&gt;-->
-<!--                    <v-btn color="primary" x-large block>-->
-<!--                      <v-icon>-->
-<!--                        mdi-cash-multiple-->
-<!--                      </v-icon>-->
-<!--                      ชำระ-->
-<!--                    </v-btn>-->
-<!--&lt;!&ndash;                  </v-col>&ndash;&gt;-->
-<!--                </v-row>-->
-<!--              </v-card>-->
             </v-col>
           </v-row>
+          <v-dialog v-model="dialog" width="500">
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                กรุณาเลือกสาขาที่ต้องการ
+              </v-card-title>
+
+              <v-card-text class="pt-6 pb-0">
+                <v-autocomplete
+                  v-model="branchSelect"
+                  :items="branchList.data"
+                  outlined
+                  dense
+                  label="เลือกสาขา"
+                  return-object
+                  item-value="id"
+                  item-text="title"
+                  @change="convertBranchSelect"
+                ></v-autocomplete>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog = false">
+                  ตกลง
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition">
+            <v-card>
+              <v-toolbar dark color="primary">
+                <v-btn icon dark @click="dialogPay = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>Settings</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                  <v-btn dark text @click="dialog = false">
+                    Save
+                  </v-btn>
+                </v-toolbar-items>
+              </v-toolbar>
+              <v-row class="m-0">
+                <v-col>
+                  <v-card elevation="4" class="mb-3">
+                    <v-row class="m-0">
+                      <v-col>
+                        บิลที่ 0001
+                      </v-col>
+                      <v-divider vertical/>
+                      <v-col align-self="center">
+                        <h5 align="center">รวม</h5>
+                        <h3 align="center" style="color: #38857d">600.00</h3>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card elevation="4">
+                    fffs
+                  </v-card>
+                </v-col>
+                <v-col>
+                  <v-card elevation="4">
+                    <v-tabs color="deep-purple" fixed-tabs>
+                      <v-tab>เงินสด</v-tab>
+                      <v-tab>พร้อมเพร์</v-tab>
+
+                      <v-tab-item>
+                        <v-container fluid>
+                          <v-text-field outlined hide-details readonly prepend-inner-icon="mdi-currency-thb"
+                                        class="pl-3 pr-3"/>
+                          <v-row class="m-0">
+                            <v-col v-for="(item, i) in price" :key="i" cols="4">
+                              <v-btn outlined block x-large>
+                                {{ item }}
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                          <v-row class="m-0">
+                            <v-col cols="8">
+                              <v-row>
+                                <v-col cols="4" v-for="(item, i) in 9" :key="i">
+                                  <v-btn block height="60" x-large>
+                                    <h2>{{ item }}</h2>
+                                  </v-btn>
+                                </v-col>
+                                <v-col cols="4">
+                                  <v-btn block  height="60" x-large>
+                                    <h2>00</h2>
+                                  </v-btn>
+                                </v-col>
+                                <v-col cols="4">
+                                  <v-btn block height="60" x-large>
+                                    <h2>0</h2>
+                                  </v-btn>
+                                </v-col>
+                                <v-col cols="4">
+                                  <v-btn block height="60" x-large>
+                                    <h2>.</h2>
+                                  </v-btn>
+                                </v-col>
+                              </v-row>
+                            </v-col>
+
+                            <v-col>
+                              <v-row class="m-0">
+                                <v-btn block height="200px">
+                                  <v-icon x-large>
+                                    mdi-backspace-outline
+                                  </v-icon>
+                                </v-btn>
+                                <v-btn block height="100px" class="mt-4" x-large>
+                                  <h1>C</h1>
+                                </v-btn>
+                              </v-row>
+                            </v-col>
+                            <!--                            <v-col xl="4" md="4">-->
+                            <!--                              <v-btn outlined block v-for="(item, i) in price" :key="i">-->
+                            <!--                                dddd-->
+                            <!--                              </v-btn>-->
+                            <!--                            </v-col>-->
+                          </v-row>
+                        </v-container>
+                      </v-tab-item>
+                      <v-tab-item>
+                        <v-container fluid>
+                          dddd
+                        </v-container>
+                      </v-tab-item>
+                    </v-tabs>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-dialog>
         </v-container>
       </v-main>
     </v-app>
@@ -183,7 +292,14 @@
 </template>
 <style>
 .truncate {
-  max-width: 10px;
+  max-width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate1 {
+  max-width: 25%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
