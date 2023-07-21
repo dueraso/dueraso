@@ -119,8 +119,9 @@ export default {
     select,
     getCash(val, isSum = true) {
       if (isSum) {
-        console.log("1งง")
-        this.cash += parseFloat(val)
+        this.cash = parseFloat(this.cash) + parseFloat(val)
+        console.log(this.cash + "<1งง>" + val)
+
         this.changeMoney = parseFloat(this.cash - this.priceTotal)
       } else {
         console.log("2งง")
@@ -129,12 +130,13 @@ export default {
       }
     },
     sumChange(val, isDel = false) {
-      // let d = 100.05
-      // d = d.toString().substring(0, d.toString().length - 1)
-      // console.log(d)
       if (isDel) {
-        this.cash = this.cash.toString().substring(0, this.cash.toString().length - 1)
+        let _del = this.cash.toString().substring(0, this.cash.toString().length - 1)
+        this.cash = _del === "" ? 0 : _del
+        console.log(this.cash)
       } else {
+        let d = "100.00"
+        console.log(d.substring(d.indexOf(".")+1, d.length).length === 2)
         this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
       }
       this.changeMoney = this.cash - this.priceTotal
