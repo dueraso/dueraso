@@ -245,22 +245,22 @@
                             <v-col cols="8">
                               <v-row>
                                 <v-col cols="4" v-for="(item, i) in 9" :key="i">
-                                  <v-btn block height="60" x-large>
+                                  <v-btn block height="60" x-large @click="sumChange(item)">
                                     <h2>{{ item }}</h2>
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large width="66.6">
+                                  <v-btn block height="60" x-large width="66.6" @click="sumChange('00')">
                                     <h2>00</h2>
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large>
+                                  <v-btn block height="60" x-large  @click="sumChange('0')">
                                     <h2>0</h2>
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large width="66.6">
+                                  <v-btn block height="60" x-large width="66.6"  @click="sumChange('.')">
                                     <h2>.</h2>
                                   </v-btn>
                                 </v-col>
@@ -269,12 +269,12 @@
 
                             <v-col>
                               <v-row class="m-0">
-                                <v-btn block height="200px">
+                                <v-btn block height="200px" @click="sumChange('',true)">
                                   <v-icon x-large>
                                     mdi-backspace-outline
                                   </v-icon>
                                 </v-btn>
-                                <v-btn block height="100px" class="mt-4" x-large>
+                                <v-btn block height="100px" class="mt-4" x-large @click="getCash(0, false)">
                                   <h1>C</h1>
                                 </v-btn>
                               </v-row>

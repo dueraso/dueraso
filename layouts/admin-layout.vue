@@ -76,16 +76,16 @@ export default {
           title: "ข้อมูลสถานที่",
           to: "/",
         },
-        {
-          icon: "mdi-account-group-outline",
-          title: "ผู้ใช้งานในระบบ",
-          to: "/manage",
-        },
-        {
-          icon: "mdi-account-outline",
-          title: "ข้อมูลส่วนตัว",
-          to: "/profile",
-        },
+        // {
+        //   icon: "mdi-account-group-outline",
+        //   title: "ผู้ใช้งานในระบบ",
+        //   to: "/manage",
+        // },
+        // {
+        //   icon: "mdi-account-outline",
+        //   title: "ข้อมูลส่วนตัว",
+        //   to: "/profile",
+        // },
       ],
     };
   },

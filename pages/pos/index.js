@@ -59,7 +59,7 @@ export default {
       'web', 'shopping', 'videos', 'images', 'news',
     ],
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    changeMoney: 0
+    changeMoney: 0.00
   }),
   computed: {
     convert() {
@@ -117,8 +117,26 @@ export default {
   },
   methods: {
     select,
-    getCash(val) {
-      this.cash += parseFloat(val)
+    getCash(val, isSum = true) {
+      if (isSum) {
+        console.log("1งง")
+        this.cash += parseFloat(val)
+        this.changeMoney = parseFloat(this.cash - this.priceTotal)
+      } else {
+        console.log("2งง")
+        this.cash = val
+        this.changeMoney = this.cash
+      }
+    },
+    sumChange(val, isDel = false) {
+      // let d = 100.05
+      // d = d.toString().substring(0, d.toString().length - 1)
+      // console.log(d)
+      if (isDel) {
+        this.cash = this.cash.toString().substring(0, this.cash.toString().length - 1)
+      } else {
+        this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
+      }
       this.changeMoney = this.cash - this.priceTotal
     },
     confirmClose() {

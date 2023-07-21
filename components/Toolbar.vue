@@ -4,8 +4,9 @@
     variant="white" app>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav class="container">
-      <!--    <v-spacer/>-->
+      dueraso
       <b-navbar-nav class="ml-auto pl-0" fixed-top style="width: 1440px">
+          <v-spacer/>
         <b-nav-item
           v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link" style="padding-right: 0"
           @click="$router.push(itemBar.route)"
