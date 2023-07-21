@@ -25,6 +25,8 @@
     "moment-business-days": "^1.2.0",
     "nuxt": "^2.15.8",
     "nuxt-dropzone": "^1.0.4",
+    "promptpay-qr": "^0.5.0",
+    "qrcode": "^1.5.3",
     "underscore": "^1.13.6",
     "v-mask": "^2.3.0",
     "vue": "^2.6.14",

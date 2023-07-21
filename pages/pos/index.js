@@ -1,6 +1,11 @@
 import dayjs from "dayjs";
 import convert from "../../plugins/convert";
 import myUtils from "@/plugins/myUtils";
+import generatePayload from "promptpay-qr";
+import qrcode from "qrcode";
+import {select} from "underscore";
+// import fs from "fs";
+// import fs from "../../api/test";
 
 export default {
   // middleware: "auth",
@@ -43,15 +48,18 @@ export default {
     discountTotal: 0.00,
     dialog: false,
     dialogPay: false,
-
+    dialogCancelPay: false,
+    qr: "",
     tab: null,
-    price:[
-      "1,000","500","100"
+    cash: 0,
+    price: [
+      1000, 500, 100
     ],
     items: [
       'web', 'shopping', 'videos', 'images', 'news',
     ],
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    changeMoney: 0
   }),
   computed: {
     convert() {
@@ -62,6 +70,9 @@ export default {
     },
   },
   watch: {
+    changeMoney(val) {
+      return val
+    },
     branch(val) {
       return val
     },
@@ -92,17 +103,41 @@ export default {
     this.getData()
     this.getDiscount()
     this.getType()
+    if (!this.$auth.loggedIn) {
+      this.branchSelect = ""
+      return
+    }
     if (this.$auth.user.branch == null) {
       this.getBranch()
     } else {
-      const val = this.$auth.user.branch
-      this.branchSelect = val
+      this.branchSelect = this.$auth.user.branch
       this.convertBranchSelect()
     }
+    // this.qrTest()
   },
-
   methods: {
-    convertBranchSelect(){
+    select,
+    getCash(val) {
+      this.cash += parseFloat(val)
+      this.changeMoney = this.cash - this.priceTotal
+    },
+    confirmClose() {
+      this.dialogCancelPay = false
+      this.dialogPay = false
+    },
+    pay() {
+      this.dialogPay = true
+      const mobileNumber = '095-432-9380'
+      const IDCardNumber = '0-0000-00000-00-0'
+      let amount = this.priceTotal
+      const payload = generatePayload(mobileNumber, {amount}) //First parameter : mobileNumber || IDCardNumber
+      const options = {type: 'svg', color: {dark: '#000', light: '#fff'}}
+      qrcode.toString(payload, options, (err, svg) => {
+        if (err) return console.log(err)
+        this.qr = svg
+      })
+    },
+    convertBranchSelect() {
       this.branch = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
     },
     async getBranch() {

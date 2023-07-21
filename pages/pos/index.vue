@@ -141,7 +141,7 @@
                   <v-col class="text-right">
                     <h3 class="m-0">{{ convert.money(priceTotal) }}</h3>
                   </v-col>
-                  <v-btn color="primary" x-large block @click="dialogPay = true">
+                  <v-btn color="primary" x-large block @click="pay" :disabled="priceTotal === 0.00">
                     <v-icon>
                       mdi-cash-multiple
                     </v-icon>
@@ -179,51 +179,64 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition">
+          <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition" persistent>
             <v-card>
-              <v-toolbar dark color="primary">
-                <v-btn icon dark @click="dialogPay = false">
+              <v-toolbar dark color="#54b6c8">
+                <v-btn text dark @click="dialogCancelPay = true">
                   <v-icon>mdi-close</v-icon>
+                  ยกเลิก
                 </v-btn>
-                <v-toolbar-title>Settings</v-toolbar-title>
+                <!--                <v-toolbar-title>ชำระ</v-toolbar-title>-->
                 <v-spacer></v-spacer>
-                <v-toolbar-items>
-                  <v-btn dark text @click="dialog = false">
-                    Save
-                  </v-btn>
-                </v-toolbar-items>
+                <v-btn outlined @click="dialog = false">
+                  <v-icon>mdi-content-save-all-outline</v-icon>
+                  บันทึก
+                </v-btn>
               </v-toolbar>
               <v-row class="m-0">
                 <v-col>
                   <v-card elevation="4" class="mb-3">
                     <v-row class="m-0">
                       <v-col>
-                        บิลที่ 0001
+                        <v-col align-self="center">
+                          <h5 align="center">ยอดรวม</h5>
+                          <h3 align="center">{{ convert.money(this.priceTotal) }}</h3>
+                        </v-col>
                       </v-col>
                       <v-divider vertical/>
                       <v-col align-self="center">
-                        <h5 align="center">รวม</h5>
-                        <h3 align="center" style="color: #38857d">600.00</h3>
+                        <h5 align="center">เงินทอน</h5>
+                        <h1 align="center" style="color: #38857d">{{ convert.money(changeMoney) }}</h1>
                       </v-col>
                     </v-row>
                   </v-card>
-                  <v-card elevation="4">
-                    fffs
+                  <v-card elevation="4" class="row m-0 align-content-center">
+                    <v-col align="center" class="pb-0">
+                      <v-img src="PromptPay.jpg" width="200" class="m-0"></v-img>
+                    </v-col>
+                    <v-col class="pt-0">
+                      <div v-html="qr"/>
+                    </v-col>
                   </v-card>
                 </v-col>
                 <v-col>
                   <v-card elevation="4">
-                    <v-tabs color="deep-purple" fixed-tabs>
-                      <v-tab>เงินสด</v-tab>
-                      <v-tab>พร้อมเพร์</v-tab>
-
+                    <v-tabs color="deep-purple" fixed-tabs slider-color="#54b6c8">
+                      <v-tab style="color: #54b6c8">เงินสด</v-tab>
+                      <!--                      <v-tab>พร้อมเพร์</v-tab>-->
                       <v-tab-item>
                         <v-container fluid>
-                          <v-text-field outlined hide-details readonly prepend-inner-icon="mdi-currency-thb"
-                                        class="pl-3 pr-3"/>
+                          <v-card height="100" class="ml-2 mr-2">
+                            <v-row class="m-0 fill-height">
+                              <v-icon>mdi-currency-thb</v-icon>
+                              <span style="font-size: 60px">{{ cash }}</span>
+                            </v-row>
+                          </v-card>
+                          <!--                          <v-text-field outlined hide-details hide-spin-buttons prepend-inner-icon="mdi-currency-thb"-->
+                          <!--                                        class="pl-3 pr-3 my-large-input-field px-15" v-model="cash" label="รับมา" height="100"/>-->
                           <v-row class="m-0">
                             <v-col v-for="(item, i) in price" :key="i" cols="4">
-                              <v-btn outlined block x-large>
+                              <v-btn outlined block x-large @click="getCash(item)">
                                 {{ item }}
                               </v-btn>
                             </v-col>
@@ -237,7 +250,7 @@
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block  height="60" x-large>
+                                  <v-btn block height="60" x-large width="66.6">
                                     <h2>00</h2>
                                   </v-btn>
                                 </v-col>
@@ -247,7 +260,7 @@
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large>
+                                  <v-btn block height="60" x-large width="66.6">
                                     <h2>.</h2>
                                   </v-btn>
                                 </v-col>
@@ -266,23 +279,37 @@
                                 </v-btn>
                               </v-row>
                             </v-col>
-                            <!--                            <v-col xl="4" md="4">-->
-                            <!--                              <v-btn outlined block v-for="(item, i) in price" :key="i">-->
-                            <!--                                dddd-->
-                            <!--                              </v-btn>-->
-                            <!--                            </v-col>-->
                           </v-row>
-                        </v-container>
-                      </v-tab-item>
-                      <v-tab-item>
-                        <v-container fluid>
-                          dddd
                         </v-container>
                       </v-tab-item>
                     </v-tabs>
                   </v-card>
                 </v-col>
               </v-row>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialogCancelPay" width="500">
+            <v-card>
+              <v-row align="right" class="m-0 pt-3 pr-3">
+                <v-spacer/>
+                <v-btn icon @click="dialogCancelPay = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-row>
+              <v-col>
+                <h5 align="center" style="padding-bottom: 24px; padding-top: 12px">
+                  คุณต้องการยกเลิกการชำระใช่หรือไม่
+                </h5>
+                <v-row style="margin: 0">
+                  <v-col
+                    align="center" style="padding: 0" class="pb-2">
+                    <v-btn dark small color="#54b6c8" @click="confirmClose">
+                      ยืนยัน
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
             </v-card>
           </v-dialog>
         </v-container>
@@ -303,6 +330,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.my-large-input-field {
+  font-size: 3em;
 }
 </style>
 <script src="./index.js"/>
