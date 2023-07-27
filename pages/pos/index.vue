@@ -32,7 +32,7 @@
                     class="mr-3 ml-3 ml-lg-0 mb-3 mb-lg-0"/>
                 </v-row>
                 <!--content-->
-                <div style="height: 80vh; overflow-y: auto;">
+                <div style="height: 80dvh; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
@@ -76,7 +76,7 @@
                   <v-spacer/>
                   <v-btn outlined class="m-2 d-sm-none align-self-center">เพิ่ม</v-btn>
                 </v-row>
-                <v-simple-table fixed-header height="350px">
+                <v-simple-table fixed-header height="60dvh">
                   <template v-slot:default>
                     <thead>
                     <tr>
@@ -182,16 +182,15 @@
           <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition" persistent>
             <v-card>
               <v-toolbar dark color="#54b6c8">
-                <v-btn text dark @click="dialogCancelPay = true">
+                <v-spacer></v-spacer>
+                <v-btn icon dark @click="dialogCancelPay = true">
                   <v-icon>mdi-close</v-icon>
-                  ยกเลิก
                 </v-btn>
                 <!--                <v-toolbar-title>ชำระ</v-toolbar-title>-->
-                <v-spacer></v-spacer>
-                <v-btn outlined @click="dialog = false">
-                  <v-icon>mdi-content-save-all-outline</v-icon>
-                  บันทึก
-                </v-btn>
+<!--                <v-btn outlined @click="dialog = false">-->
+<!--                  <v-icon>mdi-content-save-all-outline</v-icon>-->
+<!--                  บันทึก-->
+<!--                </v-btn>-->
               </v-toolbar>
               <v-row class="m-0">
                 <v-col>
@@ -214,8 +213,12 @@
                     <v-col align="center" class="pb-0">
                       <v-img src="PromptPay.jpg" width="200" class="m-0"></v-img>
                     </v-col>
-                    <v-col class="pt-0">
+                    <v-col class="pt-0 pb-0">
                       <div v-html="qr"/>
+                    </v-col>
+
+                    <v-col class="pt-0">
+                      <v-btn block color="primary" x-large>บันทึกพร้อมเพย์</v-btn>
                     </v-col>
                   </v-card>
                 </v-col>
@@ -228,8 +231,10 @@
                         <v-container fluid>
                           <v-card height="100" class="ml-2 mr-2">
                             <v-row class="m-0 fill-height">
-                              <v-icon>mdi-currency-thb</v-icon>
-                              <span style="font-size: 60px">{{ cash }}</span>
+                              <v-icon x-large>mdi-currency-thb</v-icon>
+                              <v-col class="m-0 p-0">
+                                <p class="m-0 text-right mr-2" style="font-size: 60px;">{{ cash }}</p>
+                              </v-col>
                             </v-row>
                           </v-card>
                           <!--                          <v-text-field outlined hide-details hide-spin-buttons prepend-inner-icon="mdi-currency-thb"-->
@@ -255,12 +260,12 @@
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large  @click="sumChange('0')">
+                                  <v-btn block height="60" x-large @click="sumChange('0')">
                                     <h2>0</h2>
                                   </v-btn>
                                 </v-col>
                                 <v-col cols="4">
-                                  <v-btn block height="60" x-large width="66.6"  @click="sumChange('.')">
+                                  <v-btn block height="60" x-large width="66.6" @click="sumChange('.')">
                                     <h2>.</h2>
                                   </v-btn>
                                 </v-col>
@@ -278,6 +283,10 @@
                                   <h1>C</h1>
                                 </v-btn>
                               </v-row>
+                            </v-col>
+
+                            <v-col class="pt-0 pb-0">
+                              <v-btn block color="primary" x-large>บันทึกเงินสด</v-btn>
                             </v-col>
                           </v-row>
                         </v-container>

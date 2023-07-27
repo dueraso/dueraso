@@ -51,8 +51,8 @@
                 </tbody>
               </template>
             </v-simple-table>
-            <div class="text-center">
-              <v-dialog v-model="dialog" persistent>
+<!--            <div class="text-center">-->
+              <v-dialog v-model="dialog" persistent width="900">
                 <v-card>
                   <v-card-title class="text-h5 grey lighten-2 mb-3">
                     เพิ่ม/แก้ไขชื่อสาขา
@@ -108,7 +108,7 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            </div>
+<!--            </div>-->
           </v-col>
         </v-container>
       </v-main>

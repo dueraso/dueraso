@@ -116,15 +116,23 @@ export default {
     // this.qrTest()
   },
   methods: {
+    async createOrder(){
+      await this.$axios.post("/order",{
+        discount:this.discountSel,
+        product:this.desserts,
+        employee:1,
+        customer:1,
+        branch:1,
+        pay_type:1,
+        total:1,
+      })
+    },
     select,
     getCash(val, isSum = true) {
       if (isSum) {
         this.cash = parseFloat(this.cash) + parseFloat(val)
-        console.log(this.cash + "<1งง>" + val)
-
         this.changeMoney = parseFloat(this.cash - this.priceTotal)
       } else {
-        console.log("2งง")
         this.cash = val
         this.changeMoney = this.cash
       }
@@ -133,11 +141,16 @@ export default {
       if (isDel) {
         let _del = this.cash.toString().substring(0, this.cash.toString().length - 1)
         this.cash = _del === "" ? 0 : _del
-        console.log(this.cash)
       } else {
-        let d = "100.00"
-        console.log(d.substring(d.indexOf(".")+1, d.length).length === 2)
-        this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
+        if (this.cash.toString().indexOf(".") > -1) {
+          if (this.cash.toString().substring(this.cash.toString().indexOf(".") + 1, this.cash.toString().length).length < 2) {
+            if (val === ".") return;
+            this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
+          }
+          // return
+        } else {
+          this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
+        }
       }
       this.changeMoney = this.cash - this.priceTotal
     },
@@ -174,10 +187,12 @@ export default {
     },
     onDiscountTotal() {
       if (this.discountSel.length === 0) return
-      this.discountTotal = Math.round(this.priceTotal / 100 * this.discountSel[0].total)
+      let _discountSel = this.discountSel[0]
+      this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(this.priceTotal / 100 * _discountSel.total)
       this.priceTotal -= this.discountTotal
     },
     addDiscount(val) {
+      console.log(val)
       this.discountSel.push(val)
     },
     removeDiscount(val) {
