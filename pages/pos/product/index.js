@@ -8,9 +8,14 @@ export default {
   layout: "pos-layout",
   data() {
     return {
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
       loading: true,
       search: "",
       dialog: false,
+      dialogDelete: false,
+      valid: false,
       isLoading: false,
       instead: null,
       insteadSelect: null,
@@ -52,13 +57,7 @@ export default {
       this.$nuxt.$loading.start()
     })
     this.getData()
-    this.getOutlet()
-  },
-
-  computed:{
-    dd(){
-      return new B()
-    },
+    this.getProductType()
   },
 
   watch:{
@@ -93,8 +92,8 @@ export default {
       return (val !== 1) ? 'green' : 'red'
     },
 
-    async getOutlet() {
-      await this.$axios.get("/organization").then((res) => {
+    async getProductType() {
+      await this.$axios.get("/posProductType").then((res) => {
         this.instead = res.data.data
         this.$nuxt.$loading.finish()
       }).catch((e) => {
@@ -125,14 +124,17 @@ export default {
     openItem(val) {
       console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
     },
 
     async onUpdate(){
       this.dialog = false
-      await this.$axios.put("/branch/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail
+      await this.$axios.put("/posProduct/"+this.item.id,{
+        name:this.item.name,
+        detail:this.item.detail,
+        type:this.insteadSelect.id,
+        price:this.item.price,
+        image_url:this.item.url
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -143,11 +145,12 @@ export default {
 
     async onCreate(){
       this.dialog = false
-      await this.$axios.post("/branch",{
-        title:this.item.title,
+      await this.$axios.post("/posProduct",{
+        name:this.item.name,
         detail:this.item.detail,
-        address:this.item.address,
-        organization_id:this.insteadSelect.id
+        type:this.insteadSelect.id,
+        price:this.item.price,
+        image_url:this.item.url
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -156,9 +159,14 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/branch/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/posProduct/"+this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

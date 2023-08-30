@@ -3,12 +3,12 @@ import convert from "../../plugins/convert";
 import myUtils from "@/plugins/myUtils";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
-import {select} from "underscore";
+// import {select} from "underscore";
 // import fs from "fs";
 // import fs from "../../api/test";
 
 export default {
-  // middleware: "auth",
+  middleware: "auth",
   layout: "pos-layout",
   data: () => ({
     loading: false,
@@ -37,13 +37,13 @@ export default {
     tags: {},
     total: 1,
     rules: {
-      required: value => !!value || 'Required.',
+      required: value => !!value || 'จำเป็น.',
       min: value => value >= 1,
       max: value => value <= 99,
     },
-    branch: "",
+    branch: {},
     branchList: [],
-    branchSelect: {},
+    branchSelect: null,
     priceTotal: 0.00,
     discountTotal: 0.00,
     dialog: false,
@@ -51,6 +51,7 @@ export default {
     dialogCancelPay: false,
     qr: "",
     tab: null,
+    valid: true,
     cash: 0,
     price: [
       1000, 500, 100
@@ -59,7 +60,22 @@ export default {
       'web', 'shopping', 'videos', 'images', 'news',
     ],
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    changeMoney: 0.00
+    changeMoney: 0.00,
+    checkPayMoney:false,
+
+
+    name: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+    ],
+    email: '',
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    ],
+    // select: null,
+    checkbox: false,
   }),
   computed: {
     convert() {
@@ -71,6 +87,8 @@ export default {
   },
   watch: {
     changeMoney(val) {
+      this.checkPayMoney = (val >= 0)
+      console.log((val >= 0))
       return val
     },
     branch(val) {
@@ -116,18 +134,33 @@ export default {
     // this.qrTest()
   },
   methods: {
-    async createOrder(){
-      await this.$axios.post("/order",{
-        discount:this.discountSel,
+    close() {
+      if(this.$refs.form.validate()){
+        this.dialog = false
+      }
+    },
+
+    async createOrder(val = 2){
+      this.dialogPay = false
+      this.$nuxt.$loading.start()
+      await this.$axios.post("/posOrder",{
+        discount:this.discountSel.length>0?this.discountSel[0].id:null,
         product:this.desserts,
-        employee:1,
-        customer:1,
-        branch:1,
-        pay_type:1,
-        total:1,
+        customer:null,
+        branch:this.branch.id,
+        pay_type:val,
+        bill_number:this.branch.id+dayjs().format('YYMMDDHHmmss'),
+      }).then((res)=>{
+        this.desserts = []
+        this.discountSel = []
+        this.branch = {}
+        this.$nuxt.$loading.finish()
+        console.log(res.data)
+      }).catch((e)=>{
+        this.$nuxt.$loading.finish()
+        console.log(e)
       })
     },
-    select,
     getCash(val, isSum = true) {
       if (isSum) {
         this.cash = parseFloat(this.cash) + parseFloat(val)
@@ -161,6 +194,7 @@ export default {
     pay() {
       this.dialogPay = true
       const mobileNumber = '095-432-9380'
+      // const mobileNumber = '051-8-63753-3'
       const IDCardNumber = '0-0000-00000-00-0'
       let amount = this.priceTotal
       const payload = generatePayload(mobileNumber, {amount}) //First parameter : mobileNumber || IDCardNumber
@@ -171,7 +205,8 @@ export default {
       })
     },
     convertBranchSelect() {
-      this.branch = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
+      this.branch.name = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
+      this.branch.id = this.branchSelect.id
     },
     async getBranch() {
       this.dialog = true
@@ -273,16 +308,16 @@ export default {
     async createItem() {
       await this.getPlaceList();
       this.$store.commit("setReadOnly", false);
-      await this.$router.push("/update");
+      // await this.$router.push("/update");
     },
 
     async editItem(item) {
-      await this.$router.push({
-        path: "/update",
-        query: {
-          edite: Object.assign({}, item).id,
-        },
-      });
+      // await this.$router.push({
+      //   path: "/update",
+      //   query: {
+      //     edite: Object.assign({}, item).id,
+      //   },
+      // });
     },
 
     deleteItem(item) {

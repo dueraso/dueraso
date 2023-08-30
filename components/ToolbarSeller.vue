@@ -94,9 +94,20 @@
         </v-menu>
       </b-navbar-nav>
     </b-collapse>
+
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
     <!--    <Register :callback="register" :overlay="overlay"/>-->
     <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>
   </b-navbar>
+<!--  <v-app-bar :clipped-left="false" fixed app color="#5561B0">-->
+<!--&lt;!&ndash;  <NavigationDrawer :drawer="!drawer"/>&ndash;&gt;-->
+<!--    <v-app-bar-nav-icon @click.stop="setDrawer" dark/>-->
+<!--    <v-toolbar-title style="color: white" v-text="'dueraso'"></v-toolbar-title>-->
+<!--    <v-spacer/>-->
+<!--    <v-icon dark>mdi-account-circle-outline</v-icon>-->
+<!--    <p style="margin-bottom: 0px; color: white; margin-left: 12px">ยินดีต้อนรับ, Arthit</p>-->
+
+<!--  </v-app-bar>-->
 </template>
 <style>
 .circle {
@@ -141,6 +152,7 @@ export default {
       valid: true,
       snackbar: false,
       vertical: true,
+      drawer: true,
       messages: '',
       username: '',
       password: '',
@@ -169,6 +181,7 @@ export default {
   created() {
   },
   mounted() {
+    // console.log(this.$store.state.drawer)
     this.$nextTick(() => this.savePolicy())
     this.selectedLetter = this.$route.path
     if (this.$auth.user === undefined || this.$auth.user === null) return
@@ -179,6 +192,10 @@ export default {
     }
   },
   methods: {
+    setDrawer(){
+      this.drawer = !this.drawer
+      this.$store.commit("setDrawer", this.drawer);
+    },
     savePolicy() {
       localStorage.setItem("policy", this.$auth.user.roles.policy)
       if (JSON.parse(localStorage.getItem("policy")) == null) return

@@ -10,6 +10,7 @@
 <!--        </v-row>-->
 <!--      </v-container>-->
 <!--    </v-main>-->
+<!--    <NavigationDrawer/>-->
     <ToolbarSeller/>
 <!--    <LangBar/>-->
     <Nuxt/>
@@ -34,10 +35,13 @@
 import ToolbarSeller from "~/components/ToolbarSeller";
 import FooterBar from "~/components/FooterBar";
 import axios from "~/api/config";
+import NavigationDrawer from "@/components/NavigationDrawer.vue";
 
 export default {
   components: {
-    ToolbarSeller, FooterBar
+    ToolbarSeller,
+    FooterBar,
+    NavigationDrawer,
   },
   data() {
     return {

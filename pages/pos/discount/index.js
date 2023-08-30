@@ -8,11 +8,24 @@ export default {
   layout: "pos-layout",
   data() {
     return {
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
       loading: true,
       search: "",
       dialog: false,
+      dialogDelete: false,
       isLoading: false,
-      instead: null,
+      instead: [
+        {
+          id:1,
+          name:"เป็นบาท"
+        },
+        {
+          id:2,
+          name:"เป็นเปอร์เซ็นต์"
+        }
+      ],
       insteadSelect: null,
       tableHead: [
         {
@@ -26,7 +39,8 @@ export default {
       ],
       desserts: {},
       item: {},
-      use:[]
+      use:[],
+      valid:false
     };
   },
 
@@ -41,35 +55,6 @@ export default {
       this.$nuxt.$loading.start()
     })
     this.getData()
-    // this.getOutlet()
-  },
-
-  computed:{
-    dd(){
-      return new B()
-    },
-  },
-
-  watch:{
-    async search(val) {
-      console.log(val)
-      if (val == null)return
-      if (val.length < 2) return
-      if (this.isLoading) return
-      this.isLoading = true
-      await this.$axios.get(`findUsers`, {
-        params: {
-          q: val
-        }
-      }).then((res) => {
-        // const {count, data} = res.data
-        // this.count = count
-        // this.entries = data
-        console.log(res)
-      }).catch((e) => {
-        console.log(e)
-      }).finally(() => (this.isLoading = false))
-    },
   },
 
   methods: {
@@ -80,17 +65,6 @@ export default {
     },
     getColor(val) {
       return (val !== 1) ? 'green' : 'red'
-    },
-
-    async getOutlet() {
-      await this.$axios.get("/organization").then((res) => {
-        // this.desserts = res
-        this.instead = res.data.data
-        console.log("fff>"+JSON.stringify(this.instead))
-        this.$nuxt.$loading.finish()
-      }).catch((e) => {
-        console.log(e);
-      });
     },
 
     async getData() {
@@ -105,6 +79,7 @@ export default {
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
       if (this.item.id) {
         console.log("Update> " + this.item.id)
         this.onUpdate()
@@ -114,17 +89,31 @@ export default {
       }
     },
 
+    async onUse(val){
+      val.use = !val.use
+      await this.$axios.put("/posDiscount/"+val.id,{
+        use:val.use,
+      }).then((res) => {
+        this.getData()
+        console.log(res.data)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+
     openItem(val) {
-      console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
+      this.insteadSelect = this.instead.find(d=>d.id == this.item.type_discount)
     },
 
     async onUpdate(){
       this.dialog = false
-      await this.$axios.put("/branch/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail
+      await this.$axios.put("/posDiscount/"+this.item.id,{
+        name:this.item.name,
+        type_discount:this.insteadSelect.id,
+        total:this.item.total,
+        use:1,
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -135,11 +124,11 @@ export default {
 
     async onCreate(){
       this.dialog = false
-      await this.$axios.post("/branch",{
-        title:this.item.title,
-        detail:this.item.detail,
-        address:this.item.address,
-        organization_id:this.insteadSelect.id
+      await this.$axios.post("/posDiscount",{
+        name:this.item.name,
+        type_discount:this.insteadSelect.id,
+        total:this.item.total,
+        use:1,
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -148,9 +137,14 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/branch/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/posDiscount/"+this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

@@ -47,7 +47,6 @@ export default {
     },
 
     async deleteItemConfirm() {
-      console.log(JSON.stringify(this.editedItem));
       await this.$axios
         .delete(`/places/${this.editedItem.id}`)
         .then(() => {
@@ -71,7 +70,6 @@ export default {
     },
 
     async searchPlaces() {
-      console.log("สสส");
       await this.$axios
         .get(`/filter_places`, {
           params: {
@@ -90,16 +88,16 @@ export default {
     async createItem() {
       await this.getPlaceList();
       this.$store.commit("setReadOnly", false);
-      await this.$router.push("/update");
+      // await this.$router.push("/update");
     },
 
     async editItem(item) {
-      await this.$router.push({
-        path: "/update",
-        query: {
-          edite: Object.assign({}, item).id,
-        },
-      });
+      // await this.$router.push({
+      //   path: "/update",
+      //   query: {
+      //     edite: Object.assign({}, item).id,
+      //   },
+      // });
     },
 
     deleteItem(item) {

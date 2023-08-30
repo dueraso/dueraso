@@ -1,5 +1,6 @@
 import colors from "vuetify/es5/util/colors";
 import dayjs from "dayjs";
+import serve from "./api/server";
 
 export default {
   loading: "~/components/LoadingBar.vue",
@@ -88,7 +89,7 @@ export default {
    */
   // baseURL: ' https://nuxtjs-portfolio-workshop.herokuapp.com/api',
   axios: {
-    baseURL: "http://localhost:8000/api/v1",
+    baseURL: serve.api,
     // baseURL: 'http://183.88.227.207:81/gps-api/public/api',
   },
 
@@ -147,12 +148,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    postcss: {
-      preset: {
-        features: {
-          customProperties: false,
-        },
-      },
-    },
+    transpile: ['vue-google-charts']
   },
 };

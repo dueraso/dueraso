@@ -14,7 +14,7 @@
               <v-card class="p-3">
                 <!--                tags-->
                 <v-row class="mb-0">
-                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate1" style="color: #54b6c8">ร้าน {{ branch }}</h4>
+                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate1" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>
                   <v-col cols="12" sm="10" md="6" class="m-0  p-0">
                     <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0">
                       <v-chip-group mandatory active-class="primary--text">
@@ -71,7 +71,7 @@
             <v-col>
               <v-card class="p-3">
                 <v-row class="mb-0">
-                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch }}</h4>
+                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>
                   <p class="m-2 pl-1 pt-1 pb-1 d-none d-sm-flex">รายการที่เลือก</p>
                   <v-spacer/>
                   <v-btn outlined class="m-2 d-sm-none align-self-center">เพิ่ม</v-btn>
@@ -151,13 +151,13 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-dialog v-model="dialog" width="500">
+          <v-dialog v-model="dialog" width="500" persistent>
             <v-card>
               <v-card-title class="text-h5 grey lighten-2">
                 กรุณาเลือกสาขาที่ต้องการ
               </v-card-title>
-
               <v-card-text class="pt-6 pb-0">
+              <v-form ref="form" v-model="valid" lazy-validation>
                 <v-autocomplete
                   v-model="branchSelect"
                   :items="branchList.data"
@@ -167,13 +167,14 @@
                   return-object
                   item-value="id"
                   item-text="title"
+                  :rules="[rules.required]"
                   @change="convertBranchSelect"
                 ></v-autocomplete>
+              </v-form>
               </v-card-text>
-
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="dialog = false">
+                <v-btn color="primary" text @click="close">
                   ตกลง
                 </v-btn>
               </v-card-actions>
@@ -218,7 +219,7 @@
                     </v-col>
 
                     <v-col class="pt-0">
-                      <v-btn block color="primary" x-large>บันทึกพร้อมเพย์</v-btn>
+                      <v-btn block color="primary" x-large @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
                     </v-col>
                   </v-card>
                 </v-col>
@@ -286,7 +287,7 @@
                             </v-col>
 
                             <v-col class="pt-0 pb-0">
-                              <v-btn block color="primary" x-large>บันทึกเงินสด</v-btn>
+                              <v-btn block color="primary" x-large @click="createOrder(1)" :disabled="(!(changeMoney >= 0))">บันทึกเงินสด</v-btn>
                             </v-col>
                           </v-row>
                         </v-container>

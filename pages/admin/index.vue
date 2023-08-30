@@ -20,7 +20,6 @@
             @keydown.enter="searchPlaces"
           ></v-text-field>
           <v-btn
-            to="/update"
             style="align-self: center; margin-left: 12px"
             color="#54B6C8"
             dark
@@ -213,16 +212,16 @@ export default {
     async createItem() {
       await this.getPlaceList();
       this.$store.commit("setReadOnly", false);
-      await this.$router.push("/update");
+      // await this.$router.push("/update");
     },
 
     async editItem(item) {
-      await this.$router.push({
-        path: "/update",
-        query: {
-          edite: Object.assign({}, item).id,
-        },
-      });
+      // await this.$router.push({
+      //   path: "/update",
+      //   query: {
+      //     edite: Object.assign({}, item).id,
+      //   },
+      // });
     },
 
     deleteItem(item) {

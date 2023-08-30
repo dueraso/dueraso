@@ -53,60 +53,67 @@
               </template>
             </v-simple-table>
             <div class="text-center">
-              <v-dialog v-model="dialog" persistent>
+              <v-dialog v-model="dialog" persistent width="900">
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                >
+                  <v-card>
+                    <v-card-title class="text-h5 mb-3" style="background: #54b6c8">
+                      <p class="m-0" style="color: white">เพิ่ม / แก้ไขรายการ</p>
+                      <v-spacer/>
+                      <v-btn icon @click="dialog = false" dark>
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-card-title>
+
+                    <v-card-text class="pb-0">
+                      <v-text-field v-model="item.name" label="ชื่อรายการ" outlined dense required :rules="rules"/>
+                      <v-textarea  v-model="item.detail" label="รายละเอียด" outlined dense required :rules="rules"/>
+                      <v-autocomplete
+                        outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
+                        hide-selected
+                        return-object
+                        label="ประเภท"
+                        dense
+                        item-text="name"
+                        item-value="id"
+                      ></v-autocomplete>
+                      <v-text-field v-model="item.price" label="จำนวน" outlined dense type="number" required
+                                    :rules="rules"/>
+                      <v-text-field  v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"/>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" @click="confirm">
+                        ตกลง
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-form>
+              </v-dialog>
+              <v-dialog v-model="dialogDelete" width="500">
                 <v-card>
-                  <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    เพิ่ม/แก้ไขชื่อสาขา
-                  </v-card-title>
-
-                  <v-card-text>
-                    <v-autocomplete
-                      outlined
-                      auto-select-first
-                      :items="instead"
-                      v-model="insteadSelect"
-                      hide-no-data
-                      hide-selected
-                      return-object
-                      label="ชื่อร้าน"
-                      dense
-                      item-text="title"
-                      item-value="id"
-                    ></v-autocomplete>
-                    <v-text-field
-                      v-model="item.title"
-                      label="ชื่อสาขา"
-                      outlined
-                      clearable
-                      dense
-                    ></v-text-field>
-                    <v-text-field
-                      v-model="item.detail"
-                      label="รายละเอียด"
-                      outlined
-                      clearable
-                      dense
-                    ></v-text-field>
-                    <v-textarea
-                      v-model="item.address"
-                      label="ที่อยู่"
-                      outlined
-                      clearable
-                      dense
-                    ></v-textarea>
-                  </v-card-text>
-
-                  <v-divider></v-divider>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="confirm">
-                      ตกลง
+                  <v-row align="right" class="m-0 pt-3 pr-3">
+                    <v-spacer/>
+                    <v-btn icon @click="dialogDelete = false">
+                      <v-icon>mdi-close</v-icon>
                     </v-btn>
-                    <v-btn color="primary" text @click="dialog = false">
-                      ยกเลิก
-                    </v-btn>
-                  </v-card-actions>
+                  </v-row>
+                  <v-col>
+                    <h5 align="center" style="padding-bottom: 24px; padding-top: 12px">
+                      คุณต้องการลบรายการใช่หรือไม่
+                    </h5>
+                    <v-row style="margin: 0">
+                      <v-col
+                        align="center" style="padding: 0" class="pb-2">
+                        <v-btn dark small color="#54b6c8" @click="confirmDel">
+                          ยืนยัน
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-col>
                 </v-card>
               </v-dialog>
             </div>

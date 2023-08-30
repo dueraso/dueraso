@@ -10,7 +10,7 @@ const production = {
   // clientSecret : "WiNO7B4RZLD7p8p2sqsOuESPYyhOhIlE1q6Ug3EW",
   // redirectUri : "https://sign.yru.ac.th/callback",
   url: "https://dueraso.com",
-  api: "https://api.ebooking.yru.ac.th/public/api",
+  api: "https://api.notify.yru.ac.th/public/api/v1",
 };
 
-module.exports = production;
+module.exports = local;
