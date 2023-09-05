@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 export default {
-  middleware: "auth",
+  // middleware: "auth",
   data: () => ({
     items: [
       {
@@ -33,8 +33,6 @@ export default {
   mounted() {},
 
   methods: {
-
-
     async getData() {
       await this.$axios
         .get("/full_places")

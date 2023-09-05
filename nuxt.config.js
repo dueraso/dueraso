@@ -36,8 +36,8 @@ export default {
     link: [
       { rel: "icon", type: "image/x-icon", href: "/icon1.ico" },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap",
+        href : "https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Belanosima&family=Indie+Flower&display=swap",
+        rel : "stylesheet"
       },
       {
         rel: "stylesheet",
@@ -52,7 +52,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['@/assets/css/custom-vuetify.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -125,7 +125,7 @@ export default {
       dark: false,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
+          primary: '#B27D41',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,

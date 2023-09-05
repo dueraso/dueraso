@@ -18,10 +18,10 @@
   </v-app>
 </template>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Sarabun&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Athiti&family=Belanosima&family=Indie+Flower&display=swap');
 
 * {
-  font-family: "Sarabun", sans-serif;
+  font-family: "Athiti", sans-serif;
   /*color: #686770;*/
   /*font-weight: bolder;*/
 }

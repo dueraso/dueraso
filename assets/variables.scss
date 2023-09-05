@@ -1,18 +1,5 @@
-// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
-//
-// The variables you want to modify
-// $font-size-root: 20px;
-@import "~vuetify/src/styles/styles.sass";
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@500&display=swap');
-$body-font-family: 'Saraban', sans-serif;
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300&display=swap');
-$font-family: 'IBM Plex Sans Thai', sans-serif;
-
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap');
-$font-family: 'Dancing Script', cursive;
-
-
+@import url('https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Belanosima&family=Indie+Flower&display=swap');
 .v-application {
-  font-family: "Sarabun",sans-serif;
+  font-family: 'Athiti', sans-serif;
 }

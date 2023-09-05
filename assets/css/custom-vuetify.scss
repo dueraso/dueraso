@@ -1,0 +1,10 @@
+// custom-vuetify.scss
+
+// Import Vuetify's variables for customization
+@import '~vuetify/src/styles/styles.sass';
+
+// Override the default primary color
+$primary : '#B27D41';
+
+// Import Vuetify's core styles to apply the changes
+@import '~vuetify/src/styles/main.sass';

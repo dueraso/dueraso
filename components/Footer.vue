@@ -1,6 +1,6 @@
 <template>
   <v-col class="text-center" cols="12">
-    <span style="font-family: Prompt,sans-serif">
+    <span>
         Copyright © {{dayjs().format("YYYY")}} dueraso.com All rights reserved. | Powered by : Dueraso Development
     </span>
   </v-col>

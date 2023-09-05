@@ -5,8 +5,10 @@
         รวมทุกฟีเจอร์ที่จำเป็นไว้ในระบบเดียว</h2>
     </v-col>
     <v-col v-for="(item, i) in items" :key="i" class="text-center p-lg-5" cols="12" md="4">
-      <v-icon x-large class="text-center">{{ item.icon }}</v-icon>
-      <b-icon icon="arrow-up"></b-icon>
+      <v-icon x-large class="text-center">
+        {{ item.icon }}
+      </v-icon>
+      <!--      <b-icon icon="arrow-up"></b-icon>-->
       <h5>{{ item.title }}</h5>
       <p>{{ item.detail }}</p>
     </v-col>

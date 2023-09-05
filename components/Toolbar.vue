@@ -1,100 +1,53 @@
 <template>
+  <v-card
+    class="position-fixed pa-4"
+    flat style="z-index: 3; background: unset" width="100%"
+  >
   <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner"
-    variant="white" app>
+    toggleable="lg" bg="dark" class="elevation-4" variant="white" style="border-radius: 20px">
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav class="container">
-      dueraso
-      <b-navbar-nav class="ml-auto pl-0" fixed-top style="width: 1440px">
-          <v-spacer/>
-        <b-nav-item
-          v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link" style="padding-right: 0"
-          @click="$router.push(itemBar.route)"
-          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}
+    <b-collapse id="nav-collapse" is-nav class="container p-0">
+      <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 1440px; align-items: center; font-weight: 600">
+<!--        <b-nav-item-->
+<!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
+<!--          @click="$router.push(itemBar.route)"-->
+<!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
+<!--        </b-nav-item>-->
+        <b-nav-item @click="$router.push('')">
+          หน้าแรก
         </b-nav-item>
-        <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              type="submit" outlined color="#7b1817" @click="$router.push('login')" v-b-hover=""
-              style="padding: 6px; text-transform: capitalize"
-              v-show="!$auth.loggedIn" class="mx-auto">
-              login
-              <!--              {{ $i18n.t("header").login }}-->
-            </v-btn>
-          </template>
-          <v-card>
-            <v-list>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title align="center">
-                    <!--                    <p style="color: #7b1817; font-size: 18px">{{$i18n.t("header").loginToUse}}</p>-->
-                  </v-list-item-title>
-                  <!--                    <v-form-->
-                  <!--                      ref="form"-->
-                  <!--                      v-model="valid"-->
-                  <!--                      lazy-validation-->
-                  <!--                      style="max-width: 475px"-->
-                  <!--                    >-->
-                  <v-list-item-subtitle>
-                    <v-text-field
-                      light dense style="margin-top: 12px"
-                      prepend-inner-icon="mdi-account-outline"
-                      type="name" @keydown.enter="validate"
-                      v-model="username"
-                      :rules="[rules.required]">
-                    </v-text-field>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle>
-                    <v-text-field
-                      light dense style="margin-top: 12px"
-                      prepend-inner-icon="mdi-lock-outline" type="password"
-                      v-model="password"
-                      :rules="[rules.required]" @keydown.enter="validate">
-                    </v-text-field>
-                  </v-list-item-subtitle>
-                  <!--                    </v-form>-->
-                  <v-list-item-subtitle align="center">
-                    <v-col align="center" style="padding: 0">
-                      <v-btn @click="register" text style="padding: 12px;">
-                        <!--                        {{$i18n.t('header').register}}-->
-                        register
-                      </v-btn>
-                      <v-btn color="#7b1817" dark style="padding: 12px;" @click="validate">
-                        login
-                        <!--                        {{$i18n.t('header').login}}-->
-                      </v-btn>
-                    </v-col>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-        <!--        <v-menu offset-y left v-model="myPage">-->
-        <!--          <template v-slot:activator="{ on, attrs }" style="padding-right: 0px">-->
-        <!--            <b-nav-item v-bind="attrs" v-on="on" :active="active()" v-show="$auth.loggedIn">-->
-        <!--              {{ $i18n.t('header').myPage }}-->
-        <!--              <v-badge :value="active()" style="left: calc(-50% - 5px);" color="#7b1817" bottom dot-->
-        <!--                       v-show="showBadge()"></v-badge>-->
-        <!--            </b-nav-item>-->
-        <!--          </template>-->
-        <!--          <v-card>-->
-        <!--            <v-list>-->
-        <!--              <v-list-item-->
-        <!--                v-for="(item, index) in items"-->
-        <!--                :key="index" @click="changePage(item.route)">-->
-        <!--                <v-list-item-title>{{ item.name }}</v-list-item-title>-->
-        <!--              </v-list-item>-->
-        <!--            </v-list>-->
-        <!--          </v-card>-->
-        <!--        </v-menu>-->
+        <b-nav-item @click="$router.push('')">
+          บทความ
+        </b-nav-item>
+        <b-nav-item @click="$router.push('')">
+          คำถามที่พบบ่อย
+        </b-nav-item>
+        <strong class="m-0 pl-3 pr-3 color_main" style="font-size: 35px;">
+          DUERASO
+        </strong>
+        <b-nav-item @click="$router.push('')">
+          ติดต่อเรา
+        </b-nav-item>
+        <b-nav-item @click="$router.push('')">
+          แพ็คเกจ
+        </b-nav-item>
+        <b-nav-item @click="$router.push('')">
+          รวมแอป
+        </b-nav-item>
       </b-navbar-nav>
+        <v-btn right color="primary" dark>ลงทะเบียน</v-btn>
     </b-collapse>
-    <!--    <Register :callback="register" :overlay="overlay"/>-->
-    <!--    <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>-->
   </b-navbar>
+  </v-card>
 </template>
-<style>
+<style lang="scss">
+
+.color_main {
+  color: #B27D41;
+}
+#v-btn{
+  color: #B27D41;
+}
 .navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active >
 .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
   color: rgb(123, 24, 23);
@@ -115,9 +68,6 @@
 </style>
 <script>
 import axios from "~/api/config";
-// import Register from "~/components/Register";
-// import DialogCon from "./DialogCon";
-// import DialogRegister from "./DialogRegister";
 
 export default {
   // components: {DialogRegister, DialogCon, Register},
@@ -135,65 +85,6 @@ export default {
       messages: '',
       username: '',
       password: '',
-      itemsBar: [
-        {
-          name: "หน้าแรก",
-          route: '/'
-        },
-        {
-          name: "ข่าว",
-          route: '/news'
-        },
-        {
-          name: "ติดต่อ",
-          route: '/contact-us'
-        },
-        {
-          name: "หน้าร้านของฉัน",
-          route: '/pos'
-        },
-        {
-          name: "หลังร้านของฉัน",
-          route: '/dashboard'
-        },
-      ],
-      items: [
-        // {
-        //   name: this.$i18n.t('header').personalInformation,
-        //   route: this.localeLocation("profile")
-        // },
-        // // {
-        // //   name: 'แจ้งเรื่อง',
-        // //   route: 'admin'
-        // // },
-        // {
-        //   name: this.$i18n.t('header').registrationStatus,
-        //   route: this.localeLocation('status')
-        // },
-        // {
-        //   name: this.$i18n.t('header').logOut,
-        //   route: 'logout'
-        // },
-      ],
-      itemsPost: [
-        {
-          name: 'พระสมเด็จมาตรฐาน PSDA',
-          route: "1"
-        },
-        {
-          name: 'พระเครื่องพร้อมใบตรวจอัตลักษณ์',
-          route: '2'
-        },
-      ],
-      rules: {
-        required: value => !!value || "จำเป็น",
-        min: v => (v && v.length >= 8) || "ตัวอักษร 8 ขึ้นไป",
-        confirmPassword: value => value === this.password || 'รหัสผ่านไม่ต้องกัน',
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || 'กรุณากรอก e-mail'
-        }
-      },
     }
   },
   mounted() {
@@ -209,10 +100,6 @@ export default {
     showBadge() {
       return this.$vuetify.breakpoint.width > 990
     },
-    // test(i) {
-    //   console.log(this.$route.name)
-    //   console.log(JSON.stringify(this.itemsBar[i].route.name))
-    // },
     lock() {
       this.snackbar = true
       this.messages = "ขณะนี้ระบบยังไม่เปิดใช้บริการ"
