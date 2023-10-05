@@ -1,10 +1,34 @@
-// custom-vuetify.scss
+// Import your custom SCSS file
 
-// Import Vuetify's variables for customization
-@import '~vuetify/src/styles/styles.sass';
+// Define your custom color variables
+$primary-color: #B27D41;
+$accent-color: #E8BD14;
+$secondary-color: #846537;
+$icon-color: #6E4C2E;
+$tab-color: #A44E1C;
 
-// Override the default primary color
-$primary : '#B27D41';
 
-// Import Vuetify's core styles to apply the changes
-@import '~vuetify/src/styles/main.sass';
+// Define custom color classes
+.custom-primary {
+  background-color: $primary-color !important;
+  color: white !important;
+}
+
+.custom-accent {
+  background-color: $accent-color !important;
+  color: white !important;
+}
+
+.custom-secondary {
+  color: $secondary-color !important;
+}
+
+.custom-icon {
+  background-color: $icon-color !important;
+  color: white !important;
+}
+
+.custom-tab {
+  background-color: $tab-color !important;
+  color: white !important;
+}

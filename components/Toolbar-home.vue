@@ -1,43 +1,43 @@
 <template>
   <v-card
     class="position-fixed pa-4"
-    flat style="z-index: 3; background: unset" width="100%"
+    flat style="z-index: 99; background: unset" width="100%"
   >
-  <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4" variant="white" style="border-radius: 20px">
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav class="container p-0">
-      <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 1440px; align-items: center; font-weight: 600">
-<!--        <b-nav-item-->
-<!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
-<!--          @click="$router.push(itemBar.route)"-->
-<!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
-<!--        </b-nav-item>-->
-        <b-nav-item @click="$router.push('')">
-          หน้าแรก
-        </b-nav-item>
-        <b-nav-item @click="$router.push('')">
-          บทความ
-        </b-nav-item>
-        <b-nav-item @click="$router.push('')">
-          คำถามที่พบบ่อย
-        </b-nav-item>
-        <strong class="m-0 pl-3 pr-3 color_main" style="font-size: 35px;">
-          DUERASO
-        </strong>
-        <b-nav-item @click="$router.push('')">
-          ติดต่อเรา
-        </b-nav-item>
-        <b-nav-item @click="$router.push('')">
-          แพ็คเกจ
-        </b-nav-item>
-        <b-nav-item @click="$router.push('')">
-          รวมแอป
-        </b-nav-item>
-      </b-navbar-nav>
-        <v-btn right color="primary" dark>ลงทะเบียน</v-btn>
-    </b-collapse>
-  </b-navbar>
+    <b-navbar
+      toggleable="lg" bg="dark" class="elevation-4" variant="white" style="border-radius: 20px">
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav class="container p-0">
+        <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 1440px; align-items: center; font-weight: 600">
+          <!--        <b-nav-item-->
+          <!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
+          <!--          @click="$router.push(itemBar.route)"-->
+          <!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
+          <!--        </b-nav-item>-->
+          <b-nav-item @click="$router.push('/')" class="pl-4 pr-4">
+            หน้าแรก
+          </b-nav-item>
+          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+            บทความ
+          </b-nav-item>
+          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+            คำถามที่พบบ่อย
+          </b-nav-item>
+          <strong class="m-0 pl-4 pr-4 color_main" style="font-size: 35px;">
+            DUERASO
+          </strong>
+          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+            ติดต่อเรา
+          </b-nav-item>
+          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+            แพ็คเกจ
+          </b-nav-item>
+          <b-nav-item @click="$router.push('/all-apps')" class="pl-4 pr-4">
+            รวมแอป
+          </b-nav-item>
+        </b-navbar-nav>
+        <v-btn right rounded color="primary" dark @click="$router.push('/login')">ลงทะเบียน</v-btn>
+      </b-collapse>
+    </b-navbar>
   </v-card>
 </template>
 <style lang="scss">

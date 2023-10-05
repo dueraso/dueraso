@@ -52,7 +52,9 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['@/assets/css/custom-vuetify.scss'],
+  css: [
+    '@/assets/css/custom-vuetify.scss'
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -75,9 +77,31 @@ export default {
     // Doc: https://github.com/nuxt/content
     "@nuxt/content",
     "@nuxtjs/auth",
+    '@nuxtjs/auth-next',
 
     "bootstrap-vue/nuxt",
+
+    '@nuxtjs/google-gtag'
   ],
+
+  'google-gtag': {
+    id: 'G-1GY0045ZV5',
+    config: {
+      anonymize_ip: true, // anonymize IP
+      send_page_view: false, // might be necessary to avoid duplicated page track on page reload
+      linker: {
+        domains: ['dueraso.000webhostapp.com']
+      }
+    },
+    debug: true, // enable to track in dev mode
+    disableAutoPageTrack: false, // disable if you don't want to track each page route with router.afterEach(...).
+    additionalAccounts: [{
+      id: 'AW-XXXX-XX', // required if you are adding additional accounts
+      config: {
+        send_page_view: false // optional configurations
+      }
+    }]
+  },
 
   server: {
     host: '0.0.0.0' // default: localhost
@@ -95,12 +119,18 @@ export default {
 
   auth: {
     strategies: {
+      // google: {
+      //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
+      //   codeChallengeMethod: '',
+      //   responseType: 'token id_token',
+      //   redirectUri: 'http://localhost:3000/auth/callback', // Update with your redirect URI
+      // },
       local: {
         endpoints: {
           login: {
             method: "post",
             url: "login",
-            propertyName: "data.token",
+            propertyName: "token",
           },
           user: {
             method: "get",
@@ -108,7 +138,6 @@ export default {
             propertyName: "data",
           },
         },
-        scope: ['idd'],
       },
     },
     redirect: {
@@ -116,6 +145,19 @@ export default {
       home: "/dashboard"
     },
   },
+
+  http: {
+    baseURL: 'https://your-api-url.com', // Your API URL
+  },
+  // google: {
+  //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
+  //   codeChallengeMethod: '',
+  //   responseType: 'code',
+  //   endpoints: {
+  //     token: 'http://localhost:3000/user/google/', // somm backend url to resolve your auth with google and give you the token back
+  //     userInfo: 'http://localhost:3000/auth/user/' // the endpoint to get the user info after you recived the token
+  //   },
+  // },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

@@ -58,7 +58,7 @@
 <script>
 import Footer from "~/components/FooterBar";
 import Navigation from "~/components/NavigationDrawer";
-import Toolbar from "~/components/Toolbar";
+import Toolbar from "~/components/Toolbar-home.vue";
 
 export default {
   components: {Footer, Navigation, Toolbar},

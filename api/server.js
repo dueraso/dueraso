@@ -13,4 +13,4 @@ const production = {
   api: "https://api.notify.yru.ac.th/public/api/v1",
 };
 
-module.exports = production;
+module.exports = local;

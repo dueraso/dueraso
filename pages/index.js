@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 
 export default {
   // middleware: "auth",
+  layout:"home-layout",
   data: () => ({
     items: [
       {

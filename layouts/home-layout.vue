@@ -1,5 +1,5 @@
 <template>
-  <v-app dark app fixed style="background: unset" align="center" class="elevation-0">
+  <v-app dark>
     <Toolbar/>
     <nuxt/>
     <v-footer>
@@ -8,7 +8,7 @@
   </v-app>
 </template>
 <script>
-import Toolbar from "~/components/Toolbar-main.vue";
+import Toolbar from "~/components/Toolbar-home.vue";
 import Footer from "~/components/Footer";
 
 export default {
