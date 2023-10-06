@@ -7,16 +7,37 @@
             Loading..
           </v-col>
         </div>
-        <v-container fluid v-if="!loading">
+        <v-container fluid v-if="!loading" style="background-color: #F3F1ED">
           <v-row class="m-0">
             <!--            list-->
             <v-col cols="12" md="8" class="d-none d-sm-flex">
-              <v-card class="p-3">
+              <div class="p-3">
                 <!--                tags-->
                 <v-row class="mb-0">
-                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate1" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>
-                  <v-col cols="12" sm="10" md="6" class="m-0  p-0">
-                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0">
+                  <img style="height: 50px" src="/line.png">
+                  <v-col class="p-0" cols="9">
+                  <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
+                  </v-col>
+<!--                  <v-col cols="12" sm="10" md="6" class="m-0  p-0">-->
+<!--                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0">-->
+<!--                      <v-chip-group mandatory active-class="primary&#45;&#45;text">-->
+<!--                        <v-chip @click="getData()">-->
+<!--                          ทั้งหมด-->
+<!--                        </v-chip>-->
+<!--                        <v-chip v-for="(tag,i) in tags.data" :key="i" @click="getData(tag.id)">-->
+<!--                          {{ tag.name }}-->
+<!--                        </v-chip>-->
+<!--                      </v-chip-group>-->
+<!--                    </v-sheet>-->
+<!--                  </v-col>-->
+                  <v-text-field
+                    label="ค้นหาชื่อ" dense hide-details  outlined prepend-inner-icon="mdi-magnify"
+                    class="m-0 p-0" style="border-radius: 15px;"/>
+                </v-row>
+                <!--content-->
+                <div style="height: 80dvh; overflow-y: auto;">
+                  <v-col cols="12" class="m-0  p-0">
+                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0" style="background-color: rgba(255,255,255,0)">
                       <v-chip-group mandatory active-class="primary--text">
                         <v-chip @click="getData()">
                           ทั้งหมด
@@ -27,12 +48,6 @@
                       </v-chip-group>
                     </v-sheet>
                   </v-col>
-                  <v-text-field
-                    label="ค้นหาชื่อ" dense hide-details outlined append-icon="mdi-magnify"
-                    class="mr-3 ml-3 ml-lg-0 mb-3 mb-lg-0"/>
-                </v-row>
-                <!--content-->
-                <div style="height: 80dvh; overflow-y: auto;">
                   <v-row dense>
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
@@ -55,24 +70,35 @@
                   </v-row>
                 </div>
                 <!--                discount-->
-                <v-row class="mt-2">
-                  <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">
-                    <v-card height="50px" class="col text-center" @click="addDiscount(item)"
-                            :disabled="discountSel.length > 0">
-                      <v-icon>mdi-ticket-percent-outline
-                      </v-icon>
-                      {{ item.name }}
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-card>
+<!--                <v-row class="mt-2">-->
+<!--                  <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">-->
+<!--                    <v-card height="50px" class="col text-center" @click="addDiscount(item)"-->
+<!--                            :disabled="discountSel.length > 0">-->
+<!--                      <v-icon>mdi-ticket-percent-outline-->
+<!--                      </v-icon>-->
+<!--                      {{ item.name }}-->
+<!--                    </v-card>-->
+<!--                  </v-col>-->
+<!--                </v-row>-->
+              </div>
             </v-col>
             <!--            order-->
             <v-col>
+              <v-row class="mt-0 pb-4">
+                <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i" class="mt-0 p-0 pb-2">
+                  <v-card class="m-2 p-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
+                          :disabled="discountSel.length > 0">
+                    <v-icon>mdi-ticket-percent-outline
+                    </v-icon>
+                    {{ item.name }}
+                  </v-card>
+                </v-col>
+              </v-row>
               <v-card class="p-3">
+
                 <v-row class="mb-0">
-                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>
-                  <p class="m-2 pl-1 pt-1 pb-1 d-none d-sm-flex">รายการที่เลือก</p>
+<!--                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>-->
+                  <h4 class="m-2 pl-1 pb-1 d-none d-sm-flex" style="color: #846537">รายการที่เลือก</h4>
                   <v-spacer/>
                   <v-btn outlined class="m-2 d-sm-none align-self-center">เพิ่ม</v-btn>
                 </v-row>
@@ -151,33 +177,38 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-dialog v-model="dialog" width="500" persistent>
-            <v-card>
-              <v-card-title class="text-h5 grey lighten-2">
-                กรุณาเลือกสาขาที่ต้องการ
+          <v-dialog v-model="dialog" width="600px" persistent>
+            <v-card style="border-radius: 15px">
+              <v-card-title style="font-size: 23px; color: #5B4840" class="lighten-2">
+                ระบุสาขา
               </v-card-title>
-              <v-card-text class="pt-6 pb-0">
-              <v-form ref="form" v-model="valid" lazy-validation>
-                <v-autocomplete
-                  v-model="branchSelect"
-                  :items="branchList.data"
-                  outlined
-                  dense
-                  label="เลือกสาขา"
-                  return-object
-                  item-value="id"
-                  item-text="title"
-                  :rules="[rules.required]"
-                  @change="convertBranchSelect"
-                ></v-autocomplete>
-              </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="close">
+              <v-card-text class="pt-6 pb-6" style="background-color: #F6F6F6" align="center">
+                <v-form ref="form" v-model="valid" lazy-validation>
+                  <v-autocomplete
+                    v-model="branchSelect"
+                    :items="branchList.data"
+                    outlined
+                    dense
+                    label="เลือกสาขา"
+                    return-object
+                    item-value="id"
+                    item-text="title"
+                    :rules="[rules.required]"
+                    @change="convertBranchSelect"
+                    style="border-radius: 15px; mso-border-color-alt: #846537"
+                    color="#846537"
+                  ></v-autocomplete>
+                </v-form>
+                <v-btn color="#B27D41" dark rounded @click="close" width="340px">
                   ตกลง
                 </v-btn>
-              </v-card-actions>
+              </v-card-text>
+<!--              <v-card-actions>-->
+<!--                <v-spacer></v-spacer>-->
+<!--                <v-btn color="primary" text @click="close">-->
+<!--                  ตกลง-->
+<!--                </v-btn>-->
+<!--              </v-card-actions>-->
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition" persistent>
@@ -188,10 +219,10 @@
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <!--                <v-toolbar-title>ชำระ</v-toolbar-title>-->
-<!--                <v-btn outlined @click="dialog = false">-->
-<!--                  <v-icon>mdi-content-save-all-outline</v-icon>-->
-<!--                  บันทึก-->
-<!--                </v-btn>-->
+                <!--                <v-btn outlined @click="dialog = false">-->
+                <!--                  <v-icon>mdi-content-save-all-outline</v-icon>-->
+                <!--                  บันทึก-->
+                <!--                </v-btn>-->
               </v-toolbar>
               <v-row class="m-0">
                 <v-col>
@@ -287,7 +318,9 @@
                             </v-col>
 
                             <v-col class="pt-0 pb-0">
-                              <v-btn block color="primary" x-large @click="createOrder(1)" :disabled="(!(changeMoney >= 0))">บันทึกเงินสด</v-btn>
+                              <v-btn block color="primary" x-large @click="createOrder(1)"
+                                     :disabled="(!(changeMoney >= 0))">บันทึกเงินสด
+                              </v-btn>
                             </v-col>
                           </v-row>
                         </v-container>

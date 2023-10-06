@@ -1,79 +1,31 @@
 <template>
   <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner" variant="white">
-    dueraso
-    <v-spacer/>
+    toggleable="lg" bg="dark" class="elevation-4" variant="white">
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav class="ma-2">
-      <b-navbar-nav class="ml-auto pl-0" fixed-top>
-        <b-nav-item
-          v-for="(itemBar, i) in itemsBar" :key="i" class="app-nav-link pr-0" @click="addCircle(itemBar)"
-          :active='selectedLetter === itemBar.directory'>{{ itemBar.title }}
-          <v-badge
-            :value="selectedLetter === itemBar.directory" class="circle"
-            style="color: #54B6C8; background: #54B6C8" bottom dot v-show="showBadge()"/>
-        </b-nav-item>
-        <v-menu offset-y left v-model="menu" :close-on-content-click="false" :nudge-width="200" max-width="290">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              type="submit" text v-bind="attrs" v-on="on" v-b-hover="" style="text-transform: capitalize"
-              v-show="!$auth.loggedIn" class="mx-auto p-1 pb-0">
-              <v-icon>mdi-account-circle-outline</v-icon>
-              โปรไฟล์
-            </v-btn>
-          </template>
-          <v-card>
-            <v-list>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title align="center">
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    <v-text-field
-                      light dense style="margin-top: 12px" prepend-inner-icon="mdi-account-outline"
-                      type="name" @keydown.enter="validate" v-model="username" :rules="[rules.required]">
-                    </v-text-field>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle>
-                    <v-text-field
-                      light dense style="margin-top: 12px" prepend-inner-icon="mdi-lock-outline" type="password"
-                      v-model="password" :rules="[rules.required]" @keydown.enter="validate">
-                    </v-text-field>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle align="center">
-                    <v-col align="center" style="padding: 0">
-                      <v-btn @click="register" text style="padding: 12px;">
-                        register
-                      </v-btn>
-                      <v-btn color="#7b1817" dark style="padding: 12px;" @click="validate">
-                        login
-                      </v-btn>
-                    </v-col>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-        <v-menu offset-y left v-model="myPage">
-          <template v-slot:activator="{ on, attrs }" style="padding-right: 0">
-            <b-nav-item v-bind="attrs" v-on="on" v-show="$auth.loggedIn">
-              หน้าของฉัน
-            </b-nav-item>
-          </template>
-          <v-card>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in items"
-                :key="index" @click="changePage(item.route)">
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
+    <b-collapse id="nav-collapse" is-nav class="container p-0">
+      <b-navbar-nav class="ml-auto pl-0" align="center"
+                    style="width: 100%; align-items: center; font-weight: 600">
+        <!--        <b-nav-item-->
+        <!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
+        <!--          @click="$router.push(itemBar.route)"-->
+        <!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
+        <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+          DUERASO
+        </strong>
       </b-navbar-nav>
     </b-collapse>
-    <DialogCon :detail="messages" :callback="close" :textBtn="textBtn" :status="snackbar"/>
+    <v-btn right color="#E8AE0F" icon text>
+      <v-icon>mdi-bell-badge-outline</v-icon>
+    </v-btn>
+    <p class="m-0 mr-3" style="font-size: 20px">
+      <v-icon>mdi-account-outline</v-icon>
+      {{ $auth.user.name }}
+    </p>
+    <v-btn right color="#B27D41" rounded outlined class="pl-2 mr-3">
+      <v-icon>mdi-keyboard-backspace</v-icon>
+      กลับหน้าเว็บ
+    </v-btn>
+    <v-btn right class="custom-primary" rounded>ออกจากระบบ</v-btn>
   </b-navbar>
 </template>
 <style>
