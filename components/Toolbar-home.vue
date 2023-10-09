@@ -16,19 +16,19 @@
           <b-nav-item @click="$router.push('/')" class="pl-4 pr-4">
             หน้าแรก
           </b-nav-item>
-          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/blog')" class="pl-4 pr-4">
             บทความ
           </b-nav-item>
-          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/faq')" class="pl-4 pr-4">
             คำถามที่พบบ่อย
           </b-nav-item>
           <strong class="m-0 pl-4 pr-4 color_main" style="font-size: 35px;">
             DUERASO
           </strong>
-          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/contact-us')" class="pl-4 pr-4">
             ติดต่อเรา
           </b-nav-item>
-          <b-nav-item @click="$router.push('')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/package')" class="pl-4 pr-4">
             แพ็คเกจ
           </b-nav-item>
           <b-nav-item @click="$router.push('/all-apps')" class="pl-4 pr-4">

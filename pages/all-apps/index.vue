@@ -25,7 +25,7 @@
               </v-card>
             </v-col>
             <v-col cols="12" sm="3">
-              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px">
+              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push('/dashboard')">
                 <v-card width="247" height="136" color="#6E4C2E" style="border-radius: 15px">
                   <v-col align="center" style="align-items: center" class="pt-8 pb-8">
                     <v-img src="/icon2.png" width="73"></v-img>

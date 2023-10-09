@@ -21,7 +21,7 @@
       <v-icon>mdi-account-outline</v-icon>
       {{ $auth.user.name }}
     </p>
-    <v-btn right color="#B27D41" rounded outlined class="pl-2 mr-3">
+    <v-btn right color="#B27D41" rounded outlined class="pl-2 mr-3" @click="$router.back()">
       <v-icon>mdi-keyboard-backspace</v-icon>
       กลับหน้าเว็บ
     </v-btn>

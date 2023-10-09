@@ -16,28 +16,17 @@
                 <v-row class="mb-0">
                   <img style="height: 50px" src="/line.png">
                   <v-col class="p-0" cols="9">
-                  <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
+                    <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
                   </v-col>
-<!--                  <v-col cols="12" sm="10" md="6" class="m-0  p-0">-->
-<!--                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0">-->
-<!--                      <v-chip-group mandatory active-class="primary&#45;&#45;text">-->
-<!--                        <v-chip @click="getData()">-->
-<!--                          ทั้งหมด-->
-<!--                        </v-chip>-->
-<!--                        <v-chip v-for="(tag,i) in tags.data" :key="i" @click="getData(tag.id)">-->
-<!--                          {{ tag.name }}-->
-<!--                        </v-chip>-->
-<!--                      </v-chip-group>-->
-<!--                    </v-sheet>-->
-<!--                  </v-col>-->
                   <v-text-field
-                    label="ค้นหาชื่อ" dense hide-details  outlined prepend-inner-icon="mdi-magnify"
+                    label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
                     class="m-0 p-0" style="border-radius: 15px;"/>
                 </v-row>
                 <!--content-->
                 <div style="height: 80dvh; overflow-y: auto;">
                   <v-col cols="12" class="m-0  p-0">
-                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0" style="background-color: rgba(255,255,255,0)">
+                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
+                             style="background-color: rgba(255,255,255,0)">
                       <v-chip-group mandatory active-class="primary--text">
                         <v-chip @click="getData()">
                           ทั้งหมด
@@ -70,16 +59,6 @@
                   </v-row>
                 </div>
                 <!--                discount-->
-<!--                <v-row class="mt-2">-->
-<!--                  <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i">-->
-<!--                    <v-card height="50px" class="col text-center" @click="addDiscount(item)"-->
-<!--                            :disabled="discountSel.length > 0">-->
-<!--                      <v-icon>mdi-ticket-percent-outline-->
-<!--                      </v-icon>-->
-<!--                      {{ item.name }}-->
-<!--                    </v-card>-->
-<!--                  </v-col>-->
-<!--                </v-row>-->
               </div>
             </v-col>
             <!--            order-->
@@ -94,15 +73,15 @@
                   </v-card>
                 </v-col>
               </v-row>
-              <v-card class="p-3">
-
+              <v-card class="p-3 mb-3" style="border-radius: 15px">
                 <v-row class="mb-0">
-<!--                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>-->
+                  <!--                  <h4 class="m-2 pl-1 pt-0 pb-1 truncate d-sm-none" style="color: #54b6c8">ร้าน {{ branch.name }}</h4>-->
                   <h4 class="m-2 pl-1 pb-1 d-none d-sm-flex" style="color: #846537">รายการที่เลือก</h4>
                   <v-spacer/>
                   <v-btn outlined class="m-2 d-sm-none align-self-center">เพิ่ม</v-btn>
                 </v-row>
-                <v-simple-table fixed-header height="60dvh">
+                <v-divider class="m-0"/>
+                <v-simple-table fixed-header height="50dvh">
                   <template v-slot:default>
                     <thead>
                     <tr>
@@ -130,9 +109,7 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-              </v-card>
-
-              <v-card class="mt-3 p-3">
+                <v-divider class="m-0"/>
                 <p class="m-0">คูปองส่วนลด</p>
                 <v-simple-table fixed-header>
                   <template v-slot:default>
@@ -154,27 +131,69 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-                <v-divider></v-divider>
-
-                <p class="m-0">สรุปยอด</p>
+                <v-divider class="mt-0"/>
                 <v-row>
-                  <v-col md="3">
-                    <h4 class="m-0">รวม</h4>
+                  <v-col md="7">
+                    <h4 class="m-0" style="color: #846537">
+                      <u>สรุปยอดรวม</u>
+                    </h4>
                   </v-col>
                   <v-col>
-                    <h4 class="m-0">{{ convert.calculateArray(this.desserts) }}</h4>
+                    <h4 class="m-0" style="color: #846537">{{ convert.calculateArray(this.desserts) }}</h4>
                   </v-col>
-                  <v-col class="text-right">
-                    <h3 class="m-0">{{ convert.money(priceTotal) }}</h3>
+                  <v-col class="text-right" style="color: #B27D41">
+                    <h4 class="m-0">{{ convert.money(priceTotal) + "บาท" }}</h4>
                   </v-col>
-                  <v-btn color="primary" x-large block @click="pay" :disabled="priceTotal === 0.00">
-                    <v-icon>
-                      mdi-cash-multiple
-                    </v-icon>
-                    ชำระ
-                  </v-btn>
                 </v-row>
               </v-card>
+              <v-btn color="#B27D41" rounded dark x-large block @click="pay" :disabled="priceTotal === 0.00"
+                     style="font-size: 20px">
+                ชำระเงิน
+              </v-btn>
+
+              <!--              <v-card class="mt-3 p-3">-->
+              <!--                <p class="m-0">คูปองส่วนลด</p>-->
+              <!--                <v-simple-table fixed-header>-->
+              <!--                  <template v-slot:default>-->
+              <!--                    <tbody>-->
+              <!--                    <tr v-for="(item, i) in discountSel" :key="i">-->
+              <!--                      <td colspan="2">-->
+              <!--                        {{ item.name }}-->
+              <!--                      </td>-->
+              <!--                      &lt;!&ndash;                      <td width="15%">&ndash;&gt;-->
+              <!--                      &lt;!&ndash;                        {{item.total}}&ndash;&gt;-->
+              <!--                      &lt;!&ndash;                      </td>&ndash;&gt;-->
+              <!--                      <td class="text-right" width="20%">-->
+              <!--                        -{{ discountTotal }}-->
+              <!--                      </td>-->
+              <!--                      <td width="20px">-->
+              <!--                        <v-icon @click="removeDiscount(item)">mdi-close</v-icon>-->
+              <!--                      </td>-->
+              <!--                    </tr>-->
+              <!--                    </tbody>-->
+              <!--                  </template>-->
+              <!--                </v-simple-table>-->
+              <!--                <v-divider></v-divider>-->
+
+              <!--                <v-row>-->
+              <!--                  <v-col md="3">-->
+              <!--                <p class="m-0">สรุปยอด</p>-->
+              <!--&lt;!&ndash;                    <h4 class="m-0">รวม</h4>&ndash;&gt;-->
+              <!--                  </v-col>-->
+              <!--                  <v-col>-->
+              <!--                    <h4 class="m-0">{{ convert.calculateArray(this.desserts) }}</h4>-->
+              <!--                  </v-col>-->
+              <!--                  <v-col class="text-right">-->
+              <!--                    <h3 class="m-0">{{ convert.money(priceTotal) }}</h3>-->
+              <!--                  </v-col>-->
+              <!--                  <v-btn color="primary" x-large block @click="pay" :disabled="priceTotal === 0.00">-->
+              <!--                    <v-icon>-->
+              <!--                      mdi-cash-multiple-->
+              <!--                    </v-icon>-->
+              <!--                    ชำระ-->
+              <!--                  </v-btn>-->
+              <!--                </v-row>-->
+              <!--              </v-card>-->
             </v-col>
           </v-row>
           <v-dialog v-model="dialog" width="600px" persistent>
@@ -203,44 +222,43 @@
                   ตกลง
                 </v-btn>
               </v-card-text>
-<!--              <v-card-actions>-->
-<!--                <v-spacer></v-spacer>-->
-<!--                <v-btn color="primary" text @click="close">-->
-<!--                  ตกลง-->
-<!--                </v-btn>-->
-<!--              </v-card-actions>-->
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition" persistent>
-            <v-card>
-              <v-toolbar dark color="#54b6c8">
+            <v-card style="border-radius: 15px; background-color: #F6F6F6">
+              <v-toolbar>
+                <h5 style="color: #5B4840" class="m-0">
+                  ชำระเงิน
+                </h5>
                 <v-spacer></v-spacer>
-                <v-btn icon dark @click="dialogCancelPay = true">
+                <v-btn icon @click="dialogCancelPay = true" color="#5B4840">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
-                <!--                <v-toolbar-title>ชำระ</v-toolbar-title>-->
-                <!--                <v-btn outlined @click="dialog = false">-->
-                <!--                  <v-icon>mdi-content-save-all-outline</v-icon>-->
-                <!--                  บันทึก-->
-                <!--                </v-btn>-->
               </v-toolbar>
               <v-row class="m-0">
                 <v-col>
-                  <v-card elevation="4" class="mb-3">
-                    <v-row class="m-0">
-                      <v-col>
-                        <v-col align-self="center">
-                          <h5 align="center">ยอดรวม</h5>
-                          <h3 align="center">{{ convert.money(this.priceTotal) }}</h3>
-                        </v-col>
-                      </v-col>
-                      <v-divider vertical/>
-                      <v-col align-self="center">
-                        <h5 align="center">เงินทอน</h5>
-                        <h1 align="center" style="color: #38857d">{{ convert.money(changeMoney) }}</h1>
-                      </v-col>
-                    </v-row>
-                  </v-card>
+                  <v-row class="m-0 p-0">
+                    <v-col align-self="center" class="p-0 mr-2 mb-2">
+                      <v-card elevation="4" style="border-radius: 15px" class="pt-2 pb-2">
+                        <h4 align="center" style="color: #846537">
+                          <u>สรุปยอดรวม</u>
+                        </h4>
+                        <h1 align="center" class="m-0" style="color: #B27D41">
+                          {{ convert.money(this.priceTotal) }}
+                        </h1>
+                      </v-card>
+                    </v-col>
+                    <v-col align-self="center" class="p-0 ml-2 mb-2">
+                      <v-card elevation="4" style="border-radius: 15px" class="pt-2 pb-2">
+                        <h4 align="center" style="color: #846537">
+                          <u>เงินทอน</u>
+                        </h4>
+                        <h1 align="center" class="m-0" style="color: #B27D41">
+                          {{ convert.money(changeMoney) }}
+                        </h1>
+                      </v-card>
+                    </v-col>
+                  </v-row>
                   <v-card elevation="4" class="row m-0 align-content-center">
                     <v-col align="center" class="pb-0">
                       <v-img src="PromptPay.jpg" width="200" class="m-0"></v-img>
@@ -250,7 +268,7 @@
                     </v-col>
 
                     <v-col class="pt-0">
-                      <v-btn block color="primary" x-large @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
+                      <v-btn block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
                     </v-col>
                   </v-card>
                 </v-col>
@@ -261,7 +279,7 @@
                       <!--                      <v-tab>พร้อมเพร์</v-tab>-->
                       <v-tab-item>
                         <v-container fluid>
-                          <v-card height="100" class="ml-2 mr-2">
+                          <v-card height="93" class="ml-2 mr-2" style="border-radius: 15px">
                             <v-row class="m-0 fill-height">
                               <v-icon x-large>mdi-currency-thb</v-icon>
                               <v-col class="m-0 p-0">
@@ -273,7 +291,7 @@
                           <!--                                        class="pl-3 pr-3 my-large-input-field px-15" v-model="cash" label="รับมา" height="100"/>-->
                           <v-row class="m-0">
                             <v-col v-for="(item, i) in price" :key="i" cols="4">
-                              <v-btn outlined block x-large @click="getCash(item)">
+                              <v-btn block  @click="getCash(item)" rounded class="shadow-box">
                                 {{ item }}
                               </v-btn>
                             </v-col>
@@ -318,7 +336,7 @@
                             </v-col>
 
                             <v-col class="pt-0 pb-0">
-                              <v-btn block color="primary" x-large @click="createOrder(1)"
+                              <v-btn block color="#B27D41" dark @click="createOrder(1)" rounded
                                      :disabled="(!(changeMoney >= 0))">บันทึกเงินสด
                               </v-btn>
                             </v-col>
@@ -377,6 +395,10 @@
 
 .my-large-input-field {
   font-size: 3em;
+}
+
+.shadow-box {
+  box-shadow: 1px 1px 1px rgba(119, 66, 26, 16%); /* Horizontal offset, vertical offset, blur radius, and color */
 }
 </style>
 <script src="./index.js"/>
