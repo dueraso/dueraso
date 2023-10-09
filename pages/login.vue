@@ -55,8 +55,8 @@
                 <p style="font-size: 23px; font-weight: normal" class="pt-5 mb-2">หรือเข้าสู่ระบบด้วย</p>
               </v-col>
               <v-row class="m-0 pt-4" style="width: 200px; justify-content: center;">
-                <img src="/facebook.png" width="78" height="78" class="m-2 p-2"/>
-                <img src="/google.png" width="78" height="78" class=" m-2 p-2" @click="googleOauth"/>
+                <img src="/facebook.png" width="78" height="79" class="m-2 p-2" alt="facebook"/>
+                <img src="/google.png" width="78" height="79" class=" m-2 p-2" @click="googleOauth" alt="google"/>
               </v-row>
             </v-card-text>
             <!--                  <v-row align="center mr-2">-->
@@ -152,7 +152,7 @@ export default {
 
   methods: {
     async googleOauth(){
-      await this.$auth.loginWith('google');
+      // await this.$auth.loginWith('google');
     },
     async validate() {
       if (!this.$refs.form.validate()) return;

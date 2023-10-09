@@ -4,13 +4,12 @@ import myUtils from "@/plugins/myUtils";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
 // import {select} from "underscore";
-// import fs from "fs";
-// import fs from "../../api/test";
 
 export default {
   middleware: "auth",
   layout: "pos-layout",
   data: () => ({
+    t:1,
     loading: false,
     cards: {},
     calories: '',
@@ -134,6 +133,10 @@ export default {
     // this.qrTest()
   },
   methods: {
+    test(val){
+      this.t = val
+      console.log(this.t)
+    },
     close() {
       if(this.$refs.form.validate()){
         this.dialog = false

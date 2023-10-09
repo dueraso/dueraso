@@ -11,20 +11,19 @@
           <v-row class="m-0">
             <!--            list-->
             <v-col cols="12" md="8" class="d-none d-sm-flex">
-              <div class="p-3">
-                <!--                tags-->
-                <v-row class="mb-0">
-                  <img style="height: 50px" src="/line.png">
-                  <v-col class="p-0" cols="9">
-                    <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
-                  </v-col>
-                  <v-text-field
-                    label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
-                    class="m-0 p-0" style="border-radius: 15px;"/>
-                </v-row>
-                <!--content-->
+              <!--              <div class="p-3">-->
+              <!--                tags-->
+              <v-row class="mt-0 pb-4">
+                <img style="height: 50px" src="/line.png" alt="line">
+                <v-col class="p-0" cols="9">
+                  <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
+                </v-col>
+                <v-text-field
+                  label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
+                  class="m-0 p-0" style="border-radius: 15px;"/>
+
                 <div style="height: 80dvh; overflow-y: auto;">
-                  <v-col cols="12" class="m-0  p-0">
+                  <v-col cols="12" class="m-0 p-0">
                     <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
                              style="background-color: rgba(255,255,255,0)">
                       <v-chip-group mandatory active-class="primary--text">
@@ -58,14 +57,13 @@
                     </v-col>
                   </v-row>
                 </div>
-                <!--                discount-->
-              </div>
+              </v-row>
             </v-col>
             <!--            order-->
             <v-col>
-              <v-row class="mt-0 pb-4">
+              <v-row class="m-0">
                 <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i" class="mt-0 p-0 pb-2">
-                  <v-card class="m-2 p-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
+                  <v-card class="m-1 p-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
                           :disabled="discountSel.length > 0">
                     <v-icon>mdi-ticket-percent-outline
                     </v-icon>
@@ -267,16 +265,26 @@
                       <div v-html="qr"/>
                     </v-col>
 
-                    <v-col class="pt-0">
-                      <v-btn block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
-                    </v-col>
+<!--                    <v-col class="pt-0">-->
+<!--                    </v-col>-->
                   </v-card>
+                      <v-btn rounded block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
                 </v-col>
                 <v-col>
-                  <v-card elevation="4">
-                    <v-tabs color="deep-purple" fixed-tabs slider-color="#54b6c8">
-                      <v-tab style="color: #54b6c8">เงินสด</v-tab>
-                      <!--                      <v-tab>พร้อมเพร์</v-tab>-->
+<!--                  <v-card elevation="4">-->
+                      <v-btn-toggle
+                        rounded
+                        dense
+                        v-model="t"
+                      >
+                        <v-btn @change="test(0)" block>
+                          เงินสด
+                        </v-btn>
+                        <v-btn @change="test(1)" block>
+                          อื่นๆ
+                        </v-btn>
+                      </v-btn-toggle>
+                    <v-tabs hide-slider v-model="t">
                       <v-tab-item>
                         <v-container fluid>
                           <v-card height="93" class="ml-2 mr-2" style="border-radius: 15px">
@@ -291,7 +299,7 @@
                           <!--                                        class="pl-3 pr-3 my-large-input-field px-15" v-model="cash" label="รับมา" height="100"/>-->
                           <v-row class="m-0">
                             <v-col v-for="(item, i) in price" :key="i" cols="4">
-                              <v-btn block  @click="getCash(item)" rounded class="shadow-box">
+                              <v-btn block @click="getCash(item)" rounded class="shadow-box">
                                 {{ item }}
                               </v-btn>
                             </v-col>
@@ -343,8 +351,9 @@
                           </v-row>
                         </v-container>
                       </v-tab-item>
+                      <v-tab-item>dddd</v-tab-item>
                     </v-tabs>
-                  </v-card>
+<!--                  </v-card>-->
                 </v-col>
               </v-row>
             </v-card>
