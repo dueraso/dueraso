@@ -10,6 +10,7 @@ export default {
     return {
       loading: true,
       search: "",
+      dialogDelete: false,
       dialog: false,
       isLoading: false,
       instead: null,
@@ -87,9 +88,7 @@ export default {
 
     async getOutlet() {
       await this.$axios.get("/organization").then((res) => {
-        // this.desserts = res
         this.instead = res.data.data
-        console.log("fff>"+JSON.stringify(this.instead))
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -98,9 +97,7 @@ export default {
 
     async getData() {
       await this.$axios.get("/branch").then((res) => {
-        // this.desserts = res
         this.desserts = Object.assign({},res.data)
-        console.log(this.desserts.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -120,7 +117,7 @@ export default {
     openItem(val) {
       console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
     },
 
     async onUpdate(){
@@ -151,9 +148,14 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/branch/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/branch/"+this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

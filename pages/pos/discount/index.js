@@ -5,7 +5,7 @@ import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth'],
-  layout: "pos-layout",
+  layout: "seller-layout",
   data() {
     return {
       rules: [
@@ -101,7 +101,7 @@ export default {
       })
     },
 
-    openItem(val) {
+    openItem(val = {}) {
       this.dialog = true
       this.item = Object.assign({}, val)
       this.insteadSelect = this.instead.find(d=>d.id == this.item.type_discount)

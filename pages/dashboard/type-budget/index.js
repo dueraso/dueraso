@@ -10,6 +10,7 @@ export default {
     return {
       loading: true,
       search: "",
+      dialogDelete: false,
       dialog: false,
       isLoading: false,
       instead: null,
@@ -110,11 +111,15 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/budgetType/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/budgetType/"+this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

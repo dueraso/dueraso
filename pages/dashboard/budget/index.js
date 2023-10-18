@@ -8,6 +8,8 @@ export default {
   layout: "seller-layout",
   data() {
     return {
+      valid: false,
+      dialogDelete: false,
       loading: true,
       search: "",
       dialog: false,
@@ -22,6 +24,9 @@ export default {
           title: "ประเภท",
           width: "15%"
         },
+      ],
+      rules: [
+        v => !!v || 'จำเป็น',
       ],
       desserts: {},
       item: {},
@@ -77,6 +82,7 @@ export default {
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
       if (this.item.id) {
         console.log("Update> " + this.item.id)
         this.onUpdate()
@@ -87,9 +93,9 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> "+val)
       this.dialog = true
       this.item = Object.assign({}, val)
+      this.insteadSelect = this.item.budget_type
     },
 
     async onUpdate(){
@@ -118,9 +124,14 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/budget/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/budget/"+this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

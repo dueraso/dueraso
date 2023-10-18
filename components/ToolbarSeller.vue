@@ -1,6 +1,6 @@
 <template>
   <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner" variant="white">
+    toggleable="lg" bg="dark" class="elevation-4 navbar-elements-position is-link navbar-inner" variant="white" :clipped-left="true">
     dueraso
     <v-spacer/>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

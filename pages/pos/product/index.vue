@@ -9,113 +9,111 @@
         </div>
         <v-container fluid v-if="!loading">
           <head-bar title="จัดการรายการ" :callback="openItem"/>
-<!--          <v-row class="pa-3 mt-1" style="background: #eef7f6">-->
-<!--            <h5 class="mb-0 ml-4" style="color: #00000080">-->
-<!--              <v-icon x-large>mdi-clipboard-edit-outline</v-icon>-->
-<!--              จัดการรายการ-->
-<!--            </h5>-->
-<!--            <v-spacer/>-->
-<!--            <v-btn outlined @click="openItem({})" class="mr-3">-->
-<!--              <v-icon>mdi-plus</v-icon>-->
-<!--              เพิ่ม-->
-<!--            </v-btn>-->
-<!--          </v-row>-->
           <v-col>
-            <v-simple-table fixed-header>
-              <template v-slot:default>
-                <thead>
-                <tr>
-                  <th v-for="(item, i) in tableHead" :key="i" :class="item.text" style="font-size: 14px"
-                      :width="item.width">{{ item.title }}
-                  </th>
-                  <th width="120px">
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, index) in desserts.data" :key="index">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.type.name }}</td>
-                  <td>{{ item.price }}</td>
-                  <td align="center">
+            <table style="width:100%">
+              <thead>
+              <tr>
+                <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
+                    style="color: #846537" class="pl-3"
+                    :width="item.width">{{ item.title }}
+                </th>
+                <th width="120px" style="background-color: #f3f1ed;">
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in desserts.data" :key="index">
+                <td class="pr-0">
+                  <div class="rounded-cell">{{ item.name }}</div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.type.name }}</div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.price }}</div>
+                </td>
+                <td align="center">
+                  <div class="rounded-cell-center-img">
                     <v-img :src="item.imageUrl" height="40px" width="40px" style="border-radius: 10px"></v-img>
-                  </td>
-                  <td class="p-0 text-right">
+                  </div>
+                </td>
+                <td>
+                  <div class="rounded-cell-right" align="right">
                     <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
                     <v-btn fab small text @click="onDelete(item)">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </td>
-                </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="3">รายการทั้งหมด 8/22 รายการ</td>
+                <td colspan="2">< 1 2 3 ></td>
+              </tr>
+              </tfoot>
+            </table>
             <div class="text-center">
-              <v-dialog v-model="dialog" persistent width="900">
-                <v-form
-                  ref="form"
-                  v-model="valid"
-                >
-                  <v-card>
-                    <v-card-title class="text-h5 mb-3" style="background: #54b6c8">
-                      <p class="m-0" style="color: white">เพิ่ม / แก้ไขรายการ</p>
+              <v-dialog v-model="dialog" persistent width="786px">
+                <v-form ref="form" v-model="valid">
+                  <v-card style="box-shadow: 5px 5px 10px rgba(119, 66, 26, 0.16); border-radius: 15px">
+                    <v-card-title>
+                      <h5 class="m-0" style="color: #5B4840">เพิ่ม / แก้ไขรายการ</h5>
                       <v-spacer/>
-                      <v-btn icon @click="dialog = false" dark>
+                      <v-btn icon @click="dialog = false" color="#5B4840">
                         <v-icon>mdi-close</v-icon>
                       </v-btn>
                     </v-card-title>
 
-                    <v-card-text class="pb-0">
-                      <v-text-field v-model="item.name" label="ชื่อรายการ" outlined dense required :rules="rules"/>
-                      <v-textarea  v-model="item.detail" label="รายละเอียด" outlined dense required :rules="rules"/>
-                      <v-autocomplete
-                        outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
-                        hide-selected
-                        return-object
-                        label="ประเภท"
-                        dense
-                        item-text="name"
-                        item-value="id"
-                      ></v-autocomplete>
-                      <v-text-field v-model="item.price" label="จำนวน" outlined dense type="number" required
-                                    :rules="rules"/>
-                      <v-text-field  v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"/>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary" @click="confirm">
+                    <v-card-text class="p-3" style="background-color: #F6F6F6" align="center">
+                      <v-text-field v-model="item.name" label="ชื่อรายการ" outlined dense required
+                                    style="border-radius: 15px" :rules="rules"/>
+                      <v-textarea v-model="item.detail" label="รายละเอียด" outlined dense required
+                                  style="border-radius: 15px" :rules="rules"/>
+                      <v-row class="m-0">
+                        <v-autocomplete
+                          outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
+                          class="pr-4"
+                          hide-selected return-object label="ประเภท" dense item-text="name" item-value="id"
+                          style="border-radius: 15px"
+                        ></v-autocomplete>
+                        <v-text-field v-model="item.price" label="จำนวน" outlined dense type="number" required
+                                      style="border-radius: 15px"
+                                      :rules="rules"/>
+                      </v-row>
+                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"
+                                    style="border-radius: 15px"/>
+                      <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                         ตกลง
                       </v-btn>
-                    </v-card-actions>
+                    </v-card-text>
                   </v-card>
                 </v-form>
               </v-dialog>
-              <v-dialog v-model="dialogDelete" width="500">
-                <v-card>
-                  <v-row align="right" class="m-0 pt-3 pr-3">
-                    <v-spacer/>
-                    <v-btn icon @click="dialogDelete = false">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                  </v-row>
-                  <v-col>
-                    <h5 align="center" style="padding-bottom: 24px; padding-top: 12px">
-                      คุณต้องการลบรายการใช่หรือไม่
-                    </h5>
-                    <v-row style="margin: 0">
-                      <v-col
-                        align="center" style="padding: 0" class="pb-2">
-                        <v-btn dark small color="#54b6c8" @click="confirmDel">
-                          ยืนยัน
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-card>
-              </v-dialog>
+              ,<dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
+<!--              <v-dialog v-model="dialogDelete" width="500">-->
+<!--                <v-card style="border-radius: 15px">-->
+<!--                  <v-col>-->
+<!--                    <h4 align="center" style="color: #846537" class="m-0 pt-3 pb-3">-->
+<!--                      คุณต้องการลบรายการใช่หรือไม่-->
+<!--                    </h4>-->
+<!--                    <v-row class="m-0">-->
+<!--                      <v-col-->
+<!--                        align="center" style="padding: 0" class="pb-2">-->
+<!--                        <v-btn outlined small rounded color="#A57156" @click="dialogDelete = false" class="m-2" width="150">-->
+<!--                          ยกเลิก-->
+<!--                        </v-btn>-->
+<!--                        <v-btn dark small color="#B27D41" @click="confirmDel" class="m-2" rounded width="150">-->
+<!--                          ยืนยัน-->
+<!--                        </v-btn>-->
+<!--                      </v-col>-->
+<!--                    </v-row>-->
+<!--                  </v-col>-->
+<!--                </v-card>-->
+<!--              </v-dialog>-->
             </div>
           </v-col>
         </v-container>
@@ -123,4 +121,5 @@
     </v-app>
   </div>
 </template>
+<style scoped src="./index.css"/>
 <script src="./index.js"/>

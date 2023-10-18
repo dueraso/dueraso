@@ -77,7 +77,7 @@ export default {
     // Doc: https://github.com/nuxt/content
     "@nuxt/content",
     "@nuxtjs/auth",
-    '@nuxtjs/auth-next',
+    // '@nuxtjs/auth-next',
 
     "bootstrap-vue/nuxt",
 
@@ -130,7 +130,7 @@ export default {
           login: {
             method: "post",
             url: "login",
-            propertyName: "token",
+            propertyName: "data.token",
           },
           user: {
             method: "get",

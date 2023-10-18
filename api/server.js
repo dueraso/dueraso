@@ -3,7 +3,7 @@ const local = {
   // clientSecret : "KU3cLrnELHHo3z1PPCHpKp9bIlTomN2cXRYdL96M",
   // redirectUri : "http://localhost:3000/callback",
   url: "http://localhost:3000",
-  api: "http://localhost:8000/api/v1",
+  api: "http://192.168.1.43:8000/api/v1",
 };
 const production = {
   // clientId : 81,

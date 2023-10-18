@@ -1,20 +1,62 @@
 <template>
-  <v-app dark style="background-color: white;">
-<!--    <v-main style="background-color: white; " class="pt-0 pb-0">-->
-<!--      <v-container style="max-width: 1140px;">-->
-<!--        <v-row style="border-radius: 10px" class="m-0 pr-2 pl-2 pb-0 pt-0">-->
-<!--          <b-img src="/logo-new copy.png" target="nav-collapse" style="max-width: 80px; max-height: 80px" class="p-2"/>-->
-<!--          <v-col>-->
-<!--            <p class="m-0 text-h6">{{ $i18n.t("header").title }}</p>-->
-<!--          </v-col>-->
-<!--        </v-row>-->
-<!--      </v-container>-->
-<!--    </v-main>-->
-<!--    <NavigationDrawer/>-->
-    <ToolbarSeller/>
-<!--    <LangBar/>-->
+  <v-app dark style="background-color: #F3F1ED;">
+    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app style="border-radius: 15px;" class="m-3">
+      <v-list>
+        <v-list-group :value="true" no-action class="pl-6"  color="#5B4840">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>จัดการ POS</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item v-for="(item, i) in admins" :key="i" link class="pl-8" :to="item.to">
+            <v-list-item-title v-text="item.name"></v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router  style=" text-decoration: unset;" class="pl-4">
+          <v-list-item-content class="pl-6">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-list>
+    </v-navigation-drawer>
+    <!--    <ToolbarSeller/>-->
+    <!--    <NavigationDrawer/>-->
+    <!--    <LangBar/>-->
+    <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
+      <!-- Top navigation -->
+      <div class="topnav" style="width: 100%">
+
+        <!-- Centered link -->
+        <div class="topnav-centered">
+          <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+            DUERASO
+          </strong>
+        </div>
+
+        <!-- Left-aligned links (default) -->
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="color: #B27D41"/>
+        <div class="topnav-right">
+          <v-row class="m-0">
+            <v-btn color="#E8AE0F" icon text>
+              <v-icon>mdi-bell-badge-outline</v-icon>
+            </v-btn>
+            <p class="m-0 mr-5 mt-2" style="font-size: 20px">
+              <v-icon>mdi-account-outline</v-icon>
+              {{ $auth.user.name }}
+            </p>
+            <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
+              <v-icon>mdi-keyboard-backspace</v-icon>
+              กลับหน้าเว็บ
+            </v-btn>
+            <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
+          </v-row>
+        </div>
+      </div>
+    </v-app-bar>
     <Nuxt/>
-    <FooterBar/>
   </v-app>
 </template>
 <style>
@@ -26,9 +68,44 @@
   /*font-weight: bolder;*/
 }
 
-.v-input .v-label {
-  line-height: 25px;
-  height: 25px;
+.topnav {
+  position: relative;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav-centered strong {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.topnav-right {
+  float: right;
+}
+
+/* Responsive navigation menu (for mobile devices) */
+@media screen and (max-width: 600px) {
+
 }
 </style>
 <script>
@@ -46,7 +123,63 @@ export default {
   data() {
     return {
       expandOnHover: false,
-      modules: []
+      modules: [],
+
+      clipped: true,
+      drawer: true,
+      fixed: false,
+      items: [
+        {
+          icon: 'mdi-apps',
+          title: 'จัดการร้าน',
+          to: '/dashboard/outlets'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'จัดการสาขา',
+          to: '/dashboard/branch'
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'จัดการประเภท',
+          to: '/dashboard/type-budget'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'จัดการหมวดหมู่รายรับ-จ่าย',
+          to: '/dashboard/budget'
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'จัดการรายการรายรับ-จ่าย',
+          to: '/dashboard/add-budget'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'จัดการผู้ใช้งาน',
+          to: '/dashboard/users'
+        }
+      ],
+      miniVariant: false,
+      right: false,
+      rightDrawer: false,
+      admins: [
+        {
+          name:'จัดการรายการ',
+          icon:'mdi-account-multiple-outline',
+          to:'/pos/product'
+        },
+        {
+          name:'จัดการส่วนลด',
+          icon:'mdi-cog-outline',
+          to:'/pos/discount'
+        },
+        {
+          name:'จัดการประเภท',
+          icon:'mdi-cog-outline',
+          to:'/pos/product-type'
+        },
+      ],
     };
   },
   mounted() {

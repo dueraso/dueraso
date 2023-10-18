@@ -17,10 +17,12 @@ export default {
         val6:0,
         val7:0,
         val8:0,
+        val9:0,
       },
       loading: true,
       search: "",
       dialog: false,
+      valid: false,
       isLoading: false,
       instead: null,
       insteadSelect: null,
@@ -54,7 +56,11 @@ export default {
       branchSelect: {},
       item: {},
       typeTotalSelect: 0,
-      total:0
+      total:0,
+      totalCash:0,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
     };
   },
 
@@ -122,7 +128,8 @@ export default {
       val.push(this.money.val5 * 20)
       val.push(this.money.val6 * 10)
       val.push(this.money.val7 * 5)
-      val.push(parseInt(this.money.val8))
+      val.push(this.money.val8 * 2)
+      val.push(parseInt(this.money.val9))
       return val.reduce((accumulator, currentValue) => accumulator + currentValue)
     },
     getColor(val) {

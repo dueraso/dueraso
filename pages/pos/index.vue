@@ -10,20 +10,24 @@
         <v-container fluid v-if="!loading" style="background-color: #F3F1ED">
           <v-row class="m-0">
             <!--            list-->
-            <v-col cols="12" md="8" class="d-none d-sm-flex">
+            <v-col cols="12" md="8">
+<!--                   class="d-none d-sm-flex">-->
               <!--              <div class="p-3">-->
               <!--                tags-->
               <v-row class="mt-0 pb-4">
                 <img style="height: 50px" src="/line.png" alt="line">
-                <v-col class="p-0" cols="9">
+                <v-col class="p-0" >
                   <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
                 </v-col>
+                  <div style=" width: 200px">
                 <v-text-field
                   label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
                   class="m-0 p-0" style="border-radius: 15px;"/>
-
+                  </div>
+              </v-row>
+              <v-row class="m-0">
                 <div style="height: 80dvh; overflow-y: auto;">
-                  <v-col cols="12" class="m-0 p-0">
+                  <v-col md="12" class="m-0 p-0">
                     <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
                              style="background-color: rgba(255,255,255,0)">
                       <v-chip-group mandatory active-class="primary--text">
@@ -116,9 +120,6 @@
                       <td colspan="2">
                         {{ item.name }}
                       </td>
-                      <!--                      <td width="15%">-->
-                      <!--                        {{item.total}}-->
-                      <!--                      </td>-->
                       <td class="text-right" width="20%">
                         -{{ discountTotal }}
                       </td>
@@ -148,50 +149,6 @@
                      style="font-size: 20px">
                 ชำระเงิน
               </v-btn>
-
-              <!--              <v-card class="mt-3 p-3">-->
-              <!--                <p class="m-0">คูปองส่วนลด</p>-->
-              <!--                <v-simple-table fixed-header>-->
-              <!--                  <template v-slot:default>-->
-              <!--                    <tbody>-->
-              <!--                    <tr v-for="(item, i) in discountSel" :key="i">-->
-              <!--                      <td colspan="2">-->
-              <!--                        {{ item.name }}-->
-              <!--                      </td>-->
-              <!--                      &lt;!&ndash;                      <td width="15%">&ndash;&gt;-->
-              <!--                      &lt;!&ndash;                        {{item.total}}&ndash;&gt;-->
-              <!--                      &lt;!&ndash;                      </td>&ndash;&gt;-->
-              <!--                      <td class="text-right" width="20%">-->
-              <!--                        -{{ discountTotal }}-->
-              <!--                      </td>-->
-              <!--                      <td width="20px">-->
-              <!--                        <v-icon @click="removeDiscount(item)">mdi-close</v-icon>-->
-              <!--                      </td>-->
-              <!--                    </tr>-->
-              <!--                    </tbody>-->
-              <!--                  </template>-->
-              <!--                </v-simple-table>-->
-              <!--                <v-divider></v-divider>-->
-
-              <!--                <v-row>-->
-              <!--                  <v-col md="3">-->
-              <!--                <p class="m-0">สรุปยอด</p>-->
-              <!--&lt;!&ndash;                    <h4 class="m-0">รวม</h4>&ndash;&gt;-->
-              <!--                  </v-col>-->
-              <!--                  <v-col>-->
-              <!--                    <h4 class="m-0">{{ convert.calculateArray(this.desserts) }}</h4>-->
-              <!--                  </v-col>-->
-              <!--                  <v-col class="text-right">-->
-              <!--                    <h3 class="m-0">{{ convert.money(priceTotal) }}</h3>-->
-              <!--                  </v-col>-->
-              <!--                  <v-btn color="primary" x-large block @click="pay" :disabled="priceTotal === 0.00">-->
-              <!--                    <v-icon>-->
-              <!--                      mdi-cash-multiple-->
-              <!--                    </v-icon>-->
-              <!--                    ชำระ-->
-              <!--                  </v-btn>-->
-              <!--                </v-row>-->
-              <!--              </v-card>-->
             </v-col>
           </v-row>
           <v-dialog v-model="dialog" width="600px" persistent>
@@ -257,103 +214,93 @@
                       </v-card>
                     </v-col>
                   </v-row>
-                  <v-card elevation="4" class="row m-0 align-content-center">
+                  <v-card elevation="4" class="row m-0 mb-4 mt-2 pb-1" align="center">
                     <v-col align="center" class="pb-0">
                       <v-img src="PromptPay.jpg" width="200" class="m-0"></v-img>
                     </v-col>
-                    <v-col class="pt-0 pb-0">
+                    <v-col class="pt-0 pb-0" style="width: 340px">
                       <div v-html="qr"/>
                     </v-col>
-
-<!--                    <v-col class="pt-0">-->
-<!--                    </v-col>-->
                   </v-card>
-                      <v-btn rounded block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
+                  <v-btn rounded block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
                 </v-col>
                 <v-col>
-<!--                  <v-card elevation="4">-->
-                      <v-btn-toggle
-                        rounded
-                        dense
-                        v-model="t"
-                      >
-                        <v-btn @change="test(0)" block>
-                          เงินสด
+                  <v-btn-toggle rounded dense v-model="t" style="width: 100%;" class="mb-3" color="#6E4C2E" background-color="#ECE6E0">
+                    <v-btn style="width: 50%;">
+                      เงินสด
+                    </v-btn>
+                    <v-btn style="width: 50%;">
+                      อื่นๆ
+                    </v-btn>
+                  </v-btn-toggle>
+                  <v-container fluid v-if="t === 0" class="p-0">
+                    <v-card height="93" class="ml-2 mr-2" style="border-radius: 15px">
+                      <v-row class="m-0 fill-height">
+                        <v-icon x-large>mdi-currency-thb</v-icon>
+                        <v-col class="m-0 p-0">
+                          <p class="m-0 text-right mr-2" style="font-size: 60px;">{{ cash }}</p>
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                    <v-row class="m-0">
+                      <v-col v-for="(item, i) in price" :key="i" cols="4">
+                        <v-btn block @click="getCash(item)" rounded class="shadow-box">
+                          {{ item }}
                         </v-btn>
-                        <v-btn @change="test(1)" block>
-                          อื่นๆ
+                      </v-col>
+                    </v-row>
+                    <v-row class="m-0">
+                      <v-col cols="8">
+                        <v-row>
+                          <v-col cols="4" v-for="(item, i) in 9" :key="i">
+                            <v-btn block height="60" x-large @click="sumChange(item)">
+                              <h2>{{ item }}</h2>
+                            </v-btn>
+                          </v-col>
+                          <v-col cols="4">
+                            <v-btn block height="60" x-large width="66.6" @click="sumChange('00')">
+                              <h2>00</h2>
+                            </v-btn>
+                          </v-col>
+                          <v-col cols="4">
+                            <v-btn block height="60" x-large @click="sumChange('0')">
+                              <h2>0</h2>
+                            </v-btn>
+                          </v-col>
+                          <v-col cols="4">
+                            <v-btn block height="60" x-large width="66.6" @click="sumChange('.')">
+                              <h2>.</h2>
+                            </v-btn>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+
+                      <v-col>
+                        <v-row class="m-0">
+                          <v-btn block height="200px" @click="sumChange('',true)">
+                            <v-icon x-large>
+                              mdi-backspace-outline
+                            </v-icon>
+                          </v-btn>
+                          <v-btn block height="100px" class="mt-4" x-large @click="getCash(0, false)">
+                            <h1>C</h1>
+                          </v-btn>
+                        </v-row>
+                      </v-col>
+
+                      <v-col class="pt-0 pb-0">
+                        <v-btn block color="#B27D41" dark @click="createOrder(1)" rounded
+                               :disabled="(!(changeMoney >= 0))">บันทึกเงินสด
                         </v-btn>
-                      </v-btn-toggle>
-                    <v-tabs hide-slider v-model="t">
-                      <v-tab-item>
-                        <v-container fluid>
-                          <v-card height="93" class="ml-2 mr-2" style="border-radius: 15px">
-                            <v-row class="m-0 fill-height">
-                              <v-icon x-large>mdi-currency-thb</v-icon>
-                              <v-col class="m-0 p-0">
-                                <p class="m-0 text-right mr-2" style="font-size: 60px;">{{ cash }}</p>
-                              </v-col>
-                            </v-row>
-                          </v-card>
-                          <!--                          <v-text-field outlined hide-details hide-spin-buttons prepend-inner-icon="mdi-currency-thb"-->
-                          <!--                                        class="pl-3 pr-3 my-large-input-field px-15" v-model="cash" label="รับมา" height="100"/>-->
-                          <v-row class="m-0">
-                            <v-col v-for="(item, i) in price" :key="i" cols="4">
-                              <v-btn block @click="getCash(item)" rounded class="shadow-box">
-                                {{ item }}
-                              </v-btn>
-                            </v-col>
-                          </v-row>
-                          <v-row class="m-0">
-                            <v-col cols="8">
-                              <v-row>
-                                <v-col cols="4" v-for="(item, i) in 9" :key="i">
-                                  <v-btn block height="60" x-large @click="sumChange(item)">
-                                    <h2>{{ item }}</h2>
-                                  </v-btn>
-                                </v-col>
-                                <v-col cols="4">
-                                  <v-btn block height="60" x-large width="66.6" @click="sumChange('00')">
-                                    <h2>00</h2>
-                                  </v-btn>
-                                </v-col>
-                                <v-col cols="4">
-                                  <v-btn block height="60" x-large @click="sumChange('0')">
-                                    <h2>0</h2>
-                                  </v-btn>
-                                </v-col>
-                                <v-col cols="4">
-                                  <v-btn block height="60" x-large width="66.6" @click="sumChange('.')">
-                                    <h2>.</h2>
-                                  </v-btn>
-                                </v-col>
-                              </v-row>
-                            </v-col>
-
-                            <v-col>
-                              <v-row class="m-0">
-                                <v-btn block height="200px" @click="sumChange('',true)">
-                                  <v-icon x-large>
-                                    mdi-backspace-outline
-                                  </v-icon>
-                                </v-btn>
-                                <v-btn block height="100px" class="mt-4" x-large @click="getCash(0, false)">
-                                  <h1>C</h1>
-                                </v-btn>
-                              </v-row>
-                            </v-col>
-
-                            <v-col class="pt-0 pb-0">
-                              <v-btn block color="#B27D41" dark @click="createOrder(1)" rounded
-                                     :disabled="(!(changeMoney >= 0))">บันทึกเงินสด
-                              </v-btn>
-                            </v-col>
-                          </v-row>
-                        </v-container>
-                      </v-tab-item>
-                      <v-tab-item>dddd</v-tab-item>
-                    </v-tabs>
-<!--                  </v-card>-->
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <!--                    </v-tab-item>-->
+                  <!--                    <v-tab-item>dddd</v-tab-item>-->
+                  <v-container fluid v-else>
+                    ยังไม่พร้อมใช้งาน
+                  </v-container>
+                  <!--                  </v-tabs>-->
                 </v-col>
               </v-row>
             </v-card>
@@ -374,7 +321,7 @@
                 <v-row style="margin: 0">
                   <v-col
                     align="center" style="padding: 0" class="pb-2">
-                    <v-btn dark small color="#54b6c8" @click="confirmClose">
+                    <v-btn dark small color="#6E4C2E" @click="confirmClose">
                       ยืนยัน
                     </v-btn>
                   </v-col>

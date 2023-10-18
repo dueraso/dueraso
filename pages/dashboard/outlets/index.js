@@ -15,6 +15,7 @@ export default {
       loading: true,
       search: "",
       dialog: false,
+      dialogDelete: false,
       isLoading: false,
       instead: null,
       insteadSelect: null,
@@ -140,9 +141,14 @@ export default {
       })
     },
 
-    async onDelete(val){
-      this.dialog = false
-      await this.$axios.delete("/organization/"+val.id).then((res) => {
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/organization/"+this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {

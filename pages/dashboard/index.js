@@ -19,8 +19,7 @@ export default {
       },
     ],
   }),
-  computed: {
-  },
+  computed: {},
   watch: {
     dialogDelete(val) {
       val || this.closeDelete();
@@ -31,11 +30,10 @@ export default {
     // this.getData();
   },
 
-  mounted() {},
+  mounted() {
+  },
 
   methods: {
-
-
     async getData() {
       await this.$axios
         .get("/full_places")

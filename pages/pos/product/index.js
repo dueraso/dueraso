@@ -5,7 +5,7 @@ import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth'],
-  layout: "pos-layout",
+  layout: "seller-layout",
   data() {
     return {
       rules: [
@@ -112,6 +112,7 @@ export default {
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
       if (this.item.id) {
         console.log("Update> " + this.item.id)
         this.onUpdate()
@@ -125,6 +126,7 @@ export default {
       console.log("val> "+JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
+      this.insteadSelect = this.item.type
     },
 
     async onUpdate(){

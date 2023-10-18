@@ -9,7 +9,7 @@ export default {
   middleware: "auth",
   layout: "pos-layout",
   data: () => ({
-    t:1,
+    t:0,
     loading: false,
     cards: {},
     calories: '',

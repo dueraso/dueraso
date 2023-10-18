@@ -1,52 +1,74 @@
 <template>
-  <b-navbar
-    toggleable="lg" bg="dark" class="elevation-4" variant="white">
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-    <b-collapse id="nav-collapse" is-nav class="container p-0">
-      <b-navbar-nav class="ml-auto pl-0" align="center"
-                    style="width: 100%; align-items: center; font-weight: 600">
-        <!--        <b-nav-item-->
-        <!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
-        <!--          @click="$router.push(itemBar.route)"-->
-        <!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
-        <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
-          DUERASO
-        </strong>
-      </b-navbar-nav>
-    </b-collapse>
-    <v-btn right color="#E8AE0F" icon text>
-      <v-icon>mdi-bell-badge-outline</v-icon>
-    </v-btn>
-    <p class="m-0 mr-3" style="font-size: 20px">
-      <v-icon>mdi-account-outline</v-icon>
-      {{ $auth.user.name }}
-    </p>
-    <v-btn right color="#B27D41" rounded outlined class="pl-2 mr-3" @click="$router.back()">
-      <v-icon>mdi-keyboard-backspace</v-icon>
-      กลับหน้าเว็บ
-    </v-btn>
-    <v-btn right class="custom-primary" rounded>ออกจากระบบ</v-btn>
-  </b-navbar>
+  <v-app-bar fixed app class="pl-1 pr-1">
+  <!-- Top navigation -->
+  <div class="topnav" style="width: 100%">
+
+    <!-- Centered link -->
+    <div class="topnav-centered">
+      <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+        DUERASO
+      </strong>
+    </div>
+
+    <!-- Left-aligned links (default) -->
+    <div class="topnav-right">
+      <v-row class="m-0">
+        <v-btn color="#E8AE0F" icon text>
+          <v-icon>mdi-bell-badge-outline</v-icon>
+        </v-btn>
+        <p class="m-0 mr-5 mt-2" style="font-size: 20px">
+          <v-icon>mdi-account-outline</v-icon>
+          {{ $auth.user.name }}
+        </p>
+        <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
+          <v-icon>mdi-keyboard-backspace</v-icon>
+          กลับหน้าเว็บ
+        </v-btn>
+        <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
+      </v-row>
+    </div>
+  </div>
+</v-app-bar>
 </template>
 <style>
-.circle {
-  position: absolute;
-  bottom: -10px;
-  left: calc(-50% - 5px);
-}
-
-
-.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active >
-.nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
-  color: rgb(84, 182, 200);
-}
-
-.v-badge__badge {
+.topnav {
   position: relative;
+  overflow: hidden;
 }
 
-.v-badge__wrapper {
-  top: 5px;
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav-centered strong {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.topnav-right {
+  float: right;
+}
+
+/* Responsive navigation menu (for mobile devices) */
+@media screen and (max-width: 600px) {
+
 }
 </style>
 <script>

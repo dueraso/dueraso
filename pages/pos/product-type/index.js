@@ -5,13 +5,18 @@ import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth'],
-  layout: "pos-layout",
+  layout: "seller-layout",
   data() {
     return {
       loading: true,
       search: "",
+      valid: false,
       dialog: false,
+      dialogDel: false,
       isLoading: false,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
       instead: null,
       insteadSelect: null,
       tableHead: [
@@ -98,6 +103,7 @@ export default {
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
       if (this.item.id) {
         console.log("Update> " + this.item.id)
         this.onUpdate()
@@ -134,10 +140,14 @@ export default {
         console.log(e)
       })
     },
+    onDelete(val){
+      this.dialogDel = true
+      this.item = Object.assign({},val)
+    },
 
-    async onDelete(val) {
-      this.dialog = false
-      await this.$axios.delete("/posProductType/" + val.id).then((res) => {
+    async confirmDel() {
+      this.dialogDel = false
+      await this.$axios.delete("/posProductType/" + this.item.id).then((res) => {
         this.getData()
         console.log(res.data)
       }).catch((e) => {
