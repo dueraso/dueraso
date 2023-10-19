@@ -6,36 +6,37 @@
     <b-navbar
       toggleable="lg" bg="dark" class="elevation-4" variant="white" style="border-radius: 20px">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav class="container p-0">
-        <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 1440px; align-items: center; font-weight: 600">
+      <b-collapse id="nav-collapse" is-nav class=" p-0">
+        <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 100%; align-items: center; font-weight: 600">
           <!--        <b-nav-item-->
           <!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
           <!--          @click="$router.push(itemBar.route)"-->
           <!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
           <!--        </b-nav-item>-->
-          <b-nav-item @click="$router.push('/')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/')" class="pl-4 pr-4 " style="max-width: 250px">
             หน้าแรก
           </b-nav-item>
-          <b-nav-item @click="$router.push('/blog')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/blog')" class="pl-4 pr-4 " style="max-width: 250px">
             บทความ
           </b-nav-item>
-          <b-nav-item @click="$router.push('/faq')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/faq')" class="pl-4 pr-4 " style="max-width: 250px">
             คำถามที่พบบ่อย
           </b-nav-item>
-          <strong class="m-0 pl-4 pr-4 color_main" style="font-size: 35px;">
+          <strong class="m-0 pl-4 pr-4  color_main" style="font-size: 35px;max-width: 250px">
             DUERASO
           </strong>
-          <b-nav-item @click="$router.push('/contact-us')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/contact-us')" class="pl-4 pr-4 " style="max-width: 250px">
             ติดต่อเรา
           </b-nav-item>
-          <b-nav-item @click="$router.push('/package')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/package')" class="pl-4 pr-4 " style="max-width: 250px">
             แพ็คเกจ
           </b-nav-item>
-          <b-nav-item @click="$router.push('/all-apps')" class="pl-4 pr-4">
+          <b-nav-item @click="$router.push('/all-apps')" class="pl-4 pr-4 " style="max-width: 250px">
             รวมแอป
           </b-nav-item>
         </b-navbar-nav>
-        <v-btn right rounded color="primary" dark @click="$router.push('/login')">ลงทะเบียน</v-btn>
+        <v-btn right rounded color="#B27D41" dark @click="$router.push('/login')">เข้าสู่ระบบ</v-btn>
+        <v-btn right outlined rounded color="#B27D41" dark @click="$router.push('/login')" class="ml-3">ลงทะเบียน</v-btn>
       </b-collapse>
     </b-navbar>
   </v-card>
