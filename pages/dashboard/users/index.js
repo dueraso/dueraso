@@ -12,6 +12,9 @@ export default {
     return {
       loading: true,
       dialog: false,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
       tableHead: [
         {
           title: "ชื่อ-สกุล",

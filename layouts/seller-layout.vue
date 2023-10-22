@@ -19,6 +19,17 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-group :value="true" no-action class="pl-6"  color="#5B4840">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>รายงาน</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item link class="pl-8">
+            <v-list-item-title>รายงานร้าน</v-list-item-title>
+          </v-list-item>
+        </v-list-group>
 
       </v-list>
     </v-navigation-drawer>

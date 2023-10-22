@@ -3,6 +3,7 @@ import pkg from '~/package.json'
 import isAdmin from "@/middleware/is-admin";
 import dayjs from "dayjs";
 import myUtils from "@/plugins/myUtils";
+import convert from "@/plugins/convert";
 
 export default {
   middleware: ['auth'],
@@ -68,6 +69,11 @@ export default {
       item: {},
       switch1: false,
     };
+  },
+  computed: {
+    convert() {
+      return convert
+    }
   },
   created() {
     this.$nextTick(() => {

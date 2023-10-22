@@ -7,6 +7,7 @@
       <v-icon>mdi-plus</v-icon>
       เพิ่ม
     </v-btn>
+    <slot></slot>
   </v-row>
 </template>
 <script>

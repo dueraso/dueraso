@@ -8,141 +8,149 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <v-row class="pa-3 mt-1" style="background: #eef7f6">
-            <h5 class="mb-0 ml-4" style="color: #00000080">
-              <v-icon x-large>mdi-account-group-outline</v-icon>
-              ผู้ใช้งานทั้งหมด
-            </h5>
-            <v-spacer/>
-            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">
-              <v-icon>mdi-plus</v-icon>
-              เพิ่ม
-            </v-btn>
-            <v-btn outlined @click="$router.push($route.fullPath+'/role')" class="mr-3">
-              <v-icon>mdi-lock</v-icon>
+          <head-bar title="ผู้ใช้งานทั้งหมด" :callback="openItem">
+            <v-btn rounded @click="$router.push($route.fullPath+'/role')" class="ml-3" color="#B27D41" dark small>
+              <v-icon small>mdi-lock</v-icon>
               จัดการสิทธิ์
             </v-btn>
-          </v-row>
+          </head-bar>
           <v-col>
-            <v-simple-table fixed-header>
-              <template v-slot:default>
-                <thead>
-                <tr>
-                  <th v-for="(item, i) in tableHead" :key="i" class="text-left" style="font-size: 14px"
-                      :width="item.width">{{ item.title }}
-                  </th>
-                  <th width="120">
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, index) in desserts.data" :key="index">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.phone }}</td>
-                  <td>{{ status(item.status) }}</td>
-                  <td>{{ item.roles.name }}</td>
-                  <td>{{ convert.datetime(item.created_at) }}</td>
-                  <td class="p-0 text-right">
-                    <v-btn fab small text @click="openItem(item)" :disabled="item.roles.name === 'super_admin'"
-                           v-show="myUtils('update', $route.fullPath)">
+            <table style="width:100%">
+              <thead>
+              <tr>
+                <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
+                    style="color: #846537" class="pl-3"
+                    :width="item.width">{{ item.title }}
+                </th>
+                <th width="120px" style="background-color: #f3f1ed;">
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(item, index) in desserts.data" :key="index">
+                <td class="pr-0">
+                  <div class="rounded-cell">
+                    {{ item.name }}
+                  </div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">
+                    {{ item.email }}
+                  </div>
+                </td>
+                <td class="pl-0 pr-0" style="width: 150px">
+                  <div class="rounded-cell-center">
+                    {{ convert.formatPhoneNumber(item.phone) }}
+                  </div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">
+                    {{ status(item.status) }}
+                  </div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">
+                    {{ item.roles.name }}
+                  </div>
+                </td>
+                <td class="pl-0 pr-0" style="width: 150px">
+                  <div class="rounded-cell-center">
+                    {{ convert.datetime(item.created_at) }}
+                  </div>
+                </td>
+                <td>
+                  <div class="rounded-cell-right" align="right">
+                    <v-btn fab small text @click="openItem(item)">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" :disabled="item.roles.name === 'super_admin'"
-                           v-show="myUtils('delete', $route.fullPath)">
+                    <v-btn fab small text @click="onDelete(item)">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </td>
-                </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-            <div class="text-center">
-              <v-dialog v-model="dialog" persistent>
-                <v-card>
-                  <v-card-title class="text-h5 grey lighten-2 mb-3">
-                    <v-col class="p-0">
-                      เพิ่ม/แก้ไขผู้ใช้งาน
-                    </v-col>
-                    <v-col align="right" style="align-items: center" class="p-0">
-                      <v-icon @click="dialog = false">mdi-close</v-icon>
-                    </v-col>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-card>
-                      <p class="p-3 m-0">ข้อมูลส่วนตัว</p>
-                      <v-row class="m-0">
-                        <v-col class="pb-0 pt-0" md="6">
-                          <v-text-field v-model="item.title" label="ชื่อ-สกุล" outlined clearable dense/>
-                        </v-col>
-                        <v-col class="pb-0 pt-0" md="6">
-                          <v-text-field v-model="item.phone" label="เบอร์" outlined clearable dense/>
-                        </v-col>
-                        <v-divider class="m-0 ml-4 mr-4"/>
-                      </v-row>
-                      <p class="p-3 m-0">ข้อมูลผู้ใช้งาน</p>
-                      <v-row class="m-0">
-                        <v-col class="pb-0 pt-0" md="6">
-                          <v-text-field v-model="item.email" label="อีเมล" type="email" outlined clearable dense/>
-                        </v-col>
-                        <v-col class="pb-0 pt-0" md="6">
-                          <v-text-field v-model="item.password" label="รหัสผ่าน" outlined clearable dense/>
-                        </v-col>
-                        <v-divider class="m-0 ml-4 mr-4"/>
-                      </v-row>
-                      <p class="p-3 m-0">ข้อมูลอื่นๆ</p>
-                      <v-row class="m-0">
-                        <v-col class="pb-0 pt-0">
-                          <v-text-field
-                            v-model="item.salary_id"
-                            label="เงินเดือน"
-                            outlined
-                            clearable
-                            dense
-                            type="number"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col class="pb-0 pt-0">
-                          <v-autocomplete
-                            outlined
-                            auto-select-first
-                            :items="roles.data"
-                            v-model="rolesSelect"
-                            hide-no-data
-                            hide-selected
-                            return-object
-                            label="สิทธิ์การใช้งาน"
-                            dense
-                            item-text="name"
-                            item-value="id"
-                          ></v-autocomplete>
-<!--                          <v-text-field-->
-<!--                            v-model="item.roles_id"-->
-<!--                            label="สิทธิ์"-->
-<!--                            outlined-->
-<!--                            clearable-->
-<!--                            dense-->
-<!--                          ></v-text-field>-->
-                        </v-col>
-                        <v-switch v-model="item.status" inset class="m-0 pt-1 pr-4" label="สถานะ"></v-switch>
-                      </v-row>
-                    </v-card>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" outlined @click="confirm">
-                      ตกลง
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </v-col>
+          <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขผู้ใช้งาน">
+            <p class="p-3 m-0" style="font-weight: 500">ข้อมูลส่วนตัว</p>
+            <v-row class="m-0">
+              <v-col class="pb-0 pt-0" md="6">
+                <v-text-field v-model="item.title" label="ชื่อ-สกุล" outlined clearable dense
+                              style="border-radius: 15px"
+                              required
+                              :rules="rules"/>
+              </v-col>
+              <v-col class="pb-0 pt-0" md="6">
+                <v-text-field v-model="item.phone" label="เบอร์" outlined clearable dense style="border-radius: 15px"
+                              required
+                              :rules="rules"/>
+              </v-col>
+            </v-row>
+            <p class="p-3 m-0" style="font-weight: 500">ข้อมูลผู้ใช้งาน</p>
+            <v-row class="m-0">
+              <v-col class="pb-0 pt-0" md="12">
+                <v-text-field v-model="item.email" label="อีเมล" type="email" outlined clearable dense
+                              style="border-radius: 15px"
+                              required
+                              :rules="rules"/>
+              </v-col>
+              <v-col class="pb-0 pt-0" md="6">
+                <v-text-field v-model="item.password" label="รหัสผ่าน" outlined clearable dense
+                              style="border-radius: 15px"
+                              required
+                              :rules="rules"/>
+              </v-col>
+              <v-col class="pb-0 pt-0" md="6">
+                <v-text-field v-model="item.passcode" label="รหัสผ่าน" outlined clearable dense
+                              style="border-radius: 15px"
+                              required
+                              :rules="rules"/>
+              </v-col>
+            </v-row>
+            <p class="p-3 m-0" style="font-weight: 500">ข้อมูลอื่นๆ</p>
+            <v-row class="m-0">
+              <v-col class="pb-0 pt-0" md="6">
+                <v-text-field
+                  v-model="item.salary_id"
+                  label="เงินเดือน"
+                  outlined
+                  clearable
+                  dense
+                  type="number" style="border-radius: 15px"
+                  required
+                  :rules="rules"
+                ></v-text-field>
+              </v-col>
+              <v-col class="pb-0 pt-0" md="6">
+                <v-autocomplete
+                  outlined
+                  auto-select-first
+                  :items="roles.data"
+                  v-model="rolesSelect"
+                  hide-no-data
+                  hide-selected
+                  return-object
+                  label="สิทธิ์การใช้งาน"
+                  dense
+                  item-text="name"
+                  item-value="id" style="border-radius: 15px"
+                  required
+                  :rules="rules"
+                ></v-autocomplete>
+              </v-col>
+            </v-row>
+            <v-row class="m-0 pl-4">
+              <p class="m-0 mt-2 mr-4" style="font-weight: 500">สถานะการใช้งาน</p>
+              <v-switch v-model="item.status" inset class="m-0 pt-1 pr-4" label="สถานะ" color="success"></v-switch>
+            </v-row>
+          </dialog-mid>
         </v-container>
       </v-main>
     </v-app>
   </div>
 </template>
+<style src="../../pos/product/index.css"/>
 <style>
 .cut-text-2 {
   display: -webkit-box;
