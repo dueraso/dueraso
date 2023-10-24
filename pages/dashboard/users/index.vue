@@ -53,8 +53,8 @@
                     {{ item.roles.name }}
                   </div>
                 </td>
-                <td class="pl-0 pr-0" style="width: 150px">
-                  <div class="rounded-cell-center">
+                <td class="pl-0 pr-0" style="width: 200px">
+                  <div class="rounded-cell-center" style="min-width: 150px">
                     {{ convert.datetime(item.created_at) }}
                   </div>
                 </td>

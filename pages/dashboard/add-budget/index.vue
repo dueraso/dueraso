@@ -41,7 +41,7 @@
                     {{ convert.money(item.total) }}
                   </div>
                 </td>
-                <td class="pl-0 pr-0" width="12%">
+                <td class="pl-0 pr-0" style="min-width: 150px">
                   <div class="rounded-cell-center">
                     {{ convert.datetime(item.created_at) }}
                   </div>

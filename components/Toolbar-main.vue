@@ -2,32 +2,32 @@
   <!--  <v-app app fixed style="background: unset" align="center" class="pa-4 elevation-0">-->
   <v-card flat style="z-index: 99; background: unset" width="100%" class="pa-4">
     <b-navbar v-model="e"
-              toggleable="lg" class="elevation-4 text-left topnav1" variant="white"
+              toggleable="lg" class="elevation-4 text-left topnav1 pt-0 pb-0" variant="white"
               style="border-radius: 20px; justify-content: space-between">
       <!--        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
       <div style="width: 215px"></div>
       <div>
         <v-row class="m-0  align-items-center">
-          <div style="width: 150px" align="center">
+          <div align="center">
             <a style="align-content: center">หน้าหลัก</a>
           </div>
-          <div style="width: 150px">
+          <div >
             <a>บทความ</a>
           </div>
-          <div style="width: 150px">
-            <a :class="$route.name == 'faq' ? 'active':''" @click="$router.push('/faq')">คำถามที่พบบ่อย</a>
+          <div >
+            <a :class="$route.name === 'faq' ? 'active':''" @click="$router.push('/faq')">คำถามที่พบบ่อย</a>
           </div>
           <div style="width: 200px; text-align-last: center;">
             <p style="font-size: 35px; font-weight: 700; color: #846537" class="m-0">DUERASO</p>
           </div>
-          <div style="width: 150px">
+          <div >
             <a>ติดต่อเรา</a>
           </div>
-          <div style="width: 150px">
-            <a :class="$route.name == 'package' ? 'active':''" @click="$router.push('/package')">แพ็คเกจ</a>
+          <div >
+            <a :class="$route.name === 'package' ? 'active':''" @click="$router.push('/package')">แพ็คเกจ</a>
           </div>
-          <div style="width: 150px">
-            <a :class="$route.name == 'all-apps' ? 'active':''" @click="$router.push('/all-apps')">รวมแอป</a>
+          <div >
+            <a :class="$route.name === 'all-apps' ? 'active':''" @click="$router.push('/all-apps')">รวมแอป</a>
           </div>
         </v-row>
       </div>
@@ -137,7 +137,7 @@
   display: block;
   color: #000000;
   text-align: center;
-  padding: 0;
+  padding: 14px 10px;
   margin-left: 20px;
   margin-right: 20px;
   text-decoration: none;
@@ -152,6 +152,22 @@
 .topnav1 a.active {
   color: #A44E1C;
   border-bottom: 3px solid #A44E1C;
+}
+
+/* Responsive navigation menu (for mobile devices) */
+@media screen and (max-width: 1410px) {
+  .topnav1 a {
+    float: initial;
+    display: block;
+    color: #000000;
+    text-align: center;
+    padding: 14px 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+  }
 }
 
 /*.navbar-expand-lg .navbar-nav .nav-link {*/
