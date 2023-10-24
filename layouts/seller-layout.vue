@@ -26,8 +26,8 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item link class="pl-8">
-            <v-list-item-title>รายงานร้าน</v-list-item-title>
+          <v-list-item link class="pl-8" v-for="(item, i) in reportItems" :key="i" :to="item.to">
+            <v-list-item-title>{{item.name}}</v-list-item-title>
           </v-list-item>
         </v-list-group>
 
@@ -189,6 +189,20 @@ export default {
           name:'จัดการประเภท',
           icon:'mdi-cog-outline',
           to:'/pos/product-type'
+        },
+      ],
+      reportItems: [
+        {
+          name:'ภาพรวม',
+          to:'/dashboard/report'
+        },
+        {
+          name:'รายงานตามสาขา',
+          to:'/dashboard/report/outlets'
+        },
+        {
+          name:'รายงานตามผู้ขาย',
+          to:'/dashboard/report/employee'
         },
       ],
     };

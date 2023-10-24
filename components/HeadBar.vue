@@ -3,7 +3,7 @@
     <h2 align="left" class="m-0">
       <img style="height: 50px" src="/line.png" alt="line"> {{ title }}
     </h2>
-    <v-btn rounded @click="openItem()" class="ml-3" color="#B27D41" dark small>
+    <v-btn rounded @click="openItem()" class="ml-3" color="#B27D41" dark small v-show="callback">
       <v-icon>mdi-plus</v-icon>
       เพิ่ม
     </v-btn>

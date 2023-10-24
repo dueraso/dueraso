@@ -14,12 +14,12 @@ export default {
     }
   },
   middleware: ['auth'],
+  // , isAdmin],
   components: {
     GChart
   },
   data() {
     return {
-      loading: true,
       typeChart: [
         {
           id: 0,
@@ -66,11 +66,6 @@ export default {
       headerTable: [],
       desserts: []
     }
-  },
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
   mounted() {
     console.log()
