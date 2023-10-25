@@ -29,7 +29,7 @@ export default {
       insteadSelect: null,
       tableHead: [
         {
-          title: "ชื่อสาขา",
+          title: "ชื่อส่วนลด",
           width: ""
         },
         {

@@ -191,9 +191,9 @@ export default {
           to:'/pos/product-type'
         },
         {
-          name:'จัดการการเงิน',
+          name:'จัดการพร้อมเพย์',
           icon:'mdi-cog-outline',
-          to:'/pos/pay'
+          to:'/pos/promptpay'
         },
       ],
       reportItems: [

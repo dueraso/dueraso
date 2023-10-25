@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="จัดการการเงิน" :callback="openItem"/>
+          <head-bar title="จัดการพร้อมเพย์" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -27,10 +27,14 @@
                   <div class="rounded-cell">{{ item.name }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
-                    <v-switch inset v-model="item.use?1:0" :value="item.use === '1'" @click="onUse(item)"
-                              class="m-0 p-0" hide-details
-                    ></v-switch>
+                  <div class="rounded-cell-center">{{ typePro(item.type_promptpay) }}</div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.promptpay }}</div>
+                </td>
+                <td align="center">
+                  <div class="rounded-cell-center-img">
+                    <v-img :src="item.image_promptpay" height="40px" width="40px" style="border-radius: 10px"></v-img>
                   </div>
                 </td>
                 <td>
@@ -51,7 +55,7 @@
               <v-form ref="form" v-model="valid">
                 <v-card style="border-radius: 15px">
                   <v-card-title>
-                    <h5 class="m-0" style="color: #5B4840">เพิ่ม / แก้ไขส่วนลด</h5>
+                    <h5 class="m-0" style="color: #5B4840">เพิ่ม / แก้ไขพร้อมเพย์</h5>
                     <v-spacer/>
                     <v-btn icon @click="dialog = false">
                       <v-icon color="#5B4840">mdi-close</v-icon>
@@ -59,22 +63,43 @@
                   </v-card-title>
 
                   <v-card-text class="p-3" style="background: #F6F6F6" align="center">
-                    <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.name" label="ชื่อส่วนลด" outlined dense required :rules="rules"/>
                     <v-row class="m-0">
-                      <v-autocomplete
-                        outlined required style="border-radius: 15px" :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
+                      <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.name" label="ชื่อ"
+                                    outlined dense required :rules="rules" class="pr-4"/>
+                      <v-select
+                        outlined required style="border-radius: 15px" :rules="rules" :items="instead"
+                        v-model="insteadSelect" hide-no-data
                         hide-selected
                         return-object
-                        label="ประเภท"
+                        label="ประเภทพร้อมเพย์"
                         dense
                         item-text="name"
-                        item-value="id" class="pr-4"
+                        item-value="id"
                         color="#A57156"
-                      ></v-autocomplete>
-                      <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.total" label="จำนวน" outlined dense type="number" required
-                                    :rules="rules"/>
+                      ></v-select>
                     </v-row>
-                    <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="mb-2">
+                    <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.promptpay" :label="insteadSelect.name"
+                                  outlined dense type="number" required
+                                  :rules="rules" v-if="insteadSelect.id != 3"/>
+                    <div v-else>
+                      <v-file-input
+                        v-model="selectedFile"
+                        accept="image/*"
+                        label="เลือกรูปภาพ"
+                        prepend-icon="mdi-image-multiple-outline"
+                        outlined
+                        @change="uploadImage"
+                        style="border-radius: 15px"
+                        dense
+                        required hide-details
+                        :rules="rules"
+                      ></v-file-input>
+
+                      <!--                       Display the currently selected image -->'
+                      <v-img v-if="file" :src="file.path" contain height="200" class="mb-4"></v-img>
+                    </div>
+                    <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="mb-2"
+                           style="border-radius: 15px">
                       ตกลง
                     </v-btn>
                   </v-card-text>

@@ -9,6 +9,11 @@
         </div>
         <v-container fluid v-if="!loading">
           <head-bar title="ภาพรวม"/>
+          <v-col>
+          <v-img src="/404.jpg" height="100" width="100">
+
+          </v-img>
+          </v-col>
 <!--          <v-card elevation="0">-->
 <!--            <v-card-title style="margin: 12px; background-color: #EEF7F6;">-->
 <!--              <v-row style="padding: 12px">-->
