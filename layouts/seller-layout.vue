@@ -190,6 +190,11 @@ export default {
           icon:'mdi-cog-outline',
           to:'/pos/product-type'
         },
+        {
+          name:'จัดการการเงิน',
+          icon:'mdi-cog-outline',
+          to:'/pos/pay'
+        },
       ],
       reportItems: [
         {

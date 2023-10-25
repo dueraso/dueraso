@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="จัดการส่วนลด" :callback="openItem"/>
+          <head-bar title="จัดการการเงิน" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -29,7 +29,7 @@
                 <td class="pl-0 pr-0">
                   <div class="rounded-cell-center">
                     <v-switch inset v-model="item.use?1:0" :value="item.use === '1'" @click="onUse(item)"
-                              class="m-0 p-0" hide-details color="success"
+                              class="m-0 p-0" hide-details
                     ></v-switch>
                   </div>
                 </td>

@@ -73,11 +73,10 @@ export default {
     })
   },
   mounted() {
-    console.log()
     this.typeChartSelect = this.typeChart[0]
     this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-      this.getTypeRoom()
+      // this.$nuxt.$loading.start()
+      // this.getTypeRoom()
     })
   },
   methods: {

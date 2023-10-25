@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="ภาพรวม" :callback="openItem"/>
+          <head-bar title="ภาพรวม"/>
 <!--          <v-card elevation="0">-->
 <!--            <v-card-title style="margin: 12px; background-color: #EEF7F6;">-->
 <!--              <v-row style="padding: 12px">-->
