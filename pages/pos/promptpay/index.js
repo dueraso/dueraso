@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
-import myUtils from "@/plugins/myUtils";
 import convert from "../../../plugins/convert";
 
 export default {
@@ -27,16 +26,16 @@ export default {
       isLoading: false,
       instead: [
         {
-          id:1,
-          name:"เบอร์โทรศัพท์"
+          id: 1,
+          name: "เบอร์โทรศัพท์"
         },
         {
-          id:2,
-          name:"เลขบัตรประชาชน"
+          id: 2,
+          name: "เลขบัตรประชาชน"
         },
         {
-          id:3,
-          name:"รูปภาพ"
+          id: 3,
+          name: "รูปภาพ"
         }
       ],
       insteadSelect: {},
@@ -44,28 +43,28 @@ export default {
         {
           title: "ชื่อ",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "ประเภท",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "ราคา",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "รูป",
           width: "5%",
-          text:"text-center"
+          text: "text-center"
         },
       ],
       desserts: {},
       item: {},
-      use:[],
-      valid:false
+      use: [],
+      valid: false
     };
   },
 
@@ -79,39 +78,36 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
+      this.getData()
     })
-    this.getData()
     // window.onbeforeunload = function(event)
     // {
     //   return confirm("Confirm refresh");
     // };
   },
-watch:{
-  insteadSelect(val){
-    if (val == undefined) {
-      this.insteadSelect = this.instead[0]
-      return
+  watch: {
+    insteadSelect(val) {
+      if (val == undefined) {
+        this.insteadSelect = this.instead[0]
+        return
+      }
+      return this.insteadSelect = val
     }
-    return this.insteadSelect = val
-  }
-},
+  },
 
   methods: {
-    covertTypeProm(val){
+    covertTypeProm(val) {
       if (val === null) return "-"
-      return val.length > 10?convert.formatIc(val):convert.formatPhoneNumber(val)
+      return val.length > 10 ? convert.formatIc(val) : convert.formatPhoneNumber(val)
     },
-    typePro(val){
+    typeProm(val) {
       switch (val) {
         case 1:
           return "เบอร์โทรศัพท์";
-        break
         case 2:
           return "เลขบัตรประชาชน";
-        break
         default:
           return "รูปภาพ";
-          break
       }
     },
     async uploadImage() {
@@ -121,9 +117,9 @@ watch:{
 
         try {
           // Use Axios or your preferred HTTP client to send the image to the server
-          await this.$axios.post('/uploadImage', formData).then((res)=>{
+          await this.$axios.post('/uploadImage', formData).then((res) => {
             this.file = res.data
-          }).catch((e)=>{
+          }).catch((e) => {
             console.log(e)
           });
 
@@ -132,15 +128,6 @@ watch:{
           console.error('Image upload failed:', error);
         }
       }
-    },
-
-    myUtils,
-    convertDay(val) {
-      if (val == undefined) return
-      return dayjs(val).format('HH:mm')
-    },
-    getColor(val) {
-      return (val !== 1) ? 'green' : 'red'
     },
 
     async getData() {
@@ -153,7 +140,8 @@ watch:{
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
         // console.log("Update> " + this.item.id)
         this.onUpdate()
@@ -163,32 +151,21 @@ watch:{
       }
     },
 
-    async onUse(val){
-      val.use = !val.use
-      await this.$axios.put("/posPromptPay/"+val.id,{
-        use:val.use,
-      }).then((res) => {
-        this.getData()
-      }).catch((e) => {
-        console.log(e)
-      })
-    },
-
     openItem(val = {}) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      this.insteadSelect = this.instead.find(d=>d.id == this.item.type_promptpay)
-      console.log(this.item)
+      this.insteadSelect = this.instead.find(d => d.id == this.item.type_promptpay)
+      // this.selectedFile = this.item.image_promptpay != null?JSON.parse(this.item.image_promptpay).fullPath:null
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
       this.resetData()
-      await this.$axios.put("/posPromptPay/"+this.item.id,{
-        name:this.item.name,
-        type_promptpay:this.insteadSelect.id,
-        promptpay:this.item.promptpay,
-        image_promptpay:this.file?this.file.path:null
+      await this.$axios.put("/posPromptPay/" + this.item.id, {
+        name: this.item.name,
+        type_promptpay: this.insteadSelect.id,
+        promptpay: this.item.promptpay,
+        image_promptpay: this.file ? JSON.stringify(this.file.data) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -196,32 +173,32 @@ watch:{
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
       this.resetData()
-      await this.$axios.post("/posPromptPay",{
-        name:this.item.name,
-        type_promptpay:this.insteadSelect.id,
-        promptpay:this.item.promptpay,
-        image_promptpay:this.file?this.file.path:null
+      await this.$axios.post("/posPromptPay", {
+        name: this.item.name,
+        type_promptpay: this.insteadSelect.id,
+        promptpay: this.item.promptpay,
+        image_promptpay: this.file ? JSON.stringify(this.file.data) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)
       })
     },
-    resetData(){
-      this.insteadSelect.id != 3?this.file=null:this.item.promptpay = null
+    resetData() {
+      this.insteadSelect.id != 3 ? this.file = null : this.item.promptpay = null
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/posPromptPay/"+this.item.id).then((res) => {
+      await this.$axios.delete("/posPromptPay/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

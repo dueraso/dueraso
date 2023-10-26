@@ -27,14 +27,17 @@
                   <div class="rounded-cell">{{ item.name }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ typePro(item.type_promptpay) }}</div>
+                  <div class="rounded-cell-center">{{ typeProm(item.type_promptpay) }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{covertTypeProm(item.promptpay) }}</div>
+                  <div class="rounded-cell-center">
+                    {{ covertTypeProm(item.promptpay) }}
+                  </div>
                 </td>
                 <td align="center">
                   <div class="rounded-cell-center-img">
-                    <v-img :src="item.image_promptpay" height="40px" width="40px" style="border-radius: 10px"></v-img>
+                    <v-img :src="item.image_promptpay != null?JSON.parse(item.image_promptpay).fullPath:''"
+                           height="40px" width="40px" style="border-radius: 10px"></v-img>
                   </div>
                 </td>
                 <td>
@@ -78,7 +81,8 @@
                         color="#A57156"
                       ></v-select>
                     </v-row>
-                    <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.promptpay" :label="insteadSelect.name"
+                    <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.promptpay"
+                                  :label="insteadSelect.name"
                                   outlined dense type="number" required
                                   :rules="rules" v-if="insteadSelect.id != 3"/>
                     <div v-else>
@@ -93,10 +97,21 @@
                         dense
                         required hide-details
                         :rules="rules"
+                        :disabled="file"
                       ></v-file-input>
 
                       <!--                       Display the currently selected image -->'
-                      <v-img v-if="file" :src="file.path" contain height="200" class="mb-4"></v-img>
+                      <div class="container">
+                        <v-img :src="file!= null?file.data.fullPath:''" alt="prom" class="image" style="width:200px"/>
+                        <div class="middle" v-show="file">
+                            <v-btn style="border-radius: 15px" color="red" dark>
+                              <v-icon>
+                                mdi-delete-outline
+                              </v-icon>
+                              ลบ
+                          </v-btn>
+                        </div>
+                      </div>
                     </div>
                     <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="mb-2"
                            style="border-radius: 15px">
@@ -113,5 +128,36 @@
     </v-app>
   </div>
 </template>
-<style src="../product/index.css"/>
+<style>
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+</style>
+<style src="../product/index.css">
+</style>
 <script src="./index.js"/>
