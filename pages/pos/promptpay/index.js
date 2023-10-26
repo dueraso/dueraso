@@ -2,8 +2,14 @@ import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
+import convert from "../../../plugins/convert";
 
 export default {
+  computed: {
+    convert() {
+      return convert
+    }
+  },
   middleware: ['auth'],
   layout: "seller-layout",
   data() {
@@ -65,7 +71,6 @@ export default {
 
   created() {
     // this.insteadSelect = this.instead[0]
-    console.log(this.insteadSelect)
     this.$nextTick(() => {
       this.loading = false
     })
@@ -87,20 +92,26 @@ watch:{
       this.insteadSelect = this.instead[0]
       return
     }
-    console.log(val)
     return this.insteadSelect = val
   }
 },
 
   methods: {
+    covertTypeProm(val){
+      if (val === null) return "-"
+      return val.length > 10?convert.formatIc(val):convert.formatPhoneNumber(val)
+    },
     typePro(val){
       switch (val) {
-        case val:1
+        case 1:
           return "เบอร์โทรศัพท์";
-        case val:2
+        break
+        case 2:
           return "เลขบัตรประชาชน";
+        break
         default:
           return "รูปภาพ";
+          break
       }
     },
     async uploadImage() {
@@ -135,7 +146,6 @@ watch:{
     async getData() {
       await this.$axios.get("/posPromptPay").then((res) => {
         this.desserts = res.data
-        console.log(this.desserts)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -145,10 +155,10 @@ watch:{
     confirm() {
       if(!this.$refs.form.validate()) return;
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -159,7 +169,6 @@ watch:{
         use:val.use,
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -168,19 +177,20 @@ watch:{
     openItem(val = {}) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      this.insteadSelect = this.instead.find(d=>d.id == this.item.type_discount)
+      this.insteadSelect = this.instead.find(d=>d.id == this.item.type_promptpay)
+      console.log(this.item)
     },
 
     async onUpdate(){
       this.dialog = false
+      this.resetData()
       await this.$axios.put("/posPromptPay/"+this.item.id,{
         name:this.item.name,
-        type_discount:this.insteadSelect.id,
-        total:this.item.total,
-        use:1,
+        type_promptpay:this.insteadSelect.id,
+        promptpay:this.item.promptpay,
+        image_promptpay:this.file?this.file.path:null
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -188,6 +198,7 @@ watch:{
 
     async onCreate(){
       this.dialog = false
+      this.resetData()
       await this.$axios.post("/posPromptPay",{
         name:this.item.name,
         type_promptpay:this.insteadSelect.id,
@@ -195,10 +206,12 @@ watch:{
         image_promptpay:this.file?this.file.path:null
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
+    },
+    resetData(){
+      this.insteadSelect.id != 3?this.file=null:this.item.promptpay = null
     },
 
     onDelete(val){
@@ -210,7 +223,6 @@ watch:{
       this.dialogDelete = false
       await this.$axios.delete("/posPromptPay/"+this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

@@ -2,8 +2,10 @@ import dayjs from "dayjs";
 
 export default {
   formatPhoneNumber(phoneNumberString) {
-    console.log(phoneNumberString)
     return  phoneNumberString.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
+  },
+  formatIc(phoneNumberString) {
+    return  phoneNumberString.replace(/^(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})$/, '$1-$2-$3-$4-$5')
   },
 
   datetime(val = dayjs(), _format = "DD/MM/YYYY HH:mm") {

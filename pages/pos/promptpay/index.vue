@@ -30,7 +30,7 @@
                   <div class="rounded-cell-center">{{ typePro(item.type_promptpay) }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.promptpay }}</div>
+                  <div class="rounded-cell-center">{{covertTypeProm(item.promptpay) }}</div>
                 </td>
                 <td align="center">
                   <div class="rounded-cell-center-img">
