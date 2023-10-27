@@ -36,7 +36,7 @@
                 </td>
                 <td align="center">
                   <div class="rounded-cell-center-img">
-                    <v-img :src="item.image_promptpay != null?JSON.parse(item.image_promptpay).fullPath:''"
+                    <v-img :src="item.image_promptpay != null ? JSON.parse(item.image_promptpay).fullPath:''"
                            height="40px" width="40px" style="border-radius: 10px"></v-img>
                   </div>
                 </td>
@@ -97,18 +97,18 @@
                         dense
                         required hide-details
                         :rules="rules"
-                        :disabled="file"
+                        :disabled="file != null"
                       ></v-file-input>
 
                       <!--                       Display the currently selected image -->'
-                      <div class="container">
-                        <v-img :src="file!= null?file.data.fullPath:''" alt="prom" class="image" style="width:200px"/>
+                      <div class="container mb-3">
+                        <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
                         <div class="middle" v-show="file">
-                            <v-btn style="border-radius: 15px" color="red" dark>
-                              <v-icon>
-                                mdi-delete-outline
-                              </v-icon>
-                              ลบ
+                          <v-btn style="border-radius: 15px" color="red" dark>
+                            <v-icon>
+                              mdi-delete-outline
+                            </v-icon>
+                            ลบ
                           </v-btn>
                         </div>
                       </div>
@@ -143,7 +143,7 @@
   transition: .5s ease;
   opacity: 0;
   position: absolute;
-  top: 50%;
+  top: 63%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);

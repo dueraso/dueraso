@@ -155,7 +155,9 @@ export default {
       this.dialog = true
       this.item = Object.assign({}, val)
       this.insteadSelect = this.instead.find(d => d.id == this.item.type_promptpay)
-      // this.selectedFile = this.item.image_promptpay != null?JSON.parse(this.item.image_promptpay).fullPath:null
+      // this.selected
+      this.file = this.item.image_promptpay != null?JSON.parse(this.item.image_promptpay):null
+      console.log(this.file)
     },
 
     async onUpdate() {
