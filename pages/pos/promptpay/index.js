@@ -156,13 +156,16 @@ export default {
       this.item = Object.assign({}, val)
       this.insteadSelect = this.instead.find(d => d.id == this.item.type_promptpay)
       // this.selected
-      this.file = this.item.image_promptpay != null?JSON.parse(this.item.image_promptpay):null
+      this.file = this.item.image_promptpay != null ? JSON.parse(this.item.image_promptpay) : null
       console.log(this.file)
     },
 
     async onUpdate() {
       this.dialog = false
       this.resetData()
+      console.log(this.file)
+      console.log(JSON.stringify(this.file.data))
+      console.log(this.file ? JSON.stringify(this.file.data) : null)
       await this.$axios.put("/posPromptPay/" + this.item.id, {
         name: this.item.name,
         type_promptpay: this.insteadSelect.id,
@@ -191,6 +194,19 @@ export default {
     },
     resetData() {
       this.insteadSelect.id != 3 ? this.file = null : this.item.promptpay = null
+    },
+
+    onDeleteImage() {
+      let img = this.file == null ? JSON.parse(this.item.image_promptpay) : this.file
+      this.$axios.post("destroySingle", {
+        id: Object.keys(this.item).length === 0 ? 0 : this.item.id,
+        image_promptpay: img.newName
+      }).then((res) => {
+        this.selectedFile = null
+        this.file = null
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
     onDelete(val) {

@@ -104,7 +104,7 @@
                       <div class="container mb-3">
                         <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
                         <div class="middle" v-show="file">
-                          <v-btn style="border-radius: 15px" color="red" dark>
+                          <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
                             <v-icon>
                               mdi-delete-outline
                             </v-icon>
