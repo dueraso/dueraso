@@ -15,6 +15,8 @@ export default {
       isLoading: false,
       instead: null,
       insteadSelect: null,
+      promptItems: null,
+      promptSelect: null,
       tableHead: [
         {
           title: "ชื่อสาขา",
@@ -46,6 +48,7 @@ export default {
     })
     this.getData()
     this.getOutlet()
+    this.getPrompt()
   },
 
   computed:{
@@ -86,6 +89,15 @@ export default {
       return (val !== 1) ? 'green' : 'red'
     },
 
+    async getPrompt() {
+      await this.$axios.get("/posPromptPay").then((res) => {
+        this.promptItems = res.data.data
+        console.log(this.promptItems)
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
     async getOutlet() {
       await this.$axios.get("/organization").then((res) => {
         this.instead = res.data.data
@@ -98,6 +110,7 @@ export default {
     async getData() {
       await this.$axios.get("/branch").then((res) => {
         this.desserts = Object.assign({},res.data)
+        console.log(this.desserts)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -115,16 +128,20 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> "+JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
+      this.insteadSelect = this.item.organization
+      this.promptSelect = this.item.promptpay
     },
 
     async onUpdate(){
       this.dialog = false
       await this.$axios.put("/branch/"+this.item.id,{
         title:this.item.title,
-        detail:this.item.detail
+        detail:this.item.detail,
+        address:this.item.address,
+        organization:this.insteadSelect.id,
+        promptpay:this.promptSelect.id
       }).then((res) => {
         this.getData()
         console.log(res.data)
@@ -139,7 +156,8 @@ export default {
         title:this.item.title,
         detail:this.item.detail,
         address:this.item.address,
-        organization_id:this.insteadSelect.id
+        organization:this.insteadSelect.id,
+        promptpay:this.promptSelect.id
       }).then((res) => {
         this.getData()
         console.log(res.data)

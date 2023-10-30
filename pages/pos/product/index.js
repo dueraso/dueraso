@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
-import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth'],
@@ -11,6 +10,8 @@ export default {
       rules: [
         v => !!v || 'จำเป็น',
       ],
+      selectedFile: null,
+      file: null,
       loading: true,
       search: "",
       dialog: false,
@@ -62,7 +63,6 @@ export default {
 
   watch:{
     async search(val) {
-      console.log(val)
       if (val == null)return
       if (val.length < 2) return
       if (this.isLoading) return
@@ -75,7 +75,6 @@ export default {
         // const {count, data} = res.data
         // this.count = count
         // this.entries = data
-        console.log(res)
       }).catch((e) => {
         console.log(e)
       }).finally(() => (this.isLoading = false))
@@ -83,7 +82,39 @@ export default {
   },
 
   methods: {
-    myUtils,
+    async uploadImage() {
+      if (this.selectedFile) {
+        const formData = new FormData();
+        formData.append('image', this.selectedFile);
+
+        try {
+          // Use Axios or your preferred HTTP client to send the image to the server
+          await this.$axios.post('/uploadImage', formData).then((res) => {
+            this.file = res.data
+          }).catch((e) => {
+            console.log(e)
+          });
+
+          // Handle the response or any further actions
+        } catch (error) {
+          console.error('Image upload failed:', error);
+        }
+      }
+    },
+    
+    onDeleteImage() {
+      let img = this.file == null ? JSON.parse(this.item.image_promptpay) : this.file
+      this.$axios.post("destroySingle", {
+        id: Object.keys(this.item).length === 0 ? 0 : this.item.id,
+        image_promptpay: img.newName
+      }).then((res) => {
+        this.selectedFile = null
+        this.file = null
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+
     convertDay(val) {
       if (val == undefined) return
       return dayjs(val).format('HH:mm')
@@ -104,7 +135,6 @@ export default {
     async getData() {
       await this.$axios.get("/posProduct").then((res) => {
         this.desserts = Object.assign({},res.data)
-        console.log(this.desserts)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -123,7 +153,6 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> "+JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
       this.insteadSelect = this.item.type
@@ -139,7 +168,6 @@ export default {
         image_url:this.item.url
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -155,7 +183,6 @@ export default {
         image_url:this.item.url
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -170,7 +197,6 @@ export default {
       this.dialogDelete = false
       await this.$axios.delete("/posProduct/"+this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

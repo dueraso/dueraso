@@ -84,8 +84,36 @@
                                       style="border-radius: 15px"
                                       :rules="rules"/>
                       </v-row>
-                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"
-                                    style="border-radius: 15px"/>
+<!--                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"-->
+<!--                                    style="border-radius: 15px"/>-->
+<!--                      <div v-else>-->
+                        <v-file-input
+                          v-model="selectedFile"
+                          accept="image/*"
+                          label="เลือกรูปภาพ"
+                          prepend-icon="mdi-image-multiple-outline"
+                          outlined
+                          @change="uploadImage"
+                          style="border-radius: 15px"
+                          dense
+                          required hide-details
+                          :rules="rules"
+                          v-if="file == null"
+                        ></v-file-input>
+
+                        <!--                       Display the currently selected image -->'
+                        <div class="container mb-3">
+                          <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
+                          <div class="middle" v-show="file">
+                            <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
+                              <v-icon>
+                                mdi-delete-outline
+                              </v-icon>
+                              ลบ
+                            </v-btn>
+                          </div>
+                        </div>
+<!--                      </div>-->
                       <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                         ตกลง
                       </v-btn>
@@ -94,26 +122,6 @@
                 </v-form>
               </v-dialog>
               ,<dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
-<!--              <v-dialog v-model="dialogDelete" width="500">-->
-<!--                <v-card style="border-radius: 15px">-->
-<!--                  <v-col>-->
-<!--                    <h4 align="center" style="color: #846537" class="m-0 pt-3 pb-3">-->
-<!--                      คุณต้องการลบรายการใช่หรือไม่-->
-<!--                    </h4>-->
-<!--                    <v-row class="m-0">-->
-<!--                      <v-col-->
-<!--                        align="center" style="padding: 0" class="pb-2">-->
-<!--                        <v-btn outlined small rounded color="#A57156" @click="dialogDelete = false" class="m-2" width="150">-->
-<!--                          ยกเลิก-->
-<!--                        </v-btn>-->
-<!--                        <v-btn dark small color="#B27D41" @click="confirmDel" class="m-2" rounded width="150">-->
-<!--                          ยืนยัน-->
-<!--                        </v-btn>-->
-<!--                      </v-col>-->
-<!--                    </v-row>-->
-<!--                  </v-col>-->
-<!--                </v-card>-->
-<!--              </v-dialog>-->
             </div>
           </v-col>
         </v-container>

@@ -77,7 +77,6 @@ export default {
   methods:{
     startAutoSlide() {
       setInterval(() => {
-        console.log("งง>>")
         const slideGroup = this.$refs.slideGroup;
         slideGroup.next();
       }, 3000); // Adjust the delay (in milliseconds) between each slide transition

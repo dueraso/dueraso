@@ -172,12 +172,10 @@ export default {
           }
           localStorage.setItem("remember", JSON.stringify(data));
         }
-        console.log(res)
         this.$nuxt.$loading.finish();
       }).catch((e) => {
         this.$nuxt.$loading.finish();
         this.message = e.response.data.message
-        console.log(e.response.data.message);
       });
     },
   },

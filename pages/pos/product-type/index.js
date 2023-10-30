@@ -52,7 +52,6 @@ export default {
 
   watch: {
     async search(val) {
-      console.log(val)
       if (val == null) return
       if (val.length < 2) return
       if (this.isLoading) return
@@ -65,7 +64,6 @@ export default {
         // const {count, data} = res.data
         // this.count = count
         // this.entries = data
-        console.log(res)
       }).catch((e) => {
         console.log(e)
       }).finally(() => (this.isLoading = false))
@@ -95,7 +93,6 @@ export default {
       await this.$axios.get("/posProductType").then((res) => {
         // this.desserts = res
         this.desserts = Object.assign({}, res.data)
-        console.log(this.desserts)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -114,7 +111,6 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> " + JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
     },
@@ -149,7 +145,6 @@ export default {
       this.dialogDel = false
       await this.$axios.delete("/posProductType/" + this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

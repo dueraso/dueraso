@@ -83,7 +83,6 @@ export default {
   watch: {
     changeMoney(val) {
       this.checkPayMoney = (val >= 0)
-      console.log((val >= 0))
       return val
     },
     branch(val) {
@@ -150,7 +149,6 @@ export default {
         this.discountSel = []
         this.branch = {}
         this.$nuxt.$loading.finish()
-        console.log(res.data)
       }).catch((e)=>{
         this.$nuxt.$loading.finish()
         console.log(e)
@@ -206,7 +204,6 @@ export default {
     async getBranch() {
       this.dialog = true
       this.$axios.get("branch").then((res) => {
-        console.log(res.data)
         this.branchList = res.data
       }).catch((e) => {
         console.log(e)
@@ -222,7 +219,6 @@ export default {
       this.priceTotal -= this.discountTotal
     },
     addDiscount(val) {
-      console.log(val)
       this.discountSel.push(val)
     },
     removeDiscount(val) {
@@ -242,7 +238,6 @@ export default {
     },
 
     onConfirm() {
-      console.log("")
     },
     myUtils,
     convertDay(day) {
@@ -270,7 +265,6 @@ export default {
     },
 
     async deleteItemConfirm() {
-      console.log(JSON.stringify(this.editedItem));
       await this.$axios.delete(`/places/${this.editedItem.id}`).then(() => {
         this.getData();
         this.closeDelete();

@@ -163,14 +163,11 @@ export default {
     async onUpdate() {
       this.dialog = false
       this.resetData()
-      console.log(this.file)
-      console.log(JSON.stringify(this.file.data))
-      console.log(this.file ? JSON.stringify(this.file.data) : null)
       await this.$axios.put("/posPromptPay/" + this.item.id, {
         name: this.item.name,
         type_promptpay: this.insteadSelect.id,
         promptpay: this.item.promptpay,
-        image_promptpay: this.file ? JSON.stringify(this.file.data) : null
+        image_promptpay: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -185,7 +182,7 @@ export default {
         name: this.item.name,
         type_promptpay: this.insteadSelect.id,
         promptpay: this.item.promptpay,
-        image_promptpay: this.file ? JSON.stringify(this.file.data) : null
+        image_promptpay: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {

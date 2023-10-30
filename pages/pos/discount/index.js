@@ -71,7 +71,6 @@ export default {
       await this.$axios.get("/posDiscount").then((res) => {
         this.desserts = res.data
         // this.desserts = Object.assign({},res.data)
-        console.log(res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -95,7 +94,6 @@ export default {
         use:val.use,
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -116,7 +114,6 @@ export default {
         use:1,
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -131,7 +128,6 @@ export default {
         use:1,
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -146,7 +142,6 @@ export default {
       this.dialogDelete = false
       await this.$axios.delete("/posDiscount/"+this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

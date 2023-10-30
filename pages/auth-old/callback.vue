@@ -14,13 +14,11 @@ export default {
     async getData() {
       try {
         // Use the auth module to complete the Google OAuth authentication
-        console.log(this.$route.params)
         await this.$auth.loginWith('google', {
           params: {
             code: this.$route.query.code, // Get the authorization code from the URL
           },
         }).then((res)=>{
-          console.log(res)
         this.$router.push('/');
         });
         // Redirect to a protected route or home page

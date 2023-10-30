@@ -97,7 +97,7 @@
                         dense
                         required hide-details
                         :rules="rules"
-                        :disabled="file != null"
+                        v-if="file == null"
                       ></v-file-input>
 
                       <!--                       Display the currently selected image -->'

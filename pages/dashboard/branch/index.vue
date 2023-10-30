@@ -77,14 +77,34 @@
                       item-value="id"
                       color="#A57156" style="border-radius: 15px; border-color: #A57156"
                     ></v-autocomplete>
-                    <v-text-field
-                      v-model="item.title"
-                      label="ชื่อสาขา"
-                      outlined
-                      clearable
-                      dense
-                      color="#A57156" style="border-radius: 15px; border-color: #A57156"
-                    ></v-text-field>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="item.title"
+                          label="ชื่อสาขา"
+                          outlined
+                          clearable
+                          dense
+                          color="#A57156" style="border-radius: 15px; border-color: #A57156"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-autocomplete
+                          outlined
+                          auto-select-first
+                          :items="promptItems"
+                          v-model="promptSelect"
+                          hide-no-data
+                          hide-selected
+                          return-object
+                          label="พร้อมเพย์"
+                          dense
+                          item-text="name"
+                          item-value="id"
+                          color="#A57156" style="border-radius: 15px; border-color: #A57156"
+                        ></v-autocomplete>
+                      </v-col>
+                    </v-row>
                     <v-textarea
                       v-model="item.detail"
                       label="รายละเอียด"
