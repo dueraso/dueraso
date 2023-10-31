@@ -8,35 +8,20 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading" style="max-width: 1200px">
+          <head-bar title="รวมแอปพลิเคชัน"/>
           <v-row class="m-0">
-            <v-col cols="12" class="p-0">
-              <h2 align="left">
-                | รวมแอปพลิเคชัน
-              </h2>
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push('/pos')">
+            <v-col cols="12" sm="3" v-for="(item, i) in items" :key="i">
+              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push(item.rout)">
                 <v-card width="247" height="136" color="#6E4C2E" style="border-radius: 15px">
                   <v-col align="center" style="align-items: center" class="pt-8 pb-8">
-                    <v-img src="/icon1.png" width="73"></v-img>
+                    <v-img :src="item.icon" width="73"></v-img>
                   </v-col>
                 </v-card>
-                <h4 class="m-0 mt-3 pb-3 pl-3 pr-3">แคชเชียร์</h4>
-              </v-card>
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push('/dashboard')">
-                <v-card width="247" height="136" color="#6E4C2E" style="border-radius: 15px">
-                  <v-col align="center" style="align-items: center" class="pt-8 pb-8">
-                    <v-img src="/icon2.png" width="73"></v-img>
-                  </v-col>
-                </v-card>
-                <h4 class="m-0 mt-3 pb-3 pl-3 pr-3">จัดการหลังบ้าน</h4>
+                <h4 class="m-0 mt-3 pb-3 pl-3 pr-3">{{item.title}}</h4>
               </v-card>
             </v-col>
           </v-row>
         </v-container>
-        <!--        <p>รวมแอปพลิเคชัน</p>-->
       </v-main>
     </v-app>
   </div>

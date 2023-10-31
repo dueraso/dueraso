@@ -1,5 +1,5 @@
 <template>
-  <v-app dark app fixed style="background: unset" align="center" class="elevation-0">
+  <v-app dark app fixed style="background: #F3F1ED" align="center" class="elevation-0">
     <Toolbar/>
     <nuxt/>
     <v-footer>
