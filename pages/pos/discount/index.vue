@@ -45,6 +45,20 @@
                 </td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="2">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="3">
+                  <div style="float: right;">
+                    <v-pagination
+                      v-model="page"
+                      :length="desserts.meta.last_page"
+                      circle
+                    ></v-pagination>
+                  </div>
+                </td>
+              </tr>
+              </tfoot>
             </table>
 
             <v-dialog v-model="dialog" persistent width="786">

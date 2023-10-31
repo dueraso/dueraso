@@ -28,31 +28,20 @@ export default {
       rules: [
         v => !!v || 'จำเป็น',
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
+      page:1
     };
-  },
-  // async asyncData({ $axios }) {
-  //   const photos = await $axios.$get('/budget');
-  //   console.log("kkkk>"+JSON.stringify(photos))
-  //   return { photos };
-  // },
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
   mounted() {
     this.$nextTick(() => {
+      this.loading = false
       this.$nuxt.$loading.start()
     })
     this.getData()
     this.getBudgetType()
-  },
-  computed:{
-    dd(){
-      return new B()
-    },
   },
   methods: {
     myUtils,

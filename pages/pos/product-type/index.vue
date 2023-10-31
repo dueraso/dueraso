@@ -17,7 +17,7 @@
                     style="color: #846537" class="pl-3"
                     :width="item.width">{{ item.title }}
                 </th>
-                <th width="120px" style="background-color: #f3f1ed;">
+                <th width="30%" style="background-color: #f3f1ed;">
                 </th>
               </tr>
               </thead>
@@ -40,8 +40,16 @@
               </tbody>
               <tfoot>
               <tr>
-                <td colspan="1">รายการทั้งหมด 8/22 รายการ</td>
-                <td colspan="1">< 1 2 3 ></td>
+                <td colspan="1">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="1">
+                  <div style="float: right;">
+                    <v-pagination
+                      v-model="page"
+                      :length="desserts.meta.last_page"
+                      circle
+                    ></v-pagination>
+                  </div>
+                </td>
               </tr>
               </tfoot>
             </table>

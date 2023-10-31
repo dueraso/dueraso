@@ -51,8 +51,8 @@ export default {
           text: "text-left"
         },
         {
-          title: "ราคา",
-          width: "",
+          title: "เลขพร้อมเพย์",
+          width: "20%",
           text: "text-left"
         },
         {
@@ -61,22 +61,19 @@ export default {
           text: "text-center"
         },
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
       use: [],
-      valid: false
+      valid: false,
+      page: 1
     };
-  },
-
-  created() {
-    // this.insteadSelect = this.instead[0]
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
 
   mounted() {
     this.$nextTick(() => {
+      this.loading = false
       this.$nuxt.$loading.start()
       this.getData()
     })

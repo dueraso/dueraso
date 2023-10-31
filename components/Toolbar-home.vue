@@ -4,40 +4,39 @@
     flat style="z-index: 99; background: unset" width="100%"
   >
     <b-navbar
-      toggleable="lg" bg="dark" class="elevation-4" variant="white" style="border-radius: 20px">
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav class=" p-0">
-        <b-navbar-nav class="ml-auto pl-0" align="center" style="width: 100%; align-items: center; font-weight: 600">
-          <!--        <b-nav-item-->
-          <!--          v-for="(itemBar, i) in itemsBar" :key="i"-->
-          <!--          @click="$router.push(itemBar.route)"-->
-          <!--          :active='$route.name === itemBar.route.name'>{{ itemBar.name }}-->
-          <!--        </b-nav-item>-->
-          <b-nav-item @click="$router.push('/')" class="pl-4 pr-4 " style="max-width: 250px">
-            หน้าแรก
-          </b-nav-item>
-          <b-nav-item @click="$router.push('/blog')" class="pl-4 pr-4 " style="max-width: 250px">
-            บทความ
-          </b-nav-item>
-          <b-nav-item @click="$router.push('/faq')" class="pl-4 pr-4 " style="max-width: 250px">
-            คำถามที่พบบ่อย
-          </b-nav-item>
-          <strong class="m-0 pl-4 pr-4  color_main" style="font-size: 35px;max-width: 250px">
-            DUERASO
-          </strong>
-          <b-nav-item @click="$router.push('/contact-us')" class="pl-4 pr-4 " style="max-width: 250px">
-            ติดต่อเรา
-          </b-nav-item>
-          <b-nav-item @click="$router.push('/package')" class="pl-4 pr-4 " style="max-width: 250px">
-            แพ็คเกจ
-          </b-nav-item>
-          <b-nav-item @click="$router.push('/all-apps')" class="pl-4 pr-4 " style="max-width: 250px">
-            รวมแอป
-          </b-nav-item>
-        </b-navbar-nav>
+              toggleable="lg" class="elevation-4 text-left topnav1 pt-0 pb-0" variant="white"
+              style="border-radius: 20px; justify-content: space-between">
+      <!--        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
+      <div style="width: 215px"></div>
+      <div>
+        <v-row class="m-0  align-items-center">
+          <div align="center">
+            <a :class="active('index')" @click="$router.push('/')">หน้าหลัก</a>
+          </div>
+          <div >
+            <a :class="active('blog')" @click="$router.push('/blog')">บทความ</a>
+          </div>
+          <div >
+            <a :class="active('faq')" @click="$router.push('/faq')">คำถามที่พบบ่อย</a>
+          </div>
+          <div style="width: 200px; text-align-last: center;">
+            <p style="font-size: 35px; font-weight: 700; color: #846537" class="m-0">DUERASO</p>
+          </div>
+          <div >
+            <a :class="active('contact-us')" @click="$router.push('/contact-us')">ติดต่อเรา</a>
+          </div>
+          <div >
+            <a :class="active('package')" @click="$router.push('/package')">แพ็คเกจ</a>
+          </div>
+          <div >
+            <a :class="active('all-apps')" @click="$router.push('/all-apps')">รวมแอป</a>
+          </div>
+        </v-row>
+      </div>
+      <div style=" justify-items: flex-end">
         <v-btn right rounded color="#B27D41" dark @click="$router.push('/login')">เข้าสู่ระบบ</v-btn>
         <v-btn right outlined rounded color="#B27D41" dark @click="$router.push('/login')" class="ml-3">ลงทะเบียน</v-btn>
-      </b-collapse>
+      </div>
     </b-navbar>
   </v-card>
 </template>
@@ -126,8 +125,10 @@ export default {
         this.$router.push(val)
       }
     },
-    active() {
-      return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
+    active(val) {
+      console.log(this.$route.name)
+      return this.$route.name === val ? 'active':''
+      // return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
     },
     async validate() {
       this.$nuxt.$loading.start()

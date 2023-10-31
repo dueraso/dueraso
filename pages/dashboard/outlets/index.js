@@ -33,18 +33,17 @@ export default {
           width: "15%"
         },
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
+      page:1
     };
-  },
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
   mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
+      this.loading = false
     })
     this.getData()
   },
@@ -54,8 +53,10 @@ export default {
     },
   },
   watch:{
+    page(val) {
+      this.getData()
+    },
     async search(val) {
-      console.log(val)
       if (val == null)return
       if (val.length < 2) return
       if (this.isLoading) return
@@ -68,7 +69,6 @@ export default {
         // const {count, data} = res.data
         // this.count = count
         // this.entries = data
-        console.log(res)
       }).catch((e) => {
         console.log(e)
       }).finally(() => (this.isLoading = false))
@@ -81,7 +81,7 @@ export default {
       return val.name
     },
     convertDay(val) {
-      if (val == undefined) return
+      if (val === undefined) return
       return dayjs(val).format('HH:mm')
     },
     getColor(val) {
@@ -89,9 +89,7 @@ export default {
     },
     async getData() {
       await this.$axios.get("/organization").then((res) => {
-        // this.desserts = res
         this.desserts = Object.assign({},res.data)
-        console.log(this.desserts.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -100,16 +98,13 @@ export default {
 
     confirm() {
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
 
     openItem(val) {
-      console.log("val> "+JSON.stringify(val))
       this.dialog = true
       this.item = Object.assign({}, val)
     },
@@ -121,7 +116,6 @@ export default {
         detail:this.item.detail
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -135,7 +129,6 @@ export default {
         create_by:this.$auth.user.id
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -150,7 +143,6 @@ export default {
       this.dialogDelete = false
       await this.$axios.delete("/organization/"+this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

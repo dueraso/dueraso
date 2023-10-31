@@ -37,21 +37,24 @@ export default {
           width: "5%"
         },
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
       use:[],
-      valid:false
+      valid:false,
+      page:1
     };
   },
-
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
+watch:{
+  page(val) {
+    this.getData()
   },
+},
 
   mounted() {
     this.$nextTick(() => {
+      this.loading = false
       this.$nuxt.$loading.start()
     })
     this.getData()

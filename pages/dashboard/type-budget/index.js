@@ -21,31 +21,26 @@ export default {
           width: ""
         },
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
+      page:1
     };
-  },
-
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
 
   mounted() {
     this.$nextTick(() => {
+      this.loading = false
       this.$nuxt.$loading.start()
     })
     this.getData()
   },
 
-  computed:{
-    dd(){
-      return new B()
-    },
-  },
-
   watch:{
+    page(val) {
+      this.getData()
+    },
   },
 
   methods: {
@@ -60,9 +55,7 @@ export default {
 
     async getData() {
       await this.$axios.get("/budgetType").then((res) => {
-        // this.desserts = res
         this.desserts = Object.assign({},res.data)
-        console.log(this.desserts.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -71,28 +64,23 @@ export default {
 
     confirm() {
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
 
     openItem(val) {
-      console.log("val> "+JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
     },
 
     async onUpdate(){
       this.dialog = false
       await this.$axios.put("/budgetType/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail
+        name:this.item.name
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -105,7 +93,6 @@ export default {
       }).then((res) => {
         this.getData()
         this.item = Object.assign({})
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

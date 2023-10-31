@@ -46,8 +46,16 @@
               </tbody>
               <tfoot>
               <tr>
-                <td colspan="2">รายการทั้งหมด 8/22 รายการ</td>
-                <td colspan="2">< 1 2 3 ></td>
+                <td colspan="2">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="2">
+                  <div style="float: right;">
+                    <v-pagination
+                      v-model="page"
+                      :length="desserts.meta.last_page"
+                      circle
+                    ></v-pagination>
+                  </div>
+                </td>
               </tr>
               </tfoot>
             </table>

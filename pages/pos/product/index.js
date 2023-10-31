@@ -42,26 +42,32 @@ export default {
           text:"text-center"
         },
       ],
-      desserts: {},
+      desserts: {
+        meta:{
+
+        }
+      },
       item: {},
+      page:1
     };
   },
 
   created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
 
   mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-    })
     this.getData()
     this.getProductType()
+    this.$nextTick(() => {
+      this.loading = false
+      this.$nuxt.$loading.start()
+    })
   },
 
   watch:{
+    page(val) {
+        this.getData()
+    },
     async search(val) {
       if (val == null)return
       if (val.length < 2) return
@@ -134,7 +140,11 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/posProduct").then((res) => {
+      await this.$axios.get("/posProduct",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.desserts = Object.assign({},res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {

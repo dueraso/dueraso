@@ -48,13 +48,20 @@
                   </div>
                 </td>
               </tr>
-              </tbody>
-              <tfoot>
-              <tr>
-                <td colspan="1">รายการทั้งหมด 8/22 รายการ</td>
-                <td colspan="1">< 1 2 3 ></td>
-              </tr>
-              </tfoot>
+              </tbody><tfoot>
+            <tr>
+              <td colspan="1">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+              <td colspan="1">
+                <div style="float: right;">
+                  <v-pagination
+                    v-model="page"
+                    :length="desserts.meta.last_page"
+                    circle
+                  ></v-pagination>
+                </div>
+              </td>
+            </tr>
+            </tfoot>
             </table>
             <div class="text-center">
               <v-dialog v-model="dialog" persistent  width="786">
@@ -73,7 +80,7 @@
                       label="ชื่อประเภท"
                       outlined
                       clearable
-                      dense
+                      dense style="border-radius: 15px"
                     ></v-text-field>
                     <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                       ตกลง

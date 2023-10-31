@@ -25,8 +25,11 @@ export default {
           width: ""
         }
       ],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       item: {},
+      page:1
     };
   },
 
@@ -51,6 +54,9 @@ export default {
   },
 
   watch: {
+    page(val) {
+      this.getData()
+    },
     async search(val) {
       if (val == null) return
       if (val.length < 2) return

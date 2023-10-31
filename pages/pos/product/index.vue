@@ -34,7 +34,8 @@
                 </td>
                 <td align="center">
                   <div class="rounded-cell-center-img">
-                    <v-img :src="item.imageUrl === null?null:JSON.parse(item.imageUrl).fullPath" height="40px" width="40px" style="border-radius: 10px"></v-img>
+                    <v-img :src="item.imageUrl === null?null:JSON.parse(item.imageUrl).fullPath" height="40px"
+                           width="40px" style="border-radius: 10px"></v-img>
                   </div>
                 </td>
                 <td>
@@ -51,8 +52,16 @@
               </tbody>
               <tfoot>
               <tr>
-                <td colspan="3">รายการทั้งหมด 8/22 รายการ</td>
-                <td colspan="2">< 1 2 3 ></td>
+                <td colspan="2">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="3">
+                  <div style="float: right;">
+                    <v-pagination
+                      v-model="page"
+                      :length="desserts.meta.last_page"
+                      circle
+                    ></v-pagination>
+                  </div>
+                </td>
               </tr>
               </tfoot>
             </table>
@@ -83,36 +92,36 @@
                                       style="border-radius: 15px"
                                       :rules="rules"/>
                       </v-row>
-<!--                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"-->
-<!--                                    style="border-radius: 15px"/>-->
-<!--                      <div v-else>-->
-                        <v-file-input
-                          v-model="selectedFile"
-                          accept="image/*"
-                          label="เลือกรูปภาพ"
-                          prepend-icon="mdi-image-multiple-outline"
-                          outlined
-                          @change="uploadImage"
-                          style="border-radius: 15px"
-                          dense
-                          required hide-details
-                          :rules="rules"
-                          v-if="file == null"
-                        ></v-file-input>
+                      <!--                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"-->
+                      <!--                                    style="border-radius: 15px"/>-->
+                      <!--                      <div v-else>-->
+                      <v-file-input
+                        v-model="selectedFile"
+                        accept="image/*"
+                        label="เลือกรูปภาพ"
+                        prepend-icon="mdi-image-multiple-outline"
+                        outlined
+                        @change="uploadImage"
+                        style="border-radius: 15px"
+                        dense
+                        required hide-details
+                        :rules="rules"
+                        v-if="file == null"
+                      ></v-file-input>
 
-                        <!--                       Display the currently selected image -->'
-                        <div class="container mb-3">
-                          <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
-                          <div class="middle" v-show="file">
-                            <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
-                              <v-icon>
-                                mdi-delete-outline
-                              </v-icon>
-                              ลบ
-                            </v-btn>
-                          </div>
+                      <!--                       Display the currently selected image -->'
+                      <div class="container mb-3">
+                        <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
+                        <div class="middle" v-show="file">
+                          <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
+                            <v-icon>
+                              mdi-delete-outline
+                            </v-icon>
+                            ลบ
+                          </v-btn>
                         </div>
-<!--                      </div>-->
+                      </div>
+                      <!--                      </div>-->
                       <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                         ตกลง
                       </v-btn>
@@ -120,7 +129,8 @@
                   </v-card>
                 </v-form>
               </v-dialog>
-              ,<dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
+              ,
+              <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
             </div>
           </v-col>
         </v-container>
