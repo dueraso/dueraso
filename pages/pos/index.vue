@@ -45,7 +45,7 @@
                       <v-card style="border-radius:10px">
                         <a @click="addOrder(card)">
                           <v-img
-                            :src="card.imageUrl"
+                            :src="card.imageUrl === null?null:JSON.parse(card.imageUrl).fullPath"
                             class="white--text align-end"
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             height="200px" style="border-radius:10px"
@@ -53,7 +53,7 @@
                             <h5 class="p-1 m-0">{{ card.name }}</h5>
                             <h6 class="p-1 m-0">
                               <v-icon dark>mdi-tag-outline</v-icon>
-                              {{ card.price }} บ.
+                              {{ card.price }} บาท
                             </h6>
                           </v-img>
                         </a>
@@ -214,7 +214,12 @@
                       </v-card>
                     </v-col>
                   </v-row>
-                  <v-card elevation="4" class="row m-0 mb-4 mt-2 pb-1" align="center">
+                  <v-card elevation="4" class="row m-0 mb-4 mt-2 pb-1" align="center" v-if="check()" height="410px">
+                    <div class="pt-6 pb-6" style="width: 340px;">
+                      <v-img :src="qr" style="height: 350px; min-height: 140px"/>
+                    </div>
+                  </v-card>
+                  <v-card elevation="4" class="row m-0 mb-4 mt-2 pb-1" align="center" v-else>
                     <v-col align="center" class="pb-0">
                       <v-img src="PromptPay.jpg" width="200" class="m-0"></v-img>
                     </v-col>

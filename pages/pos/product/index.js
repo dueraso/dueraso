@@ -101,12 +101,13 @@ export default {
         }
       }
     },
-    
+
     onDeleteImage() {
-      let img = this.file == null ? JSON.parse(this.item.image_promptpay) : this.file
-      this.$axios.post("destroySingle", {
+      let img = this.file == null ? JSON.parse(this.item.image_url) : this.file
+      console.log(img)
+      this.$axios.post("destroyImage", {
         id: Object.keys(this.item).length === 0 ? 0 : this.item.id,
-        image_promptpay: img.newName
+        image_url: img.newName
       }).then((res) => {
         this.selectedFile = null
         this.file = null
@@ -156,6 +157,7 @@ export default {
       this.dialog = true
       this.item = Object.assign({}, val)
       this.insteadSelect = this.item.type
+      this.file = this.item.imageUrl != null ? JSON.parse(this.item.imageUrl) : null
     },
 
     async onUpdate(){
@@ -165,7 +167,7 @@ export default {
         detail:this.item.detail,
         type:this.insteadSelect.id,
         price:this.item.price,
-        image_url:this.item.url
+        image_url:this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -180,7 +182,7 @@ export default {
         detail:this.item.detail,
         type:this.insteadSelect.id,
         price:this.item.price,
-        image_url:this.item.url
+        image_url:this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.getData()
       }).catch((e) => {

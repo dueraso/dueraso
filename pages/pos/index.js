@@ -50,30 +50,14 @@ export default {
     dialogCancelPay: false,
     qr: "",
     tab: null,
+    isProm: null,
     valid: true,
     cash: 0,
     price: [
       1000, 500, 100
     ],
-    items: [
-      'web', 'shopping', 'videos', 'images', 'news',
-    ],
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     changeMoney: 0.00,
     checkPayMoney:false,
-
-
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    // select: null,
     checkbox: false,
   }),
   computed: {
@@ -132,8 +116,9 @@ export default {
     // this.qrTest()
   },
   methods: {
-    test(val){
-      this.t = val
+    check(){
+      if(this.isProm == null) return
+      return this.isProm.type_promptpay === 3
     },
     close() {
       if(this.$refs.form.validate()){
@@ -193,16 +178,19 @@ export default {
     },
     pay() {
       this.dialogPay = true
-      const mobileNumber = '095-432-9380'
-      // const mobileNumber = '051-8-63753-3'
-      const IDCardNumber = '0-0000-00000-00-0'
-      let amount = this.priceTotal
-      const payload = generatePayload(mobileNumber, {amount}) //First parameter : mobileNumber || IDCardNumber
-      const options = {type: 'svg', color: {dark: '#000', light: '#fff'}}
-      qrcode.toString(payload, options, (err, svg) => {
-        if (err) return console.log(err)
-        this.qr = svg
-      })
+      this.isProm = this.branchSelect.promptpay
+      if(this.isProm.type_promptpay === 3){
+        this.qr = JSON.parse(this.isProm.image_promptpay).fullPath
+      }else {
+        let isPay = this.isProm.type_promptpay === 1 ? convert.formatPhoneNumber(this.isProm.promptpay) : convert.formatIc(this.isProm.promptpay)
+        let amount = this.priceTotal
+        const payload = generatePayload(isPay, {amount}) //First parameter : mobileNumber || IDCardNumber
+        const options = {type: 'svg', color: {dark: '#000', light: '#fff'}}
+        qrcode.toString(payload, options, (err, svg) => {
+          if (err) return console.log(err)
+          this.qr = svg
+        })
+      }
     },
     convertBranchSelect() {
       this.branch.name = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'

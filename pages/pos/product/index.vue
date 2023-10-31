@@ -34,7 +34,7 @@
                 </td>
                 <td align="center">
                   <div class="rounded-cell-center-img">
-                    <v-img :src="item.imageUrl" height="40px" width="40px" style="border-radius: 10px"></v-img>
+                    <v-img :src="item.imageUrl === null?null:JSON.parse(item.imageUrl).fullPath" height="40px" width="40px" style="border-radius: 10px"></v-img>
                   </div>
                 </td>
                 <td>
@@ -71,8 +71,7 @@
                     <v-card-text class="p-3" style="background-color: #F6F6F6" align="center">
                       <v-text-field v-model="item.name" label="ชื่อรายการ" outlined dense required
                                     style="border-radius: 15px" :rules="rules"/>
-                      <v-textarea v-model="item.detail" label="รายละเอียด" outlined dense required
-                                  style="border-radius: 15px" :rules="rules"/>
+                      <v-textarea v-model="item.detail" label="รายละเอียด" outlined dense style="border-radius: 15px"/>
                       <v-row class="m-0">
                         <v-autocomplete
                           outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
@@ -129,5 +128,35 @@
     </v-app>
   </div>
 </template>
+<style>
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 63%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container:hover .image {
+  opacity: 0.3;
+}
+
+.container:hover .middle {
+  opacity: 1;
+}
+</style>
 <style scoped src="./index.css"/>
 <script src="./index.js"/>
