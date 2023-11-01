@@ -11,29 +11,30 @@
           <div align="center">
             <a :class="active('')" @click="$router.push('/')">หน้าหลัก</a>
           </div>
-          <div >
+          <div>
             <a :class="active('blog')" @click="$router.push('/blog')">บทความ</a>
           </div>
-          <div >
+          <div>
             <a :class="active('faq')" @click="$router.push('/faq')">คำถามที่พบบ่อย</a>
           </div>
           <div style="width: 200px; text-align-last: center;">
             <p style="font-size: 35px; font-weight: 700; color: #846537" class="m-0">DUERASO</p>
           </div>
-          <div >
+          <div>
             <a :class="active('contact-us')" @click="$router.push('/contact-us')">ติดต่อเรา</a>
           </div>
-          <div >
+          <div>
             <a :class="active('package')" @click="$router.push('/package')">แพ็คเกจ</a>
           </div>
-          <div >
+          <div>
             <a :class="active('all-apps')" @click="$router.push('/all-apps')">รวมแอป</a>
           </div>
         </v-row>
       </div>
       <div style=" justify-items: flex-end">
         <v-btn right rounded color="#B27D41" dark @click="$router.push('/login')">เข้าสู่ระบบ</v-btn>
-        <v-btn right outlined rounded color="#B27D41" dark @click="$router.push('/login')" class="ml-3">ลงทะเบียน</v-btn>
+        <v-btn right outlined rounded color="#B27D41" dark @click="$router.push('/login')" class="ml-3">ลงทะเบียน
+        </v-btn>
       </div>
     </b-navbar>
   </v-card>
@@ -148,7 +149,7 @@ export default {
       }
     },
     active(val) {
-      return this.$route.name === val ? 'active':''
+      return this.$route.name === val ? 'active' : ''
       // return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
     },
     // async validate() {

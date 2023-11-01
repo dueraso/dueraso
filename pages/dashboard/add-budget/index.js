@@ -49,7 +49,9 @@ export default {
         },
       ],
       typeTotal: ['รวมยอดแล้ว','ยังไม่รวมยอด'],
-      desserts: {},
+      desserts: {
+        meta:{}
+      },
       users: [],
       usersSelect: {},
       branch: [],
@@ -61,17 +63,13 @@ export default {
       rules: [
         v => !!v || 'จำเป็น',
       ],
+      page:1
     };
-  },
-
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
 
   mounted() {
     this.$nextTick(() => {
+      this.loading = false
       this.$nuxt.$loading.start()
     })
     this.getBudgetList()
@@ -105,7 +103,7 @@ export default {
         // const {count, data} = res.data
         // this.count = count
         // this.entries = data
-        console.log(res)
+        // console.log(res)
       }).catch((e) => {
         console.log(e)
       }).finally(() => (this.isLoading = false))
@@ -193,9 +191,12 @@ export default {
     },
 
     openItem(val) {
-      console.log("val> " + JSON.stringify(val))
       this.dialog = true
-      // this.item = Object.assign({}, val)
+      this.item = Object.assign({}, val)
+      this.branchSelect = this.item.branch
+      this.insteadSelect = this.item.budget
+      this.usersSelect = this.item.employee
+      this.total = this.item.total
     },
 
     async onUpdate() {
