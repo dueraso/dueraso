@@ -53,7 +53,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$auth.user)
     this.$nextTick(() => {
       this.loading = false
     })
@@ -74,7 +73,6 @@ export default {
     async getRoles() {
       await this.$axios.get("/role").then((res) => {
         this.roles = res.data
-        console.log(this.roles)
       }).catch((e) => {
         console.log(e)
       })
@@ -114,7 +112,6 @@ export default {
         detail: this.item.detail
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

@@ -4,8 +4,8 @@
       style="background-color: #F3F1ED;background-size: cover;background-repeat: no-repeat;">
       <v-row justify="center">
         <v-col cols="12" sm="6" align="center" style="align-self: center">
-          <h1 style="font-weight: bold; font-size: 60px" class="m-0">DUERASO</h1>
-          <p style="font-size: 40px; font-weight: lighter">ยินดีต้อนรับ</p>
+          <h1 style="font-weight: bold; font-size: 60px; color: #A44E1C" class="m-0">DUERASO</h1>
+          <p style="font-size: 40px;color: #6E4C2E; font-weight: lighter">ยินดีต้อนรับ</p>
           <v-img src="./image1.png" width="812"/>
         </v-col>
         <v-col cols="12" sm="6" align="center" align-self="center">
@@ -15,8 +15,8 @@
           <v-card elevation="4" light tag="section" style="border-radius: 15px" width="611px">
             <v-card-text>
               <v-col align="left" class="pl-8 pr-8">
-                <p style="font-size: 50px; font-weight: bold" class="mb-5">LOG IN</p>
-                <p style="font-weight:normal; font-size: 23px" class="mb-7">เข้าสู่ระบบ</p>
+                <h3 style="font-size: 50px; font-weight: bold; color: #846537" class="">LOG IN</h3>
+                <h5 style="color: #846537" class="mb-7">เข้าสู่ระบบ</h5>
                 <v-form ref="form" v-model="valid" lazy-validation class="pb-4">
                   <v-text-field
                     outlined
@@ -25,7 +25,9 @@
                     :rules="emailRules"
                     label="ชื่อผู้ใช้งาน"
                     required
-                    color="#38857D"
+                    color="#B27D41"
+                    style="border-radius: 15px;"
+                    prepend-inner-icon="mdi-email-outline"
                   ></v-text-field>
                   <v-text-field
                     outlined
@@ -35,37 +37,38 @@
                     label="ระบุรหัสผ่าน"
                     type="password"
                     required
-                    color="#38857D"
+                    color="#B27D41"
                     @keydown.enter="validate"
+                    prepend-inner-icon="mdi-lock-outline"
+                    style="border-radius: 15px;"
                   ></v-text-field>
 
-                  <p style="color: red" align="left">
-                    {{ message }}
-                  </p>
+                  <v-checkbox v-model="remember" label="จดจำรหัสผ่าน" color="#B27D41" class="m-0 p-0 mb-2" hide-details/>
 
-                  <v-checkbox v-model="remember" label="จดจำรหัสผ่าน" color="#38857D" class="m-0 p-0" hide-details></v-checkbox>
-
-                  <v-btn :disabled="!valid" color="#54B6C8" @click="validate" block style="color: white; font-size: 23px" rounded>
+                  <v-btn :disabled="!valid" color="#B27D41" @click="validate" block style="color: white; font-size: 16px" rounded>
                     เข้าสู่ระบบ
                   </v-btn>
                 </v-form>
               </v-col>
-              <v-col align-self="center">
-                <v-divider :thickness="15" class="border-opacity-100; pb-1" color="info" style="border-radius: 20px; width: 200px"/>
-                <p style="font-size: 23px; font-weight: normal" class="pt-5 mb-2">หรือเข้าสู่ระบบด้วย</p>
+              <v-col align-self="center" class="p-0">
+                <v-divider :thickness="1" class="border-opacity-100; pb-1" color="#B27D41" style="border-radius: 20px; width: 200px"/>
+                <p style="font-size: 16px; font-weight: normal; color: #846537" class="pt-5 mb-2">หรือเข้าสู่ระบบด้วย</p>
               </v-col>
-              <v-row class="m-0 pt-4" style="width: 200px; justify-content: center;">
-                <img src="/facebook.png" width="78" height="79" class="m-2 p-2" alt="facebook"/>
-                <img src="/google.png" width="78" height="79" class=" m-2 p-2" @click="googleOauth" alt="google"/>
+              <v-row class="m-0 pt-3" style="width: 200px; justify-content: center;">
+                <img src="/facebook.png" width="68" height="69" class="m-2 p-2" alt="facebook"/>
+                <img src="/google.png" width="68" height="69" class=" m-2 p-2" @click="googleOauth" alt="google"/>
               </v-row>
+              <p style="font-size: 16px; font-weight: normal; color: #846537" class="mt-3">ยังไม่มีบัญชี?
+                <a @click="$router.push('/register')" style="color: #2196f3">สมัคร</a>
+              </p>
             </v-card-text>
-            <!--                  <v-row align="center mr-2">-->
-            <!--                    <v-col class="p-0">-->
-            <!--                      <p class="text-right m-0 mr-2" style="font-size: 10px">-->
-            <!--                        เวอร์ชั่น {{ version }} เบต้า-->
-            <!--                      </p>-->
-            <!--                    </v-col>-->
-            <!--                  </v-row>-->
+                              <v-row align="center mr-2">
+                                <v-col class="p-0">
+                                  <p class="text-right m-0 mr-2" style="font-size: 10px">
+                                    เวอร์ชั่น {{ version }} เบต้า
+                                  </p>
+                                </v-col>
+                              </v-row>
           </v-card>
           <!--              </v-flex>-->
           <!--            </v-layout>-->

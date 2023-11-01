@@ -66,6 +66,20 @@
                 </td>
               </tr>
               </tbody>
+              <tfoot>
+              <tr>
+                <td colspan="3">รายการทั้งหมด {{ dessertsRole.meta.to }}/{{ dessertsRole.meta.total }} รายการ</td>
+                <td colspan="2">
+                  <div style="float: right;">
+                    <v-pagination
+                      v-model="page"
+                      :length="dessertsRole.meta.last_page"
+                      circle
+                    ></v-pagination>
+                  </div>
+                </td>
+              </tr>
+              </tfoot>
             </table>
 
 <!--            <v-simple-table fixed-header>-->

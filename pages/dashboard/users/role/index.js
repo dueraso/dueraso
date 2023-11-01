@@ -31,7 +31,9 @@ export default {
           width: "10%"
         },
       ],
-      dessertsRole: {},
+      dessertsRole: {
+        meta:{}
+      },
       tableHead: [
         {
           title: "ชื่อ-สกุล",
@@ -58,7 +60,8 @@ export default {
           width: "5%"
         },
       ],
-      desserts: {},
+      desserts: {
+      },
       per: {
         titleBar:[],
         create: [],
@@ -68,6 +71,7 @@ export default {
       },
       item: {},
       switch1: false,
+      page:1
     };
   },
   computed: {
@@ -79,6 +83,11 @@ export default {
     this.$nextTick(() => {
       this.loading = false
     })
+  },
+  watch:{
+    page(val) {
+      this.getData()
+    },
   },
   mounted() {
     this.getRoles()
@@ -92,7 +101,6 @@ export default {
     async getModule() {
       await this.$axios.$get("/module").then((res) => {
         this.desserts = res
-        console.log(JSON.stringify(this.desserts))
       }).catch((e) => {
         console.log(e)
       })
@@ -108,24 +116,19 @@ export default {
     changeSwitch(val) {
       // this.d.indexOf(val.title)
       let i = this.per.titleBar.indexOf(val)
-      // console.log(ss + "<<<>>" + this.d)
       if (i !== -1) {
         this.per.titleBar.splice(i, 1)
       } else {
         this.per.titleBar.push(val)
       }
-      console.log(JSON.stringify(this.per.titleBar) + "<<<")
-      console.log(this.item)
       // console.log(JSON.stringify(this.per) + "<<<"+JSON.stringify(val))
     },
 
     confirm() {
       this.per.titleBar.sort((a, b) => a.sort - b.sort)
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -136,7 +139,6 @@ export default {
       // this.per = {}
       // // this.item = {}
       this.item = Object.assign({}, val)
-      console.log(this.item)
       if(val.policy === null) return
       this.per = Object.assign({}, JSON.parse(this.item.policy))
     },
@@ -151,7 +153,6 @@ export default {
         policy: JSON.stringify(this.per),
       }).then((res) => {
         this.getRoles()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -164,7 +165,6 @@ export default {
         detail: this.item.detail
       }).then((res) => {
         this.getBranch()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -174,7 +174,6 @@ export default {
       this.dialog = false
       await this.$axios.delete("/post/" + val.id).then((res) => {
         this.getBranch()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

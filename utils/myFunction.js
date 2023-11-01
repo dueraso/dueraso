@@ -1,4 +1,4 @@
-import axios from "~/api/config";
+import axios from "@/con/config";
 import dayjs from "dayjs";
 class A {
   // parent method

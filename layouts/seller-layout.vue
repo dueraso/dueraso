@@ -122,14 +122,12 @@
 <script>
 import ToolbarSeller from "~/components/ToolbarSeller";
 import FooterBar from "~/components/FooterBar";
-import axios from "~/api/config";
-import NavigationDrawer from "@/components/NavigationDrawer.vue";
+import axios from "@/con/config";
 
 export default {
   components: {
     ToolbarSeller,
     FooterBar,
-    NavigationDrawer,
   },
   data() {
     return {

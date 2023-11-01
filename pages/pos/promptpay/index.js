@@ -62,7 +62,7 @@ export default {
         },
       ],
       desserts: {
-        meta:{}
+        meta: {}
       },
       item: {},
       use: [],
@@ -89,7 +89,10 @@ export default {
         return
       }
       return this.insteadSelect = val
-    }
+    },
+    page(val) {
+      this.getData()
+    },
   },
 
   methods: {

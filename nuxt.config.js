@@ -1,6 +1,6 @@
 import colors from "vuetify/es5/util/colors";
 import dayjs from "dayjs";
-import serve from "./api/server";
+import serve from "./con/server";
 
 export default {
   loading: "~/components/LoadingBar.vue",
@@ -102,10 +102,10 @@ export default {
       }
     }]
   },
-
-  server: {
-    host: '0.0.0.0' // default: localhost
-  },
+  //
+  // server: {
+  //   host: '0.0.0.0' // default: localhost
+  // },
 
   /*
    ** Axios module configuration
@@ -146,9 +146,6 @@ export default {
     },
   },
 
-  http: {
-    baseURL: 'https://your-api-url.com', // Your API URL
-  },
   // google: {
   //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
   //   codeChallengeMethod: '',

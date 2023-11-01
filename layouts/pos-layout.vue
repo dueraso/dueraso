@@ -22,7 +22,7 @@
 <script>
 import ToolbarSeller from "~/components/ToolbarSeller";
 import FooterBar from "~/components/FooterBar";
-import axios from "~/api/config";
+import axios from "@/con/config";
 
 export default {
   components: {

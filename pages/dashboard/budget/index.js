@@ -43,6 +43,11 @@ export default {
     this.getData()
     this.getBudgetType()
   },
+  watch:{
+    page(val) {
+      this.getData()
+    },
+  },
   methods: {
     myUtils,
     convertDay(val) {

@@ -89,7 +89,7 @@
 
 </style>
 <script>
-import axios from "~/api/config";
+import axios from "@/con/config";
 
 export default {
   // components: {DialogRegister, DialogCon, Register},

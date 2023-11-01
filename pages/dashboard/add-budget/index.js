@@ -89,6 +89,9 @@ export default {
   },
 
   watch: {
+    page(val) {
+      this.getData()
+    },
     async search(val) {
       console.log(val)
       if (val == null) return

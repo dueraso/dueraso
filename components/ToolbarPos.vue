@@ -72,7 +72,7 @@
 }
 </style>
 <script>
-import axios from "~/api/config";
+import axios from "@/con/config";
 import DialogCon from "./DialogCon";
 
 export default {

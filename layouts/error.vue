@@ -5,7 +5,7 @@
         <div v-if="error.statusCode === 403" class="text-wrapper fill-height">
           <AccessdDenied/>
         </div>
-        <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 404"/>
+<!--        <v-img src="/404.jpg" width="100%" v-else-if="error.statusCode === 404"/>-->
         <div v-else class="text-wrapper fill-height">
           <OtherError :error="error" :other-error="otherError"/>
         </div>
