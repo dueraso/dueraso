@@ -120,7 +120,13 @@ import pkg from "@/package.json";
 export default {
   layout: "auth-layout",
   middleware: "isLoggedIn",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data: () => ({
+    headTitle: "หน้าล็อกอิน",
     overlay: false,
     valid: true,
     email: "",

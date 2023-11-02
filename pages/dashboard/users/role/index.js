@@ -8,9 +8,14 @@ import convert from "@/plugins/convert";
 export default {
   middleware: ['auth'],
   layout: "seller-layout",
-  name: "IndexPage",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการสิทธิ์",
       loading: true,
       dialog: false,
       tableHeadRole: [

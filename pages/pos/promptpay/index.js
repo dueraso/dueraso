@@ -9,10 +9,16 @@ export default {
       return convert
     }
   },
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการพร้อมเพย์",
       selectedFile: null,
       file: null,
 

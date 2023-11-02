@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="รายรับ/รายจ่าย" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
               <thead>

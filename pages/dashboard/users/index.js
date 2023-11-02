@@ -6,12 +6,20 @@ import convert from "@/plugins/convert";
 
 export default {
   layout: "seller-layout",
-  name: "IndexPage",
   middleware: ['auth', isAdmin],
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการผู้ใช้งาน",
+
       loading: true,
       dialog: false,
+      hidePass: false,
+      dialogDelete: false,
       rules: [
         v => !!v || 'จำเป็น',
       ],
@@ -41,10 +49,15 @@ export default {
           width: "10%"
         },
       ],
-      desserts: {},
+      desserts: {
+        roles: {}
+      },
       item: {},
+      showPass: false,
       roles: [],
       rolesSelect: {},
+      branch: [],
+      branchSelect: {},
     };
   },
   computed: {
@@ -54,12 +67,14 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      this.$nuxt.$loading.start()
       this.loading = false
     })
   },
   mounted() {
     this.getData()
     this.getRoles()
+    this.getBranch()
     this.executeExtendedFunction()
   },
   methods: {
@@ -70,8 +85,20 @@ export default {
     status(val) {
       return val === 1 ? "ปกติ" : "ปิดใช้งาน"
     },
+
+    async getBranch() {
+      await this.$axios.get("/branch").then((res) => {
+        this.branch = res.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     async getRoles() {
-      await this.$axios.get("/role").then((res) => {
+      await this.$axios.get("/role", {
+        params: {
+          isAll: true
+        }
+      }).then((res) => {
         this.roles = res.data
       }).catch((e) => {
         console.log(e)
@@ -84,6 +111,7 @@ export default {
         }
       }).then((res) => {
         this.desserts = res.data
+        this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e)
       })
@@ -91,18 +119,19 @@ export default {
 
     confirm() {
       if (this.item.id) {
-        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
 
     openItem(val) {
       // console.log("val> " + JSON.stringify(val))
+      this.hidePass = Object.keys(val) == 0
       this.dialog = true
       this.item = Object.assign({}, val)
+      this.rolesSelect = this.item.roles
+      this.branchSelect = this.item.branch
     },
 
     async onUpdate() {
@@ -120,21 +149,28 @@ export default {
     async onCreate() {
       this.dialog = false
       await this.$axios.post("/users", {
-        title: this.item.title,
-        detail: this.item.detail
+        name: this.item.name,
+        email: this.item.email,
+        password: this.item.password,
+        phone: this.item.phone,
+        salary_id: this.item.salary_id,
+        roles: !this.hidePass ? 1 : this.rolesSelect.id
       }).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
     },
 
-    async onDelete(val) {
-      this.dialog = false
-      await this.$axios.delete("/users/" + val.id).then((res) => {
+    onDelete(val) {
+      this.dialogDelete = true
+      this.item = Object.assign({}, val)
+    },
+
+    async confirmDel() {
+      this.dialogDelete = false
+      await this.$axios.delete("/users/" + this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

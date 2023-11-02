@@ -4,10 +4,16 @@ import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการประเภท",
       loading: true,
       search: "",
       valid: false,

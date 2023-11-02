@@ -19,7 +19,7 @@
 <!--              เพิ่ม-->
 <!--            </v-btn>-->
 <!--          </v-row>-->
-          <head-bar title="จัดการสิทธิ์" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
               <thead>

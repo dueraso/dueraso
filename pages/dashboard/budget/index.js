@@ -6,8 +6,14 @@ import myUtils from "@/plugins/myUtils";
 export default {
   middleware: ['auth',isAdmin],
   layout: "seller-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการหมวดหมู่รายรับ-จ่าย",
       valid: false,
       dialogDelete: false,
       loading: true,

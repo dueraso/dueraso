@@ -5,7 +5,13 @@ import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
 
 export default {
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data: () => ({
+    headTitle: "แพ็คเกจ",
     loading: false,
     cards: {},
     calories: '',

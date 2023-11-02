@@ -31,9 +31,13 @@
           </div>
         </v-row>
       </div>
-      <div style=" justify-items: flex-end">
+      <div style=" justify-items: flex-end" v-if="!$auth.loggedIn">
         <v-btn right rounded color="#B27D41" dark @click="$router.push('/login')">เข้าสู่ระบบ</v-btn>
         <v-btn right outlined rounded color="#B27D41" dark @click="$router.push('/login')" class="ml-3">ลงทะเบียน
+        </v-btn>
+      </div>
+      <div style=" justify-items: flex-end; width: 215px; text-align: right;" v-else>
+        <v-btn right outlined rounded color="#B27D41" dark class="ml-3" @click="logout">ออกจากระบบ
         </v-btn>
       </div>
     </b-navbar>
@@ -120,6 +124,10 @@ export default {
     // }
   },
   methods: {
+    logout() {
+      this.$auth.logout()
+      localStorage.clear()
+    },
     // showBadge() {
     //   return this.$vuetify.breakpoint.width > 990
     // },

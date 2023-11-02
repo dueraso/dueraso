@@ -3,12 +3,20 @@ import convert from "../../plugins/convert";
 import myUtils from "@/plugins/myUtils";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
+import isAdmin from "@/middleware/is-admin";
 // import {select} from "underscore";
 
 export default {
-  middleware: "auth",
+  middleware: ["auth", isAdmin],
   layout: "pos-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data: () => ({
+    headTitle: "แคชเชียร์",
+
     t:0,
     loading: false,
     cards: {},

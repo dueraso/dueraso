@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <HeadBar :callback="openItem" title="ชื่อร้าน/ชื่อแบรนด์"/>
+          <HeadBar :callback="openItem" :title="headTitle"/>
           <v-col>
             <table style="width:100%">
               <thead>

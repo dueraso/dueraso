@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="ผู้ใช้งานทั้งหมด" :callback="openItem">
+          <head-bar :title="headTitle" :callback="openItem">
             <v-btn rounded @click="$router.push($route.fullPath+'/role')" class="ml-3" color="#B27D41" dark small>
               <v-icon small>mdi-lock</v-icon>
               จัดการสิทธิ์
@@ -60,10 +60,10 @@
                 </td>
                 <td>
                   <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
+                    <v-btn fab small text @click="openItem(item)" :disabled="item.roles.id === 1">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
+                    <v-btn fab small text @click="onDelete(item)" :disabled="item.roles.id === 1">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </div>
@@ -72,11 +72,11 @@
               </tbody>
             </table>
           </v-col>
-          <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขผู้ใช้งาน">
+          <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขผู้ใช้งาน" :callback="confirm">
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลส่วนตัว</p>
             <v-row class="m-0">
               <v-col class="pb-0 pt-0" md="6">
-                <v-text-field v-model="item.title" label="ชื่อ-สกุล" outlined clearable dense
+                <v-text-field v-model="item.name" label="ชื่อ-สกุล" outlined clearable dense
                               style="border-radius: 15px"
                               required
                               :rules="rules"/>
@@ -95,14 +95,17 @@
                               required
                               :rules="rules"/>
               </v-col>
-              <v-col class="pb-0 pt-0" md="6">
-                <v-text-field v-model="item.password" label="รหัสผ่าน" outlined clearable dense
+              <v-col class="pb-0 pt-0" md="6" v-if="hidePass">
+                <v-text-field v-model="item.password" label="รหัสผ่าน" outlined dense
                               style="border-radius: 15px"
                               required
-                              :rules="rules"/>
+                              :rules="rules"
+                              :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                              :type="showPass ? 'text' : 'password'"
+                              @click:append="showPass = !showPass"/>
               </v-col>
-              <v-col class="pb-0 pt-0" md="6">
-                <v-text-field v-model="item.passcode" label="รหัสผ่าน" outlined clearable dense
+              <v-col class="pb-0 pt-0" :md="hidePass?6:12">
+                <v-text-field v-model="item.pin" label="passcode" outlined clearable dense
                               style="border-radius: 15px"
                               required
                               :rules="rules"/>
@@ -139,12 +142,32 @@
                   :rules="rules"
                 ></v-autocomplete>
               </v-col>
-            </v-row>
-            <v-row class="m-0 pl-4">
+              <v-col class="pb-0 pt-0" md="6">
+                <v-autocomplete
+                  outlined
+                  auto-select-first
+                  :items="branch.data"
+                  v-model="branchSelect"
+                  hide-no-data
+                  hide-selected
+                  return-object
+                  label="สาขา"
+                  dense
+                  item-text="title"
+                  item-value="id" style="border-radius: 15px"
+                  required
+                  :rules="rules"
+                ></v-autocomplete>
+              </v-col>
+              <v-col class="pb-0 pt-0" md="6">
+            <v-row class="m-0 pl-4" v-if="!hidePass">
               <p class="m-0 mt-2 mr-4" style="font-weight: 500">สถานะการใช้งาน</p>
               <v-switch v-model="item.status" inset class="m-0 pt-1 pr-4" label="สถานะ" color="success"></v-switch>
             </v-row>
+              </v-col>
+            </v-row>
           </dialog-mid>
+          <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
         </v-container>
       </v-main>
     </v-app>

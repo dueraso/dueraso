@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading" style="max-width: 1200px">
-          <head-bar title="รวมแอปพลิเคชัน"/>
+          <head-bar :title="headTitle"/>
           <v-row class="m-0">
             <v-col cols="12" sm="3" v-for="(item, i) in items" :key="i">
               <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push(item.rout)">

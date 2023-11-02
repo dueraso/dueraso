@@ -3,7 +3,13 @@ import dayjs from "dayjs";
 export default {
   // middleware: "auth",
   layout:"home-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data: () => ({
+    headTitle: "หน้าแรก",
     items: [
       {
         src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',

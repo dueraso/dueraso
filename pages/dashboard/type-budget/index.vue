@@ -8,18 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar title="ประเภทรายการ" :callback="openItem"/>
-          <!--          <v-row class="pa-3 mt-1" style="background: #eef7f6">-->
-          <!--            <h5 class="mb-0 ml-4" style="color: #00000080">-->
-          <!--              <v-icon x-large>mdi-clipboard-edit-outline</v-icon>-->
-          <!--              ประเภทรายการ-->
-          <!--            </h5>-->
-          <!--            <v-spacer/>-->
-          <!--            <v-btn outlined @click="openItem({})" class="mr-3" v-show="myUtils('create', $route.fullPath)">-->
-          <!--              <v-icon>mdi-plus</v-icon>-->
-          <!--              เพิ่ม-->
-          <!--            </v-btn>-->
-          <!--          </v-row>-->
+          <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
               <thead>

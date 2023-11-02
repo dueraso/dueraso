@@ -6,8 +6,14 @@ import convert from "@/plugins/convert";
 export default {
   middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการรายการรายรับ-จ่าย",
       money: {
         val1:0,
         val2:0,

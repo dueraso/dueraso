@@ -5,8 +5,14 @@ import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
 
 export default {
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "รวมแอปพลิเคชัน",
       loading: false,
       items:[
         {

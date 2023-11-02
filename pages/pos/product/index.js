@@ -3,10 +3,16 @@ import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
 
 export default {
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  head() {
+    return {
+      title: this.headTitle,
+    }
+  },
   data() {
     return {
+      headTitle: "จัดการสินค้า",
       rules: [
         v => !!v || 'จำเป็น',
       ],

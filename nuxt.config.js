@@ -22,8 +22,8 @@ export default {
    */
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - ระบบรายรับ-รายจ่าย",
-    title: "dueraso",
+    titleTemplate: "%s - dueraso",
+    title: "ระบบรายรับ-รายจ่าย",
     htmlAttrs: {
       lang: "en",
     },
@@ -58,7 +58,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/myUtils.js','@/plugins/convert.js',
+    '@/plugins/myUtils.js',
+    '@/plugins/convert.js',
+    '@/plugins/Head-util.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -90,7 +92,7 @@ export default {
       anonymize_ip: true, // anonymize IP
       send_page_view: false, // might be necessary to avoid duplicated page track on page reload
       linker: {
-        domains: ['dueraso.000webhostapp.com']
+        domains: ['dueraso.com']
       }
     },
     debug: true, // enable to track in dev mode

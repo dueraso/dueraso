@@ -7,11 +7,18 @@ import DialogFull from "@/components/DialogFull.vue";
 export default {
   middleware: ['auth', isAdmin],
   layout: "seller-layout",
-  components:{
+  components: {
     DialogFull
+  },
+  head() {
+    return {
+      title: this.headTitle,
+    }
   },
   data() {
     return {
+      headTitle: "จัดการชื่อร้าน/ชื่อแบรนด์",
+
       loading: true,
       search: "",
       dialog: false,
@@ -34,10 +41,10 @@ export default {
         },
       ],
       desserts: {
-        meta:{}
+        meta: {}
       },
       item: {},
-      page:1
+      page: 1
     };
   },
   mounted() {
@@ -47,17 +54,17 @@ export default {
     })
     this.getData()
   },
-  computed:{
-    dd(){
+  computed: {
+    dd() {
       return new B()
     },
   },
-  watch:{
+  watch: {
     page(val) {
       this.getData()
     },
     async search(val) {
-      if (val == null)return
+      if (val == null) return
       if (val.length < 2) return
       if (this.isLoading) return
       this.isLoading = true
@@ -76,8 +83,8 @@ export default {
   },
   methods: {
     myUtils,
-    nameCreate(val){
-      if(val === null) return
+    nameCreate(val) {
+      if (val === null) return
       return val.name
     },
     convertDay(val) {
@@ -89,7 +96,7 @@ export default {
     },
     async getData() {
       await this.$axios.get("/organization").then((res) => {
-        this.desserts = Object.assign({},res.data)
+        this.desserts = Object.assign({}, res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -109,11 +116,11 @@ export default {
       this.item = Object.assign({}, val)
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/organization/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail
+      await this.$axios.put("/organization/" + this.item.id, {
+        title: this.item.title,
+        detail: this.item.detail
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -121,12 +128,12 @@ export default {
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
-      await this.$axios.post("/organization",{
-        title:this.item.title,
-        detail:this.item.detail,
-        create_by:this.$auth.user.id
+      await this.$axios.post("/organization", {
+        title: this.item.title,
+        detail: this.item.detail,
+        create_by: this.$auth.user.id
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -134,14 +141,14 @@ export default {
       })
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/organization/"+this.item.id).then((res) => {
+      await this.$axios.delete("/organization/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)
