@@ -47,9 +47,8 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-    })
     this.getData()
+    })
     this.getOutlet()
   },
 
@@ -102,7 +101,12 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/posProductType").then((res) => {
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/posProductType",{
+        params:{
+          page:this.page
+        }
+      }).then((res) => {
         // this.desserts = res
         this.desserts = Object.assign({}, res.data)
         this.$nuxt.$loading.finish()
@@ -113,11 +117,12 @@ export default {
 
     confirm() {
       if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -132,6 +137,7 @@ export default {
       await this.$axios.put("/posProductType/" + this.item.id, {
         name: this.item.name,
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -143,6 +149,7 @@ export default {
       await this.$axios.post("/posProductType", {
         name: this.item.name,
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

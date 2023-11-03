@@ -137,7 +137,11 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/posPromptPay").then((res) => {
+      await this.$axios.get("/posPromptPay",{
+        params:{
+          page:this.page
+        }
+      }).then((res) => {
         this.desserts = res.data
         this.$nuxt.$loading.finish()
       }).catch((e) => {
@@ -173,6 +177,7 @@ export default {
         promptpay: this.item.promptpay,
         image_promptpay: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -188,6 +193,7 @@ export default {
         promptpay: this.item.promptpay,
         image_promptpay: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

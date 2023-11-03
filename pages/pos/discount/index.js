@@ -77,7 +77,11 @@ watch:{
     },
 
     async getData() {
-      await this.$axios.get("/posDiscount").then((res) => {
+      await this.$axios.get("/posDiscount",{
+        params:{
+          page:this.page
+        }
+      }).then((res) => {
         this.desserts = res.data
         // this.desserts = Object.assign({},res.data)
         this.$nuxt.$loading.finish()
@@ -88,11 +92,12 @@ watch:{
 
     confirm() {
       if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -122,6 +127,7 @@ watch:{
         total:this.item.total,
         use:1,
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -136,6 +142,7 @@ watch:{
         total:this.item.total,
         use:1,
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

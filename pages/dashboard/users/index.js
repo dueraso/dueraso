@@ -110,14 +110,16 @@ export default {
           page: 20
         }
       }).then((res) => {
-        this.desserts = res.data
         this.$nuxt.$loading.finish()
+        this.desserts = res.data
       }).catch((e) => {
         console.log(e)
       })
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
       } else {
@@ -137,9 +139,14 @@ export default {
     async onUpdate() {
       this.dialog = false
       await this.$axios.put("/users/" + this.item.id, {
-        title: this.item.title,
-        detail: this.item.detail
+        name: this.item.name,
+        email: this.item.email,
+        password: this.item.password,
+        phone: this.item.phone,
+        salary_id: this.item.salary_id,
+        roles: !this.hidePass ? 1 : this.rolesSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -156,6 +163,7 @@ export default {
         salary_id: this.item.salary_id,
         roles: !this.hidePass ? 1 : this.rolesSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

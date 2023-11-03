@@ -95,15 +95,21 @@ export default {
       return (val !== 1) ? 'green' : 'red'
     },
     async getData() {
-      await this.$axios.get("/organization").then((res) => {
-        this.desserts = Object.assign({}, res.data)
+      await this.$axios.get("/organization",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.$nuxt.$loading.finish()
+        this.desserts = Object.assign({}, res.data)
       }).catch((e) => {
         console.log(e);
       });
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
       } else {
@@ -120,8 +126,10 @@ export default {
       this.dialog = false
       await this.$axios.put("/organization/" + this.item.id, {
         title: this.item.title,
-        detail: this.item.detail
+        detail: this.item.detail,
+        create_by: this.$auth.user.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -135,6 +143,7 @@ export default {
         detail: this.item.detail,
         create_by: this.$auth.user.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

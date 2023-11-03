@@ -78,7 +78,7 @@ export default {
       this.loading = false
       this.$nuxt.$loading.start()
     })
-    this.getBudgetList()
+    this.getData()
     this.getBranch()
     this.getBudget()
     this.getUser()
@@ -151,10 +151,14 @@ export default {
       });
     },
 
-    async getBudgetList() {
-      await this.$axios.get("/budgetList").then((res) => {
-        this.desserts = res.data
+    async getData() {
+      await this.$axios.get("/budgetList",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.$nuxt.$loading.finish()
+        this.desserts = res.data
       }).catch((e) => {
         console.log(e);
       });
@@ -190,11 +194,13 @@ export default {
     // },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -211,10 +217,14 @@ export default {
     async onUpdate() {
       this.dialog = false
       await this.$axios.put("/budgetList/" + this.item.id, {
-        title: this.item.title,
-        detail: this.item.detail
+        branch: this.branchSelect.id,
+        create_by: this.$auth.user.id,
+        employee: this.usersSelect.id,
+        budget: this.insteadSelect.id,
+        total: this.total
       }).then((res) => {
-        this.getBudgetList()
+        this.$nuxt.$loading.finish()
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })
@@ -229,7 +239,8 @@ export default {
         budget: this.insteadSelect.id,
         total: this.total
       }).then((res) => {
-        this.getBudgetList()
+        this.$nuxt.$loading.finish()
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })
@@ -238,7 +249,7 @@ export default {
     async onDelete(val) {
       this.dialog = false
       await this.$axios.delete("/budgetList/" + val.id).then((res) => {
-        this.getBudgetList()
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })

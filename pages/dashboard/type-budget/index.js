@@ -61,15 +61,21 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/budgetType").then((res) => {
-        this.desserts = Object.assign({},res.data)
+      await this.$axios.get("/budgetType",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.$nuxt.$loading.finish()
+        this.desserts = Object.assign({},res.data)
       }).catch((e) => {
         console.log(e);
       });
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
       } else {
@@ -87,6 +93,7 @@ export default {
       await this.$axios.put("/budgetType/"+this.item.id,{
         name:this.item.name
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -98,6 +105,7 @@ export default {
       await this.$axios.post("/budgetType",{
         name:this.item.name,
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
         this.item = Object.assign({})
       }).catch((e) => {

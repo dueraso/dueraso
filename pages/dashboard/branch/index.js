@@ -112,15 +112,21 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/branch").then((res) => {
-        this.desserts = Object.assign({},res.data)
+      await this.$axios.get("/branch",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.$nuxt.$loading.finish()
+        this.desserts = Object.assign({},res.data)
       }).catch((e) => {
         console.log(e);
       });
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
       } else {
@@ -144,6 +150,7 @@ export default {
         organization:this.insteadSelect.id,
         promptpay:this.promptSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -159,6 +166,7 @@ export default {
         organization:this.insteadSelect.id,
         promptpay:this.promptSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)

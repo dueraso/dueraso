@@ -73,9 +73,13 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/budget").then((res) => {
-        this.desserts = res.data
+      await this.$axios.get("/budget",{
+        params: {
+          page: this.page,
+        }
+      }).then((res) => {
         this.$nuxt.$loading.finish()
+        this.desserts = res.data
       }).catch((e) => {
         console.log(e);
       });
@@ -83,11 +87,10 @@ export default {
 
     confirm() {
       if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -101,11 +104,11 @@ export default {
     async onUpdate(){
       this.dialog = false
       await this.$axios.put("/budget/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail
+        name:this.item.title,
+        budget_type:this.insteadSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
@@ -117,8 +120,8 @@ export default {
         name:this.item.title,
         budget_type:this.insteadSelect.id
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

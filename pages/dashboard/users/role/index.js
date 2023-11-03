@@ -76,6 +76,7 @@ export default {
       },
       item: {},
       switch1: false,
+      dialogDelete: false,
       page:1
     };
   },
@@ -95,7 +96,7 @@ export default {
     },
   },
   mounted() {
-    this.getRoles()
+    this.getData()
     this.getModule()
   },
   methods: {
@@ -110,7 +111,7 @@ export default {
         console.log(e)
       })
     },
-    async getRoles() {
+    async getData() {
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
         // console.log(res.data)
@@ -130,6 +131,8 @@ export default {
     },
 
     confirm() {
+      if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       this.per.titleBar.sort((a, b) => a.sort - b.sort)
       if (this.item.id) {
         this.onUpdate()
@@ -157,7 +160,8 @@ export default {
         status: 0,
         policy: JSON.stringify(this.per),
       }).then((res) => {
-        this.getRoles()
+        this.$nuxt.$loading.finish()
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })
@@ -166,19 +170,37 @@ export default {
     async onCreate() {
       this.dialog = false
       await this.$axios.post("/role", {
-        title: this.item.title,
-        detail: this.item.detail
+        id: this.item.id,
+        name: this.item.name,
+        detail: this.item.detail,
+        status: 0,
+        policy: JSON.stringify(this.per),
       }).then((res) => {
-        this.getBranch()
+        this.$nuxt.$loading.finish()
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })
     },
 
-    async onDelete(val) {
-      this.dialog = false
-      await this.$axios.delete("/post/" + val.id).then((res) => {
-        this.getBranch()
+    // async onDelete(val) {
+    //   this.dialog = false
+    //   await this.$axios.delete("/role/" + val.id).then((res) => {
+    //     this.getBranch()
+    //   }).catch((e) => {
+    //     console.log(e)
+    //   })
+    // },
+
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/role/"+this.item.id).then((res) => {
+        this.getData()
       }).catch((e) => {
         console.log(e)
       })

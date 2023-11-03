@@ -160,11 +160,12 @@ export default {
 
     confirm() {
       if(!this.$refs.form.validate()) return;
+      this.$nuxt.$loading.start()
       if (this.item.id) {
-        console.log("Update> " + this.item.id)
+        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        console.log("Create> " + this.item.id)
+        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
     },
@@ -185,6 +186,7 @@ export default {
         price:this.item.price,
         image_url:this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
@@ -200,6 +202,7 @@ export default {
         price:this.item.price,
         image_url:this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
+        this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
         console.log(e)
