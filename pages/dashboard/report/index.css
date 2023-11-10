@@ -1,4 +1,6 @@
-
+svg:not(:root){
+  border-radius: 15px;
+}
 
 .v-application ul, .v-application ol {
 padding-left: 0;

@@ -20,6 +20,11 @@ export default {
   data() {
     return {
       loading: true,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
+      instead: null,
+      insteadSelect: null,
       typeChart: [
         {
           id: 0,
@@ -40,11 +45,19 @@ export default {
       typeRoom: [],
       typeRoomSelect: [],
       type: 'PieChart',
-      pieChartData: [],
+      pieChartData: [
+        ['Task', 'Hours per Day'],
+        ['Work', 11],
+        ['Eat', 2],
+        ['Commute', 2],
+        ['Watch TV', 2],
+        ['Sleep', 7],
+      ],
       pieChartOptions: {
         title: '',
         pieHole: 0.4,
-        height: 600,
+        height: 344,
+        legend: 'none',
       },
       data: [],
       options: {
@@ -52,17 +65,27 @@ export default {
         pieHole: 0.4,
         height: 600,
       },
-      chartData: [],
+      chartData: [
+        ['Year', 'Sales', 'Expenses', 'Profit'],
+        ['2014', 1000, 400, 200],
+        ['2015', 1170, 460, 250],
+        ['2016', 660, 1120, 300],
+        ['2017', 1030, 540, 350],
+      ],
       chartOptions: {
         title: '',
-        height: 600,
+        width: 800,
+        height: 344,
         chart: {
           title: 'Company Performance',
           subtitle: 'Sales, Expenses, and Profit: 2014-2017',
         }
       },
       menuDate: false,
-      date: new Date().toISOString().substr(0, 7),
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateEnd: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      modal: false,
+      dialogDateEnd: false,
       headerTable: [],
       desserts: []
     }
@@ -78,6 +101,29 @@ export default {
       // this.$nuxt.$loading.start()
       // this.getTypeRoom()
     })
+
+    const items2D = [
+      { id: 1, name: 'Item 1', parent: 'A' },
+      { id: 2, name: 'Item 2', parent: 'B' },
+      { id: 3, name: 'Item 3', parent: 'A' },
+      { id: 4, name: 'Item 4', parent: 'B' },
+      { id: 5, name: 'Item 5', parent: 'C' },
+    ];
+
+// Use reduce to group items by parent property
+    const groupedItems2D = items2D.reduce((grouped, item) => {
+      const parent = item.parent;
+
+      if (!grouped[parent]) {
+        grouped[parent] = [];
+      }
+
+      grouped[parent].push(item);
+
+      return grouped;
+    }, {});
+
+    console.log(JSON.stringify(groupedItems2D));
   },
   methods: {
     getRoom(val) {

@@ -169,7 +169,6 @@ export default {
     },
 
     async deleteItemConfirm() {
-      console.log(JSON.stringify(this.editedItem));
       await this.$axios
         .delete(`/places/${this.editedItem.id}`)
         .then(() => {
@@ -193,7 +192,6 @@ export default {
     },
 
     async searchPlaces() {
-      console.log("สสส");
       await this.$axios
         .get(`/filter_places`, {
           params: {

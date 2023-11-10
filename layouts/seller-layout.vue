@@ -174,7 +174,7 @@ export default {
       rightDrawer: false,
       admins: [
         {
-          name:'จัดการรายการ',
+          name:'จัดการสินค้า',
           icon:'mdi-account-multiple-outline',
           to:'/pos/product'
         },

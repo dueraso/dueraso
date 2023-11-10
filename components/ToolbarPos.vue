@@ -155,7 +155,6 @@ export default {
       localStorage.setItem("policy", this.$auth.user.roles.policy)
       if (JSON.parse(localStorage.getItem("policy")) == null) return
       this.itemsBar = JSON.parse(localStorage.getItem("policy")).titleBar
-      console.log(this.itemsBar)
       // this.itemsBar.sort((a, b) => a.id - b.id)
     },
     addCircle(val) {

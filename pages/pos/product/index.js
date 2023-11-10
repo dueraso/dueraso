@@ -116,7 +116,6 @@ export default {
 
     onDeleteImage() {
       let img = this.file == null ? JSON.parse(this.item.image_url) : this.file
-      console.log(img)
       this.$axios.post("destroyImage", {
         id: Object.keys(this.item).length === 0 ? 0 : this.item.id,
         image_url: img.newName

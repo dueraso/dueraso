@@ -135,7 +135,6 @@ export default {
       }
     },
     active(val) {
-      console.log(this.$route.name)
       return this.$route.name === val ? 'active':''
       // return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
     },

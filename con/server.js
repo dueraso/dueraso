@@ -4,7 +4,7 @@ const local = {
 };
 const production = {
   url: "https://dueraso.com",
-  api: "https://dueraso.com/api/public/api/v1",
+  api: "https://api.dueraso.com/public/api/v1",
 };
 
-module.exports = production;
+module.exports = local;

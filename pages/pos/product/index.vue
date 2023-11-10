@@ -88,7 +88,7 @@
                           hide-selected return-object label="ประเภท" dense item-text="name" item-value="id"
                           style="border-radius: 15px"
                         ></v-autocomplete>
-                        <v-text-field v-model="item.price" label="จำนวน" outlined dense type="number" required
+                        <v-text-field v-model="item.price" label="ราคา" outlined dense type="number" required
                                       style="border-radius: 15px"
                                       :rules="rules"/>
                       </v-row>
