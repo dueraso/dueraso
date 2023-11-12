@@ -30,6 +30,7 @@ export default {
       dialog: false,
       valid: false,
       isLoading: false,
+      dialogDelete: false,
       instead: null,
       insteadSelect: null,
       tableHead: [
@@ -246,13 +247,29 @@ export default {
       })
     },
 
-    async onDelete(val) {
-      this.dialog = false
-      await this.$axios.delete("/budgetList/" + val.id).then((res) => {
+    // async onDelete(val) {
+    //   this.dialog = false
+    //   await this.$axios.delete("/budgetList/" + val.id).then((res) => {
+    //     this.getData()
+    //   }).catch((e) => {
+    //     console.log(e)
+    //   })
+    // },
+
+
+    onDelete(val){
+      this.dialogDelete = true
+      this.item = Object.assign({},val)
+    },
+
+    async confirmDel(){
+      this.dialogDelete = false
+      await this.$axios.delete("/budgetList/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)
       })
     },
+
   }
 };

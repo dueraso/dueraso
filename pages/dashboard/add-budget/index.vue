@@ -193,6 +193,7 @@
               </v-dialog>
             </div>
           </v-col>
+          <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
         </v-container>
       </v-main>
     </v-app>
