@@ -61,6 +61,7 @@ export default {
     '@/plugins/myUtils.js',
     '@/plugins/convert.js',
     '@/plugins/Head-util.js',
+    '@/plugins/vue-gates.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

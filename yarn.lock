@@ -9406,6 +9406,11 @@ vue-functional-data-merge@^3.1.0:
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-3.1.0.tgz#08a7797583b7f35680587f8a1d51d729aa1dc657"
   integrity sha512-leT4kdJVQyeZNY1kmnS1xiUlQ9z1B/kdBFCILIjYYQDqZgLqCLa0UhjSSeRX6c3mUe6U5qYeM8LrEqkHJ1B4LA==
 
+vue-gates@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/vue-gates/-/vue-gates-2.1.2.tgz#89d6951ec4a0bb3291fe986fa3bb93c262d3910e"
+  integrity sha512-65IqVyR6KACdPxmOwz61gTLUCZnDU2DxkJmu8OiFM8/cBPBKtsCNe1+R32JcOZjLeIqKKkDS6N7ZY0+xbtVnBQ==
+
 vue-google-charts@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vue-google-charts/-/vue-google-charts-1.1.0.tgz#bcd1e113ff5c305f3d3df7e52c4c778b947dc953"

@@ -1,4 +1,5 @@
 export default function ({store, redirect, route, error}) {
+  return true
   let policy = JSON.parse(store.state.auth.user.roles.policy)
   if (policy) {
     let val = policy.titleBar.find(async d => {

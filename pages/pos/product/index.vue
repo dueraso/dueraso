@@ -8,6 +8,10 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
+<!--          <button v-role="'product.writer'">Add Article</button>-->
+<!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
+<!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
+
           <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
@@ -40,10 +44,10 @@
                 </td>
                 <td>
                   <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
+                    <v-btn fab small text @click="openItem(item)" v-role="'edit'">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
+                    <v-btn fab small text @click="onDelete(item)" v-role="'delete'">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </div>

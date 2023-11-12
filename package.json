@@ -30,6 +30,7 @@
     "underscore": "^1.13.6",
     "v-mask": "^2.3.0",
     "vue": "^2.6.14",
+    "vue-gates": "^2.1.2",
     "vue-google-charts": "^1.1.0",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
