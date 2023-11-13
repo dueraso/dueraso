@@ -2,7 +2,7 @@
   <div id="app">
     <v-app style="background-color: transparent">
       <v-main>
-        <v-carousel cycle height="800" hide-delimiter-background show-arrows-on-hover>
+        <v-carousel cycle height="765" hide-delimiter-background show-arrows-on-hover>
           <a href="/">
             <v-carousel-item
               v-for="(item,i) in items"

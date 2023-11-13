@@ -9,6 +9,8 @@
         </div>
         <v-container fluid v-if="!loading" style="max-width: 1200px">
           <head-bar :title="headTitle"/>
+          <v-img src="./all-apps.png"
+                 style="left: 2%; bottom: 10%; position: absolute;"></v-img>
           <v-row class="m-0">
             <v-col cols="12" sm="3" v-for="(item, i) in items" :key="i">
               <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push(item.rout)">

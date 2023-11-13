@@ -12,17 +12,8 @@ export default {
     headTitle: "หน้าแรก",
     items: [
       {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-      },
-      {
-        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-      },
+        src: './banner-01@2x.png',
+      }
     ],
   }),
   computed: {

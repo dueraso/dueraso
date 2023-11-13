@@ -3,15 +3,14 @@
     <v-app
       style="background-color: #F3F1ED;background-size: cover;background-repeat: no-repeat;">
       <v-row justify="center">
+        <v-img src="./login.png"
+               style="width: 855.27px; height: 187.52px; right: 0%; bottom: 0%; position: absolute;"></v-img>
         <v-col cols="12" sm="6" align="center" style="align-self: center">
           <h1 style="font-weight: bold; font-size: 60px; color: #A44E1C" class="m-0">DUERASO</h1>
           <p style="font-size: 40px;color: #6E4C2E; font-weight: lighter">ยินดีต้อนรับ</p>
           <v-img src="./image1.png" width="812"/>
         </v-col>
         <v-col cols="12" sm="6" align="center" align-self="center">
-          <!--          <v-container fill-height>-->
-          <!--            <v-layout wrap align-center>-->
-          <!--              <v-flex>-->
           <v-card elevation="4" light tag="section" style="border-radius: 15px" width="611px">
             <v-card-text>
               <v-col align="left" class="pl-8 pr-8">
@@ -43,16 +42,20 @@
                     style="border-radius: 15px;"
                   ></v-text-field>
 
-                  <v-checkbox v-model="remember" label="จดจำรหัสผ่าน" color="#B27D41" class="m-0 p-0 mb-2" hide-details/>
+                  <v-checkbox v-model="remember" label="จดจำรหัสผ่าน" color="#B27D41" class="m-0 p-0 mb-2"
+                              hide-details/>
 
-                  <v-btn :disabled="!valid" color="#B27D41" @click="validate" block style="color: white; font-size: 16px" rounded>
+                  <v-btn :disabled="!valid" color="#B27D41" @click="validate" block
+                         style="color: white; font-size: 16px" rounded>
                     เข้าสู่ระบบ
                   </v-btn>
                 </v-form>
               </v-col>
               <v-col align-self="center" class="p-0">
-                <v-divider :thickness="1" class="border-opacity-100; pb-1" color="#B27D41" style="border-radius: 20px; width: 200px"/>
-                <p style="font-size: 16px; font-weight: normal; color: #846537" class="pt-5 mb-2">หรือเข้าสู่ระบบด้วย</p>
+                <v-divider :thickness="1" class="border-opacity-100; pb-1" color="#B27D41"
+                           style="border-radius: 20px; width: 200px"/>
+                <p style="font-size: 16px; font-weight: normal; color: #846537" class="pt-5 mb-2">
+                  หรือเข้าสู่ระบบด้วย</p>
               </v-col>
               <v-row class="m-0 pt-3" style="width: 200px; justify-content: center;">
                 <img src="/facebook.png" width="68" height="69" class="m-2 p-2" alt="facebook"/>
@@ -62,55 +65,16 @@
                 <a @click="$router.push('/register')" style="color: #2196f3">สมัคร</a>
               </p>
             </v-card-text>
-                              <v-row align="center mr-2">
-                                <v-col class="p-0">
-                                  <p class="text-right m-0 mr-2" style="font-size: 10px">
-                                    เวอร์ชั่น {{ version }} เบต้า
-                                  </p>
-                                </v-col>
-                              </v-row>
+            <v-row align="center mr-2">
+              <v-col class="p-0">
+                <p class="text-right m-0 mr-2" style="font-size: 10px">
+                  เวอร์ชั่น {{ version }} เบต้า
+                </p>
+              </v-col>
+            </v-row>
           </v-card>
-          <!--              </v-flex>-->
-          <!--            </v-layout>-->
-          <!--&lt;!&ndash;            <v-row align="center mr-2">&ndash;&gt;-->
-          <!--&lt;!&ndash;              <v-col class="p-0">&ndash;&gt;-->
-          <!--&lt;!&ndash;                <p class="text-center m-0" style="font-size: 12px">&ndash;&gt;-->
-          <!--&lt;!&ndash;                  เวอร์ชั่น {{ version }} เบต้า&ndash;&gt;-->
-          <!--&lt;!&ndash;                </p>&ndash;&gt;-->
-          <!--&lt;!&ndash;              </v-col>&ndash;&gt;-->
-          <!--&lt;!&ndash;            </v-row>&ndash;&gt;-->
-          <!--          </v-container>-->
         </v-col>
       </v-row>
-      <!--      <v-overlay :value="overlay">-->
-      <!--        <v-card width="500px" light align="center" v-if="profile.active === 1">-->
-      <!--          <v-card-title>สถานะของคุณคือ</v-card-title>-->
-      <!--          <br/>-->
-      <!--          <v-card-subtitle v-if="profile.status.id === 2"-->
-      <!--          ><h1 style="color: orange">{{ profile.status.name }}</h1>-->
-      <!--          </v-card-subtitle>-->
-      <!--          <v-card-subtitle v-else>-->
-      <!--            <h1 style="color: red">-->
-      <!--              {{ profile.status.name }}-->
-      <!--            </h1>-->
-      <!--          </v-card-subtitle>-->
-      <!--          <v-card-actions align="center">-->
-      <!--            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>-->
-      <!--          </v-card-actions>-->
-      <!--        </v-card>-->
-      <!--        <v-card width="500px" light align="center" v-else>-->
-      <!--          <v-card-title>สถานะของคุณคือ</v-card-title>-->
-      <!--          <br/>-->
-      <!--          <v-card-subtitle-->
-      <!--          ><h3 style="color: red">-->
-      <!--            {{ message }}-->
-      <!--          </h3>-->
-      <!--          </v-card-subtitle>-->
-      <!--          <v-card-actions align="center">-->
-      <!--            <v-btn text @click="() => (this.overlay = false)">ปิด</v-btn>-->
-      <!--          </v-card-actions>-->
-      <!--        </v-card>-->
-      <!--      </v-overlay>-->
     </v-app>
   </div>
 </template>
@@ -160,7 +124,7 @@ export default {
   },
 
   methods: {
-    async googleOauth(){
+    async googleOauth() {
       // await this.$auth.loginWith('google');
     },
     async validate() {
