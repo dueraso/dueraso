@@ -20,12 +20,21 @@ export default {
           title:"แคชเชียร์",
           icon:"/icon1.png",
           rout:"/pos",
+          status:false
         },
         {
           id:2,
           title:"จัดการหลังบ้าน",
           icon:"/icon2.png",
           rout:"/dashboard",
+          status:false
+        },
+        {
+          id:3,
+          title:"ลูกจ้าง",
+          icon:"/icon2.png",
+          rout:"",
+          status:true
         },
       ]
     }

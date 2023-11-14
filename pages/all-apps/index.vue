@@ -13,7 +13,7 @@
                  style="left: 2%; bottom: 10%; position: absolute;"></v-img>
           <v-row class="m-0">
             <v-col cols="12" sm="3" v-for="(item, i) in items" :key="i">
-              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push(item.rout)">
+              <v-card width="266" class="pt-2" style="text-align-last: left;border-radius: 15px" @click="$router.push(item.rout)" :disabled="item.status">
                 <v-card width="247" height="136" color="#6E4C2E" style="border-radius: 15px">
                   <v-col align="center" style="align-items: center" class="pt-8 pb-8">
                     <v-img :src="item.icon" width="73"></v-img>
