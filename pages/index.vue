@@ -12,9 +12,7 @@
             ></v-carousel-item>
           </a>
         </v-carousel>
-        <v-container>
           <Service/>
-        </v-container>
         <Partner/>
       </v-main>
     </v-app>

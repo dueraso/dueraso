@@ -31,7 +31,14 @@ export default {
         },
         {
           id:3,
-          title:"ลูกจ้าง",
+          title:"จัดการลูกจ้าง",
+          icon:"/icon2.png",
+          rout:"",
+          status:true
+        },
+        {
+          id:4,
+          title:"จัดการร้านอาหาร",
           icon:"/icon2.png",
           rout:"",
           status:true
