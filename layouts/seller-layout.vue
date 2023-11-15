@@ -1,6 +1,6 @@
 <template>
   <v-app dark style="background-color: #F3F1ED;">
-    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app style="border-radius: 15px;" class="m-3">
+    <v-navigation-drawer v-model="drawer" :mini-variant="false" :clipped="clipped" fixed app style="border-radius: 15px;" class="m-3">
       <v-list>
         <v-list-group :value="true" no-action class="pl-6"  color="#5B4840">
           <template v-slot:activator>
@@ -169,7 +169,6 @@ export default {
           to: '/dashboard/users'
         }
       ],
-      miniVariant: false,
       right: false,
       rightDrawer: false,
       admins: [

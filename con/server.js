@@ -7,4 +7,4 @@ const production = {
   api: "https://api.dueraso.com/public/api/v1",
 };
 
-module.exports = production;
+module.exports = local;

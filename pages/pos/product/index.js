@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
+import super_admin from "@/middleware/super";
 
 export default {
-  middleware: ['auth', isAdmin],
+  middleware: ['auth', super_admin],
   layout: "seller-layout",
   head() {
     return {
@@ -58,10 +59,8 @@ export default {
     };
   },
 
-  created() {
-  },
-
   mounted() {
+    console.log(this.$route.name)
     this.getData()
     this.getProductType()
     this.$nextTick(() => {

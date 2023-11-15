@@ -65,14 +65,8 @@
 .v-badge__wrapper {
   top: 5px;
 }
-
-/*.navbar-expand-lg .navbar-nav .nav-link {*/
-/*  padding-right: 0.5rem;*/
-/*  padding-left: 0;*/
-/*}*/
 </style>
 <script>
-import axios from "@/con/config";
 
 export default {
   // components: {DialogRegister, DialogCon, Register},
@@ -93,89 +87,16 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.$i18n.locales)
     if (this.$auth.user === undefined || this.$auth.user === null) return
-    if (this.$auth.user.mobile === '') {
-      this.snackbar = true
-      this.messages = 'ข้อมูลของท่านยังไม่สมบูรณ์ <br/>กรุณากรอบข้อมูลและอัพรูปบัตรประชาชน'
-      this.textBtn = 'ยืนยัน'
-    }
   },
   methods: {
     logout() {
       this.$auth.logout()
       localStorage.clear()
     },
-    showBadge() {
-      return this.$vuetify.breakpoint.width > 990
-    },
-    lock() {
-      this.snackbar = true
-      this.messages = "ขณะนี้ระบบยังไม่เปิดใช้บริการ"
-    },
-    close() {
-      if (this.$auth.user !== undefined && this.$auth.user !== null) {
-        if (this.$auth.user.mobile === '') {
-          this.$router.push(this.localePath("index") + '/profile/edit')
-        }
-      }
-      this.snackbar = false
-      this.show = false
-    },
-    changePage(val) {
-      if (val === 'logout') {
-        this.$auth.logout()
-        // console.log("if<")
-      } else if (val === '') {
-        // console.log("else if<")
-        this.lock()
-      } else {
-        // console.log("else<")
-        this.$router.push(val)
-      }
-    },
     active(val) {
       return this.$route.name === val ? 'active':''
       // return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
-    },
-    async validate() {
-      this.$nuxt.$loading.start()
-      await axios.post('/login', {
-        username: this.username,
-        password: this.password,
-      }).then((res) => {
-        if (res.data.status) {
-          // console.log("1>"+this.$route.fullPath)
-          this.login()
-        } else {
-          this.messages = res.data.message
-          this.$nuxt.$loading.finish()
-          this.snackbar = true
-        }
-      }).catch((e) => {
-        console.log("e>" + JSON.stringify(e))
-      })
-    },
-    login() {
-      try {
-        const login = {
-          username: this.username,
-          password: this.password
-        }
-        this.$auth.loginWith('local', {data: login}).then((res) => {
-          this.$nuxt.$loading.finish()
-          this.menu = false
-          this.$auth.$storage.setLocalStorage('token', res.data.tokens.code)
-          this.username = ''
-          this.password = ''
-        })
-      } catch (e) {
-        console.log('Error Response', JSON.stringify(e))
-      }
-    },
-    register() {
-      this.menu = false
-      this.overlay = !this.overlay
     },
   },
 }

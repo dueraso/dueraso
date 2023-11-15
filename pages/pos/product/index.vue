@@ -8,9 +8,9 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-<!--          <button v-role="'product.writer'">Add Article</button>-->
-<!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
-<!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
+          <!--          <button v-role="'product.writer'">Add Article</button>-->
+          <!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
+          <!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
 
           <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
@@ -96,9 +96,6 @@
                                       style="border-radius: 15px"
                                       :rules="rules"/>
                       </v-row>
-                      <!--                      <v-text-field v-model="item.url" label="ลิ้งค์รูป" outlined dense required :rules="rules"-->
-                      <!--                                    style="border-radius: 15px"/>-->
-                      <!--                      <div v-else>-->
                       <v-file-input
                         v-model="selectedFile"
                         accept="image/*"
@@ -114,8 +111,9 @@
                       ></v-file-input>
 
                       <!--                       Display the currently selected image -->'
-                      <div class="container mb-3">
-                        <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px"/>
+                      <v-col class="container mb-3 pt-0">
+                        <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px">
+                        </v-img>
                         <div class="middle" v-show="file">
                           <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
                             <v-icon>
@@ -124,7 +122,7 @@
                             ลบ
                           </v-btn>
                         </div>
-                      </div>
+                      </v-col>
                       <!--                      </div>-->
                       <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                         ตกลง
@@ -151,13 +149,14 @@
   height: auto;
   transition: .5s ease;
   backface-visibility: hidden;
+  border-radius: 15px;
 }
 
 .middle {
   transition: .5s ease;
   opacity: 0;
   position: absolute;
-  top: 63%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
