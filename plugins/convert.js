@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 
 export default {
   formatPhoneNumber(phoneNumberString) {
-    return  phoneNumberString.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
+    return phoneNumberString.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
   },
   formatIc(phoneNumberString) {
-    return  phoneNumberString.replace(/^(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})$/, '$1-$2-$3-$4-$5')
+    return phoneNumberString.replace(/^(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})$/, '$1-$2-$3-$4-$5')
   },
 
   datetime(val = dayjs(), _format = "DD/MM/YYYY HH:mm") {
@@ -50,4 +50,26 @@ export default {
 
     return convertedArray;
   },
+
+  groupChildren(originalArray) {
+    // Create a mapping of parent IDs to their corresponding items
+    const idToItem = originalArray.reduce((map, item) => {
+      map[item.id] = item;
+      return map;
+    }, {});
+
+    // Use reduce to create the final nested structure
+    return originalArray.reduce((result, item) => {
+      if (item.parent === null) {
+        result.push(item);
+      } else {
+        const parentItem = idToItem[item.parent];
+        if (!parentItem.children) {
+          parentItem.children = [];
+        }
+        parentItem.children.push(item);
+      }
+      return result;
+    }, []);
+  }
 }

@@ -1,0 +1,33 @@
+.rounded-cell {
+  border-bottom-left-radius: 10px; /* Adjust the value to change the level of rounding */
+  border-top-left-radius: 10px;
+  padding: 10px; /* Optional: Add padding for better visual effect */
+  background-color: white; /* Optional: Set a background color */
+}
+
+.rounded-cell-center {
+  padding: 10px; /* Optional: Add padding for better visual effect */
+  background-color: white; /* Optional: Set a background color */
+}
+
+.rounded-cell-center-img {
+  padding: 2px; /* Optional: Add padding for better visual effect */
+  background-color: white; /* Optional: Set a background color */
+}
+
+.rounded-cell-right {
+  border-bottom-right-radius: 10px; /* Adjust the value to change the level of rounding */
+  border-top-right-radius: 10px;
+  padding: 2px; /* Optional: Add padding for better visual effect */
+  background-color: white; /* Optional: Set a background color */
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+th, td {
+  padding-bottom: 10px;
+}

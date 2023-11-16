@@ -138,7 +138,7 @@
       </td>
       <td class="pl-0 pr-0">
         <div class="rounded-cell-center">
-          {{ item.diractory }}
+          {{ item.diractory?item.diractory:"-" }}
         </div>
       </td>
       <td class="pl-0 pr-0">

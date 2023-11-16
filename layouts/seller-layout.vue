@@ -1,41 +1,7 @@
 <template>
   <v-app dark style="background-color: #F3F1ED;">
-    <v-navigation-drawer v-model="drawer" :mini-variant="false" :clipped="clipped" fixed app style="border-radius: 15px;" class="m-3">
-      <v-list>
-        <v-list-group :value="true" no-action class="pl-6"  color="#5B4840">
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>จัดการ POS</v-list-item-title>
-            </v-list-item-content>
-          </template>
+    <navigation-drawer v-model="drawer"/>
 
-          <v-list-item v-for="(item, i) in admins" :key="i" link class="pl-8" :to="item.to">
-            <v-list-item-title v-text="item.name"></v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router  style=" text-decoration: unset;" class="pl-4">
-          <v-list-item-content class="pl-6">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-group :value="true" no-action class="pl-6"  color="#5B4840">
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>รายงาน</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item link class="pl-8" v-for="(item, i) in reportItems" :key="i" :to="item.to">
-            <v-list-item-title>{{item.name}}</v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-
-      </v-list>
-    </v-navigation-drawer>
-    <!--    <ToolbarSeller/>-->
-    <!--    <NavigationDrawer/>-->
-    <!--    <LangBar/>-->
     <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
       <!-- Top navigation -->
       <div class="topnav" style="width: 100%">

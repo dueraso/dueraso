@@ -8,10 +8,6 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <!--          <button v-role="'product.writer'">Add Article</button>-->
-          <!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
-          <!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
-
           <head-bar :title="headTitle" :callback="openItem"/>
           <v-col>
             <table style="width:100%">
@@ -28,19 +24,22 @@
               <tbody>
               <tr v-for="(item, index) in desserts.data" :key="index">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.name }}</div>
+                  <div class="rounded-cell">{{ item.title }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.type.name }}</div>
+                  <div class="rounded-cell-center">{{ item.diractory?item.diractory:'-' }}</div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.price }}</div>
+                  <div class="rounded-cell-center">{{ item.icon?item.icon:'-' }}</div>
                 </td>
-                <td align="center">
-                  <div class="rounded-cell-center-img">
-                    <v-img :src="item.imageUrl === null?null:JSON.parse(item.imageUrl).fullPath" height="40px"
-                           width="40px" style="border-radius: 10px"></v-img>
-                  </div>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.parent?item.parent:'-'  }}</div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.sort }}</div>
+                </td>
+                <td class="pl-0 pr-0">
+                  <div class="rounded-cell-center">{{ item.status }}</div>
                 </td>
                 <td>
                   <div class="rounded-cell-right" align="right">
@@ -56,7 +55,7 @@
               </tbody>
               <tfoot>
               <tr>
-                <td colspan="2">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="4">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
                 <td colspan="3">
                   <div style="float: right;">
                     <v-pagination
@@ -85,7 +84,9 @@
                       <v-text-field
                         v-model="item.name" label="ชื่อรายการ" outlined dense required
                         style="border-radius: 15px" :rules="rules"/>
+
                       <v-textarea v-model="item.detail" label="รายละเอียด" outlined dense style="border-radius: 15px"/>
+
                       <v-row class="m-0">
                         <v-autocomplete
                           outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
@@ -98,33 +99,6 @@
                           style="border-radius: 15px"
                           :rules="rules"/>
                       </v-row>
-                      <v-file-input
-                        v-model="selectedFile"
-                        accept="image/*"
-                        label="เลือกรูปภาพ"
-                        prepend-icon="mdi-image-multiple-outline"
-                        outlined
-                        @change="uploadImage"
-                        style="border-radius: 15px"
-                        dense
-                        required hide-details
-                        :rules="rules"
-                        v-if="file == null"
-                      ></v-file-input>
-
-                      <!--                       Display the currently selected image -->'
-                      <v-col class="container mb-3 pt-0">
-                        <v-img :src="file!= null?file.fullPath:''" alt="prom" class="image" style="width:200px">
-                        </v-img>
-                        <div class="middle" v-show="file">
-                          <v-btn style="border-radius: 15px" color="red" dark @click="onDeleteImage">
-                            <v-icon>
-                              mdi-delete-outline
-                            </v-icon>
-                            ลบ
-                          </v-btn>
-                        </div>
-                      </v-col>
                       <!--                      </div>-->
                       <v-btn color="#B27D41" dark @click="confirm" width="340" rounded class="mb-2">
                         ตกลง
@@ -142,36 +116,5 @@
     </v-app>
   </div>
 </template>
-<style>
-
-.image {
-  opacity: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: .5s ease;
-  backface-visibility: hidden;
-  border-radius: 15px;
-}
-
-.middle {
-  transition: .5s ease;
-  opacity: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.container:hover .image {
-  opacity: 0.3;
-}
-
-.container:hover .middle {
-  opacity: 1;
-}
-</style>
 <style scoped src="./index.css"/>
 <script src="./index.js"/>

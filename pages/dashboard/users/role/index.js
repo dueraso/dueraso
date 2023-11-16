@@ -41,11 +41,11 @@ export default {
       },
       tableHead: [
         {
-          title: "ชื่อ-สกุล",
+          title: "ชื่อ",
           width: ""
         },
         {
-          title: "ผู้ใช้งาน",
+          title: "path",
           width: ""
         },
         {
