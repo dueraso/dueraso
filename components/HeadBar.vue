@@ -1,5 +1,8 @@
 <template>
   <v-row class="pa-3 m-0" style="align-items: center;">
+    <v-btn rounded icon @click="$router.back()" class="mr-3" color="#A57156" dark v-show="back">
+      <v-icon x-large>mdi-chevron-left</v-icon>
+    </v-btn>
     <h2 align="left" class="m-0" style="color: #5B4840">
       <img style="height: 50px" src="/line.png" alt="line"> {{ title }}
     </h2>
@@ -14,13 +17,14 @@
 <script>
 export default {
   props: {
+    back: Boolean,
     callback: Function,
     title: String,
   },
   methods: {
     openItem() {
       !this.callback({})
-    }
+    },
   },
   mounted() {
     // console.log(this.$auth.user.role)

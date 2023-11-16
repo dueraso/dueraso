@@ -28,7 +28,7 @@
               <v-icon>mdi-keyboard-backspace</v-icon>
               กลับหน้าเว็บ
             </v-btn>
-            <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
+            <v-btn class="custom-primary mt-1" rounded @click="logout">ออกจากระบบ</v-btn>
           </v-row>
         </div>
       </div>
@@ -97,95 +97,18 @@ export default {
   },
   data() {
     return {
-      expandOnHover: false,
-      modules: [],
-
       clipped: true,
       drawer: true,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'จัดการร้าน',
-          to: '/dashboard/outlets'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'จัดการสาขา',
-          to: '/dashboard/branch'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'จัดการประเภท',
-          to: '/dashboard/type-budget'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'จัดการหมวดหมู่รายรับ-จ่าย',
-          to: '/dashboard/budget'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'จัดการรายการรายรับ-จ่าย',
-          to: '/dashboard/add-budget'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'จัดการผู้ใช้งาน',
-          to: '/dashboard/users'
-        }
-      ],
       right: false,
       rightDrawer: false,
-      admins: [
-        {
-          name:'จัดการสินค้า',
-          icon:'mdi-account-multiple-outline',
-          to:'/pos/product'
-        },
-        {
-          name:'จัดการส่วนลด',
-          icon:'mdi-cog-outline',
-          to:'/pos/discount'
-        },
-        {
-          name:'จัดการประเภท',
-          icon:'mdi-cog-outline',
-          to:'/pos/product-type'
-        },
-        {
-          name:'จัดการพร้อมเพย์',
-          icon:'mdi-cog-outline',
-          to:'/pos/promptpay'
-        },
-      ],
-      reportItems: [
-        {
-          name:'ภาพรวม',
-          to:'/dashboard/report'
-        },
-        {
-          name:'รายงานตามสาขา',
-          to:'/dashboard/report/outlets'
-        },
-        {
-          name:'รายงานตามผู้ขาย',
-          to:'/dashboard/report/employee'
-        },
-      ],
     };
   },
-  mounted() {
-    // this.getModule()
-  },
-  methods: {
-    async getModule() {
-      await axios.get(`module`).then((res) => {
-        this.modules = res.data
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-  },
+  methods:{
+    logout(){
+      this.$auth.logout()
+      localStorage.clear()
+    }
+  }
 };
 </script>
