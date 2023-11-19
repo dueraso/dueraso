@@ -148,23 +148,44 @@
                         <v-col cols="12" sm="12" class="p-0">
                           <v-card style="border-radius: 15px">
                             <v-row class="m-0">
-                              <v-col cols="12" sm="6" class="pb-0">
-                                <v-text-field prepend-icon="mdi-cash-multiple" outlined v-model="money.val1"
-                                              label="แบงค์ 1,000 จำนวน" dense style="border-radius: 15px"
-                                              type="number"
-                                              counter="10"/>
-                                <v-text-field outlined v-model="money.val2" label="แบงค์ 500 จำนวน" dense type="number"
-                                              style="border-radius: 15px"
-                                              color="#913FE2"/>
-                                <v-text-field outlined v-model="money.val3" label="แบงค์ 100 จำนวน" dense type="number"
-                                              style="border-radius: 15px"
-                                />
-                                <v-text-field outlined v-model="money.val4" label="แบงค์ 50 จำนวน" dense type="number"
-                                              style="border-radius: 15px"
-                                />
-                                <v-text-field outlined v-model="money.val5" label="แบงค์ 20 จำนวน" dense type="number"
-                                              style="border-radius: 15px"
-                                />
+                              <v-col cols="12" sm="6" class="p-4 pb-0">
+                                <v-row class="m-0 pb-7">
+                                  <v-icon class="pr-3" x-large>mdi-cash-multiple</v-icon>
+                                  <v-text-field
+                                    outlined v-model="money.val1"
+                                    hide-details
+                                    label="แบงค์ 1,000 จำนวน" dense style="border-radius: 15px"
+                                    type="number"/>
+                                </v-row>
+                                <v-row class="m-0 pb-7">
+                                  <v-icon class="pr-3" color="#913FE2" x-large>mdi-cash-multiple</v-icon>
+                                  <v-text-field
+                                    outlined v-model="money.val2" label="แบงค์ 500 จำนวน" dense type="number"
+                                    style="border-radius: 15px"
+                                    hide-details
+                                    color="#913FE2"/>
+                                </v-row>
+                                <v-row class="m-0 pb-7">
+                                  <v-icon class="pr-3" color="#DC5A5A" x-large>mdi-cash-multiple</v-icon>
+                                  <v-text-field
+                                    outlined v-model="money.val3" label="แบงค์ 100 จำนวน" dense type="number"
+                                    style="border-radius: 15px" hide-details
+                                  />
+                                </v-row>
+                                <v-row class="m-0 pb-7">
+                                  <v-icon class="pr-3" color="#6199EE" x-large>mdi-cash-multiple</v-icon>
+                                  <v-text-field
+                                    outlined v-model="money.val4" label="แบงค์ 50 จำนวน" dense type="number"
+                                    style="border-radius: 15px" hide-details
+                                  />
+                                </v-row>
+                                <v-row class="m-0 pb-7">
+                                  <v-icon class="pr-3" color="#5FC84B" x-large>mdi-cash-multiple</v-icon>
+                                  <v-text-field
+                                    outlined v-model="money.val5" label="แบงค์ 20 จำนวน" dense type="number"
+                                    style="border-radius: 15px" hide-details
+                                  />
+                                </v-row>
                               </v-col>
                               <v-col cols="12" sm="6" class="pb-0">
                                 <v-text-field outlined v-model="money.val6" label="เหรียญ 10 จำนวน" dense
