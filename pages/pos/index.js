@@ -17,7 +17,7 @@ export default {
   data: () => ({
     headTitle: "แคชเชียร์",
 
-    t:0,
+    t: 0,
     loading: false,
     cards: {},
     calories: '',
@@ -65,7 +65,7 @@ export default {
       1000, 500, 100
     ],
     changeMoney: 0.00,
-    checkPayMoney:false,
+    checkPayMoney: false,
     checkbox: false,
   }),
   computed: {
@@ -101,16 +101,13 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.$nextTick(() => {
       this.loading = false
+      this.getData()
+      this.getDiscount()
+      this.getType()
     })
-  },
-
-  mounted() {
-    this.getData()
-    this.getDiscount()
-    this.getType()
     if (!this.$auth.loggedIn) {
       this.branchSelect = ""
       return
@@ -124,32 +121,31 @@ export default {
     // this.qrTest()
   },
   methods: {
-    check(){
-      if(this.isProm == null) return
+    check() {
+      if (this.isProm == null) return
       return this.isProm.type_promptpay === 3
     },
     close() {
-      if(this.$refs.form.validate()){
+      if (this.$refs.form.validate()) {
         this.dialog = false
       }
     },
 
-    async createOrder(val = 2){
+    async createOrder(val = 2) {
       this.dialogPay = false
       this.$nuxt.$loading.start()
-      await this.$axios.post("/posOrder",{
-        discount:this.discountSel.length>0?this.discountSel[0].id:null,
-        product:this.desserts,
-        customer:null,
-        branch:this.branch.id,
-        pay_type:val,
-        bill_number:this.branch.id+dayjs().format('YYMMDDHHmmss'),
-      }).then((res)=>{
+      await this.$axios.post("/posOrder", {
+        discount: this.discountSel.length > 0 ? this.discountSel[0].id : null,
+        product: this.desserts,
+        customer: null,
+        branch: this.branch.id,
+        pay_type: val,
+        bill_number: this.branch.id + dayjs().format('YYMMDDHHmmss'),
+      }).then((res) => {
         this.desserts = []
         this.discountSel = []
-        this.branch = {}
         this.$nuxt.$loading.finish()
-      }).catch((e)=>{
+      }).catch((e) => {
         this.$nuxt.$loading.finish()
         console.log(e)
       })
@@ -187,9 +183,9 @@ export default {
     pay() {
       this.dialogPay = true
       this.isProm = this.branchSelect.promptpay
-      if(this.isProm.type_promptpay === 3){
+      if (this.isProm.type_promptpay === 3) {
         this.qr = JSON.parse(this.isProm.image_promptpay).fullPath
-      }else {
+      } else {
         let isPay = this.isProm.type_promptpay === 1 ? convert.formatPhoneNumber(this.isProm.promptpay) : convert.formatIc(this.isProm.promptpay)
         let amount = this.priceTotal
         const payload = generatePayload(isPay, {amount}) //First parameter : mobileNumber || IDCardNumber
@@ -256,12 +252,15 @@ export default {
     },
 
     async getData(_type = "") {
+      this.$nuxt.$loading.start()
       await this.$axios.get("/posProduct", {
         params: {
-          type: _type
+          type: _type,
+          per: 100
         }
       }).then((res) => {
         this.cards = res.data
+        this.$nuxt.$loading.finish()
       }).catch((error) => {
         console.log(error);
       });
@@ -279,6 +278,7 @@ export default {
     async getType() {
       await this.$axios.get("/posProductType").then((res) => {
         this.tags = res.data;
+        console.log(this.tags)
       }).catch((error) => {
         console.log(error);
       });

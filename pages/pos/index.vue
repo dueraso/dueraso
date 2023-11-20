@@ -11,8 +11,6 @@
           <v-row class="m-0">
             <!--            list-->
             <v-col cols="12" md="8">
-<!--                   class="d-none d-sm-flex">-->
-              <!--              <div class="p-3">-->
               <!--                tags-->
               <v-row class="mt-0 pb-4">
                 <img style="height: 50px" src="/line.png" alt="line">
@@ -30,12 +28,18 @@
                   <v-col md="12" class="m-0 p-0">
                     <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
                              style="background-color: rgba(255,255,255,0)">
-                      <v-chip-group mandatory active-class="primary--text">
+                      <v-chip-group mandatory active-class="brown--text">
                         <v-chip @click="getData()">
                           ทั้งหมด
                         </v-chip>
                         <v-chip v-for="(tag,i) in tags.data" :key="i" @click="getData(tag.id)">
                           {{ tag.name }}
+                          <v-avatar
+                            right style="color: white"
+                            color="#B27D41"
+                          >
+                            {{tag.product.length}}
+                          </v-avatar>
                         </v-chip>
                       </v-chip-group>
                     </v-sheet>
