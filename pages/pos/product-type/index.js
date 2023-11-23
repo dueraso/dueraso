@@ -104,10 +104,10 @@ export default {
       this.$nuxt.$loading.start()
       await this.$axios.get("/posProductType",{
         params:{
-          page:this.page
+          page:this.page,
+          per: 10
         }
       }).then((res) => {
-        // this.desserts = res
         this.desserts = Object.assign({}, res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {

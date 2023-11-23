@@ -38,35 +38,28 @@ export default {
         },
       ],
       desserts: {
-        meta:{}
+        meta: {}
       },
       item: {},
-      page:1
+      page: 1
     };
   },
 
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
+      this.getData()
     })
-    this.getData()
     this.getOutlet()
     this.getPrompt()
   },
 
-  computed:{
-    dd(){
-      return new B()
-    },
-  },
-
-  watch:{
+  watch: {
     page(val) {
       this.getData()
     },
     async search(val) {
-      if (val == null)return
+      if (val == null) return
       if (val.length < 2) return
       if (this.isLoading) return
       this.isLoading = true
@@ -112,20 +105,22 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/branch",{
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/branch", {
         params: {
           page: this.page,
+          per: 10
         }
       }).then((res) => {
         this.$nuxt.$loading.finish()
-        this.desserts = Object.assign({},res.data)
+        this.desserts = Object.assign({}, res.data)
       }).catch((e) => {
         console.log(e);
       });
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
@@ -141,14 +136,14 @@ export default {
       this.promptSelect = this.item.promptpay
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/branch/"+this.item.id,{
-        title:this.item.title,
-        detail:this.item.detail,
-        address:this.item.address,
-        organization:this.insteadSelect.id,
-        promptpay:this.promptSelect.id
+      await this.$axios.put("/branch/" + this.item.id, {
+        title: this.item.title,
+        detail: this.item.detail,
+        address: this.item.address,
+        organization: this.insteadSelect.id,
+        promptpay: this.promptSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -157,14 +152,14 @@ export default {
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
-      await this.$axios.post("/branch",{
-        title:this.item.title,
-        detail:this.item.detail,
-        address:this.item.address,
-        organization:this.insteadSelect.id,
-        promptpay:this.promptSelect.id
+      await this.$axios.post("/branch", {
+        title: this.item.title,
+        detail: this.item.detail,
+        address: this.item.address,
+        organization: this.insteadSelect.id,
+        promptpay: this.promptSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -173,14 +168,14 @@ export default {
       })
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/branch/"+this.item.id).then((res) => {
+      await this.$axios.delete("/branch/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

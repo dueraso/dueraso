@@ -49,16 +49,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.$nuxt.$loading.start()
       this.loading = false
+      this.getData()
     })
-    this.getData()
   },
-  computed: {
-    dd() {
-      return new B()
-    },
-  },
+
   watch: {
     page(val) {
       this.getData()
@@ -95,9 +90,11 @@ export default {
       return (val !== 1) ? 'green' : 'red'
     },
     async getData() {
-      await this.$axios.get("/organization",{
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/organization", {
         params: {
           page: this.page,
+          per: 10
         }
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -108,7 +105,7 @@ export default {
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()

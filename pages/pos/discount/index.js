@@ -61,9 +61,8 @@ watch:{
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
-    })
     this.getData()
+    })
   },
 
   methods: {
@@ -77,9 +76,11 @@ watch:{
     },
 
     async getData() {
+      this.$nuxt.$loading.start()
       await this.$axios.get("/posDiscount",{
         params:{
-          page:this.page
+          page:this.page,
+          per:10
         }
       }).then((res) => {
         this.desserts = res.data

@@ -31,50 +31,46 @@ export default {
         {
           title: "ชื่อ",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "ประเภท",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "ราคา",
           width: "",
-          text:"text-left"
+          text: "text-left"
         },
         {
           title: "รูป",
           width: "5%",
-          text:"text-center"
+          text: "text-center"
         },
       ],
       desserts: {
-        meta:{
-
-        }
+        meta: {}
       },
       item: {},
-      page:1
+      page: 1
     };
   },
 
   mounted() {
-    console.log(this.$route.name)
-    this.getData()
-    this.getProductType()
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
+      this.getData()
+      this.getProductType()
     })
   },
 
-  watch:{
+  watch: {
     page(val) {
-        this.getData()
+      this.getData()
     },
     async search(val) {
-      if (val == null)return
+      if (val == null) return
       if (val.length < 2) return
       if (this.isLoading) return
       this.isLoading = true
@@ -144,12 +140,14 @@ export default {
     },
 
     async getData() {
-      await this.$axios.get("/posProduct",{
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/posProduct", {
         params: {
           page: this.page,
+          per: 10
         }
       }).then((res) => {
-        this.desserts = Object.assign({},res.data)
+        this.desserts = Object.assign({}, res.data)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -157,7 +155,7 @@ export default {
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         // console.log("Update> " + this.item.id)
@@ -175,14 +173,14 @@ export default {
       this.file = this.item.imageUrl != null ? JSON.parse(this.item.imageUrl) : null
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/posProduct/"+this.item.id,{
-        name:this.item.name,
-        detail:this.item.detail,
-        type:this.insteadSelect.id,
-        price:this.item.price,
-        image_url:this.file ? JSON.stringify(this.file) : null
+      await this.$axios.put("/posProduct/" + this.item.id, {
+        name: this.item.name,
+        detail: this.item.detail,
+        type: this.insteadSelect.id,
+        price: this.item.price,
+        image_url: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -191,14 +189,14 @@ export default {
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
-      await this.$axios.post("/posProduct",{
-        name:this.item.name,
-        detail:this.item.detail,
-        type:this.insteadSelect.id,
-        price:this.item.price,
-        image_url:this.file ? JSON.stringify(this.file) : null
+      await this.$axios.post("/posProduct", {
+        name: this.item.name,
+        detail: this.item.detail,
+        type: this.insteadSelect.id,
+        price: this.item.price,
+        image_url: this.file ? JSON.stringify(this.file) : null
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -207,14 +205,14 @@ export default {
       })
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/posProduct/"+this.item.id).then((res) => {
+      await this.$axios.delete("/posProduct/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

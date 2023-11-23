@@ -80,13 +80,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
       this.getData()
     })
-    // window.onbeforeunload = function(event)
-    // {
-    //   return confirm("Confirm refresh");
-    // };
   },
   watch: {
     insteadSelect(val) {
@@ -137,9 +132,11 @@ export default {
     },
 
     async getData() {
+      this.$nuxt.$loading.start()
       await this.$axios.get("/posPromptPay",{
         params:{
-          page:this.page
+          page:this.page,
+          per: 10
         }
       }).then((res) => {
         this.desserts = res.data

@@ -77,9 +77,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
-    })
     this.getData()
+    })
     this.getBranch()
     this.getBudget()
     this.getUser()
@@ -153,9 +152,11 @@ export default {
     },
 
     async getData() {
+      this.$nuxt.$loading.start()
       await this.$axios.get("/budgetList",{
         params: {
           page: this.page,
+          per: 10
         }
       }).then((res) => {
         this.$nuxt.$loading.finish()

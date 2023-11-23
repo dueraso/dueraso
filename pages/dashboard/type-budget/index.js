@@ -39,9 +39,8 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.$nuxt.$loading.start()
-    })
     this.getData()
+    })
   },
 
   watch:{
@@ -61,9 +60,11 @@ export default {
     },
 
     async getData() {
+      this.$nuxt.$loading.start()
       await this.$axios.get("/budgetType",{
         params: {
           page: this.page,
+          per:10
         }
       }).then((res) => {
         this.$nuxt.$loading.finish()

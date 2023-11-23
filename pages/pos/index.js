@@ -202,11 +202,7 @@ export default {
     },
     async getBranch() {
       this.dialog = true
-      this.$axios.get("branch",{
-        params:{
-          per:'100'
-        }
-      }).then((res) => {
+      this.$axios.get("branch").then((res) => {
         this.branchList = res.data
       }).catch((e) => {
         console.log(e)
@@ -248,11 +244,7 @@ export default {
     },
 
     async getDiscount() {
-      await this.$axios.get("/getDiscountForUse",{
-        params:{
-          per:'100'
-        }
-      }).then((res) => {
+      await this.$axios.get("/getDiscountForUse").then((res) => {
         this.discount = res.data
       }).catch((error) => {
         console.log(error);
@@ -263,8 +255,7 @@ export default {
       this.$nuxt.$loading.start()
       await this.$axios.get("/posProduct", {
         params: {
-          type: _type,
-          per: '100'
+          type: _type
         }
       }).then((res) => {
         this.cards = res.data
@@ -285,11 +276,7 @@ export default {
 
     async getType() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/posProductType",{
-        params:{
-          per:'100'
-        }
-      }).then((res) => {
+      await this.$axios.get("/posProductType").then((res) => {
         this.tags = res.data;
         this.tags.data.sort((a, b) => b.product.length - a.product.length)
         this.$nuxt.$loading.finish()
