@@ -298,8 +298,8 @@
                       </v-col>
 
                       <v-col class="pt-0 pb-0">
-                        <v-btn block color="#B27D41" dark @click="createOrder(1)" rounded
-                               :disabled="(!(changeMoney >= 0))">บันทึกเงินสด
+                        <v-btn block color="#B27D41"  @click="createOrder(1)" rounded style="color: white"
+                               :disabled="(!(changeMoney > 0))">บันทึกเงินสด
                         </v-btn>
                       </v-col>
                     </v-row>
