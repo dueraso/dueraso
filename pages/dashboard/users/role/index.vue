@@ -80,8 +80,8 @@
                   </th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr v-for="(item, index) in desserts.data" :key="index">
+                <tbody v-for="(item, index) in desserts" :key="index">
+                <tr>
                   <td class="pr-0">
                     <div class="rounded-cell">
                       {{ item.title }}
@@ -97,7 +97,7 @@
                       <v-switch
                         v-model="per.read"
                         @click="changeSwitch(item)"
-                        :value="item.diractory"
+                        :value="item.id"
                         inset color="success"
                         hide-details class="m-0 p-0"
                       ></v-switch>
@@ -108,7 +108,7 @@
                       <v-switch
                         v-model="per.create"
                         inset
-                        :value="item.diractory"
+                        :value="item.id"
                         hide-details class="m-0 p-0" color="success"
                       ></v-switch>
                     </div>
@@ -118,7 +118,7 @@
                       <v-switch
                         v-model="per.update"
                         inset
-                        :value="item.diractory"
+                        :value="item.id"
                         hide-details class="m-0 p-0" color="success"
                       ></v-switch>
                     </div>
@@ -128,7 +128,61 @@
                       <v-switch
                         v-model="per.delete"
                         inset
-                        :value="item.diractory" color="success"
+                        :value="item.id" color="success"
+                        hide-details class="m-0 p-0"
+                      ></v-switch>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr v-if="item.children" v-for="(i, index) in item.children" :key="index">
+                  <td class="pr-0">
+                    <div class="rounded-cell">
+                      {{ i.title }}
+                    </div>
+                  </td>
+                  <td class="pl-0 pr-0">
+                    <div class="rounded-cell-center">
+                      {{ i.diractory ? i.diractory : "-" }}
+                    </div>
+                  </td>
+                  <td class="pl-0 pr-0">
+                    <div class="rounded-cell-center">
+                      <v-switch
+                        v-model="per.read"
+                        @click="changeSwitch(item)"
+                        :value="item.id"
+                        inset color="success"
+                        hide-details class="m-0 p-0"
+                      ></v-switch>
+                    </div>
+                  </td>
+                  <td class="pl-0 pr-0">
+                    <div class="rounded-cell-center">
+                      <v-switch
+                        v-model="per.create"
+                        inset
+                        :value="item.id"
+                        hide-details class="m-0 p-0" color="success"
+                      ></v-switch>
+                    </div>
+                  </td>
+                  <td class="pl-0 pr-0">
+                    <div class="rounded-cell-center">
+                      <v-switch
+                        v-model="per.update"
+                        inset
+                        :value="item.id"
+                        hide-details class="m-0 p-0" color="success"
+                      ></v-switch>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="rounded-cell-right" style="padding: 10px" align="right">
+                      <v-switch
+                        v-model="per.delete"
+                        inset
+                        :value="item.id" color="success"
                         hide-details class="m-0 p-0"
                       ></v-switch>
                     </div>

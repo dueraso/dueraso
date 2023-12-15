@@ -105,8 +105,14 @@ export default {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },
     async getModule() {
-      await this.$axios.$get("/module").then((res) => {
-        this.desserts = res
+      await this.$axios.$get("/module",{
+        params:{
+          per:30
+        }
+      }).then((res) => {
+        this.desserts = convert.groupChildren(res.data)
+        // console.log(modules)
+        // this.desserts = res.data.sort((a, b) => a.sort - b.sort)
       }).catch((e) => {
         console.log(e)
       })
@@ -114,14 +120,16 @@ export default {
     async getData() {
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
-        // console.log(res.data)
+        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
     },
     changeSwitch(val) {
       // this.d.indexOf(val.title)
+      console.log(val)
       let i = this.per.titleBar.indexOf(val)
+      console.log(i)
       if (i !== -1) {
         this.per.titleBar.splice(i, 1)
       } else {
@@ -131,6 +139,10 @@ export default {
     },
 
     confirm() {
+      console.log(this.per)
+      // console.log(this.$auth.user)
+      // console.log(JSON.parse(this.$auth.user.roles.policy))
+      return;
       if(!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       this.per.titleBar.sort((a, b) => a.sort - b.sort)
