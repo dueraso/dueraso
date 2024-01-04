@@ -1,6 +1,7 @@
 <template>
   <v-app dark app fixed style="background: #F3F1ED" align="center" class="elevation-0">
-    <Toolbar/>
+    <Toolbar class="d-none d-md-flex"/>
+    <ToolbarMainMobile class=" d-flex d-none d-md-flex d-lg-none"/>
     <nuxt/>
     <v-footer>
       <Footer/>
@@ -10,10 +11,12 @@
 <script>
 import Toolbar from "~/components/Toolbar-main.vue";
 import Footer from "~/components/Footer";
+import ToolbarMainMobile from "@/components/Toolbar-main-mobile.vue";
 
 export default {
   components: {
     Toolbar,
+    ToolbarMainMobile,
     Footer
   },
   data() {

@@ -15,7 +15,7 @@
 
         <!-- Left-aligned links (default) -->
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="color: #B27D41"/>
-        <div class="topnav-right">
+        <div class="topnav-right d-none d-md-flex ">
           <v-row class="m-0">
             <v-btn color="#E8AE0F" icon text>
               <v-icon>mdi-bell-badge-outline</v-icon>
