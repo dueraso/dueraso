@@ -1,5 +1,5 @@
 export default function ({store, redirect, route, error}) {
-  // return true
+  return true
   if (store.state.auth.user.roles.id === 1) return
   let policy = JSON.parse(store.state.auth.user.roles.policy)
   if (policy) {

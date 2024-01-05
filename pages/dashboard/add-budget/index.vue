@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.add-budget"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,39 +22,29 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.budget.name }}</div>
+                  {{ item.budget.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
                     {{ item.branch.title }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
                     {{ item.employee.name }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
                     {{ convert.money(item.total) }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0" style="min-width: 150px">
-                  <div class="rounded-cell-center">
                     {{ convert.datetime(item.created_at) }}
-                  </div>
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
-                      <v-icon>mdi-pen</v-icon>
-                    </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
-                      <v-icon>mdi-delete-outline</v-icon>
-                    </v-btn>
-                  </div>
+                <td align="right">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.add-budget`">
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.add-budget`">
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
                 </td>
               </tr>
               </tbody>
@@ -239,5 +229,9 @@
     </v-app>
   </div>
 </template>
-<style src="../../pos/product/index.css"/>
+<style scoped src="../../pos/product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script src="./index.js"/>

@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.promptpay"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,33 +22,27 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.name }}</div>
+                    {{ item.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ typeProm(item.type_promptpay) }}</div>
+                    {{ typeProm(item.type_promptpay) }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
                     {{ covertTypeProm(item.promptpay) }}
-                  </div>
                 </td>
                 <td align="center">
-                  <div class="rounded-cell-center-img">
                     <v-img :src="item.image_promptpay != null ? JSON.parse(item.image_promptpay).fullPath:''"
                            height="40px" width="40px" style="border-radius: 10px"></v-img>
-                  </div>
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
-                      <v-icon>mdi-pen</v-icon>
-                    </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
-                      <v-icon>mdi-delete-outline</v-icon>
-                    </v-btn>
-                  </div>
+                <td align="right">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.promptpay`">
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.promptpay`">
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
                 </td>
               </tr>
               </tbody>
@@ -172,6 +166,9 @@
   opacity: 1;
 }
 </style>
-<style src="../product/index.css">
+<style scoped src="../product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
 </style>
 <script src="./index.js"/>

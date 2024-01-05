@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem" :back="true"/>
+          <head-bar :title="headTitle" :callback="openItem" :back="true" per="add.role"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,36 +22,26 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in dessertsRole.data" :key="index">
+              <tr v-for="(item, index) in dessertsRole.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">
                     {{ item.name }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">
                     {{ item.detail ? item.detail : "-" }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0" style="width: 200px">
-                  <div class="rounded-cell-center" style="min-width: 150px">
                     {{ convert.datetime(item.updated_at) }}
-                  </div>
                 </td>
                 <td class="pl-0 pr-0" style="width: 200px">
-                  <div class="rounded-cell-center" style="min-width: 150px">
                     {{ convert.datetime(item.created_at) }}
-                  </div>
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
+                <td align="right">
+                    <v-btn fab small text @click="openItem(item)" :disabled="item.id === 1" v-role-or-permission="`super|edit.role`">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
+                    <v-btn fab small text @click="onDelete(item)" :disabled="item.id === 1" v-role-or-permission="`super|edit.role`">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </div>
                 </td>
               </tr>
               </tbody>
@@ -70,136 +60,130 @@
               </tr>
               </tfoot>
             </table>
-            <dialog-mid v-model="dialog" title="จัดการสิทธิ์การใช้งาน" :callback="confirm">
-              <table style="width:100%">
-                <thead>
-                <tr>
-                  <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
-                      style="color: #846537" class="pl-3"
-                      :width="item.width">{{ item.title }}
-                  </th>
-                </tr>
-                </thead>
-                <tbody v-for="(item, index) in desserts" :key="index">
-                <tr>
-                  <td class="pr-0">
-                    <div class="rounded-cell">
-                      {{ item.title }}
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      {{ item.diractory ? item.diractory : "-" }}
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.read"
-                        @click="changeSwitch(item)"
-                        :value="item.id"
-                        inset color="success"
-                        hide-details class="m-0 p-0"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.create"
-                        inset
-                        :value="item.id"
-                        hide-details class="m-0 p-0" color="success"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.update"
-                        inset
-                        :value="item.id"
-                        hide-details class="m-0 p-0" color="success"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="rounded-cell-right" style="padding: 10px" align="right">
-                      <v-switch
-                        v-model="per.delete"
-                        inset
-                        :value="item.id" color="success"
-                        hide-details class="m-0 p-0"
-                      ></v-switch>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr v-if="item.children" v-for="(i, index) in item.children" :key="index">
-                  <td class="pr-0">
-                    <div class="rounded-cell">
-                      {{ i.title }}
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      {{ i.diractory ? i.diractory : "-" }}
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.read"
-                        @click="changeSwitch(item)"
-                        :value="item.id"
-                        inset color="success"
-                        hide-details class="m-0 p-0"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.create"
-                        inset
-                        :value="item.id"
-                        hide-details class="m-0 p-0" color="success"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td class="pl-0 pr-0">
-                    <div class="rounded-cell-center">
-                      <v-switch
-                        v-model="per.update"
-                        inset
-                        :value="item.id"
-                        hide-details class="m-0 p-0" color="success"
-                      ></v-switch>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="rounded-cell-right" style="padding: 10px" align="right">
-                      <v-switch
-                        v-model="per.delete"
-                        inset
-                        :value="item.id" color="success"
-                        hide-details class="m-0 p-0"
-                      ></v-switch>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </dialog-mid>
           </v-col>
+          <dialog-mid v-model="dialog" title="จัดการสิทธิ์การใช้งาน" :callback="confirm">
+            <v-text-field v-model="item.name" label="ชื่อสิทธิ์การใช้งาน" outlined dense
+                          style="border-radius: 15px"
+                          required
+                          :rules="rules"/>
+            <v-textarea  v-model="item.detail" label="รายละเอียด" outlined dense
+                         style="border-radius: 15px"/>
+            <table style="width:100%">
+              <thead>
+              <tr>
+                <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
+                    style="color: #846537" class="pl-3"
+                    :width="item.width">{{ item.title }}
+                </th>
+              </tr>
+              </thead>
+              <tbody v-for="(item, index) in desserts" :key="index" class="rounded-cell-all">
+              <tr>
+                <td class="pr-0">
+                    {{ item.title }}
+                </td>
+                <td class="pl-0 pr-0">
+                    {{ item.diractory ? item.diractory : "-" }}
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.read"
+                      @change="changeSwitch(item)"
+                      :value="item.id"
+                      inset color="success"
+                      hide-details class="m-0 p-0"
+                      :disabled="!item.diractory"
+                    ></v-switch>
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.create"
+                      inset
+                      @change="changePer('add',item.diractory)"
+                      :value="item.id"
+                      hide-details class="m-0 p-0" color="success"
+                      :disabled="!item.diractory"
+                    ></v-switch>
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.update"
+                      inset
+                      :value="item.id"
+                      @change="changePer('edit',item.diractory)"
+                      hide-details class="m-0 p-0" color="success"
+                      :disabled="!item.diractory"
+                    ></v-switch>
+                </td>
+                <td>
+                    <v-switch
+                      v-model="per.delete"
+                      inset
+                      @change="changePer('delete',item.diractory)"
+                      :value="item.id" color="success"
+                      hide-details class="m-0 p-0"
+                      :disabled="!item.diractory"
+                    ></v-switch>
+                </td>
+              </tr>
+
+              <tr v-if="item.children" v-for="(i, index) in item.children" :key="index" class="rounded-cell-all">
+                <td class="pr-0">
+                    {{ i.title }}
+                </td>
+                <td class="pl-0 pr-0">
+                    {{ i.diractory ? i.diractory : "-" }}
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.read"
+                      @change="changeSwitch(i)"
+                      :value="i.id"
+                      inset color="success"
+                      hide-details class="m-0 p-0"
+                    ></v-switch>
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.create"
+                      inset
+                      @change="changePer('add',i.diractory)"
+                      :value="i.id"
+                      hide-details class="m-0 p-0" color="success"
+                    ></v-switch>
+                </td>
+                <td class="pl-0 pr-0">
+                    <v-switch
+                      v-model="per.update"
+                      inset
+                      @change="changePer('edit',i.diractory)"
+                      :value="i.id"
+                      hide-details class="m-0 p-0" color="success"
+                    ></v-switch>
+                </td>
+                <td>
+                    <v-switch
+                      v-model="per.delete"
+                      inset
+                      @change="changePer('delete',i.diractory)"
+                      :value="i.id" color="success"
+                      hide-details class="m-0 p-0"
+                    ></v-switch>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </dialog-mid>
           <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
         </v-container>
       </v-main>
     </v-app>
   </div>
 </template>
-<style src="../../../pos/product/index.css"/>
-<style>
+<style scoped src="../../../pos/product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
 .cut-text-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

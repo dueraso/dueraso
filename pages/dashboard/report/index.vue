@@ -201,87 +201,19 @@
                 <h4 style="color: #5B4840" class="m-0">
                   สินค้ายอดนิยม
                 </h4>
-                <v-card style="border-radius: 15px" class="mt-3">
+                <v-card style="border-radius: 15px" class="mt-3" v-for="(item, i) in emps" :key="i">
                   <v-row class="m-0">
                     <h3 class="m-0 align-self-center" style="padding: 12px">
-                      <strong style="color: #E8AF14">1</strong>
+                      <strong style="color: #E8AF14">{{ i + 1 }}</strong>
                     </h3>
                     <v-col class="m-0 align-self-center">
                       <p class="m-0" style="color: #5B4840">
-                        เสื้อชีฟอง
+                        {{item.employee.name}}
                       </p>
                     </v-col>
                     <v-col cols="3" class="text-right align-self-center">
                       <p class="m-0" style="color: #5B4840">
-                        15 รายการ
-                      </p>
-                    </v-col>
-                  </v-row>
-                </v-card>
-                <v-card style="border-radius: 15px" class="mt-3">
-                  <v-row class="m-0">
-                    <h3 class="m-0 align-self-center" style="padding: 12px">
-                      <strong style="color: #E8AF14">1</strong>
-                    </h3>
-                    <v-col class="m-0 align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        เสื้อชีฟอง
-                      </p>
-                    </v-col>
-                    <v-col cols="3" class="text-right align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        15 รายการ
-                      </p>
-                    </v-col>
-                  </v-row>
-                </v-card>
-                <v-card style="border-radius: 15px" class="mt-3">
-                  <v-row class="m-0">
-                    <h3 class="m-0 align-self-center" style="padding: 12px">
-                      <strong style="color: #E8AF14">1</strong>
-                    </h3>
-                    <v-col class="m-0 align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        เสื้อชีฟอง
-                      </p>
-                    </v-col>
-                    <v-col cols="3" class="text-right align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        15 รายการ
-                      </p>
-                    </v-col>
-                  </v-row>
-                </v-card>
-                <v-card style="border-radius: 15px" class="mt-3">
-                  <v-row class="m-0">
-                    <h3 class="m-0 align-self-center" style="padding: 12px">
-                      <strong style="color: #E8AF14">1</strong>
-                    </h3>
-                    <v-col class="m-0 align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        เสื้อชีฟอง
-                      </p>
-                    </v-col>
-                    <v-col cols="3" class="text-right align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        15 รายการ
-                      </p>
-                    </v-col>
-                  </v-row>
-                </v-card>
-                <v-card style="border-radius: 15px" class="mt-3">
-                  <v-row class="m-0">
-                    <h3 class="m-0 align-self-center" style="padding: 12px">
-                      <strong style="color: #E8AF14">1</strong>
-                    </h3>
-                    <v-col class="m-0 align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        เสื้อชีฟอง
-                      </p>
-                    </v-col>
-                    <v-col cols="3" class="text-right align-self-center">
-                      <p class="m-0" style="color: #5B4840">
-                        15 รายการ
+                        {{convert.money(item.totalAmount)}}
                       </p>
                     </v-col>
                   </v-row>
@@ -456,4 +388,8 @@
   </div>
 </template>
 <script src="./index.js"/>
-<style src="./index.css"/>
+<style scoped src="./index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>

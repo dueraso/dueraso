@@ -13,8 +13,7 @@
         </v-col>
       </v-row>
       <v-row class="m-0" style="padding-top: 70px;">
-        <v-card
-          style="width: 200px; border-radius: 15px" class="p-4 m-2">
+        <v-card style="width: 200px; border-radius: 15px" class="p-4 m-2">
           <v-card
             style="left: 25%; top: -20%; position: absolute; background: #6E4C2E; border-radius: 100%;" width="100px"
             class="p-3">
@@ -31,8 +30,7 @@
             ใช้งานสะดวกหน้าตาดูง่าย
           </p>
         </v-card>
-        <v-card
-          style="width: 200px; border-radius: 15px" class="p-4 m-2">
+        <v-card style="width: 200px; border-radius: 15px" class="p-4 m-2">
           <v-card
             style="left: 25%; top: -20%; position: absolute; background: #6E4C2E; border-radius: 100%;" width="100px"
             class="p-3">
@@ -49,8 +47,7 @@
             ใช้งานสะดวกหน้าตาดูง่าย
           </p>
         </v-card>
-        <v-card
-          style="width: 200px; border-radius: 15px" class="p-4 m-2">
+        <v-card style="width: 200px; border-radius: 15px" class="p-4 m-2">
           <v-card
             style="left: 25%; top: -20%; position: absolute; background: #6E4C2E; border-radius: 100%;" width="100px"
             class="p-3">

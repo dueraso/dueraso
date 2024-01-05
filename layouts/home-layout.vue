@@ -32,17 +32,6 @@ export default {
         console.log(error)
       })
     },
-    check() {
-      if (this.$auth.user.ngx_permissions.indexOf('booking.super_admin') !== -1) {
-        return 'super_admin'
-      } else if (this.$auth.user.ngx_permissions.indexOf('booking.admin') !== -1) {
-        return 'admin'
-      } else if (this.$auth.user.ngx_permissions.indexOf('booking.library') !== -1) {
-        return 'library'
-      } else {
-        return 'user'
-      }
-    }
   },
 };
 </script>

@@ -3,3 +3,7 @@
 .v-application {
   font-family: 'Athiti', sans-serif;
 }
+
+.v-text-field--outlined >>> fieldset {
+  border-color: #b27d41;
+}

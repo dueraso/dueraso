@@ -12,7 +12,7 @@
           <!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
           <!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
 
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.product"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -26,31 +26,27 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.name }}</div>
+                  {{ item.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.type.name }}</div>
+                  {{ item.type.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.price }}</div>
+                  {{ item.price }}
                 </td>
                 <td align="center">
-                  <div class="rounded-cell-center-img">
-                    <v-img :src="item.imageUrl === null?null:JSON.parse(item.imageUrl).fullPath" height="40px"
-                           width="40px" style="border-radius: 10px"></v-img>
-                  </div>
+                  <v-img :src="item.imageUrl === null?'/defaultimage.png':JSON.parse(item.imageUrl).fullPath" height="40px"
+                         width="40px" style="border-radius: 10px"></v-img>
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)" v-role="'edit'">
-                      <v-icon>mdi-pen</v-icon>
-                    </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" v-role="'delete'">
-                      <v-icon>mdi-delete-outline</v-icon>
-                    </v-btn>
-                  </div>
+                <td align="right">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.product`">
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.product`">
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
                 </td>
               </tr>
               </tbody>
@@ -173,5 +169,9 @@
   opacity: 1;
 }
 </style>
-<style scoped src="./index.css"/>
+<style scoped src="./index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script src="./index.js"/>

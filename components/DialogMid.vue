@@ -13,7 +13,7 @@
         <v-card-text class="p-3" style="background: #F6F6F6">
           <slot></slot>
           <v-row class="m-0" style="justify-content: center;">
-            <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="mb-2">
+            <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="m-2">
               ตกลง
             </v-btn>
           </v-row>
@@ -35,6 +35,7 @@ export default {
         return this.value
       },
       set(value) {
+        this.$refs.form.reset()
         this.$emit('input', value)
       }
     }
@@ -46,13 +47,11 @@ export default {
   },
   methods: {
     confirm() {
-      console.log(this.$refs.form.validate())
-      if (!this.$refs.form.validate()) return;
-      !this.callback({})
+      if (this.callback) {
+        if (!this.$refs.form.validate()) return;
+        !this.callback({})
+      }
     }
   }
 }
 </script>
-<style>
-
-</style>

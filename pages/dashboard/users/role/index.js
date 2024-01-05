@@ -6,7 +6,7 @@ import myUtils from "@/plugins/myUtils";
 import convert from "@/plugins/convert";
 
 export default {
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
   head() {
     return {
@@ -29,15 +29,15 @@ export default {
         },
         {
           title: "สร้างเมื่อ",
-          width: "10%%"
+          width: "12%"
         },
         {
           title: "แก้ไขเมื่อ",
-          width: "10%"
+          width: "12%"
         },
       ],
       dessertsRole: {
-        meta:{}
+        meta: {}
       },
       tableHead: [
         {
@@ -65,10 +65,14 @@ export default {
           width: "5%"
         },
       ],
-      desserts: {
-      },
+
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
+      desserts: {},
       per: {
-        titleBar:[],
+        titleBar: [],
+        permissions: [],
         create: [],
         read: [],
         update: [],
@@ -77,7 +81,7 @@ export default {
       item: {},
       switch1: false,
       dialogDelete: false,
-      page:1
+      page: 1
     };
   },
   computed: {
@@ -85,17 +89,15 @@ export default {
       return convert
     }
   },
-  created() {
-    this.$nextTick(() => {
-      this.loading = false
-    })
-  },
-  watch:{
+  watch: {
     page(val) {
       this.getData()
     },
   },
   mounted() {
+    this.$nextTick(() => {
+      this.loading = false
+    })
     this.getData()
     this.getModule()
   },
@@ -105,13 +107,13 @@ export default {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },
     async getModule() {
-      await this.$axios.$get("/module",{
-        params:{
-          per:30
+      await this.$axios.$get("/module", {
+        params: {
+          per: 30
         }
       }).then((res) => {
-        this.desserts = convert.groupChildren(res.data)
-        // console.log(modules)
+        this.desserts = JSON.parse(localStorage.getItem("modules"))
+        // this.desserts = convert.groupChildren(res.data)
         // this.desserts = res.data.sort((a, b) => a.sort - b.sort)
       }).catch((e) => {
         console.log(e)
@@ -120,32 +122,50 @@ export default {
     async getData() {
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })
     },
     changeSwitch(val) {
-      // this.d.indexOf(val.title)
-      console.log(val)
-      let i = this.per.titleBar.indexOf(val)
-      console.log(i)
-      if (i !== -1) {
-        this.per.titleBar.splice(i, 1)
+      let d = this.per.titleBar.find(item => item.id === val.id)
+      if (d === undefined) {
+        this.per.titleBar.push(val);
+        this.addParent(val)
       } else {
-        this.per.titleBar.push(val)
+        this.per.titleBar = this.per.titleBar.filter(item => item.id !== d.id);
+        if (val.parent) {
+          let f = this.per.titleBar.find(item => item.parent === val.parent)
+          if (f === undefined) {
+            let _parent = Object.assign({}, this.desserts.find(item => item.id === val.parent))
+            this.per.titleBar = this.per.titleBar.filter(item => item.id !== _parent.id);
+          }
+        }
       }
-      // console.log(JSON.stringify(this.per) + "<<<"+JSON.stringify(val))
+    },
+
+    addParent(val) {
+      if (val) {
+        let _parent = Object.assign({}, this.desserts.find(item => item.id === val.parent))
+        delete _parent.children
+        let _check = this.per.titleBar.find(item => item.id === _parent.id)
+        if (_check === undefined) this.per.titleBar.push(_parent);
+      }
+    },
+
+    changePer(_type, val) {
+      let d = _type + "." + val.split("/")[val.split("/").length - 1]
+      if (this.per.permissions === undefined) this.per.permissions = []
+      if (this.per.permissions.indexOf(d) !== -1) {
+        this.per.permissions.splice(d, 1)
+      } else {
+        this.per.permissions.push(d)
+      }
     },
 
     confirm() {
-      console.log(this.per)
-      // console.log(this.$auth.user)
-      // console.log(JSON.parse(this.$auth.user.roles.policy))
-      return;
-      if(!this.$refs.form.validate()) return;
+      // if(!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
-      this.per.titleBar.sort((a, b) => a.sort - b.sort)
+      this.per.titleBar = this.per.titleBar.sort((a, b) => a.sort - b.sort)
       if (this.item.id) {
         this.onUpdate()
       } else {
@@ -159,11 +179,13 @@ export default {
       // this.per = {}
       // // this.item = {}
       this.item = Object.assign({}, val)
-      if(val.policy === null) return
+      if (val.policy === null) return
       this.per = Object.assign({}, JSON.parse(this.item.policy))
     },
 
     async onUpdate() {
+      // console.log(JSON.stringify(this.per))
+      // return
       this.dialog = false
       await this.$axios.patch("/role/" + this.item.id, {
         id: this.item.id,
@@ -180,6 +202,8 @@ export default {
     },
 
     async onCreate() {
+      // console.log("gg")
+      // return
       this.dialog = false
       await this.$axios.post("/role", {
         id: this.item.id,
@@ -204,14 +228,14 @@ export default {
     //   })
     // },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/role/"+this.item.id).then((res) => {
+      await this.$axios.delete("/role/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

@@ -49,7 +49,7 @@
                       <v-card style="border-radius:10px">
                         <a @click="addOrder(card)">
                           <v-img
-                            :src="card.imageUrl === null?null:JSON.parse(card.imageUrl).fullPath"
+                            :src="card.imageUrl === null?'/defaultimage.png':JSON.parse(card.imageUrl).fullPath"
                             class="white--text align-end"
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             height="200px" style="border-radius:10px"
@@ -343,7 +343,7 @@
     </v-app>
   </div>
 </template>
-<style>
+<style scoped>
 .truncate {
   max-width: 70%;
   white-space: nowrap;
@@ -364,6 +364,9 @@
 
 .shadow-box {
   box-shadow: 1px 1px 1px rgba(119, 66, 26, 16%); /* Horizontal offset, vertical offset, blur radius, and color */
+}
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
 }
 </style>
 <script src="./index.js"/>

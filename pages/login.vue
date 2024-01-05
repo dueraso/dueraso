@@ -78,8 +78,14 @@
     </v-app>
   </div>
 </template>
+<style scoped>
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script>
 import pkg from "@/package.json";
+import convert from "~/plugins/convert";
 
 export default {
   layout: "auth-layout",
@@ -126,31 +132,51 @@ export default {
   methods: {
     async googleOauth() {
       // await this.$auth.loginWith('google');
+      this.$auth.loginWith('social', {
+        params: {
+          another_post_key: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6'
+        }
+      })
     },
     async validate() {
       if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start();
-      const payload = {
+      let res = await this.$auth.loginWith("local", {
         data: {
           email: this.userName,
           password: this.password,
-        },
-      };
-
-      await this.$auth.loginWith("local", payload).then((res) => {
-        if (this.remember) {
-          let data = {
-            email: this.userName,
-            password: this.password,
-          }
-          localStorage.setItem("remember", JSON.stringify(data));
         }
+      })
+      if(res.data.success){
+        this.saveLocal()
+        this.setManu()
         this.$nuxt.$loading.finish();
-      }).catch((e) => {
+      }else {
+        // console.log(res.data)
         this.$nuxt.$loading.finish();
-        this.message = e.response.data.message
-      });
+      }
     },
+
+    saveLocal() {
+      localStorage.setItem("policy", this.$auth.user.roles.policy)
+      let per = JSON.parse(localStorage.getItem("policy"))
+      if(per) {
+        this.$gates.setPermissions(per.permissions);
+      }
+      this.$gates.setRoles([this.$auth.user.roles.name]);
+    },
+
+    setManu() {
+      let _item
+      if (this.$auth.user.roles.id === 1) {
+        _item = this.$auth.user.title
+      } else {
+        _item = JSON.parse(localStorage.getItem("policy")).titleBar
+        console.log(_item)
+        // _item = _item.sort((a, b) => a.sort - b.sort)
+      }
+      localStorage.setItem("modules", JSON.stringify(convert.groupChildren(_item)))
+    }
   },
 };
 </script>

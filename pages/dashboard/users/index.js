@@ -1,7 +1,6 @@
 import isAdmin from "@/middleware/is-admin";
 import my from "@/utils/myFunction";
 import dayjs from "dayjs";
-import myUtils from "@/plugins/myUtils";
 import convert from "@/plugins/convert";
 
 export default {
@@ -20,8 +19,13 @@ export default {
       dialog: false,
       hidePass: false,
       dialogDelete: false,
+      b: true,
       rules: [
         v => !!v || 'จำเป็น',
+      ],
+      rulesEmail: [
+        v => !!v || 'จำเป็น',
+        v => this.checkEmailAvailability(v) || 'อีเมลไม่ถูกต้อง',
       ],
       tableHead: [
         {
@@ -58,6 +62,9 @@ export default {
       rolesSelect: {},
       branch: [],
       branchSelect: {},
+
+      emailError: false,
+      emailErrorMessages: [],
     };
   },
   computed: {
@@ -65,22 +72,34 @@ export default {
       return convert
     }
   },
-  created() {
+  mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
       this.loading = false
+      this.getData()
+      this.getRoles()
+      this.getBranch()
     })
   },
-  mounted() {
-    this.getData()
-    this.getRoles()
-    this.getBranch()
-    this.executeExtendedFunction()
-  },
   methods: {
-    myUtils,
-    executeExtendedFunction() {
-      // http.get(); // Call the extended function
+    async checkEmailAvailability(value) {
+      if (value === undefined) return
+      try {
+        let res = await this.$axios.get(`check-mail/${value}`);
+
+        if (res.data.length === 0) {
+          this.emailError = false;
+          this.emailErrorMessages = [];
+        } else {
+          // ถ้าอีเมลนี้มีอยู่ในระบบแล้ว
+          this.emailError = true;
+          this.emailErrorMessages = ['อีเมลนี้มีอยู่ในระบบแล้ว'];
+        }
+      } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการตรวจสอบอีเมล', error);
+        this.emailError = true;
+        this.emailErrorMessages = ['เกิดข้อผิดพลาดในการตรวจสอบอีเมล'];
+      }
     },
     status(val) {
       return val === 1 ? "ปกติ" : "ปิดใช้งาน"
@@ -118,7 +137,7 @@ export default {
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      // if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
@@ -144,7 +163,9 @@ export default {
         password: this.item.password,
         phone: this.item.phone,
         salary_id: this.item.salary_id,
-        roles: !this.hidePass ? 1 : this.rolesSelect.id
+        roles: !this.hidePass ? 1 : this.rolesSelect.id,
+        status: 1,
+        branch: this.branchSelect.id,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -161,7 +182,9 @@ export default {
         password: this.item.password,
         phone: this.item.phone,
         salary_id: this.item.salary_id,
-        roles: !this.hidePass ? 1 : this.rolesSelect.id
+        roles: !this.hidePass ? 1 : this.rolesSelect.id,
+        status: 1,
+        branch: this.branchSelect.id,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -184,4 +207,4 @@ export default {
       })
     },
   }
-};
+}

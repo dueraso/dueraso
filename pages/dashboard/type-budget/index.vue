@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.type-budget"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,19 +22,17 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.name }}</div>
+                    {{ item.name }}
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
+                <td align="right">
+                    <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.type-budget`">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
+                    <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.type-budget`">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </div>
                 </td>
               </tr>
               </tbody><tfoot>
@@ -85,5 +83,9 @@
     </v-app>
   </div>
 </template>
-<style scoped src="../../pos/product/index.css"/>
+<style scoped src="../../pos/product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script src="./index.js"/>

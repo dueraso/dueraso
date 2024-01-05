@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.branch"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,25 +22,23 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.title }}</div>
+                  {{ item.title }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.detail ? item.detail : '-' }}</div>
+                  {{ item.detail ? item.detail : '-' }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.address ? item.address : '-' }}</div>
+                    {{ item.address ? item.address : '-' }}
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)">
-                      <v-icon>mdi-pen</v-icon>
-                    </v-btn>
-                    <v-btn fab small text @click="onDelete(item)">
-                      <v-icon>mdi-delete-outline</v-icon>
-                    </v-btn>
-                  </div>
+                <td align="right">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.branch`">
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.branch`">
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
                 </td>
               </tr>
               </tbody>
@@ -143,5 +141,9 @@
     </v-app>
   </div>
 </template>
-<style src="../../pos/product/index.css"/>
+<style scoped src="../../pos/product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script src="./index.js"/>

@@ -3,7 +3,8 @@ import convert from "../../plugins/convert";
 import myUtils from "@/plugins/myUtils";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
-import isAdmin from "@/middleware/is-admin";
+import isPos from "~/middleware/is-pos";
+import isAdmin from "~/middleware/is-admin";
 // import {select} from "underscore";
 
 export default {
@@ -112,6 +113,7 @@ export default {
       this.branchSelect = ""
       return
     }
+    console.log(this.$auth.user.branch)
     if (this.$auth.user.branch == null) {
       this.getBranch()
     } else {
@@ -144,6 +146,8 @@ export default {
       }).then((res) => {
         this.desserts = []
         this.discountSel = []
+        this.cash = 0
+        this.changeMoney = 0.0
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         this.$nuxt.$loading.finish()

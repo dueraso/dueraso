@@ -8,7 +8,7 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.modules"/>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -22,34 +22,32 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index">
+              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                  <div class="rounded-cell">{{ item.title }}</div>
+                    {{ item.title }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.diractory?item.diractory:'-' }}</div>
+                    {{ item.diractory?item.diractory:'-' }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.icon?item.icon:'-' }}</div>
+                    {{ item.icon?item.icon:'-' }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.parent?item.parent:'-'  }}</div>
+                  {{ item.parent?item.parent:'-'  }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.sort }}</div>
+                    {{ item.sort }}
                 </td>
                 <td class="pl-0 pr-0">
-                  <div class="rounded-cell-center">{{ item.status }}</div>
+                    {{ item.status }}
                 </td>
-                <td>
-                  <div class="rounded-cell-right" align="right">
-                    <v-btn fab small text @click="openItem(item)" v-role="'edit'">
-                      <v-icon>mdi-pen</v-icon>
-                    </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" v-role="'delete'">
-                      <v-icon>mdi-delete-outline</v-icon>
-                    </v-btn>
-                  </div>
+                <td align="right">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.modules`">
+                    <v-icon>mdi-pen</v-icon>
+                  </v-btn>
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.modules`">
+                    <v-icon>mdi-delete-outline</v-icon>
+                  </v-btn>
                 </td>
               </tr>
               </tbody>
@@ -116,5 +114,9 @@
     </v-app>
   </div>
 </template>
-<style scoped src="./index.css"/>
+<style scoped src="../../pos/product/index.css">
+.v-text-field--outlined >>> fieldset {
+  border-color: #A57156;
+}
+</style>
 <script src="./index.js"/>

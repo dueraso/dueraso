@@ -45,9 +45,9 @@ export default {
     this.$nextTick(() => {
       this.loading = false
       this.$nuxt.$loading.start()
-    })
     this.getData()
     this.getBudgetType()
+    })
   },
   watch:{
     page(val) {

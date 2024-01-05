@@ -1,34 +1,57 @@
 <template>
   <v-app-bar fixed app class="pl-1 pr-1">
-  <!-- Top navigation -->
-  <div class="topnav" style="width: 100%">
+    <!-- Top navigation -->
+    <div class="topnav" style="width: 100%">
 
-    <!-- Centered link -->
-    <div class="topnav-centered">
-      <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
-        DUERASO
-      </strong>
-    </div>
+      <!-- Centered link -->
+      <div class="topnav-centered">
+        <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+          DUERASO
+        </strong>
+      </div>
 
-    <!-- Left-aligned links (default) -->
-    <div class="topnav-right">
-      <v-row class="m-0">
-        <v-btn color="#E8AE0F" icon text>
-          <v-icon>mdi-bell-badge-outline</v-icon>
-        </v-btn>
-        <p class="m-0 mr-5 mt-2" style="font-size: 20px">
-          <v-icon>mdi-account-outline</v-icon>
-          {{ $auth.user.name }}
-        </p>
-        <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
-          <v-icon>mdi-keyboard-backspace</v-icon>
-          กลับหน้าเว็บ
-        </v-btn>
-        <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
-      </v-row>
+      <!-- Left-aligned links (default) -->
+      <div class="topnav-right">
+        <v-row class="m-0">
+          <!--        <v-btn color="#E8AE0F" icon text>-->
+          <!--          <v-icon>mdi-bell-badge-outline</v-icon>-->
+          <!--        </v-btn>-->
+          <p class="m-0 mr-5 mt-2" style="font-size: 20px">
+            <v-icon>mdi-account-outline</v-icon>
+            {{ $auth.user.name }}
+          </p>
+          <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
+            <v-icon>mdi-keyboard-backspace</v-icon>
+            กลับหน้าเว็บ
+          </v-btn>
+          <v-btn class="custom-primary mt-1" rounded @click="DialogLogout = true">ออกจากระบบ</v-btn>
+        </v-row>
+      </div>
+
+      <v-dialog v-model="DialogLogout" persistent width="786">
+        <v-card style="border-radius: 15px">
+          <v-card-title>
+<!--            <h5 class="m-0" style="color: #5B4840">{{ title }}</h5>-->
+            <v-spacer/>
+            <v-btn icon @click="DialogLogout = false">
+              <v-icon color="#5B4840">mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <v-card-text class="p-3" style="background: #F6F6F6">
+            <v-row class="m-0" style="justify-content: center;">
+              <v-btn color="#B27D41" @click="logout" dark rounded width="340" class="m-2">
+                ออกจากระบบ
+              </v-btn>
+              <v-btn color="#B27D41" @click="summary" dark rounded width="340" class="m-2">
+              ปิดยอดวันนี้
+            </v-btn>
+            </v-row>
+          </v-card-text>
+        </v-card>
+    </v-dialog>
     </div>
-  </div>
-</v-app-bar>
+  </v-app-bar>
 </template>
 <style>
 .topnav {
@@ -81,6 +104,7 @@ export default {
   },
   data() {
     return {
+      DialogLogout: false,
       selectedLetter: '',
       textBtn: undefined,
       overlay: false,
@@ -189,6 +213,13 @@ export default {
         // console.log("else<")
         this.$router.push(val)
       }
+    },
+    logout(){
+      this.$auth.logout()
+      localStorage.clear()
+    },
+    summary(){
+      // this.$auth.logout()
     },
     async validate() {
       this.$nuxt.$loading.start()

@@ -4,7 +4,7 @@ import isAdmin from "@/middleware/is-admin";
 import super_admin from "@/middleware/super";
 
 export default {
-  middleware: ['auth'],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
   head() {
     return {
