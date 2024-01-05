@@ -1,75 +1,99 @@
 <template>
-  <!--  <v-app app fixed style="background: unset" align="center" class="pa-4 elevation-0">-->
-  <v-card flat style="z-index: 99; background: unset;" width="100%" class="pa-4">
-    <b-navbar v-model="e"
-              toggleable="lg" class="elevation-4 text-left topnav1 pt-0 pb-0" variant="white"
-              style="border-radius: 20px; justify-content: space-between">
-      <!--        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
-      <div style="width: 215px"></div>
-      <div>
-        <v-row class="m-0  align-items-center">
-          <div style="width: 200px; text-align-last: center;" class=".d-xl-none">
-            <p style="font-size: 35px; font-weight: 700; color: #846537" class="m-0">DUERASO</p>
-          </div>
-        </v-row>
+  <v-card flat style="z-index: 99; background: unset;" width="100%" class="pa-2 ">
+    <div
+      class="topnav elevation-4 text-left p-2"
+      style="border-radius: 15px; justify-content: space-between; width: 100%; background-color: white">
+
+      <!-- Centered link -->
+      <div class="topnav-centered">
+        <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+          DUERASO
+        </strong>
       </div>
-    </b-navbar>
+
+      <v-app-bar-nav-icon @click="openNav" style="color: #B27D41; float: left"/>
+    </div>
+
+    <div id="myNav" class="overlay">
+      <v-btn icon class="closebtn" @click="closeNav">
+        <v-icon color="white">mdi-window-close</v-icon>
+      </v-btn>
+      <v-overlay class="overlay-content">
+        <a style="color: #818181" @click="onChangePage('/')">หน้าหลัก</a>
+        <a style="color: #818181" @click="onChangePage('/blog')">บทความ</a>
+        <a style="color: #818181" @click="onChangePage('/faq')">คำถามที่พบบ่อย</a>
+        <a style="color: #818181" @click="onChangePage('/contact-us')">ติดต่อเรา</a>
+        <a style="color: #818181" @click="onChangePage('/package')">แพ็คเกจ</a>
+        <a style="color: #818181" @click="onChangePage('/all-apps')">รวมแอป</a>
+      </v-overlay>
+    </div>
   </v-card>
-  <!--  </v-app>-->
 </template>
-<style lang="scss">
-@import '@/assets/css/custom-vuetify.scss';
-/* Add a black background color to the top navigation */
-.topnav1 {
-  background-color: #A57156;
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Athiti&family=Belanosima&family=Indie+Flower&display=swap');
+
+.topnav {
+  position: relative;
   overflow: hidden;
 }
 
-/* Style the links inside the navigation bar */
-.topnav1 a {
-  float: initial;
-  display: block;
-  color: #000000;
+.topnav-centered strong {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.overlay {
+  height: 0;
+  width: 100%;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  position: relative;
+  top: 10%;
+  width: 100%;
   text-align: center;
-  padding: 14px 10px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-top: 30px;
+}
+
+.overlay a {
+  padding: 8px;
   text-decoration: none;
-  font-weight: 500;
-  border-bottom: 3px solid transparent;
+  font-size: 36px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
 }
 
-//.topnav1 a:hover {
-//  border-bottom: 3px solid red;
-//}
-
-.topnav1 a.active {
-  color: #A44E1C;
-  border-bottom: 3px solid #A44E1C;
+.overlay a:hover, .overlay a:focus {
+  color: #f1f1f1;
 }
 
-/* Responsive navigation menu (for mobile devices) */
-@media screen and (max-width: 1410px) {
-  .topnav1 a {
-    float: initial;
-    display: block;
-    color: #000000;
-    text-align: center;
-    padding: 14px 10px;
-    margin-left: 0px;
-    margin-right: 0px;
-    text-decoration: none;
-    font-weight: 500;
-    border-bottom: 3px solid transparent;
-  }
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 60px;
 }
+
 
 </style>
+
 <script>
 import axios from "@/con/config";
 
 export default {
-  // components: {DialogRegister, DialogCon, Register},
   data() {
     return {
       textBtn: undefined,
@@ -84,39 +108,25 @@ export default {
       messages: '',
       username: '',
       password: '',
-      e: null
+      drawer: true,
     }
-  },
-  mounted() {
-    // console.log(this.$i18n.locales)
-    // if (this.$auth.user === undefined || this.$auth.user === null) return
-    // if (this.$auth.user.mobile === '') {
-    //   this.snackbar = true
-    //   this.messages = 'ข้อมูลของท่านยังไม่สมบูรณ์ <br/>กรุณากรอบข้อมูลและอัพรูปบัตรประชาชน'
-    //   this.textBtn = 'ยืนยัน'
-    // }
   },
   methods: {
     logout() {
       this.$auth.logout()
       localStorage.clear()
     },
-    // showBadge() {
-    //   return this.$vuetify.breakpoint.width > 990
-    // },
-    // lock() {
-    //   this.snackbar = true
-    //   this.messages = "ขณะนี้ระบบยังไม่เปิดใช้บริการ"
-    // },
-    // close() {
-    //   if (this.$auth.user !== undefined && this.$auth.user !== null) {
-    //     if (this.$auth.user.mobile === '') {
-    //       this.$router.push(this.localePath("index") + '/profile/edit')
-    //     }
-    //   }
-    //   this.snackbar = false
-    //   this.show = false
-    // },
+    onChangePage(val) {
+      this.closeNav()
+      this.$router.push(val)
+    },
+    openNav() {
+      document.getElementById("myNav").style.height = "100%";
+    },
+
+    closeNav() {
+      document.getElementById("myNav").style.height = "0%";
+    },
     changePage(val) {
       if (val === 'logout') {
         this.$auth.logout()
@@ -133,45 +143,6 @@ export default {
       return this.$route.name === val ? 'active' : ''
       // return this.items.findIndex((s) => s.route === this.$route.params.post) >= 0 || this.items.findIndex((s) => s.route === this.$route.name) >= 0
     },
-    // async validate() {
-    //   this.$nuxt.$loading.start()
-    //   await axios.post('/login', {
-    //     username: this.username,
-    //     password: this.password,
-    //   }).then((res) => {
-    //     if (res.data.status) {
-    //       // console.log("1>"+this.$route.fullPath)
-    //       this.login()
-    //     } else {
-    //       this.messages = res.data.message
-    //       this.$nuxt.$loading.finish()
-    //       this.snackbar = true
-    //     }
-    //   }).catch((e) => {
-    //     console.log(e)
-    //   })
-    // },
-    // login() {
-    //   try {
-    //     const login = {
-    //       username: this.username,
-    //       password: this.password
-    //     }
-    //     this.$auth.loginWith('local', {data: login}).then((res) => {
-    //       this.$nuxt.$loading.finish()
-    //       this.menu = false
-    //       this.$auth.$storage.setLocalStorage('token', res.data.tokens.code)
-    //       this.username = ''
-    //       this.password = ''
-    //     })
-    //   } catch (e) {
-    //     console.log('Error Response', JSON.stringify(e))
-    //   }
-    // },
-    // register() {
-    //   this.menu = false
-    //   this.overlay = !this.overlay
-    // },
   },
 }
 </script>

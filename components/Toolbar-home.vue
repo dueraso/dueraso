@@ -5,7 +5,7 @@
   >
     <b-navbar
               toggleable="lg" class="elevation-4 text-left topnav1 pt-0 pb-0" variant="white"
-              style="border-radius: 20px; justify-content: space-between">
+              style="border-radius: 20px; justify-content: space-between; width: 100%">
       <!--        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
       <div style="width: 215px"></div>
       <div>

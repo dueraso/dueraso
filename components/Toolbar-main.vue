@@ -1,9 +1,9 @@
 <template>
   <!--  <v-app app fixed style="background: unset" align="center" class="pa-4 elevation-0">-->
   <v-card flat style="z-index: 99; background: unset;" width="100%" class="pa-4">
-    <b-navbar v-model="e"
+    <b-navbar
               toggleable="lg" class="elevation-4 text-left topnav1 pt-0 pb-0" variant="white"
-              style="border-radius: 20px; justify-content: space-between">
+              style="border-radius: 20px; justify-content: space-between; width: 100%">
       <!--        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
       <div style="width: 215px"></div>
       <div>
@@ -111,7 +111,6 @@ export default {
       messages: '',
       username: '',
       password: '',
-      e: null
     }
   },
   mounted() {

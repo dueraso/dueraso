@@ -15,6 +15,7 @@
 
         <!-- Left-aligned links (default) -->
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="color: #B27D41"/>
+
         <div class="topnav-right d-none d-md-flex ">
           <v-row class="m-0">
             <v-btn color="#E8AE0F" icon text>
@@ -104,8 +105,20 @@ export default {
       rightDrawer: false,
     };
   },
-  methods:{
-    logout(){
+  mounted() {
+    this.$nextTick(() => {
+      this.saveLocal()
+    })
+  },
+  methods: {
+    saveLocal() {
+      let per = JSON.parse(localStorage.getItem("policy"))
+      if(per) {
+        this.$gates.setPermissions(per.permissions);
+      }
+      this.$gates.setRoles([this.$auth.user.roles.name]);
+    },
+    logout() {
       this.$auth.logout()
       localStorage.clear()
     }
