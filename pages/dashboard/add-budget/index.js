@@ -15,15 +15,15 @@ export default {
     return {
       headTitle: "จัดการรายการรายรับ-จ่าย",
       money: {
-        val1:0,
-        val2:0,
-        val3:0,
-        val4:0,
-        val5:0,
-        val6:0,
-        val7:0,
-        val8:0,
-        val9:0,
+        val1: 0,
+        val2: 0,
+        val3: 0,
+        val4: 0,
+        val5: 0,
+        val6: 0,
+        val7: 0,
+        val8: 0,
+        val9: 0,
       },
       loading: true,
       search: "",
@@ -51,13 +51,13 @@ export default {
           width: "10%"
         },
         {
-          title: "สร้างเมื่อ",
+          title: "ยอดของวันที่",
           width: "10%"
         },
       ],
-      typeTotal: ['รวมยอดแล้ว','ยังไม่รวมยอด'],
+      typeTotal: ['รวมยอดแล้ว', 'ยังไม่รวมยอด'],
       desserts: {
-        meta:{}
+        meta: {}
       },
       users: [],
       usersSelect: {},
@@ -65,23 +65,31 @@ export default {
       branchSelect: {},
       item: {},
       typeTotalSelect: 0,
-      total:0,
-      totalCash:0,
+      total: 0,
+      totalCash: 0,
       rules: [
         v => !!v || 'จำเป็น',
       ],
-      page:1
+      page: 1,
+
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      modal: false,
+      enabled: false,
+
+      provinceItems: [],
+      provinceSelect: null
     };
   },
 
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-    this.getData()
+      this.getData()
+      this.getProvince()
+      this.getBranch()
+      this.getBudget()
+      this.getUser()
     })
-    this.getBranch()
-    this.getBudget()
-    this.getUser()
   },
 
   computed: {
@@ -120,11 +128,26 @@ export default {
   },
 
   methods: {
-    myUtils,
     onChangeType(d) {
       this.total = 0
       this.typeTotalSelect = d
     },
+
+    checkType(){
+      if (this.branchSelect){
+        return this.branchSelect.type === 2
+      }
+      return false
+    },
+
+    async getProvince() {
+      await this.$axios.get("/province").then((res) => {
+        this.provinceItems = res.data
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
     sumMoney() {
       if (Object.keys(this.money).length == 0) return 0
       const val = [];
@@ -153,7 +176,7 @@ export default {
 
     async getData() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/budgetList",{
+      await this.$axios.get("/budgetList", {
         params: {
           page: this.page,
           per: 10
@@ -178,6 +201,7 @@ export default {
     async getBudget() {
       await this.$axios.get("/budget").then((res) => {
         this.instead = res.data.data
+        console.log(this.instead)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -196,23 +220,24 @@ export default {
     // },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
-        // console.log("Update> " + this.item.id)
         this.onUpdate()
       } else {
-        // console.log("Create> " + this.item.id)
         this.onCreate()
       }
+      this.enabled = false
     },
 
     openItem(val) {
       this.dialog = true
       this.item = Object.assign({}, val)
+      console.log(Object.keys(this.item).length > 0)
       this.branchSelect = this.item.branch
       this.insteadSelect = this.item.budget
       this.usersSelect = this.item.employee
+      this.provinceSelect = this.item.province
       this.total = this.item.total
     },
 
@@ -223,7 +248,9 @@ export default {
         create_by: this.$auth.user.id,
         employee: this.usersSelect.id,
         budget: this.insteadSelect.id,
-        total: this.total
+        total: this.total,
+        province: this.provinceSelect.id,
+        summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -239,7 +266,10 @@ export default {
         create_by: this.$auth.user.id,
         employee: this.usersSelect.id,
         budget: this.insteadSelect.id,
-        total: this.total
+        total: this.total,
+        province: this.provinceSelect.id,
+        summary_ref: 2,
+        summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -258,12 +288,12 @@ export default {
     // },
 
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
       await this.$axios.delete("/budgetList/" + this.item.id).then((res) => {
         this.getData()

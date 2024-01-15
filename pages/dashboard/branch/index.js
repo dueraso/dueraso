@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      headTitle: "จัดการสาขา",
+      headTitle: "จัดการสาขา/ออกงาน/ไลฟ์สด",
       loading: true,
       search: "",
       dialogDelete: false,
@@ -23,6 +23,20 @@ export default {
       insteadSelect: null,
       promptItems: null,
       promptSelect: null,
+      typeSelect: null,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
+      typeItems: [
+        {
+          id: 1,
+          name: "หน้าร้าน"
+        },
+        {
+          id: 2,
+          name: "ออกงาน"
+        }
+      ],
       tableHead: [
         {
           title: "ชื่อสาขา",
@@ -41,7 +55,7 @@ export default {
         meta: {}
       },
       item: {},
-      page: 1
+      page: 1,
     };
   },
 
@@ -49,9 +63,9 @@ export default {
     this.$nextTick(() => {
       this.loading = false
       this.getData()
+      this.getOutlet()
+      this.getPrompt()
     })
-    this.getOutlet()
-    this.getPrompt()
   },
 
   watch: {
@@ -78,7 +92,6 @@ export default {
   },
 
   methods: {
-    myUtils,
     convertDay(val) {
       if (val === undefined) return
       return dayjs(val).format('HH:mm')
@@ -120,7 +133,7 @@ export default {
     },
 
     confirm() {
-      if (!this.$refs.form.validate()) return;
+      // if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
@@ -134,6 +147,7 @@ export default {
       this.item = Object.assign({}, val)
       this.insteadSelect = Object.assign({}, val.organization)
       this.promptSelect = this.item.promptpay
+      this.typeSelect = this.typeItems.find(d => d.id == this.item.type)
     },
 
     async onUpdate() {
@@ -143,7 +157,8 @@ export default {
         detail: this.item.detail,
         address: this.item.address,
         organization: this.insteadSelect.id,
-        promptpay: this.promptSelect.id
+        promptpay: this.promptSelect.id,
+        type: this.typeSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -159,7 +174,8 @@ export default {
         detail: this.item.detail,
         address: this.item.address,
         organization: this.insteadSelect.id,
-        promptpay: this.promptSelect.id
+        promptpay: this.promptSelect.id,
+        type: this.typeSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()

@@ -106,7 +106,7 @@ export default {
     async onUpdate(){
       this.dialog = false
       await this.$axios.put("/budget/"+this.item.id,{
-        name:this.item.title,
+        name:this.item.name,
         budget_type:this.insteadSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -119,7 +119,7 @@ export default {
     async onCreate(){
       this.dialog = false
       await this.$axios.post("/budget",{
-        name:this.item.title,
+        name:this.item.name,
         budget_type:this.insteadSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()

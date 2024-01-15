@@ -78,7 +78,10 @@ export default {
     };
   },
   mounted() {
-    this.getModule()
+    this.$nextTick(()=>{
+      this.$nuxt.$loading.start()
+      this.getModule()
+    })
   },
   methods: {
     async getModule() {
@@ -88,6 +91,7 @@ export default {
         }
       }).then((res) => {
         this.modules = convert.groupChildren(res.data.data)
+        this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e)
       })

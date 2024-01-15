@@ -27,16 +27,16 @@
                   {{ item.budget.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                    {{ item.branch.title }}
+                  {{ item.branch.title }}
                 </td>
                 <td class="pl-0 pr-0">
-                    {{ item.employee.name }}
+                  {{ item.employee.name }}
                 </td>
                 <td class="pl-0 pr-0">
-                    {{ convert.money(item.total) }}
+                  {{ convert.money(item.total) }}
                 </td>
                 <td class="pl-0 pr-0" style="min-width: 150px">
-                    {{ convert.datetime(item.created_at) }}
+                  {{ convert.datetime(item.summary_at) }}
                 </td>
                 <td align="right">
                   <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.add-budget`">
@@ -76,21 +76,42 @@
                     </v-card-title>
 
                     <v-card-text class="p-3" style="background: #F6F6F6" align="center">
-                      <v-autocomplete
-                        outlined
-                        auto-select-first
-                        :items="branch"
-                        v-model="branchSelect"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                        label="ชื่อร้าน"
-                        dense
-                        item-text="title"
-                        item-value="id"
-                        :rules="rules" required
-                        style="border-radius: 15px"
-                      ></v-autocomplete>
+                      <v-row>
+                        <v-col>
+                          <v-autocomplete
+                            outlined
+                            auto-select-first
+                            :items="branch"
+                            v-model="branchSelect"
+                            hide-no-data
+                            hide-selected
+                            return-object
+                            label="ชื่อสาขา/ออกงาน/ไลฟ์สด"
+                            dense
+                            item-text="title"
+                            item-value="id"
+                            :rules="rules" required
+                            style="border-radius: 15px"
+                          ></v-autocomplete>
+                        </v-col>
+                        <v-col v-if="checkType()">
+                          <v-autocomplete
+                            outlined
+                            auto-select-first
+                            :items="provinceItems"
+                            v-model="provinceSelect"
+                            hide-no-data
+                            hide-selected
+                            return-object
+                            label="จังหวัดที่ออกงาน"
+                            dense
+                            item-text="name"
+                            item-value="id"
+                            :rules="rules" required
+                            style="border-radius: 15px"
+                          ></v-autocomplete>
+                        </v-col>
+                      </v-row>
                       <v-autocomplete
                         outlined
                         auto-select-first
@@ -121,6 +142,61 @@
                         :rules="rules" required
                         style="border-radius: 15px"
                       ></v-autocomplete>
+
+                      <v-row class="m-0" v-if="Object.keys(this.item).length === 0">
+                        <v-checkbox
+                          v-model="enabled"
+                          hide-details
+                          class="mr-2 mt-0"
+                          label="บันทึกย้อนหลัง"
+                        >
+                        </v-checkbox>
+                        <v-dialog
+                          ref="dialog"
+                          v-model="modal"
+                          :return-value.sync="date"
+                          persistent
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="date"
+                              label="วันที่"
+                              append-icon="mdi-calendar"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              color="#b27d41"
+                              outlined
+                              dense
+                              :disabled="!enabled"
+                              style="border-radius: 15px"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker
+                            v-model="date"
+                            scrollable
+                            locale="th-th"
+                            color="#b27d41"
+                          >
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              text
+                              color="#b27d41"
+                              @click="modal = false"
+                            >
+                              Cancel
+                            </v-btn>
+                            <v-btn
+                              text
+                              color="#b27d41"
+                              @click="$refs.dialog.save(date)"
+                            >
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-dialog>
+                      </v-row>
                       <v-btn-toggle rounded dense v-model="typeTotalSelect" style="width: 100%;" class="mb-3"
                                     color="#6E4C2E"
                                     background-color="#ECE6E0">
@@ -232,6 +308,11 @@
 <style scoped src="../../pos/product/index.css">
 .v-text-field--outlined >>> fieldset {
   border-color: #A57156;
+}
+</style>
+<style>
+.v-input--hide-details > .v-input__control > .v-input__slot {
+  margin-bottom: 0;
 }
 </style>
 <script src="./index.js"/>

@@ -131,12 +131,12 @@ export default {
 
   methods: {
     async googleOauth() {
-      // await this.$auth.loginWith('google');
-      this.$auth.loginWith('social', {
-        params: {
-          another_post_key: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6'
-        }
-      })
+      await this.$auth.loginWith('google');
+      // this.$auth.loginWith('social', {
+      //   params: {
+      //     another_post_key: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6'
+      //   }
+      // })
     },
     async validate() {
       if (!this.$refs.form.validate()) return;

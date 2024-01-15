@@ -1,0 +1,16 @@
+{
+  "web": {
+    "client_id": "436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com",
+    "project_id": "dueraso",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uris": [
+      "http://localhost:3000/auth/callback"
+    ],
+    "javascript_origins": [
+      "http://localhost:3000"
+    ]
+  }
+}

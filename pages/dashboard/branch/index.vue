@@ -30,7 +30,7 @@
                   {{ item.detail ? item.detail : '-' }}
                 </td>
                 <td class="pl-0 pr-0">
-                    {{ item.address ? item.address : '-' }}
+                  {{ item.address ? item.address : '-' }}
                 </td>
                 <td align="right">
                   <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.branch`">
@@ -58,17 +58,9 @@
               </tfoot>
             </table>
             <div class="text-center">
-              <v-dialog v-model="dialog" persistent width="786">
-                <v-card style="border-radius: 15px">
-                  <v-card-title>
-                    <h5>เพิ่ม/แก้ไขชื่อสาขา</h5>
-                    <v-spacer/>
-                    <v-btn icon @click="dialog = false">
-                      <v-icon color="#5B4840">mdi-close</v-icon>
-                    </v-btn>
-                  </v-card-title>
-
-                  <v-card-text class="p-3" style="background: #F6F6F6" align="center">
+              <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขชื่อสาขา" :callback="confirm">
+                <v-row>
+                  <v-col class="pb-0">
                     <v-autocomplete
                       outlined
                       auto-select-first
@@ -77,62 +69,80 @@
                       hide-no-data
                       hide-selected
                       return-object
+                      required
+                      :rules="rules"
                       label="ชื่อร้าน"
                       dense
                       item-text="title"
                       item-value="id"
                       color="#A57156" style="border-radius: 15px; border-color: #A57156"
                     ></v-autocomplete>
-                    <v-row>
-                      <v-col>
-                        <v-text-field
-                          v-model="item.title"
-                          label="ชื่อสาขา"
-                          outlined
-                          clearable
-                          dense
-                          color="#A57156" style="border-radius: 15px; border-color: #A57156"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-autocomplete
-                          outlined
-                          auto-select-first
-                          :items="promptItems"
-                          v-model="promptSelect"
-                          hide-no-data
-                          hide-selected
-                          return-object
-                          label="พร้อมเพย์"
-                          dense
-                          item-text="name"
-                          item-value="id"
-                          color="#A57156" style="border-radius: 15px; border-color: #A57156"
-                        ></v-autocomplete>
-                      </v-col>
-                    </v-row>
-                    <v-textarea
-                      v-model="item.detail"
-                      label="รายละเอียด"
+                  </v-col>
+                  <v-col class="pb-0">
+                    <v-text-field
+                      v-model="item.title"
+                      label="ชื่อสาขา/ออกงาน/ไลฟ์สด"
+                      required
+                      :rules="rules"
                       outlined
                       clearable
                       dense
                       color="#A57156" style="border-radius: 15px; border-color: #A57156"
-                    ></v-textarea>
-                    <v-textarea
-                      v-model="item.address"
-                      label="ที่อยู่"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="pt-0">
+                    <v-autocomplete
                       outlined
-                      clearable
+                      auto-select-first
+                      :items="promptItems"
+                      v-model="promptSelect"
+                      required
+                      :rules="rules"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                      label="พร้อมเพย์"
                       dense
+                      item-text="name"
+                      item-value="id"
                       color="#A57156" style="border-radius: 15px; border-color: #A57156"
-                    ></v-textarea>
-                    <v-btn dark rounded width="340" class="mb-2" @click="confirm" color="#B27D41">
-                      ตกลง
-                    </v-btn>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col class="pt-0">
+                    <v-combobox
+                      v-model="typeSelect"
+                      :items="typeItems"
+                      required
+                      :rules="rules"
+                      label="ประเภทร้าน"
+                      outlined
+                      dense
+                      style="border-radius: 15px"
+                      return-object
+                      item-text="name"
+                      item-value="id"
+                    ></v-combobox>
+                  </v-col>
+                </v-row>
+                <v-textarea
+                  v-model="item.detail"
+                  label="รายละเอียด"
+                  outlined
+                  clearable
+                  dense
+                  color="#A57156" style="border-radius: 15px; border-color: #A57156"
+                ></v-textarea>
+                <v-textarea
+                  v-model="item.address"
+                  label="ที่อยู่"
+                  outlined
+                  clearable
+                  dense
+                  color="#A57156" style="border-radius: 15px; border-color: #A57156"
+                ></v-textarea>
+              </dialog-mid>
             </div>
           </v-col>
           <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>

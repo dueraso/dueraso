@@ -35,7 +35,7 @@ export default {
         return this.value
       },
       set(value) {
-        this.$refs.form.reset()
+        // this.$refs.form.reset()
         this.$emit('input', value)
       }
     }

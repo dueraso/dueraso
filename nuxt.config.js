@@ -1,6 +1,7 @@
 import colors from "vuetify/es5/util/colors";
 import dayjs from "dayjs";
 import serve from "./con/server";
+import googleOauth from "./con/google_oauht.json";
 
 export default {
   loading: "~/components/LoadingBar.vue",
@@ -122,53 +123,59 @@ export default {
 
   auth: {
     strategies: {
-      social: {
-        scheme: 'oauth2',
-        endpoints: {
-          authorization: 'https://accounts.google.com/o/oauth2/auth',
-          token: undefined,
-          userInfo: 'https://www.googleapis.com/oauth2/v3/userinfo',
-          logout: 'https://example.com/logout'
-        },
-        token: {
-          property: 'access_token',
-          type: 'Bearer',
-          maxAge: 1800
-        },
-        refreshToken: {
-          property: 'refresh_token',
-          maxAge: 60 * 60 * 24 * 30
-        },
-        responseType: 'token',
-        grantType: 'authorization_code',
-        accessType: undefined,
-        redirectUri: undefined,
-        logoutRedirectUri: undefined,
-        clientId: 'SET_ME',
-        scope: ['openid', 'profile', 'email'],
-        state: 'UNIQUE_AND_NON_GUESSABLE',
-        codeChallengeMethod: '',
-        responseMode: '',
-        acrValues: '',
-        // autoLogout: false
-      },
-      google: {
-        clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
-        // codeChallengeMethod: '',
-        // responseType: 'id_token token',
-        // redirectUri: 'http://localhost:3000/auth/callback', // Update with your redirect URI
-
-        codeChallengeMethod: 'S256', // Required because the default causes google to throw invalid request
-        responseType: 'code', // Required because the default 'token' includes rejected nonce arg
-        accessType: 'offline', // Required to ensure we get a long lived refresh token
-        grantType: 'authorization_code',
-        endpoints: {
-          token: '/api/v1/auth/google-code',
-        },
-      },
+      // social: {
+      //   scheme: 'oauth2',
+      //   endpoints: {
+      //     authorization: 'https://accounts.google.com/o/oauth2/auth',
+      //     token: undefined,
+      //     userInfo: 'https://www.googleapis.com/oauth2/v3/userinfo',
+      //     logout: 'https://example.com/logout'
+      //   },
+      //   token: {
+      //     property: 'access_token',
+      //     type: 'Bearer',
+      //     maxAge: 1800
+      //   },
+      //   refreshToken: {
+      //     property: 'refresh_token',
+      //     maxAge: 60 * 60 * 24 * 30
+      //   },
+      //   responseType: 'token',
+      //   grantType: 'authorization_code',
+      //   accessType: undefined,
+      //   redirectUri: undefined,
+      //   logoutRedirectUri: undefined,
+      //   clientId: 'SET_ME',
+      //   scope: ['openid', 'profile', 'email'],
+      //   state: 'UNIQUE_AND_NON_GUESSABLE',
+      //   codeChallengeMethod: '',
+      //   responseMode: '',
+      //   acrValues: '',
+      //   // autoLogout: false
+      // },
+      // google: {
+      //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
+      //   // codeChallengeMethod: '',
+      //   // responseType: 'id_token token',
+      //   // redirectUri: 'http://localhost:3000/auth/callback', // Update with your redirect URI
+      //
+      //   codeChallengeMethod: 'S256', // Required because the default causes google to throw invalid request
+      //   responseType: 'code', // Required because the default 'token' includes rejected nonce arg
+      //   accessType: 'offline', // Required to ensure we get a long lived refresh token
+      //   grantType: 'authorization_code',
+      //   endpoints: {
+      //     token: '/api/v1/auth/google-code',
+      //   },
+      // },
       // google: {
       //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com'
       // },
+
+      google: {
+        clientId: googleOauth.web.client_id,
+        responseType: 'token id_token',
+      },
+
       local: {
         endpoints: {
           login: {
