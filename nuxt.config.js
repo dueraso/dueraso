@@ -29,16 +29,16 @@ export default {
       lang: "en",
     },
     meta: [
-      {charset: "utf-8"},
-      {name: "viewport", content: "width=device-width, initial-scale=1"},
-      {hid: "description", name: "description", content: ""},
-      {name: "format-detection", content: "telephone=no"},
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
+      { name: "format-detection", content: "telephone=no" },
     ],
     link: [
-      {rel: "icon", type: "image/x-icon", href: "/icon1.ico"},
+      { rel: "icon", type: "image/x-icon", href: "/icon1.ico" },
       {
         href: "https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Belanosima&family=Indie+Flower&display=swap",
-        rel: "stylesheet"
+        rel: "stylesheet",
       },
       {
         rel: "stylesheet",
@@ -50,19 +50,22 @@ export default {
         href: "https://unpkg.com/swiper/swiper-bundle.min.css",
       },
     ],
+    script: [
+      {
+        src: "https://accounts.google.com/o/oauth2/v2/auth",
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@/assets/css/custom-vuetify.scss'
-  ],
+  css: ["@/assets/css/custom-vuetify.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/myUtils.js',
-    '@/plugins/convert.js',
-    '@/plugins/Head-util.js',
-    '@/plugins/vue-gates.js',
+    "@/plugins/myUtils.js",
+    "@/plugins/convert.js",
+    "@/plugins/Head-util.js",
+    "@/plugins/vue-gates.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -85,26 +88,28 @@ export default {
 
     "bootstrap-vue/nuxt",
 
-    '@nuxtjs/google-gtag'
+    "@nuxtjs/google-gtag",
   ],
 
-  'google-gtag': {
-    id: 'G-1GY0045ZV5',
+  "google-gtag": {
+    id: "G-1GY0045ZV5",
     config: {
       anonymize_ip: true, // anonymize IP
       send_page_view: false, // might be necessary to avoid duplicated page track on page reload
       linker: {
-        domains: ['dueraso.com2']
-      }
+        domains: ["dueraso.com2"],
+      },
     },
     debug: true, // enable to track in dev mode
     disableAutoPageTrack: false, // disable if you don't want to track each page route with router.afterEach(...).
-    additionalAccounts: [{
-      id: 'AW-XXXX-XX', // required if you are adding additional accounts
-      config: {
-        send_page_view: false // optional configurations
-      }
-    }]
+    additionalAccounts: [
+      {
+        id: "AW-XXXX-XX", // required if you are adding additional accounts
+        config: {
+          send_page_view: false, // optional configurations
+        },
+      },
+    ],
   },
   //
   // server: {
@@ -123,57 +128,25 @@ export default {
 
   auth: {
     strategies: {
-      // social: {
-      //   scheme: 'oauth2',
-      //   endpoints: {
-      //     authorization: 'https://accounts.google.com/o/oauth2/auth',
-      //     token: undefined,
-      //     userInfo: 'https://www.googleapis.com/oauth2/v3/userinfo',
-      //     logout: 'https://example.com/logout'
-      //   },
-      //   token: {
-      //     property: 'access_token',
-      //     type: 'Bearer',
-      //     maxAge: 1800
-      //   },
-      //   refreshToken: {
-      //     property: 'refresh_token',
-      //     maxAge: 60 * 60 * 24 * 30
-      //   },
-      //   responseType: 'token',
-      //   grantType: 'authorization_code',
-      //   accessType: undefined,
-      //   redirectUri: undefined,
-      //   logoutRedirectUri: undefined,
-      //   clientId: 'SET_ME',
-      //   scope: ['openid', 'profile', 'email'],
-      //   state: 'UNIQUE_AND_NON_GUESSABLE',
-      //   codeChallengeMethod: '',
-      //   responseMode: '',
-      //   acrValues: '',
-      //   // autoLogout: false
-      // },
-      // google: {
-      //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
-      //   // codeChallengeMethod: '',
-      //   // responseType: 'id_token token',
-      //   // redirectUri: 'http://localhost:3000/auth/callback', // Update with your redirect URI
-      //
-      //   codeChallengeMethod: 'S256', // Required because the default causes google to throw invalid request
-      //   responseType: 'code', // Required because the default 'token' includes rejected nonce arg
-      //   accessType: 'offline', // Required to ensure we get a long lived refresh token
-      //   grantType: 'authorization_code',
-      //   endpoints: {
-      //     token: '/api/v1/auth/google-code',
-      //   },
-      // },
-      // google: {
-      //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com'
-      // },
-
       google: {
-        clientId: googleOauth.web.client_id,
-        responseType: 'token id_token',
+        token: {
+          property: "access_token",
+        },
+        user: {
+          property: "data",
+        },
+        endpoints: {
+          login: {
+            method: "post",
+            url: "https://oauth2.googleapis.com/token",
+            propertyName: "access_token",
+          },
+          user: {
+            method: "get",
+            url: "https://openidconnect.googleapis.com/v1/userinfo",
+            propertyName: "data",
+          },
+        },
       },
 
       local: {
@@ -193,19 +166,9 @@ export default {
     },
     redirect: {
       login: "/login",
-      home: "/dashboard"
+      home: "/dashboard",
     },
   },
-
-  // google: {
-  //   clientId: '436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com',
-  //   codeChallengeMethod: '',
-  //   responseType: 'code',
-  //   endpoints: {
-  //     token: 'http://localhost:3000/user/google/', // somm backend url to resolve your auth with google and give you the token back
-  //     userInfo: 'http://localhost:3000/auth/user/' // the endpoint to get the user info after you recived the token
-  //   },
-  // },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -215,7 +178,7 @@ export default {
       dark: false,
       themes: {
         dark: {
-          primary: '#B27D41',
+          primary: "#B27D41",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -238,6 +201,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vue-google-charts']
+    transpile: ["vue-google-charts"],
   },
 };
