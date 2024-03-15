@@ -24,12 +24,12 @@ export default {
       isLoading: false,
       instead: [
         {
-          id:1,
-          name:"เป็นบาท"
+          id: 1,
+          name: "เป็นบาท"
         },
         {
-          id:2,
-          name:"เป็นเปอร์เซ็นต์"
+          id: 2,
+          name: "เป็นเปอร์เซ็นต์"
         }
       ],
       insteadSelect: null,
@@ -44,24 +44,24 @@ export default {
         },
       ],
       desserts: {
-        meta:{}
+        meta: {}
       },
       item: {},
-      use:[],
-      valid:false,
-      page:1
+      use: [],
+      valid: false,
+      page: 1
     };
   },
-watch:{
-  page(val) {
-    this.getData()
+  watch: {
+    page(val) {
+      this.getData()
+    },
   },
-},
 
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-    this.getData()
+      this.getData()
     })
   },
 
@@ -77,10 +77,10 @@ watch:{
 
     async getData() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/posDiscount",{
-        params:{
-          page:this.page,
-          per:10
+      await this.$axios.get("/posDiscount", {
+        params: {
+          page: this.page,
+          per: 10
         }
       }).then((res) => {
         this.desserts = res.data
@@ -92,7 +92,7 @@ watch:{
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         // console.log("Update> " + this.item.id)
@@ -103,10 +103,10 @@ watch:{
       }
     },
 
-    async onUse(val){
+    async onUse(val) {
       val.use = !val.use
-      await this.$axios.put("/posDiscount/"+val.id,{
-        use:val.use,
+      await this.$axios.put("/posDiscount/" + val.id, {
+        use: val.use,
       }).then((res) => {
         this.getData()
       }).catch((e) => {
@@ -117,16 +117,16 @@ watch:{
     openItem(val = {}) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      this.insteadSelect = this.instead.find(d=>d.id == this.item.type_discount)
+      this.insteadSelect = this.instead.find(d => d.id == this.item.type_discount)
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/posDiscount/"+this.item.id,{
-        name:this.item.name,
-        type_discount:this.insteadSelect.id,
-        total:this.item.total,
-        use:1,
+      await this.$axios.put("/posDiscount/" + this.item.id, {
+        name: this.item.name,
+        type_discount: this.insteadSelect.id,
+        total: this.item.total,
+        use: 1,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -135,13 +135,13 @@ watch:{
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
-      await this.$axios.post("/posDiscount",{
-        name:this.item.name,
-        type_discount:this.insteadSelect.id,
-        total:this.item.total,
-        use:1,
+      await this.$axios.post("/posDiscount", {
+        name: this.item.name,
+        type_discount: this.insteadSelect.id,
+        total: this.item.total,
+        use: 1,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -150,14 +150,14 @@ watch:{
       })
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/posDiscount/"+this.item.id).then((res) => {
+      await this.$axios.delete("/posDiscount/" + this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

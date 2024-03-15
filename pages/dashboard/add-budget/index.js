@@ -82,6 +82,8 @@ export default {
   },
 
   mounted() {
+    console.log(this.$auth.user)
+    console.log(this.$gates.getRoles())
     this.$nextTick(() => {
       this.loading = false
       this.getData()
@@ -128,6 +130,9 @@ export default {
   },
 
   methods: {
+    test(val){
+      console.log(val)
+    },
     onChangeType(d) {
       this.total = 0
       this.typeTotalSelect = d
@@ -233,7 +238,6 @@ export default {
     openItem(val) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      console.log(Object.keys(this.item).length > 0)
       this.branchSelect = this.item.branch
       this.insteadSelect = this.item.budget
       this.usersSelect = this.item.employee

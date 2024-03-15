@@ -1,9 +1,9 @@
 <template>
   <v-app dark app fixed style="background: #F3F1ED" align="center" class="elevation-0">
-    <Toolbar class="d-none d-md-flex"/>
+    <Toolbar class="d-none d-lg-flex"/>
     <ToolbarMainMobile class="d-flex d-lg-none"/>
     <nuxt/>
-    <v-footer>
+    <v-footer class="p-0 justify-content-center" style="background-color: #ECE6E0">
       <Footer/>
     </v-footer>
   </v-app>

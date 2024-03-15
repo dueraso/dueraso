@@ -38,6 +38,7 @@ export default {
       await this.$axios
         .get("/full_places")
         .then((response) => {
+          console.log(response)
           this.desserts = response.data;
         })
         .catch((error) => {

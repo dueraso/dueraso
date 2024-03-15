@@ -28,14 +28,15 @@
           </v-list-item-content>
         </template>
 
-        <v-list-item v-for="(ite, i) in item.children" :key="i" link class="pl-14" :to="ite.diractory" style="font-weight: 500;">
+        <v-list-item v-for="(ite, i) in item.children" :key="i" link class="pl-14" :to="ite.diractory"
+                     style="font-weight: 500;">
           <v-list-item-title v-text="ite.title"></v-list-item-title>
         </v-list-item>
       </v-list-group>
 
       <v-list-item color="#B27D41"
-        v-if="!item.children" :to="item.diractory" router style=" text-decoration: unset;font-weight: 500;"
-        class="pl-4">
+                   v-if="!item.children" :to="item.diractory" router style=" text-decoration: unset;font-weight: 500;"
+                   class="pl-4">
         <v-list-item-content class="pl-6">
           <v-list-item-title class=" pt-0 mb-0">
             {{ item.title }}
@@ -43,11 +44,11 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <template v-slot:append >
-    <div class="pa-2 d-flex d-sm-none">
-      <v-btn class="custom-primary mt-1" block rounded @click="this.$auth.logout()">ออกจากระบบ</v-btn>
-    </div>
-  </template>
+    <template v-slot:append>
+      <div class="pa-2 d-flex d-sm-none">
+        <v-btn class="custom-primary mt-1" block rounded @click="this.$auth.logout()">ออกจากระบบ</v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 <script>
@@ -78,9 +79,14 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
+      // console.log(this.$auth.user)
+      if (this.$auth.user.roles.name === "super" || this.$auth.user.roles.name === "admin") {
       this.$nuxt.$loading.start()
-      this.getModule()
+        this.getModule()
+      } else {
+        this.modules = convert.groupChildren(JSON.parse(localStorage.getItem("policy")).titleBar)
+      }
     })
   },
   methods: {
@@ -91,6 +97,8 @@ export default {
         }
       }).then((res) => {
         this.modules = convert.groupChildren(res.data.data)
+        // console.log(this.modules)
+        // console.log(JSON.parse(localStorage.getItem("policy")).titleBar)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e)

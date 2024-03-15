@@ -113,7 +113,6 @@ export default {
       this.branchSelect = ""
       return
     }
-    console.log(this.$auth.user.branch)
     if (this.$auth.user.branch == null) {
       this.getBranch()
     } else {
@@ -143,6 +142,9 @@ export default {
         branch: this.branch.id,
         pay_type: val,
         bill_number: this.branch.id + dayjs().format('YYMMDDHHmmss'),
+        price: convert.money(this.priceTotal),
+        total: convert.calculateArray(this.desserts),
+        discountTotal: this.discountTotal,
       }).then((res) => {
         this.desserts = []
         this.discountSel = []

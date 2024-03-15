@@ -6,6 +6,7 @@ import {GChart} from 'vue-google-charts/legacy'
 import isAdmin from "@/middleware/is-admin";
 import convert from "../../../plugins/convert";
 // import { chartType, chartData, chartOptions } from './GoogleChartData';
+import Summary from '@/components/Summary.vue'
 
 export default {
   computed: {
@@ -19,9 +20,10 @@ export default {
       title: 'รายงาน'
     }
   },
-  middleware: ['auth',isAdmin],
+  middleware: ['auth', isAdmin],
   components: {
-    GChart
+    GChart,
+    Summary
   },
   data() {
     return {
@@ -80,8 +82,8 @@ export default {
       ],
       chartOptions: {
         title: '',
-        width: 800,
-        height: 344,
+        width: 300,
+        height: 100,
         chart: {
           title: 'Company Performance',
           subtitle: 'Sales, Expenses, and Profit: 2014-2017',
@@ -95,13 +97,37 @@ export default {
       headerTable: [],
       desserts: [],
 
-      emps: {}
+      emps: {},
+      chartDatas: {
+        datasets: [
+            {
+            type: 'bar',
+            label: 'Bar Dataset',
+            data: [10, 20, 30, 40]
+          },
+          // {
+          //   type: 'line',
+          //   label: 'Line Dataset',
+          //   data: [50, 50, 50, 50],
+          // }
+        ],
+        labels: ['January', 'February', 'March', 'April']
+      },
+      options1: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+      summary:{}
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.loading = false
       this.getData()
+      this.getCount()
     })
 
     const items2D = [
@@ -124,14 +150,19 @@ export default {
 
       return grouped;
     }, {});
-
-    console.log(JSON.stringify(groupedItems2D));
   },
   methods: {
     async getData() {
       this.$axios.$get("report_employee").then((res) => {
         this.emps = res.data
-        console.log(res)
+        // console.log(res)
+      })
+    },
+
+    async getCount() {
+      this.$axios.$get("getCount").then((res) => {
+        this.summary = res
+        // console.log(this.summary)
       })
     }
   },

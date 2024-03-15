@@ -31,3 +31,20 @@ export const mutations = {
     state.urlImgTopic = payload
   },
 }
+
+
+
+const getters = {}
+
+
+const actions = {
+  nuxtServerInit() {}
+}
+
+/* Export all stores */
+export default {
+  state,
+  mutations,
+  getters,
+  actions
+}

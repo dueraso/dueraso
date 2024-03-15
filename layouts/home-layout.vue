@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <Toolbar class="d-none d-md-flex"/>
+    <Toolbar class="d-none d-lg-flex"/>
     <ToolbarMainMobile class="d-flex d-lg-none position-fixed"/>
     <nuxt/>
     <v-footer>

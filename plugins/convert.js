@@ -12,7 +12,7 @@ export default {
     return dayjs(val).format(_format)
   },
 
-  money(val = 0.00, fraction = 2) {
+  money(val = "0.00", fraction = 2) {
     return parseFloat(val).toLocaleString(undefined, {
       minimumFractionDigits: fraction
     });

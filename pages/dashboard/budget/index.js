@@ -4,7 +4,7 @@ import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
 
 export default {
-  middleware: ['auth',isAdmin],
+  middleware: ['auth', isAdmin],
   layout: "seller-layout",
   head() {
     return {
@@ -35,21 +35,21 @@ export default {
         v => !!v || 'จำเป็น',
       ],
       desserts: {
-        meta:{}
+        meta: {}
       },
       item: {},
-      page:1
+      page: 1
     };
   },
   mounted() {
     this.$nextTick(() => {
       this.loading = false
       this.$nuxt.$loading.start()
-    this.getData()
-    this.getBudgetType()
+      this.getData()
+      this.getBudgetType()
     })
   },
-  watch:{
+  watch: {
     page(val) {
       this.getData()
     },
@@ -74,10 +74,10 @@ export default {
 
     async getData() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/budget",{
+      await this.$axios.get("/budget", {
         params: {
           page: this.page,
-          per:10
+          per: 10
         }
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -88,7 +88,7 @@ export default {
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
@@ -103,11 +103,11 @@ export default {
       this.insteadSelect = this.item.budget_type
     },
 
-    async onUpdate(){
+    async onUpdate() {
       this.dialog = false
-      await this.$axios.put("/budget/"+this.item.id,{
-        name:this.item.name,
-        budget_type:this.insteadSelect.id
+      await this.$axios.put("/budget/" + this.item.id, {
+        name: this.item.name,
+        budget_type: this.insteadSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -116,11 +116,11 @@ export default {
       })
     },
 
-    async onCreate(){
+    async onCreate() {
       this.dialog = false
-      await this.$axios.post("/budget",{
-        name:this.item.name,
-        budget_type:this.insteadSelect.id
+      await this.$axios.post("/budget", {
+        name: this.item.name,
+        budget_type: this.insteadSelect.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -129,16 +129,15 @@ export default {
       })
     },
 
-    onDelete(val){
+    onDelete(val) {
       this.dialogDelete = true
-      this.item = Object.assign({},val)
+      this.item = Object.assign({}, val)
     },
 
-    async confirmDel(){
+    async confirmDel() {
       this.dialogDelete = false
-      await this.$axios.delete("/budget/"+this.item.id).then((res) => {
+      await this.$axios.delete("/budget/" + this.item.id).then((res) => {
         this.getData()
-        console.log(res.data)
       }).catch((e) => {
         console.log(e)
       })

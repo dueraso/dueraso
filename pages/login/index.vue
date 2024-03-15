@@ -141,6 +141,9 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-snackbar v-model="again" :timeout="2000" :value="true" absolute centered right top color="red" elevation="24">
+      {{ message }}
+    </v-snackbar>
     </v-app>
   </div>
 </template>

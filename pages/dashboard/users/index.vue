@@ -9,18 +9,19 @@
         </div>
         <v-container fluid v-if="!loading">
           <head-bar :title="headTitle" :callback="openItem" per="add.users">
-            <v-btn rounded @click="$router.push($route.fullPath+'/role')" class="ml-3" color="#B27D41" dark small>
+                                      <v-btn rounded @click="$router.push(`/dashboard/users/role`)" class="ml-3" color="#B27D41" dark small>
               <v-icon small>mdi-lock</v-icon>
               จัดการสิทธิ์
             </v-btn>
           </head-bar>
           <v-col>
+            <div style=" overflow-x:auto;">
             <table style="width:100%">
               <thead>
               <tr>
                 <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
                     style="color: #846537" class="pl-3"
-                    :width="item.width">{{ item.title }}
+                    >{{ item.title }}
                 </th>
                 <th width="150px" style="background-color: #f3f1ed;">
                 </th>
@@ -28,25 +29,25 @@
               </thead>
               <tbody>
               <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
-                <td class="pr-0">
+                <td class="pr-0" style="min-width: 150px">
                   {{ item.name }}
                 </td>
-                <td class="pl-0 pr-0">
+                <td class="pr-0" style="min-width: 90px">
                   {{ item.email }}
                 </td>
-                <td class="pl-0 pr-0" style="width: 150px">
+                <td class="pr-0" style="min-width: 130px">
                   {{ convert.formatPhoneNumber(item.phone) }}
                 </td>
-                <td class="pl-0 pr-0">
+                <td class="pr-0">
                   {{ status(item.status) }}
                 </td>
-                <td class="pl-0 pr-0">
+                <td class="pr-0">
                   {{ item.roles.name }}
                 </td>
-                <td class="pl-0 pr-0" style="width: 200px">
+                <td class="pr-0" style="min-width: 130px">
                   {{ convert.datetime(item.created_at) }}
                 </td>
-                <td align="right">
+                <td align="right" style="min-width: 140px">
                   <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn fab small text @click="openItem(item)" :disabled="item.roles.id === 1"
@@ -84,6 +85,7 @@
               </tr>
               </tbody>
             </table>
+            </div>
           </v-col>
           <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขผู้ใช้งาน" :callback="confirm">
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลส่วนตัว</p>
@@ -109,8 +111,7 @@
                   v-model="item.email" label="อีเมล" type="email" outlined clearable dense
                   style="border-radius: 15px"
                   required
-                  :rules="rules"
-                  @change="checkEmailAvailability"
+                  :rules="rulesEmail"
                   :error-messages="emailErrorMessages"
                   :error="emailError"
                 />
@@ -145,18 +146,18 @@
             </v-row>
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลอื่นๆ</p>
             <v-row class="m-0">
-              <v-col class="pb-0 pt-0" md="6">
-                <v-text-field
-                  v-model="item.salary_id"
-                  label="เงินเดือน"
-                  outlined
-                  clearable
-                  dense
-                  type="number" style="border-radius: 15px"
-                  required
-                  :rules="rules"
-                ></v-text-field>
-              </v-col>
+<!--              <v-col class="pb-0 pt-0" md="6">-->
+<!--                <v-text-field-->
+<!--                  v-model="item.salary_id"-->
+<!--                  label="เงินเดือน"-->
+<!--                  outlined-->
+<!--                  clearable-->
+<!--                  dense-->
+<!--                  type="number" style="border-radius: 15px"-->
+<!--                  required-->
+<!--                  :rules="rules"-->
+<!--                ></v-text-field>-->
+<!--              </v-col>-->
               <v-col class="pb-0 pt-0" md="6">
                 <v-autocomplete
                   outlined
@@ -174,7 +175,7 @@
                   :rules="rules"
                 ></v-autocomplete>
               </v-col>
-              <v-col class="pb-0 pt-0" md="6">
+              <v-col class="pb-0 pt-0" md="6" v-if="checkAdmin()">
                 <v-autocomplete
                   outlined
                   auto-select-first

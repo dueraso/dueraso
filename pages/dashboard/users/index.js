@@ -25,6 +25,7 @@ export default {
       ],
       rulesEmail: [
         v => !!v || 'จำเป็น',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'รู้แบบอีเมลไม่ถูกต้อง',
         v => this.checkEmailAvailability(v) || 'อีเมลไม่ถูกต้อง',
       ],
       tableHead: [
@@ -34,7 +35,7 @@ export default {
         },
         {
           title: "อีเมล",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "เบอร์",
@@ -82,6 +83,13 @@ export default {
     })
   },
   methods: {
+    checkAdmin() {
+      if (this.rolesSelect) {
+        return this.rolesSelect.name !== 'admin'
+      } else {
+        return true
+      }
+    },
     async checkEmailAvailability(value) {
       if (value === undefined) return
       try {
@@ -115,9 +123,10 @@ export default {
     async getRoles() {
       await this.$axios.get("/role", {
         params: {
-          isAll: true
+          isAll: false
         }
       }).then((res) => {
+        // console.log(res.data)
         this.roles = res.data
       }).catch((e) => {
         console.log(e)
@@ -165,7 +174,7 @@ export default {
         salary_id: this.item.salary_id,
         roles: !this.hidePass ? 1 : this.rolesSelect.id,
         status: 1,
-        branch: this.branchSelect.id,
+        branch: this.checkAdmin() ? this.branchSelect.id : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
@@ -184,7 +193,7 @@ export default {
         salary_id: this.item.salary_id,
         roles: !this.hidePass ? 1 : this.rolesSelect.id,
         status: 1,
-        branch: this.branchSelect.id,
+        branch: this.checkAdmin() ? this.branchSelect.id : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()

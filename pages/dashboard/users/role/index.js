@@ -91,15 +91,15 @@ export default {
   },
   watch: {
     page(val) {
-      this.getData()
+      // this.getData()
     },
   },
   mounted() {
     this.$nextTick(() => {
       this.loading = false
+      this.getData()
+      this.getModule()
     })
-    this.getData()
-    this.getModule()
   },
   methods: {
     myUtils,
@@ -120,10 +120,14 @@ export default {
       })
     },
     async getData() {
+      this.$nuxt.$loading.start();
       await this.$axios.$get("/role").then((res) => {
         this.dessertsRole = res
+        // console.log(res)
+        this.$nuxt.$loading.finish();
       }).catch((e) => {
         console.log(e)
+        this.$nuxt.$loading.finish();
       })
     },
     changeSwitch(val) {
@@ -179,8 +183,22 @@ export default {
       // this.per = {}
       // // this.item = {}
       this.item = Object.assign({}, val)
-      if (val.policy === null) return
-      this.per = Object.assign({}, JSON.parse(this.item.policy))
+      this.per =
+        {
+          titleBar: [],
+          permissions: [],
+          create: [],
+          read: [],
+          update: [],
+          delete: [],
+        }
+      if (Object.keys(this.item).length > 0) {
+        // if (val.policy === null) return
+        // console.log(val)
+        // console.log(this.item)
+        // this.per = Object.assign({}, JSON.parse(val))
+        this.per = Object.assign({}, JSON.parse(this.item.policy))
+      }
     },
 
     async onUpdate() {

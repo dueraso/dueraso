@@ -1,6 +1,6 @@
 export default function ({store, redirect, route, error}) {
   // return true
-  if (store.state.auth.user.roles.id === 1) return
+  if (store.state.auth.user.roles.id === 1 || store.state.auth.user.roles.id === 2) return
   let policy = JSON.parse(store.state.auth.user.roles.policy)
   if (policy) {
     let val = policy.titleBar.find(d => {

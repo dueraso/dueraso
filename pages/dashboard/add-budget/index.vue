@@ -10,59 +10,61 @@
         <v-container fluid v-if="!loading">
           <head-bar :title="headTitle" :callback="openItem" per="add.add-budget"/>
           <v-col>
-            <table style="width:100%">
-              <thead>
-              <tr>
-                <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
-                    style="color: #846537" class="pl-3"
-                    :width="item.width">{{ item.title }}
-                </th>
-                <th width="120px" style="background-color: #f3f1ed;">
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
-                <td class="pr-0">
-                  {{ item.budget.name }}
-                </td>
-                <td class="pl-0 pr-0">
-                  {{ item.branch.title }}
-                </td>
-                <td class="pl-0 pr-0">
-                  {{ item.employee.name }}
-                </td>
-                <td class="pl-0 pr-0">
-                  {{ convert.money(item.total) }}
-                </td>
-                <td class="pl-0 pr-0" style="min-width: 150px">
-                  {{ convert.datetime(item.summary_at) }}
-                </td>
-                <td align="right">
-                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.add-budget`">
-                    <v-icon>mdi-pen</v-icon>
-                  </v-btn>
-                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.add-budget`">
-                    <v-icon>mdi-delete-outline</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-              </tbody>
-              <tfoot>
-              <tr>
-                <td colspan="3">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
-                <td colspan="3">
-                  <div style="float: right;">
-                    <v-pagination
-                      v-model="page"
-                      :length="desserts.meta.last_page"
-                      circle
-                    ></v-pagination>
-                  </div>
-                </td>
-              </tr>
-              </tfoot>
-            </table>
+            <div style=" overflow-x:auto;">
+              <table style="width:100%" >
+                <thead>
+                <tr>
+                  <th v-for="(item, i) in tableHead" :key="i"
+                      style="color: #846537;" class="pl-3"
+                      :width="item.width">{{ item.title }}
+                  </th>
+                  <th width="120px" style="background-color: #f3f1ed;">
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
+                  <td class="pr-0" style="min-width: 150px">
+                    {{ item.budget.name }}
+                  </td>
+                  <td class="pl-0 pr-0" style="min-width: 100px">
+                    {{ item.branch.title }}
+                  </td>
+                  <td class="pl-0 pr-0" style="min-width: 80px">
+                    {{ item.employee.name }}
+                  </td>
+                  <td class="pl-0 pr-0" style="min-width: 100px">
+                    {{ convert.money(item.total) }}
+                  </td>
+                  <td class="pl-0 pr-0" style="min-width: 150px">
+                    {{ convert.datetime(item.summary_at) }}
+                  </td>
+                  <td align="right" style="min-width: 100px">
+                    <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.add-budget`">
+                      <v-icon>mdi-pen</v-icon>
+                    </v-btn>
+                    <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.add-budget`">
+                      <v-icon>mdi-delete-outline</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <td colspan="3">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                  <td colspan="3">
+                    <div style="float: right;">
+                      <v-pagination
+                        v-model="page"
+                        :length="desserts.meta.last_page"
+                        circle
+                      ></v-pagination>
+                    </div>
+                  </td>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
             <div class="text-center">
               <v-dialog v-model="dialog" persistent width="786">
                 <v-form ref="form" v-model="valid">
@@ -144,20 +146,9 @@
                       ></v-autocomplete>
 
                       <v-row class="m-0" v-if="Object.keys(this.item).length === 0">
-                        <v-checkbox
-                          v-model="enabled"
-                          hide-details
-                          class="mr-2 mt-0"
-                          label="บันทึกย้อนหลัง"
-                        >
+                        <v-checkbox v-model="enabled" hide-details class="mr-2 mt-0" label="บันทึกย้อนหลัง">
                         </v-checkbox>
-                        <v-dialog
-                          ref="dialog"
-                          v-model="modal"
-                          :return-value.sync="date"
-                          persistent
-                          width="290px"
-                        >
+                        <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
                               v-model="date"
