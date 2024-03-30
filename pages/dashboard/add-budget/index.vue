@@ -11,7 +11,7 @@
           <head-bar :title="headTitle" :callback="openItem" per="add.add-budget"/>
           <v-col>
             <div style=" overflow-x:auto;">
-              <table style="width:100%" >
+              <table style="width:100%">
                 <thead>
                 <tr>
                   <th v-for="(item, i) in tableHead" :key="i"
@@ -81,19 +81,10 @@
                       <v-row>
                         <v-col>
                           <v-autocomplete
-                            outlined
-                            auto-select-first
-                            :items="branch"
-                            v-model="branchSelect"
-                            hide-no-data
-                            hide-selected
-                            return-object
-                            label="ชื่อสาขา/ออกงาน/ไลฟ์สด"
-                            dense
+                            outlined auto-select-first :items="branch" v-model="branchSelect"
+                            hide-no-data hide-selected return-object label="ชื่อสาขา/ออกงาน/ไลฟ์สด" dense
                             item-text="title"
-                            item-value="id"
-                            :rules="rules" required
-                            style="border-radius: 15px"
+                            item-value="id" :rules="rules" required style="border-radius: 15px" @change="test"
                           ></v-autocomplete>
                         </v-col>
                         <v-col v-if="checkType()">
@@ -129,20 +120,11 @@
                         :rules="rules" required
                         style="border-radius: 15px"
                       ></v-autocomplete>
+
                       <v-autocomplete
-                        outlined
-                        auto-select-first
-                        :items="users"
-                        v-model="usersSelect"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                        label="ชื่อผู้ขาย"
-                        dense
-                        item-text="name"
-                        item-value="id"
-                        :rules="rules" required
-                        style="border-radius: 15px"
+                        outlined auto-select-first :items="users" v-model="usersSelect" hide-no-data
+                        hide-selected return-object label="ชื่อผู้ขาย" dense item-text="name"
+                        item-value="id" :rules="rules" required style="border-radius: 15px"
                       ></v-autocomplete>
 
                       <v-row class="m-0" v-if="Object.keys(this.item).length === 0">
@@ -151,46 +133,24 @@
                         <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              v-model="date"
-                              label="วันที่"
-                              append-icon="mdi-calendar"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              color="#b27d41"
-                              outlined
-                              dense
-                              :disabled="!enabled"
-                              style="border-radius: 15px"
-                            ></v-text-field>
+                              v-model="date" label="วันที่" append-icon="mdi-calendar" readonly
+                              v-bind="attrs" v-on="on" color="#b27d41" outlined
+                              dense :disabled="!enabled" style="border-radius: 15px"/>
                           </template>
-                          <v-date-picker
-                            v-model="date"
-                            scrollable
-                            locale="th-th"
-                            color="#b27d41"
-                          >
+                          <v-date-picker v-model="date" scrollable locale="th-th" color="#b27d41">
                             <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="#b27d41"
-                              @click="modal = false"
-                            >
+                            <v-btn text color="#b27d41" @click="modal = false">
                               Cancel
                             </v-btn>
-                            <v-btn
-                              text
-                              color="#b27d41"
-                              @click="$refs.dialog.save(date)"
-                            >
+                            <v-btn text color="#b27d41" @click="$refs.dialog.save(date)">
                               OK
                             </v-btn>
                           </v-date-picker>
                         </v-dialog>
                       </v-row>
-                      <v-btn-toggle rounded dense v-model="typeTotalSelect" style="width: 100%;" class="mb-3"
-                                    color="#6E4C2E"
-                                    background-color="#ECE6E0">
+                      <v-btn-toggle
+                        rounded dense v-model="typeTotalSelect" style="width: 100%;" class="mb-3"
+                        color="#6E4C2E" background-color="#ECE6E0">
                         <v-btn style="width: 50%;">
                           รวมยอดแล้ว
                         </v-btn>

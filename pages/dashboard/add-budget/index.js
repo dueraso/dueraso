@@ -82,8 +82,8 @@ export default {
   },
 
   mounted() {
-    console.log(this.$auth.user)
     console.log(this.$gates.getRoles())
+    console.log(this.$auth.user)
     this.$nextTick(() => {
       this.loading = false
       this.getData()
@@ -213,17 +213,6 @@ export default {
       });
     },
 
-    // async getBranch() {
-    //   await this.$axios.get("/branch").then((res) => {
-    //     // this.desserts = res
-    //     this.desserts = Object.assign({}, res.data)
-    //     console.log(this.desserts.data)
-    //     this.$nuxt.$loading.finish()
-    //   }).catch((e) => {
-    //     console.log(e);
-    //   });
-    // },
-
     confirm() {
       if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
@@ -238,11 +227,15 @@ export default {
     openItem(val) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      this.branchSelect = this.item.branch
+      // this.branchSelect = this.item.branch
       this.insteadSelect = this.item.budget
-      this.usersSelect = this.item.employee
+      // this.usersSelect = this.item.employee
       this.provinceSelect = this.item.province
       this.total = this.item.total
+
+      this.branchSelect = this.$auth.user.branch
+      console.log(this.branchSelect)
+      this.usersSelect = this.users.find((d) => d.id === this.$auth.user.id)
     },
 
     async onUpdate() {
@@ -305,6 +298,5 @@ export default {
         console.log(e)
       })
     },
-
   }
 };
