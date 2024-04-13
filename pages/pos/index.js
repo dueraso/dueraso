@@ -68,6 +68,7 @@ export default {
     changeMoney: 0.00,
     checkPayMoney: false,
     checkbox: false,
+    search: "",
   }),
   computed: {
     convert() {
@@ -78,6 +79,14 @@ export default {
     },
   },
   watch: {
+    search(val){
+      if(val.length >= 3){
+        this.searchPro()
+      }
+      if(val.length === 0) {
+        this.getData()
+      }
+    },
     changeMoney(val) {
       this.checkPayMoney = (val >= 0)
       return val
@@ -122,6 +131,21 @@ export default {
     // this.qrTest()
   },
   methods: {
+    async searchPro(){
+      this.$nuxt.$loading.start()
+      await this.$axios.get("searchPro",{
+        params:{
+          s:this.search
+        }
+      }).then((res)=>{
+        this.cards = res.data
+        this.$nuxt.$loading.finish()
+      }).catch((e)=>{
+        console.log(e)
+        alert(e.response.data.message)
+        this.$nuxt.$loading.finish()
+      })
+    },
     check() {
       if (this.isProm == null) return
       return this.isProm.type_promptpay === 3
@@ -214,9 +238,7 @@ export default {
         console.log(e)
       })
     },
-    checkBranch() {
-      return this.$auth.user
-    },
+
     onDiscountTotal() {
       if (this.discountSel.length === 0) return
       let _discountSel = this.discountSel[0]
@@ -242,9 +264,6 @@ export default {
       this.desserts.splice(this.desserts.indexOf(val), 1)
     },
 
-    onConfirm() {
-    },
-    myUtils,
     convertDay(day) {
       return dayjs(day).format("DD-MM-YYYY HH:mm:ss");
     },
@@ -271,15 +290,6 @@ export default {
       });
     },
 
-    async deleteItemConfirm() {
-      await this.$axios.delete(`/places/${this.editedItem.id}`).then(() => {
-        this.getData();
-        this.closeDelete();
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
-
     async getType() {
       this.$nuxt.$loading.start()
       await this.$axios.get("/posProductType").then((res) => {
@@ -289,40 +299,6 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
-    },
-
-    async searchPlaces() {
-      await this.$axios.get(`/filter_places`, {
-        params: {
-          search: this.search,
-        },
-      }).then((response) => {
-        this.desserts = response.data;
-      }).catch((error) => {
-        alert(error);
-        console.log(error);
-      });
-    },
-
-    async createItem() {
-      await this.getPlaceList();
-      this.$store.commit("setReadOnly", false);
-      // await this.$router.push("/update");
-    },
-
-    async editItem(item) {
-      // await this.$router.push({
-      //   path: "/update",
-      //   query: {
-      //     edite: Object.assign({}, item).id,
-      //   },
-      // });
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
     },
 
     closeDelete() {

@@ -20,7 +20,7 @@
                   <div style=" width: 200px">
                 <v-text-field
                   label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
-                  class="m-0 p-0" style="border-radius: 15px;"/>
+                  class="m-0 p-0" style="border-radius: 15px;" v-model="search"/>
                   </div>
               </v-row>
               <v-row class="m-0">

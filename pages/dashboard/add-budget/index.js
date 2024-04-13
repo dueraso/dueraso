@@ -82,7 +82,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.$gates.getRoles())
+    console.log(this.$gates.hasAnyRole('admin|super'))
     console.log(this.$auth.user)
     this.$nextTick(() => {
       this.loading = false
@@ -130,7 +130,7 @@ export default {
   },
 
   methods: {
-    test(val){
+    test(val) {
       console.log(val)
     },
     onChangeType(d) {
@@ -138,8 +138,8 @@ export default {
       this.typeTotalSelect = d
     },
 
-    checkType(){
-      if (this.branchSelect){
+    checkType() {
+      if (this.branchSelect) {
         return this.branchSelect.type === 2
       }
       return false
@@ -246,7 +246,7 @@ export default {
         employee: this.usersSelect.id,
         budget: this.insteadSelect.id,
         total: this.total,
-        province: this.provinceSelect.id,
+        province: this.checkType() ? this.provinceSelect.id : 0,
         summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -264,7 +264,7 @@ export default {
         employee: this.usersSelect.id,
         budget: this.insteadSelect.id,
         total: this.total,
-        province: this.provinceSelect.id,
+        province: this.checkType() ? this.provinceSelect.id : 0,
         summary_ref: 2,
         summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {

@@ -29,13 +29,13 @@ export default {
       lang: "en",
     },
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" },
+      {charset: "utf-8"},
+      {name: "viewport", content: "width=device-width, initial-scale=1"},
+      {hid: "description", name: "description", content: ""},
+      {name: "format-detection", content: "telephone=no"},
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/icon1.ico" },
+      {rel: "icon", type: "image/x-icon", href: "/icon1.ico"},
       {
         href: "https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Belanosima&family=Indie+Flower&display=swap",
         rel: "stylesheet",
@@ -66,6 +66,7 @@ export default {
     "@/plugins/convert.js",
     "@/plugins/Head-util.js",
     "@/plugins/vue-gates.js",
+    "@/plugins/socket.io.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -115,6 +116,13 @@ export default {
   // server: {
   //   host: '0.0.0.0' // default: localhost
   // },
+
+  serverMiddleware: [
+    {
+      path: 'chat',
+      handler: '~/socket.io'
+    }
+  ],
 
   /*
    ** Axios module configuration

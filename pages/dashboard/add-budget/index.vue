@@ -84,7 +84,8 @@
                             outlined auto-select-first :items="branch" v-model="branchSelect"
                             hide-no-data hide-selected return-object label="ชื่อสาขา/ออกงาน/ไลฟ์สด" dense
                             item-text="title"
-                            item-value="id" :rules="rules" required style="border-radius: 15px" @change="test"
+                            item-value="id" :rules="rules" required style="border-radius: 15px"
+                            :disabled="!$gates.hasAnyRole('admin|super')"
                           ></v-autocomplete>
                         </v-col>
                         <v-col v-if="checkType()">
@@ -125,9 +126,11 @@
                         outlined auto-select-first :items="users" v-model="usersSelect" hide-no-data
                         hide-selected return-object label="ชื่อผู้ขาย" dense item-text="name"
                         item-value="id" :rules="rules" required style="border-radius: 15px"
+                        :disabled="!$gates.hasAnyRole('admin|super')"
                       ></v-autocomplete>
 
-                      <v-row class="m-0" v-if="Object.keys(this.item).length === 0">
+                      <v-row class="m-0" v-if="Object.keys(item).length === 0"
+                             v-show="$gates.hasAnyRole('admin|super')">
                         <v-checkbox v-model="enabled" hide-details class="mr-2 mt-0" label="บันทึกย้อนหลัง">
                         </v-checkbox>
                         <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
