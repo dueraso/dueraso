@@ -2,276 +2,181 @@ import axios from "@/con/config";
 import dayjs from "dayjs";
 import 'dayjs/locale/th'
 // import { GChart } from 'vue-google-charts'
-import {GChart} from 'vue-google-charts/legacy'
 import isAdmin from "@/middleware/is-admin";
 // import { chartType, chartData, chartOptions } from './GoogleChartData';
 
 export default {
-  layout:"seller-layout",
+  layout: "seller-layout",
   head() {
     return {
-      title: 'รายงาน'
+      title: this.headTitle
     }
   },
   middleware: ['auth'],
-  // , isAdmin],
-  components: {
-    GChart
+
+  computed: {
+    chartOptions() {
+      const ctx = this
+      return {
+        credits: {
+          enabled: false
+        },
+        accessibility: {enabled: false},
+        // caption: {
+        //   text: this.caption,
+        //   style: {
+        //     // @ts-ignore
+        //     color: this.sexy ? this.invertedColor(0) : '#black'
+        //   }
+        // },
+        chart: {
+          backgroundColor: this.sexy
+            ? {
+              linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+              stops: [
+                [0, this.seriesColor],
+                [0.5, '#ffffff'],
+                [1, this.seriesColor]
+              ]
+            }
+            : '#ffffff',
+          className: 'my-chart',
+          type: this.chartType.toLowerCase()
+        },
+        // plotOptions: {
+        //   series: {
+        //     cursor: 'pointer',
+        //     point: {
+        //       events: {
+        //         click() {
+        //           ctx.$emit('pointClicked', this)
+        //         }
+        //       }
+        //     }
+        //   }
+        // },
+        plotOptions: {
+          series: {
+            label: {
+              connectorAllowed: false
+            },
+            pointStart: 1
+          }
+        },
+        // yAxis: [{
+        //   title: {
+        //     text: this.yAxis,
+        //     style: {
+        //       color: '#000000'
+        //     }
+        //   }
+        // }],
+        title: {
+          style: {
+            // @ts-ignore
+            color: this.sexy ? this.invertedColor(0) : '#black'
+          },
+          text: `${this.title} ` +
+            (this.lastPointClicked.timestamp !== ''
+              ? `(Point clicked: ${this.lastPointClicked.timestamp})`
+              : '')
+        },
+        // subtitle: {
+        //   style: {
+        //     // @ts-ignore
+        //     color: this.sexy ? this.invertedColor(0) : '#black'
+        //   },
+        //   text: `${this.subtitle}`
+        // },
+        // legend: {
+        //   itemStyle: {
+        //     // @ts-ignore
+        //     color: this.sexy ? this.invertedColor(0) : '#black'
+        //   }
+        // },
+        series: [
+          {
+            name: this.seriesName,
+            data: this.points,
+            color: this.seriesColor
+          },
+          {
+            name: "eeee",
+            data: this.points1,
+            color: this.seriesColor
+          },
+          {
+            name: "eeeegg",
+            data: this.points2,
+            color: this.seriesColor
+          }
+        ]
+      }
+    }
   },
+
   data() {
     return {
-      typeChart: [
-        {
-          id: 0,
-          name: "บุคลากร",
-          url: ""
-        },
-        {
-          id: 2,
-          name: "อาจารย์",
-          url: ""
-        },
-        {
-          id: 1,
-          name: "นักศึกษา"
-        }
+      headTitle: "",
+      loading: true,
+
+      caption: 'Chart caption here',
+      title: 'Basic Chart',
+      subtitle: 'More details here',
+      points: [10, 0, 8, 2, 6, 4, 5, 5],
+      points1: [100, 20, 38, 42, 61, 42, 51, 25],
+      points2: [20, 20, 38, 12, 61, 42, 21, 225],
+      seriesColor: '',
+      animationDuration: 1000,
+      chartType: '',
+      colorInputIsSupported: null,
+      chartTypes: [],
+      durations: [0, 500, 1000, 2000],
+      seriesName: 'My Data',
+      yAxis: 'My Values',
+      watchers: [
+        'options.title',
+        'options.series'
       ],
-      typeChartSelect: [],
-      typeRoom: [],
-      typeRoomSelect: [],
-      type: 'PieChart',
-      pieChartData: [],
-      pieChartOptions: {
-        title: '',
-        pieHole: 0.4,
-        height: 600,
+      colors: [
+        'Red',
+        'Green',
+        'Blue',
+        'Pink',
+        'Orange',
+        'Brown',
+        'Black',
+        'Purple'
+      ],
+      lastPointClicked: {
+        timestamp: '',
+        x: '',
+        y: ''
       },
-      data: [],
-      options: {
-        title: '',
-        pieHole: 0.4,
-        height: 600,
-      },
-      chartData: [],
-      chartOptions: {
-        title: '',
-        height: 600,
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        }
-      },
-      menuDate: false,
-      date: new Date().toISOString().substr(0, 7),
-      headerTable: [],
-      desserts: []
+      sexy: false,
+
+      category: [
+        {
+          name: "งายงานตามสาขา",
+          route: "branch"
+        },
+        {
+          name: "งายงานตามเจ้าหน้าที่",
+          route: "emp"
+        },
+      ],
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateEnd: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      modal: false,
+      dialogDateEnd: false,
     }
   },
   mounted() {
-    console.log()
-    this.typeChartSelect = this.typeChart[0]
     this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-      this.getTypeRoom()
+      this.loading = false
+      // this.$nuxt.$loading.start()
+      this.headTitle = this.category.find(f => f.route === this.$route.params.category).name
     })
   },
-  methods: {
-    getRoom(val) {
-      this.$refs.menu.save(val)
-      this.getLogStaff()
-    },
-    allowedDates(val) {
-      let end = val > dayjs().add(2, "day").format("YYYY-MM-DD");
-      return !(end);
-    },
-    parseDate(date) {
-      if (!date) return null
-
-      const [day, month, year] = date.split('/')
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    },
-    async getLogStaff() {
-      if (this.typeRoomSelect.id !== 1) {
-        this.typeChartSelect = this.typeChart[0]
-      }
-      this.chartOptions.title = "จำนวนผู้ใช้งานเดือน " + dayjs(this.date).locale('th').add(543, 'year').format("MMMM YYYY")
-      this.pieChartOptions.title = "ร้อยละการใช้งานเดือน " + dayjs(this.date).locale('th').add(543, 'year').format("MMMM YYYY")
-      this.options.title = "จำนวนผู้ใช้งานปี " + dayjs(this.date).locale('th').add(543, 'year').format("YYYY")
-
-      if (this.typeRoomSelect.id === 3) {
-        await this.logStaffZoom()
-        await this.logStaffMonthZoom()
-        await this.logStaffPieZoom()
-      } else {
-        this.pieChartData = []
-        let _type = this.typeChartSelect.id === 1 ? "logStudent" : "logStaff"
-        this.headerTable = [
-          {
-            name: "ลำดับ",
-            width: ""
-          },
-          {
-            name: "หน่อยงาน",
-            width: "60%"
-          },
-          {},{},{}
-        ]
-        await axios.get(`${_type}/${this.typeRoomSelect.id}`, {
-          params: {
-            date: this.date,
-            typeChart: this.typeChartSelect.name
-          }
-        }).then((res) => {
-          this.desserts = res.data
-          // console.log(res.data)
-          this.pieChartData = this.pieToArray(res.data)
-          this.chartData = this.getChartData(res.data.length <= 0 ? [{master_department_name: "", total: 0}] : res.data)
-          // this.chartOptions.title = "จำนวนผู้ใช้งานเดือน " + dayjs(this.date).locale('th').add(543, 'year').format("MMMM YYYY")
-          // this.pieChartOptions.title = "ร้อยละการใช้งานเดือน " + dayjs(this.date).locale('th').add(543, 'year').format("MMMM YYYY")
-          this.getYear()
-        }).catch((error) => {
-          this.$nuxt.$loading.finish()
-          console.log(error.data)
-        })
-      }
-    },
-    async changeType() {
-      await this.getLogStaff()
-    },
-    async logStaffZoom() {
-      this.headerTable = [
-        {
-          name: "ลำดับ",
-          width: ""
-        },
-        {
-          name: "หน่อยงาน",
-          width: "60%"
-        },
-        {
-          name: "ห้อง 300",
-          width: ""
-        },
-        {
-          name: "ห้อง 500",
-          width: ""
-        },
-        {
-          name: "ห้อง 1000",
-          width: ""
-        }
-      ]
-      await axios.get(`logStaffZoom`, {
-        params: {
-          date: this.date
-        }
-      }).then((res) => {
-        this.desserts = res.data
-        this.chartData = this.toArrayZoom(res.data)
-      }).catch((error) => {
-        console.log(error.data)
-      })
-    },
-    async logStaffPieZoom() {
-      await axios.get(`logStaffPieZoom`, {
-        params: {
-          date: this.date
-        }
-      }).then((res) => {
-        this.pieChartData = this.pieZoomToArray(res.data)
-      }).catch((error) => {
-        console.log(error.data)
-      })
-    },
-    async logStaffMonthZoom() {
-      await axios.get(`logStaffMonthZoom`, {
-        params: {
-          date: this.date
-        }
-      }).then((res) => {
-        this.data = this.toArrayZoom(res.data)
-      }).catch((error) => {
-        console.log(error.data)
-      })
-    },
-    pieToArray(data) {
-      let refPieChart = [['', '']]
-      data.map(async (da) => {
-        let w = Object.keys(da).map((d) => {
-          return da[d]
-        })
-        refPieChart.push(w)
-      })
-      return refPieChart
-    },
-    pieZoomToArray(data) {
-      let w1 = ['ห้อง 300'], w2 = ['ห้อง 500'], w3 = ['ห้อง 1,000']
-      let refPieChart = [['', '']]
-      data.map(async (da) => {
-        w1.push(da.small)
-        w2.push(da.medium)
-        w3.push(da.big)
-        refPieChart.push(w1)
-        refPieChart.push(w2)
-        refPieChart.push(w3)
-      })
-      return refPieChart
-    },
-    toArrayZoom(d) {
-      let refChartData = []
-      let w0 = [''], w1 = ['300'], w2 = ['500'], w3 = ['1000']
-      d.map(async (f) => {
-        w0.push(f.master_department_name)
-        w1.push(f.small)
-        w2.push(f.medium)
-        w3.push(f.big)
-      })
-      refChartData.push(w0)
-      refChartData.push(w1)
-      refChartData.push(w2)
-      refChartData.push(w3)
-      return refChartData;
-    },
-    getChartData(d) {
-      let refChartData = []
-      let w1 = [''], w2 = ['']
-      d.map(async (f) => {
-        w1.push(f.master_department_name)
-        w2.push(f.total)
-      })
-      refChartData.push(w1)
-      refChartData.push(w2)
-      return refChartData;
-    },
-    async getTypeRoom() {
-      await axios.get(`type_room`).then((res) => {
-        this.typeRoom = res.data
-        this.typeRoomSelect = this.typeRoom[0]
-        this.getLogStaff()
-      }).catch((error) => {
-        this.$nuxt.$loading.finish()
-        console.log(error)
-      })
-    },
-    async getYear() {
-      let _type = this.typeChartSelect.id === 0 ? "getMonth" : "getMonthStudent"
-      // console.log(_type)
-      await axios.get(`${_type}/${this.typeRoomSelect.id}`, {
-        params: {
-          date: this.date
-        }
-      }).then((res) => {
-        // this.options.title = "จำนวนผู้ใช้งานปี " + dayjs(this.date).locale('th').add(543, 'year').format("YYYY")
-        if (res.data.length <= 0) {
-          this.data = this.getChartData([{master_department_name: "", total: 0}])
-          return
-        }
-        this.data = this.getChartData(res.data)
-        this.$nuxt.$loading.finish()
-      }).catch((error) => {
-        this.$nuxt.$loading.finish()
-        console.log(error)
-      })
-    }
-  },
+  methods: {},
 }

@@ -73,7 +73,10 @@ export default {
       page: 1,
 
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      dateEnd: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+
       modal: false,
+      dialogDateEnd: false,
       enabled: false,
 
       provinceItems: [],
@@ -82,8 +85,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.$gates.hasAnyRole('admin|super'))
-    console.log(this.$auth.user)
     this.$nextTick(() => {
       this.loading = false
       this.getData()
@@ -108,8 +109,8 @@ export default {
     page(val) {
       this.getData()
     },
+
     async search(val) {
-      console.log(val)
       if (val == null) return
       if (val.length < 2) return
       if (this.isLoading) return
@@ -130,14 +131,6 @@ export default {
   },
 
   methods: {
-    test(val) {
-      console.log(val)
-    },
-    onChangeType(d) {
-      this.total = 0
-      this.typeTotalSelect = d
-    },
-
     checkType() {
       if (this.branchSelect) {
         return this.branchSelect.type === 2
@@ -167,9 +160,6 @@ export default {
       val.push(parseInt(this.money.val9))
       return val.reduce((accumulator, currentValue) => accumulator + currentValue)
     },
-    getColor(val) {
-      return (val !== 1) ? 'green' : 'red'
-    },
 
     async getUser() {
       await this.$axios.get("/users").then((res) => {
@@ -184,13 +174,16 @@ export default {
       await this.$axios.get("/budgetList", {
         params: {
           page: this.page,
-          per: 10
+          per: 10,
+          dateStart:this.date,
+          dateEnd:this.dateEnd,
         }
       }).then((res) => {
-        this.$nuxt.$loading.finish()
         this.desserts = res.data
+        this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
+        this.$nuxt.$loading.finish()
       });
     },
 
@@ -206,7 +199,6 @@ export default {
     async getBudget() {
       await this.$axios.get("/budget").then((res) => {
         this.instead = res.data.data
-        console.log(this.instead)
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -234,7 +226,6 @@ export default {
       this.total = this.item.total
 
       this.branchSelect = this.$auth.user.branch
-      console.log(this.branchSelect)
       this.usersSelect = this.users.find((d) => d.id === this.$auth.user.id)
     },
 

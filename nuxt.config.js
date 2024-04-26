@@ -66,7 +66,7 @@ export default {
     "@/plugins/convert.js",
     "@/plugins/Head-util.js",
     "@/plugins/vue-gates.js",
-    "@/plugins/socket.io.js",
+    // "@/plugins/socket.io.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -90,6 +90,10 @@ export default {
     "bootstrap-vue/nuxt",
 
     "@nuxtjs/google-gtag",
+
+    'nuxt-highcharts',
+
+    // 'socket.io',
   ],
 
   "google-gtag": {
@@ -117,12 +121,12 @@ export default {
   //   host: '0.0.0.0' // default: localhost
   // },
 
-  serverMiddleware: [
-    {
-      path: 'chat',
-      handler: '~/socket.io'
-    }
-  ],
+  // serverMiddleware: [
+  //   {
+  //     path: 'chat',
+  //     handler: '~/socket.io'
+  //   }
+  // ],
 
   /*
    ** Axios module configuration

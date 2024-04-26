@@ -8,7 +8,65 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading">
-          <head-bar :title="headTitle" :callback="openItem" per="add.add-budget"/>
+          <head-bar :title="headTitle" :callback="openItem" per="add.add-budget">
+            <v-row class="m-0 justify-content-end d-none d-lg-flex">
+              <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent max-width="290px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="date"
+                    label="วันที่เริ่ม"
+                    append-icon="mdi-calendar"
+                    class="ml-2"
+                    outlined
+                    dense
+                    style="border-radius: 15px; min-width: 200px; max-width: 200px"
+                    hide-details
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    color="#A57156"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="date" scrollable locale="th-TH" color="#A57156">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="#A57156" @click="modal = false">
+                    ยกเลิก
+                  </v-btn>
+                  <v-btn text color="#A57156" @click="()=>{$refs.dialog.save(date); getData()}">
+                    ตกลง
+                  </v-btn>
+                </v-date-picker>
+              </v-dialog>
+
+              <v-dialog ref="dialog2" v-model="dialogDateEnd" :return-value.sync="dateEnd" persistent max-width="290px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="dateEnd"
+                    label="วันที่สิ้นสุด"
+                    append-icon="mdi-calendar"
+                    class="ml-2"
+                    outlined
+                    dense
+                    style="border-radius: 15px; min-width: 200px; max-width: 200px"
+                    hide-details
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    color="#A57156"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="dateEnd" scrollable locale="th-TH" color="#A57156">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="#A57156" @click="dialogDateEnd = false">
+                    ยกเลิก
+                  </v-btn>
+                  <v-btn text color="#A57156" @click="()=>{$refs.dialog2.save(dateEnd); getData()}">
+                    ตกลง
+                  </v-btn>
+                </v-date-picker>
+              </v-dialog>
+            </v-row>
+          </head-bar>
           <v-col>
             <div style=" overflow-x:auto;">
               <table style="width:100%">
