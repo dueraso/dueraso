@@ -11,8 +11,12 @@
           <!--          <button v-role="'product.writer'">Add Article</button>-->
           <!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
           <!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
+          <head-bar :title="headTitle" :callback="openItem" per="add.product">
+            <v-row class="m-0 text-right">
+              <v-text-field outlined dense style="border-radius: 15px" hide-details></v-text-field>
+            </v-row>
 
-          <head-bar :title="headTitle" :callback="openItem" per="add.product"/>
+          </head-bar>
           <v-col>
             <table style="width:100%">
               <thead>
@@ -37,7 +41,8 @@
                   {{ item.price }}
                 </td>
                 <td align="center">
-                  <v-img :src="item.imageUrl === null?'/defaultimage.png':JSON.parse(item.imageUrl).fullPath" height="40px"
+                  <v-img :src="item.imageUrl === null?'/defaultimage.png':JSON.parse(item.imageUrl).fullPath"
+                         height="40px"
                          width="40px" style="border-radius: 10px"></v-img>
                 </td>
                 <td align="right">
