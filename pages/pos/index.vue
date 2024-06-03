@@ -14,14 +14,14 @@
               <!--                tags-->
               <v-row class="mt-0 pb-4">
                 <img style="height: 50px" src="/line.png" alt="line">
-                <v-col class="p-0" >
+                <v-col class="p-0">
                   <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
                 </v-col>
-                  <div style=" width: 200px">
-                <v-text-field
-                  label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
-                  class="m-0 p-0" style="border-radius: 15px;" v-model="search"/>
-                  </div>
+                <div style=" width: 200px">
+                  <v-text-field
+                    label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
+                    class="m-0 p-0" style="border-radius: 15px;" v-model="search"/>
+                </div>
               </v-row>
               <v-row class="m-0">
                 <div style="height: 80dvh; overflow-y: auto;">
@@ -38,13 +38,13 @@
                             right style="color: white"
                             color="#B27D41"
                           >
-                            {{tag.product.length}}
+                            {{ tag.product.length }}
                           </v-avatar>
                         </v-chip>
                       </v-chip-group>
                     </v-sheet>
                   </v-col>
-                  <v-row dense>
+                  <v-row dense class="flex flex-col h-screen relative">
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
                         <a @click="addOrder(card)">
@@ -70,6 +70,15 @@
             <!--            order-->
             <v-col>
               <v-row class="m-0">
+                <v-card
+                  class="m-1 text-center align-content-center"
+                  height="33.73" width="123.33"
+                  style="border-radius: 21px"
+                  @click="customDiscount = true" :disabled="discountSel.length > 0">
+                  <v-icon>mdi-ticket-percent-outline
+                  </v-icon>
+                  ระบุยอด
+                </v-card>
                 <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i" class="mt-0 p-0 pb-2">
                   <v-card class="m-1 p-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
                           :disabled="discountSel.length > 0">
@@ -145,7 +154,7 @@
                     <h4 class="m-0" style="color: #846537">{{ convert.calculateArray(this.desserts) }}</h4>
                   </v-col>
                   <v-col class="text-right" style="color: #B27D41">
-                    <h4 class="m-0">{{ convert.money(priceTotal) + "บาท" }}</h4>
+                    <h4 class="m-0">{{ convert.money(priceTotal) }}</h4>
                   </v-col>
                 </v-row>
               </v-card>
@@ -231,10 +240,11 @@
                       <div v-html="qr"/>
                     </v-col>
                   </v-card>
-                  <v-btn rounded block color="#B27D41" outlined @click="createOrder(2)">บันทึกพร้อมเพย์</v-btn>
+                  <v-btn rounded block color="#B27D41" outlined @click="createOrder(2)" x-large>บันทึกพร้อมเพย์</v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn-toggle rounded dense v-model="t" style="width: 100%;" class="mb-3" color="#6E4C2E" background-color="#ECE6E0">
+                  <v-btn-toggle rounded dense v-model="t" style="width: 100%;" class="mb-3" color="#6E4C2E"
+                                background-color="#ECE6E0">
                     <v-btn style="width: 50%;">
                       เงินสด
                     </v-btn>
@@ -252,9 +262,14 @@
                       </v-row>
                     </v-card>
                     <v-row class="m-0">
-                      <v-col v-for="(item, i) in price" :key="i" cols="4">
+                      <v-col v-for="(item, i) in price" :key="i" cols="3" class="pl-2 pr-2">
                         <v-btn block @click="getCash(item)" rounded class="shadow-box">
                           {{ item }}
+                        </v-btn>
+                      </v-col>
+                      <v-col cols="3" class="pl-2 pr-2">
+                        <v-btn block @click="getCash(priceTotal)" rounded class="shadow-box">
+                          พอดี
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -298,8 +313,8 @@
                       </v-col>
 
                       <v-col class="pt-0 pb-0">
-                        <v-btn block color="#B27D41"  @click="createOrder(1)" rounded style="color: white"
-                               :disabled="(!(changeMoney > 0))">บันทึกเงินสด
+                        <v-btn block color="#B27D41" @click="createOrder(1)" rounded style="color: white" x-large
+                               :disabled="(!(changeMoney >= 0 && !cash == 0))">บันทึกเงินสด
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -338,6 +353,39 @@
               </v-col>
             </v-card>
           </v-dialog>
+
+          <v-dialog v-model="customDiscount" width="500">
+            <v-card>
+              <v-row align="right" class="m-0 pt-3 pr-3">
+                <v-spacer/>
+                <v-btn icon @click="customDiscount = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-row>
+              <v-col>
+                <v-text-field
+                  outlined
+                  dense
+                  label="ระบุจำนวนเงิน"
+                  placeholder="ตัวอย่าง 20"
+                  type="number"
+                  prefix="฿"
+                  suffix="บาท"
+                  return-object
+                  style="border-radius: 15px"
+                  v-model="extra"
+                />
+                <v-row style="margin: 0">
+                  <v-col
+                    align="center" style="padding: 0" class="pb-2">
+                    <v-btn dark small color="#6E4C2E" @click="confirmExtra">
+                      ยืนยัน
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-card>
+          </v-dialog>
         </v-container>
       </v-main>
     </v-app>
@@ -365,6 +413,7 @@
 .shadow-box {
   box-shadow: 1px 1px 1px rgba(119, 66, 26, 16%); /* Horizontal offset, vertical offset, blur radius, and color */
 }
+
 .v-text-field--outlined >>> fieldset {
   border-color: #A57156;
 }

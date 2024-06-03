@@ -31,7 +31,7 @@
       <v-dialog v-model="DialogLogout" persistent width="786">
         <v-card style="border-radius: 15px">
           <v-card-title>
-<!--            <h5 class="m-0" style="color: #5B4840">{{ title }}</h5>-->
+            <!--            <h5 class="m-0" style="color: #5B4840">{{ title }}</h5>-->
             <v-spacer/>
             <v-btn icon @click="DialogLogout = false">
               <v-icon color="#5B4840">mdi-close</v-icon>
@@ -44,12 +44,12 @@
                 ออกจากระบบ
               </v-btn>
               <v-btn color="#B27D41" @click="summary" dark rounded width="340" class="m-2">
-              ปิดยอดวันนี้
-            </v-btn>
+                ปิดยอดวันนี้
+              </v-btn>
             </v-row>
           </v-card-text>
         </v-card>
-    </v-dialog>
+      </v-dialog>
     </div>
   </v-app-bar>
 </template>
@@ -97,6 +97,7 @@
 <script>
 import axios from "@/con/config";
 import DialogCon from "./DialogCon";
+import {GlobalEventEmitter} from "@/utils/GlobalEventEmitter";
 
 export default {
   components: {
@@ -151,6 +152,7 @@ export default {
           route: 'logout'
         },
       ],
+      branch: {},
       rules: {
         required: value => !!value || "จำเป็น",
         min: v => (v && v.length >= 8) || "ตัวอักษร 8 ขึ้นไป",
@@ -162,8 +164,13 @@ export default {
       },
     }
   },
+
   created() {
+    GlobalEventEmitter.$on('branchNum', (res) => {
+      this.branch = res
+    })
   },
+
   mounted() {
     // this.$nextTick(() => this.savePolicy())
     this.selectedLetter = this.$route.path
@@ -214,12 +221,19 @@ export default {
         this.$router.push(val)
       }
     },
-    logout(){
+    logout() {
       this.$auth.logout()
       localStorage.clear()
     },
-    summary(){
-      // this.$auth.logout()
+    async summary() {
+      this.$axios.post("totalSummary", {
+        branch: this.branch.id,
+      }).then(() => {
+        this.logout()
+      }).catch((e) => {
+        console.log(e.response.data.messages)
+        alert(e.response.data.messages)
+      })
     },
     async validate() {
       this.$nuxt.$loading.start()

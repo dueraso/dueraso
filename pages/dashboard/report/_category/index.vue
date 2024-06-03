@@ -68,13 +68,13 @@
             </v-row>
           </HeadBar>
           <v-col>
-                        <highchart
-                          :options="chartOptions"
-                          :modules="['exporting']"
-                          :update="watchers"
-                          style="width:100%;"
-                        />
-<!--            <div ref="chart"></div>-->
+            <highchart
+              :options="chartOptions"
+              :modules="['exporting']"
+              :update="watchers"
+              style="width:100%;"
+            />
+            <!--            <div ref="chart"></div>-->
           </v-col>
         </v-container>
       </v-main>

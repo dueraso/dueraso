@@ -6,6 +6,7 @@ import qrcode from "qrcode";
 import isPos from "~/middleware/is-pos";
 import isAdmin from "~/middleware/is-admin";
 // import {select} from "underscore";
+import {GlobalEventEmitter} from '@/utils/GlobalEventEmitter'
 
 export default {
   middleware: ["auth", isAdmin],
@@ -62,12 +63,15 @@ export default {
     isProm: null,
     valid: true,
     cash: 0,
+    extra: 0,
+    extraSelect: {},
     price: [
       1000, 500, 100
     ],
     changeMoney: 0.00,
     checkPayMoney: false,
     checkbox: false,
+    customDiscount: false,
     search: "",
   }),
   computed: {
@@ -79,11 +83,11 @@ export default {
     },
   },
   watch: {
-    search(val){
-      if(val.length >= 3){
+    search(val) {
+      if (val.length >= 3) {
         this.searchPro()
       }
-      if(val.length === 0) {
+      if (val.length === 0) {
         this.getData()
       }
     },
@@ -95,6 +99,7 @@ export default {
       return val
     },
     discountSel(val) {
+      console.log(val)
       this.onDiscountTotal()
       return val
     },
@@ -131,16 +136,27 @@ export default {
     // this.qrTest()
   },
   methods: {
-    async searchPro(){
+    confirmExtra(){
+      this.extraSelect = {
+        id:1,
+        name:this.extra + " บาท",
+        type_discount: 1,
+        total:this.extra
+      }
+      this.addDiscount(this.extraSelect)
+      this.extra = 0
+      this.customDiscount = false
+    },
+    async searchPro() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("searchPro",{
-        params:{
-          s:this.search
+      await this.$axios.get("searchPro", {
+        params: {
+          s: this.search
         }
-      }).then((res)=>{
+      }).then((res) => {
         this.cards = res.data
         this.$nuxt.$loading.finish()
-      }).catch((e)=>{
+      }).catch((e) => {
         console.log(e)
         alert(e.response.data.message)
         this.$nuxt.$loading.finish()
@@ -166,7 +182,7 @@ export default {
         branch: this.branch.id,
         pay_type: val,
         bill_number: this.branch.id + dayjs().format('YYMMDDHHmmss'),
-        price: convert.money(this.priceTotal),
+        price: this.priceTotal,
         total: convert.calculateArray(this.desserts),
         discountTotal: this.discountTotal,
       }).then((res) => {
@@ -229,6 +245,8 @@ export default {
     convertBranchSelect() {
       this.branch.name = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
       this.branch.id = this.branchSelect.id
+
+      GlobalEventEmitter.$emit('branchNum', this.branchSelect)
     },
     async getBranch() {
       this.dialog = true
@@ -244,6 +262,7 @@ export default {
       let _discountSel = this.discountSel[0]
       this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(this.priceTotal / 100 * _discountSel.total)
       this.priceTotal -= this.discountTotal
+      console.log(this.priceTotal)
     },
     addDiscount(val) {
       this.discountSel.push(val)
