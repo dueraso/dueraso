@@ -25,7 +25,8 @@ export default {
       tableHead: [
         {
           title: "ชื่อสาขา",
-          width: ""
+          width: "",
+          text: "text-left"
         },
       ],
       desserts: {
@@ -75,7 +76,7 @@ export default {
     },
 
     confirm() {
-      if(!this.$refs.form.validate()) return;
+      // if(!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()

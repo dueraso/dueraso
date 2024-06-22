@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
+import {createOrganization} from "@/plugins/apiUtils";
 
 export default {
   middleware: ['auth', isAdmin],
@@ -24,11 +25,13 @@ export default {
       tableHead: [
         {
           title: "ชื่อรายการ",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ประเภท",
-          width: "15%"
+          width: "15%",
+          text: "text-left"
         },
       ],
       rules: [
@@ -55,13 +58,9 @@ export default {
     },
   },
   methods: {
-    myUtils,
     convertDay(val) {
       if (val == undefined) return
       return dayjs(val).format('HH:mm')
-    },
-    getColor(val) {
-      return (val !== 1) ? 'green' : 'red'
     },
 
     async getBudgetType() {

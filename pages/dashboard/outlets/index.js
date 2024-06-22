@@ -29,15 +29,18 @@ export default {
       tableHead: [
         {
           title: "ชื่อ-สกุล",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "รายละเอียด",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "สร้างโดย",
-          width: "15%"
+          width: "15%",
+          text: "text-left"
         },
       ],
       desserts: {
@@ -105,7 +108,7 @@ export default {
     },
 
     confirm() {
-      if (!this.$refs.form.validate()) return;
+      // if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         this.onUpdate()
@@ -138,11 +141,11 @@ export default {
       await this.$axios.post("/organization", {
         title: this.item.title,
         detail: this.item.detail,
-        create_by: this.$auth.user.id
       }).then((res) => {
         this.$nuxt.$loading.finish()
         this.getData()
       }).catch((e) => {
+        alert(e.response.data.message)
         console.log(e)
       })
     },

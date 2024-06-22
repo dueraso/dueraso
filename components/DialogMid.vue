@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" persistent width="786">
+  <v-dialog v-model="show" persistent :width="width">
     <v-form ref="form" v-model="valid">
       <v-card style="border-radius: 15px">
         <v-card-title>
@@ -13,7 +13,7 @@
         <v-card-text class="p-3" style="background: #F6F6F6">
           <slot></slot>
           <v-row class="m-0" style="justify-content: center;">
-            <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="m-2">
+            <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="m-2" v-if="this.callback">
               ตกลง
             </v-btn>
           </v-row>
@@ -28,6 +28,10 @@ export default {
     value: Boolean,
     callback: Function,
     title: String,
+    width: {
+      type: String,
+      default: "780"
+    },
   },
   computed: {
     show: {
@@ -38,13 +42,15 @@ export default {
         // this.$refs.form.reset()
         this.$emit('input', value)
       }
-    }
+    },
   },
+
   data() {
     return {
       valid: false
     }
   },
+
   methods: {
     confirm() {
       if (this.callback) {

@@ -36,11 +36,13 @@ export default {
       tableHead: [
         {
           title: "ชื่อส่วนลด",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ใช้งาน",
-          width: "5%"
+          width: "5%",
+          text: "text-left"
         },
       ],
       desserts: {

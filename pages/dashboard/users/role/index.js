@@ -21,19 +21,23 @@ export default {
       tableHeadRole: [
         {
           title: "ชื่อสิทธิการใช้",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "รายละเอียด",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "สร้างเมื่อ",
-          width: "12%"
+          width: "12%",
+          text: "text-left"
         },
         {
           title: "แก้ไขเมื่อ",
-          width: "12%"
+          width: "12%",
+          text: "text-left"
         },
       ],
       dessertsRole: {
@@ -42,27 +46,33 @@ export default {
       tableHead: [
         {
           title: "ชื่อ",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "path",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "อ่าน",
-          width: "5%"
+          width: "5%",
+          text: "text-left"
         },
         {
           title: "เขียน",
-          width: "5%"
+          width: "5%",
+          text: "text-left"
         },
         {
           title: "แก้ไข",
-          width: "5%"
+          width: "5%",
+          text: "text-left"
         },
         {
           title: "ลบ",
-          width: "5%"
+          width: "5%",
+          text: "text-left"
         },
       ],
 

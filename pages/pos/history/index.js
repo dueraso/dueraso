@@ -3,8 +3,10 @@ import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
 import myUtils from "@/plugins/myUtils";
 import convert from "../../../plugins/convert";
+import Fieldset from "primevue/fieldset";
 
 export default {
+  components: {Fieldset},
   computed: {
     convert() {
       return convert
@@ -26,6 +28,7 @@ export default {
       loading: true,
       search: "",
       dialog: false,
+      dialogOrder: false,
       dialogDelete: false,
       isLoading: false,
       instead: [
@@ -42,38 +45,68 @@ export default {
       itemHead: [
         {
           title: "ชื่อ",
-          width: "40%"
+          width: "40%",
+          text: "text-left"
         },
         {
           title: "ออเดอร์",
-          width: ""
+          width: "",
+          text: "text-left"
+        },
+        {
+          title: "ชำระโดย",
+          width: "",
+          text: "text-left"
         },
         {
           title: "ส่วนลด",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ยอดสุทธิ",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "สร้างเมื่อ",
-          width: "150px"
+          width: "150px",
+          text: "text-left"
         },
       ],
       tableHead: [
         {
-          title: "สาขา",
-          width: ""
+          title: "สาขา/ออกงาน/ไลฟ์สด",
+          width: "70%",
+          text: "text-left"
         },
         {
           title: "ออเดอร์",
-          width: ""
+          width: "15%",
+          text: "text-left"
         },
         {
           title: "ยอดทั้งหมด",
-          width: ""
+          width: "15%",
+          text: "text-left"
         }
+      ],
+      orderHeads: [
+        {
+          title: "ชื่อ",
+          width: "40%",
+          text: "text-left"
+        },
+        {
+          title: "ออเดอร์",
+          width: "",
+          text: "text-left"
+        },
+        {
+          title: "ยอด",
+          width: "",
+          text: "text-left"
+        },
       ],
       desserts: {
         meta: {},
@@ -90,6 +123,7 @@ export default {
       page: 1,
       dialogStart: false,
       dateStart: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      itemOrder:{}
     };
   },
   watch: {
@@ -132,6 +166,12 @@ export default {
       this.dialog = true
       this.item = Object.assign({}, val)
       this.item.items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    },
+
+    openOrder(val = {}) {
+      console.log(val)
+      this.dialogOrder = true
+      this.itemOrder = Object.assign({}, val)
     },
   }
 };

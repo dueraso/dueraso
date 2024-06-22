@@ -44,7 +44,7 @@
                       </v-chip-group>
                     </v-sheet>
                   </v-col>
-                  <v-row dense class="flex flex-col h-screen relative">
+                  <v-row dense class="flex flex-col">
                     <v-col v-for="(card, i) in cards.data" :key="i" cols="6" md="3" sm="2" xl="2">
                       <v-card style="border-radius:10px">
                         <a @click="addOrder(card)">

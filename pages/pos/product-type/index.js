@@ -28,7 +28,8 @@ export default {
       tableHead: [
         {
           title: "ชื่อ",
-          width: ""
+          width: "",
+          text: "text-left"
         }
       ],
       desserts: {

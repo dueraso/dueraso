@@ -118,7 +118,9 @@
                   class="m-2 p-2"
                   alt="facebook"
                 />
-                 <img src="/google.png" width="68" height="69" class=" m-2 p-2" @click="googleOauth" alt="google"/>
+                <a @click="googleOauth">
+                 <img src="/google.png" width="68" height="69" class=" m-2 p-2" alt="google"/>
+                </a>
 <!--                <div id="googleButton"></div>-->
               </v-row>
               <p

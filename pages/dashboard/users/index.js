@@ -11,6 +11,9 @@ export default {
       title: this.headTitle,
     }
   },
+  watch: {
+    'item.email': 'validateEmailAvailability'
+  },
   data() {
     return {
       headTitle: "จัดการผู้ใช้งาน",
@@ -20,38 +23,47 @@ export default {
       hidePass: false,
       dialogDelete: false,
       b: true,
-      rules: [
-        v => !!v || 'จำเป็น',
-      ],
-      rulesEmail: [
-        v => !!v || 'จำเป็น',
-        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'รู้แบบอีเมลไม่ถูกต้อง',
-        v => this.checkEmailAvailability(v) || 'อีเมลไม่ถูกต้อง',
-      ],
+      rules: {
+        required: value => !!value || 'จำเป็น',
+        counter: value => (value && value.length <= 10) && value.length === 10 || 'เบอร์โทรต้องครบ 10 ตัว',
+        number: value => (value && !isNaN(value)) || 'กรอกตัวเลขเท่านั้น',
+      }
+      ,
+      rulesEmail: {
+        required: v => !!v || 'จำเป็น',
+        emailMatch: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'รู้แบบอีเมลไม่ถูกต้อง',
+        // Availability: v => (v && this.checkEmailAvailability(v)) || 'อีเมลไม่ถูกต้อง',
+      },
       tableHead: [
         {
           title: "ชื่อ-สกุล",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "อีเมล",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
         {
           title: "เบอร์",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "สถานะ",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
         {
           title: "สิทธิ์",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
         {
           title: "สร้างเมื่อ",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
       ],
       desserts: {
@@ -65,7 +77,7 @@ export default {
       branchSelect: {},
 
       emailError: false,
-      emailErrorMessages: [],
+      emailErrorMessages: '',
     };
   },
   computed: {
@@ -74,6 +86,8 @@ export default {
     }
   },
   mounted() {
+    let d = "23d3233"
+    console.log(isNaN(d))
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
       this.loading = false
@@ -90,23 +104,30 @@ export default {
         return true
       }
     },
-    async checkEmailAvailability(value) {
-      if (value === undefined) return
+    async checkEmailAvailability(v) {
+      // Your logic to check email availability, which returns a promise
+      // const available = await this.validateEmailAvailability(v);
+      // console.log(available)
+      return "dd";
+    },
+
+    async validateEmailAvailability(value) {
+      console.log(value)
       try {
         let res = await this.$axios.get(`check-mail/${value}`);
 
         if (res.data.length === 0) {
           this.emailError = false;
-          this.emailErrorMessages = [];
+          this.emailErrorMessages = '';
         } else {
           // ถ้าอีเมลนี้มีอยู่ในระบบแล้ว
           this.emailError = true;
-          this.emailErrorMessages = ['อีเมลนี้มีอยู่ในระบบแล้ว'];
+          this.emailErrorMessages = 'อีเมลนี้มีอยู่ในระบบแล้ว';
         }
       } catch (error) {
         console.error('เกิดข้อผิดพลาดในการตรวจสอบอีเมล', error);
         this.emailError = true;
-        this.emailErrorMessages = ['เกิดข้อผิดพลาดในการตรวจสอบอีเมล'];
+        this.emailErrorMessages = 'เกิดข้อผิดพลาดในการตรวจสอบอีเมล';
       }
     },
     status(val) {

@@ -1,5 +1,6 @@
 import pkg from "@/package.json";
 import convert from "@/plugins/convert";
+import serve from "@/con/server";
 
 export default {
   layout: "auth-layout",
@@ -45,16 +46,17 @@ export default {
 
   methods: {
     async googleOauth() {
-      const clientId = "436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com";
-      const redirectUri = 'http://localhost:3000/callback';
-      const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
-      const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
-      window.location.assign(url);
+      // this.$auth.loginWith("social")
+
+      window.location.assign(
+        `https://accounts.google.com/o/oauth2/v2/auth?client_id=${serve.clientId}&redirect_uri=${serve.redirectUri}&scope=${serve.scope}&response_type=code`
+      );
     },
 
     async validate() {
       if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start();
+
       // let res =
       await this.$auth.loginWith("local", {
         data: {

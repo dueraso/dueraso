@@ -95,13 +95,15 @@
                   v-model="item.name" label="ชื่อ-สกุล" outlined clearable dense
                   style="border-radius: 15px"
                   required
-                  :rules="rules"/>
+                  :rules="[rules.required]"/>
               </v-col>
               <v-col class="pb-0 pt-0" md="6">
                 <v-text-field
                   v-model="item.phone" label="เบอร์" outlined clearable dense style="border-radius: 15px"
                   required
-                  :rules="rules"/>
+                  :rules="[rules.required,rules.counter,rules.number]"
+                  maxlength="10"
+                />
               </v-col>
             </v-row>
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลผู้ใช้งาน</p>
@@ -111,7 +113,7 @@
                   v-model="item.email" label="อีเมล" type="email" outlined clearable dense
                   style="border-radius: 15px"
                   required
-                  :rules="rulesEmail"
+                  :rules="[rulesEmail.required, rulesEmail.emailMatch]"
                   :error-messages="emailErrorMessages"
                   :error="emailError"
                 />
@@ -121,7 +123,7 @@
                   v-model="item.password" label="รหัสผ่าน" outlined dense
                   style="border-radius: 15px"
                   required
-                  :rules="rules"
+                  :rules="[rules.required]"
                   :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="showPass ? 'text' : 'password'"
                   @click:append="showPass = !showPass"/>
@@ -131,7 +133,7 @@
                   v-model="item.password" label="รหัสผ่าน" outlined dense
                   style="border-radius: 15px"
                   required
-                  :rules="rules"
+                  :rules="[rules.required]"
                   :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="showPass ? 'text' : 'password'"
                   @click:append="showPass = !showPass"/>
@@ -172,7 +174,7 @@
                   item-text="name"
                   item-value="id" style="border-radius: 15px"
                   required
-                  :rules="rules"
+                  :rules="[rules.required]"
                 ></v-autocomplete>
               </v-col>
               <v-col class="pb-0 pt-0" md="6" v-if="checkAdmin()">
@@ -189,7 +191,7 @@
                   item-text="title"
                   item-value="id" style="border-radius: 15px"
                   required
-                  :rules="rules"
+                  :rules="[rules.required]"
                 ></v-autocomplete>
               </v-col>
               <v-col class="pb-0 pt-0" md="6">

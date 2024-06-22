@@ -3,13 +3,15 @@
     <v-btn rounded icon @click="$router.back()" class="mr-3" color="#A57156" dark v-show="back">
       <v-icon x-large>mdi-chevron-left</v-icon>
     </v-btn>
-    <h2 align="left" class="m-0 " style="color: #5B4840;">
-      <img style="height: 50px" src="/line.png" alt="line"> {{ title }}
-    </h2>
-    <v-btn rounded @click="openItem()" class="ml-3" color="#B27D41" dark small v-show="callback" v-role:any.required.autofocus="'admin|super'">
-    <!--           v-role-or-permission="`admin|${per}`">-->
-<!--           v-permission="'add'">-->
-<!--           v-role:all="'super_admin|writer'">-->
+    <img style="height: 50px" src="/line.png" alt="line">
+    <p class="pl-2 m-0" style="color: #5B4840; font-size: 32px; font-weight: 500">
+      {{ title }}
+    </p>
+    <v-btn rounded @click="openItem()" class="ml-3" color="#B27D41" dark small v-show="callback"
+           v-role:any.required.autofocus="'admin|super'">
+      <!--           v-role-or-permission="`admin|${per}`">-->
+      <!--           v-permission="'add'">-->
+      <!--           v-role:all="'super_admin|writer'">-->
       <v-icon>mdi-plus</v-icon>
       เพิ่ม
     </v-btn>

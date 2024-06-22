@@ -1,6 +1,12 @@
 const local = {
   url: "http://localhost:3000",
   api: "http://localhost:8000/api/v1",
+
+
+  clientId : "436601941584-ng05st9ub5lijn8lqic6bphgq7mblru6.apps.googleusercontent.com",
+  redirectUri : 'http://localhost:3000/callback',
+  clientSecret: "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",
+  scope : 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
 };
 const production = {
   url: "https://dueraso.com",

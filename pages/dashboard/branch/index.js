@@ -40,15 +40,18 @@ export default {
       tableHead: [
         {
           title: "ชื่อสาขา",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "รายละเอียด",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ที่อยู่/สถานที่",
-          width: "15%"
+          width: "15%",
+          text: "text-left"
         },
       ],
       desserts: {

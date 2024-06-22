@@ -58,7 +58,10 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["@/assets/css/custom-vuetify.scss"],
+  css: [
+    "@/assets/css/custom-vuetify.scss",
+    'primeflex/primeflex.css'
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -66,6 +69,7 @@ export default {
     "@/plugins/convert.js",
     "@/plugins/Head-util.js",
     "@/plugins/vue-gates.js",
+    '~/plugins/apiUtils.js'
     // "@/plugins/socket.io.js",
   ],
 
@@ -94,6 +98,8 @@ export default {
     'nuxt-highcharts',
 
     // 'socket.io',
+    // Doc: https://www.primefaces.org/primevue/showcase-v2/#/setup
+    'primevue/nuxt',
   ],
 
   "google-gtag": {
@@ -140,15 +146,56 @@ export default {
 
   auth: {
     strategies: {
-      google: {
+      local: false,
+      // google: {
+      //   token: {
+      //     property: "access_token",
+      //   },
+      //   user: {
+      //     property: "data",
+      //   },
+      //   endpoints: {
+      //     login: {
+      //       method: "post",
+      //       url: "https://oauth2.googleapis.com/token",
+      //       propertyName: "access_token",
+      //     },
+      //     user: {
+      //       method: "get",
+      //       url: "https://openidconnect.googleapis.com/v1/userinfo",
+      //       propertyName: "data",
+      //     },
+      //   },
+      // },
+
+      // google: {
+      //   endpoints: {
+      //     login: {
+      //       method: "post",
+      //       url: "https://oauth2.googleapis.com/token",
+      //       propertyName: "access_token",
+      //     },
+      //     user: {
+      //       method: "get",
+      //       url: "https://openidconnect.googleapis.com/v1/userinfo",
+      //       propertyName: "",
+      //     },
+      //   },
+      // },
+
+      local2: {
         token: {
-          property: "access_token",
+          property: 'access_token',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
         },
         user: {
-          property: "data",
+          property: '',
+          // autoFetch: true
         },
         endpoints: {
-          login: {
+          token: {
             method: "post",
             url: "https://oauth2.googleapis.com/token",
             propertyName: "access_token",
@@ -156,25 +203,35 @@ export default {
           user: {
             method: "get",
             url: "https://openidconnect.googleapis.com/v1/userinfo",
-            propertyName: "data",
+            propertyName: "",
           },
         },
       },
 
-      local: {
-        endpoints: {
-          login: {
-            method: "post",
-            url: "login",
-            propertyName: "data.token",
-          },
-          user: {
-            method: "get",
-            url: "user",
-            propertyName: "data",
-          },
-        },
-      },
+      // local: {
+      //   login: {
+      //     property: 'data.token',
+      //     global: true,
+      //     // required: true,
+      //     // type: 'Bearer'
+      //   },
+      //   user: {
+      //     property: 'data',
+      //     // autoFetch: true
+      //   },
+      //   endpoints: {
+      //     login: {
+      //       method: "post",
+      //       url: "login",
+      //       propertyName: "data.token",
+      //     },
+      //     user: {
+      //       method: "get",
+      //       url: "user",
+      //       propertyName: "data",
+      //     },
+      //   },
+      // },
     },
     redirect: {
       login: "/login",
@@ -213,6 +270,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["vue-google-charts"],
+    transpile: [
+      "vue-google-charts",
+      'primevue'
+    ],
   },
 };

@@ -36,23 +36,28 @@ export default {
       tableHead: [
         {
           title: "ชื่อรายการ",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "สาขา",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ผู้ขาย",
-          width: ""
+          width: "",
+          text: "text-left"
         },
         {
           title: "ราคา",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
         {
           title: "ยอดของวันที่",
-          width: "10%"
+          width: "10%",
+          text: "text-left"
         },
       ],
       typeTotal: ['รวมยอดแล้ว', 'ยังไม่รวมยอด'],
