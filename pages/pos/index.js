@@ -7,6 +7,8 @@ import isPos from "~/middleware/is-pos";
 import isAdmin from "~/middleware/is-admin";
 // import {select} from "underscore";
 import {GlobalEventEmitter} from '@/utils/GlobalEventEmitter'
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+
 
 export default {
   middleware: ["auth", isAdmin],
@@ -73,6 +75,12 @@ export default {
     checkbox: false,
     customDiscount: false,
     search: "",
+
+    provinceItems: [],
+    provinceSelect: null,
+    districtItems: [],
+    districtSelect: null,
+    targetElement:null
   }),
   computed: {
     convert() {
@@ -83,6 +91,10 @@ export default {
     },
   },
   watch: {
+    provinceSelect(val) {
+      this.getDistrict()
+      return val
+    },
     search(val) {
       if (val.length >= 3) {
         this.searchPro()
@@ -98,8 +110,10 @@ export default {
     branch(val) {
       return val
     },
+    extra(val) {
+      this.extra = parseInt(val)
+    },
     discountSel(val) {
-      console.log(val)
       this.onDiscountTotal()
       return val
     },
@@ -119,9 +133,17 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.loading = false
-      this.getData()
+      if (this.$auth.user.branch) {
+        this.getData()
+        this.getType()
+        if(this.$auth.user.branch.type === 2) {
+          this.dialog = true
+          this.branchSelect = this.$auth.user.branch
+        }
+        //dialog
+      }
       this.getDiscount()
-      this.getType()
+      this.getProvince()
     })
     if (!this.$auth.loggedIn) {
       this.branchSelect = ""
@@ -136,12 +158,46 @@ export default {
     // this.qrTest()
   },
   methods: {
-    confirmExtra(){
+    async lockScroll() {
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      this.targetElement = await this.$refs.modalContent;
+      disableBodyScroll(this.targetElement);
+    },
+    unLockScroll() {
+      this.targetElement = this.$refs.modalContent;
+      enableBodyScroll(this.targetElement);
+    },
+    async getDistrict() {
+      await this.$axios.get("/district", {
+        params: {
+          provinceNo: this.provinceSelect.no
+        }
+      }).then((res) => {
+        this.districtItems = res.data
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+    async getProvince() {
+      await this.$axios.get("/province").then((res) => {
+        this.provinceItems = res.data
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+    checkType() {
+      if (this.branchSelect) {
+        return this.branchSelect.type === 2
+      }
+      return false
+    },
+    confirmExtra() {
       this.extraSelect = {
-        id:1,
-        name:this.extra + " บาท",
+        id: 1,
+        name: this.extra + " บาท",
         type_discount: 1,
-        total:this.extra
+        total: this.extra
       }
       this.addDiscount(this.extraSelect)
       this.extra = 0
@@ -168,12 +224,15 @@ export default {
     },
     close() {
       if (this.$refs.form.validate()) {
+        this.getData()
+        this.getType()
         this.dialog = false
       }
     },
 
     async createOrder(val = 2) {
       this.dialogPay = false
+      this.unLockScroll()
       this.$nuxt.$loading.start()
       await this.$axios.post("/posOrder", {
         discount: this.discountSel.length > 0 ? this.discountSel[0].id : null,
@@ -185,11 +244,14 @@ export default {
         price: this.priceTotal,
         total: convert.calculateArray(this.desserts),
         discountTotal: this.discountTotal,
+        province: this.provinceSelect?this.provinceSelect.id:null,
+        district: this.districtSelect?this.districtSelect.id:null,
       }).then((res) => {
         this.desserts = []
         this.discountSel = []
         this.cash = 0
         this.changeMoney = 0.0
+        this.discountTotal = 0.00
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         this.$nuxt.$loading.finish()
@@ -225,9 +287,11 @@ export default {
     confirmClose() {
       this.dialogCancelPay = false
       this.dialogPay = false
+      this.unLockScroll()
     },
     pay() {
       this.dialogPay = true
+      this.lockScroll()
       this.isProm = this.branchSelect.promptpay
       if (this.isProm.type_promptpay === 3) {
         this.qr = JSON.parse(this.isProm.image_promptpay).fullPath
@@ -235,7 +299,14 @@ export default {
         let isPay = this.isProm.type_promptpay === 1 ? convert.formatPhoneNumber(this.isProm.promptpay) : convert.formatIc(this.isProm.promptpay)
         let amount = this.priceTotal
         const payload = generatePayload(isPay, {amount}) //First parameter : mobileNumber || IDCardNumber
-        const options = {type: 'svg', color: {dark: '#000', light: '#fff'}}
+        const options = {
+          type: 'svg',
+          color: {
+            dark: '#000',
+            light: '#fff'
+          },
+          // image: document.getElementById('image'),
+        }
         qrcode.toString(payload, options, (err, svg) => {
           if (err) return console.log(err)
           this.qr = svg
@@ -262,7 +333,6 @@ export default {
       let _discountSel = this.discountSel[0]
       this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(this.priceTotal / 100 * _discountSel.total)
       this.priceTotal -= this.discountTotal
-      console.log(this.priceTotal)
     },
     addDiscount(val) {
       this.discountSel.push(val)
@@ -295,11 +365,12 @@ export default {
       });
     },
 
-    async getData(_type = "") {
+    async getData(_type = null) {
       this.$nuxt.$loading.start()
       await this.$axios.get("/posProduct", {
         params: {
-          type: _type
+          type: _type,
+          branch: this.branch.id
         }
       }).then((res) => {
         this.cards = res.data
@@ -311,7 +382,11 @@ export default {
 
     async getType() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/posProductType").then((res) => {
+      await this.$axios.get("/posProductType",{
+        params:{
+          branch: this.branch.id
+        }
+      }).then((res) => {
         this.tags = res.data;
         this.tags.data.sort((a, b) => b.product.length - a.product.length)
         this.$nuxt.$loading.finish()

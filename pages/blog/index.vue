@@ -10,12 +10,10 @@
         <v-container fluid v-if="!loading" style="max-width: 1200px">
           <head-bar :title="headTitle">
             <v-row class="m-0" style="justify-content: right;">
-              <v-text-field outlined dense label="ค้นหาบทความ"
-                            style="min-width: 250px; max-width: 300px; border-radius: 15px;"
-                            hide-details></v-text-field>
+              <v-text-field outlined dense label="ค้นหาบทความ" style="min-width: 250px; max-width: 300px; border-radius: 15px;" hide-details></v-text-field>
 
               <v-autocomplete
-                outlined required :rules="rules" :items="instead" v-model="insteadSelect" hide-no-data
+                outlined required :rules="rules" :items="sort" v-model="sortItems" hide-no-data
                 class="ml-2" hide-spin-buttons
                 hide-selected return-object label="เรียงตามวันที่ล่าสุด" dense item-text="name" item-value="id"
                 hide-details

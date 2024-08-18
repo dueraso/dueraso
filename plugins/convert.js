@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 
 export default {
   formatPhoneNumber(phoneNumberString) {
+    if (phoneNumberString === null) return
     return phoneNumberString.replace(/^(\d{3})(\d{3})(\d{4})$/, '$1-$2-$3')
   },
   formatIc(phoneNumberString) {
@@ -16,6 +17,35 @@ export default {
     return parseFloat(val).toLocaleString(undefined, {
       minimumFractionDigits: fraction
     });
+  },
+
+  generatePasswork(length){
+    let newPassword = ""
+    const getRandomChar = () => {
+      const charSets = [
+        [48, 57],  // Numbers (0-9)
+        [65, 90],  // Uppercase letters (A-Z)
+        [97, 122], // Lowercase letters (a-z)
+        // [33],  // Special characters (!"#$%&'()*+,-./)
+        // [35],  // Special characters (!"#$%&'()*+,-./)
+        // [42, 43],  // Special characters (!"#$%&'()*+,-./)
+        // [91, 96],  // Special characters ([\]^_`)
+
+      ];
+
+      // Select a random character set
+      const charSet = charSets[Math.floor(Math.random() * charSets.length)];
+      // Generate a random character code from the selected set
+      const charCode = Math.floor(Math.random() *
+        (charSet[1] - charSet[0] + 1)) + charSet[0];
+      // Convert the character code to a character
+      return String.fromCharCode(charCode);
+    };
+
+    for (let i = 0; i < length; i++) {
+      newPassword += getRandomChar();
+    }
+    return newPassword
   },
 
   calculateArray(val, isMoney = false) {

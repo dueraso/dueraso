@@ -98,10 +98,10 @@
                     {{ convert.datetime(item.summary_at) }}
                   </td>
                   <td align="right" style="min-width: 100px">
-                    <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.add-budget`">
+                    <v-btn fab small text @click="openItem(item)" v-role-or-permission="`admin|edit.add-budget`">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.add-budget`">
+                    <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`admin|delete.add-budget`">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                   </td>
@@ -116,6 +116,7 @@
                         v-model="page"
                         :length="desserts.meta.last_page"
                         circle
+                        color="#A57156"
                       ></v-pagination>
                     </div>
                   </td>

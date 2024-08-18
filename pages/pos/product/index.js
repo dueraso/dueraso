@@ -1,11 +1,15 @@
 import dayjs from "dayjs";
-import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
-import super_admin from "@/middleware/super";
+import DialogMid from "~/components/DialogMid.vue";
+import Checkbox from 'primevue/checkbox';
 
 export default {
   middleware: ['auth', isAdmin],
   layout: "seller-layout",
+  components: {
+    DialogMid,
+    Checkbox
+  },
   head() {
     return {
       title: this.headTitle,
@@ -22,6 +26,7 @@ export default {
       loading: true,
       search: "",
       dialog: false,
+      dialogCopy: false,
       dialogDelete: false,
       valid: false,
       isLoading: false,
@@ -35,6 +40,11 @@ export default {
         },
         {
           title: "ประเภท",
+          width: "",
+          text: "text-left"
+        },
+        {
+          title: "สาขา",
           width: "",
           text: "text-left"
         },
@@ -53,7 +63,11 @@ export default {
         meta: {}
       },
       item: {},
-      page: 1
+      page: 1,
+      branch: null,
+      copy: [],
+      itemSelect: null,
+      selectedValues: []
     };
   },
 
@@ -61,8 +75,15 @@ export default {
     this.$nextTick(() => {
       this.loading = false
       this.getData()
+      this.getBranch()
       this.getProductType()
     })
+  },
+
+  computed: {
+    validateCheckbox() {
+      return [this.copy.length > 0 || ""]
+    }
   },
 
   watch: {
@@ -89,6 +110,45 @@ export default {
   },
 
   methods: {
+    check(val) {
+      if (this.itemSelect === null) return
+      return this.itemSelect.branch.id === val
+    },
+    async confirmCopy() {
+      await this.$axios.post(`copyProduct`, {
+        branch: this.copy,
+        product: this.itemSelect
+      }).then((res) => {
+        this.dialogCopy = false
+        this.getData()
+      }).catch((e) => {
+        console.log(e)
+      })
+      // console.log(this.itemSelect)
+      // console.log(this.copy)
+    },
+    openCopy(val) {
+      // if (val) {
+      //   console.log(val)
+        this.itemSelect = val
+        // let d = Object.assign({},val)
+        // let d = val
+        // d.branch = this.itemSelect.branch.id
+        // console.log(d)
+        // console.log(this.branch)
+        this.dialogCopy = true
+      // }
+    },
+
+    async getBranch() {
+      await this.$axios.get("branch").then((res) => {
+        this.branch = res.data
+        console.log(res.data)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+
     async uploadImage() {
       if (this.selectedFile) {
         const formData = new FormData();

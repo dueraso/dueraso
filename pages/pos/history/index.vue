@@ -87,6 +87,7 @@
                     <v-pagination
                       v-model="page"
                       :length="desserts.last_page"
+                      color="#A57156"
                       circle
                     ></v-pagination>
                   </div>

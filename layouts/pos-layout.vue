@@ -18,6 +18,11 @@
   line-height: 25px;
   height: 25px;
 }
+
+.v-application .primary--text{
+  caret-color: #A57156 !important;
+  color: #A57156 !important;
+}
 </style>
 <script>
 import ToolbarSeller from "~/components/ToolbarSeller";

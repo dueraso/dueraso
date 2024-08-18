@@ -9,84 +9,85 @@
         </div>
         <v-container fluid v-if="!loading">
           <head-bar :title="headTitle" :callback="openItem" per="add.users">
-                                      <v-btn rounded @click="$router.push(`/dashboard/users/role`)" class="ml-3" color="#B27D41" dark small>
+            <v-btn rounded @click="$router.push(`/dashboard/users/role`)" class="ml-3" color="#B27D41" dark small>
               <v-icon small>mdi-lock</v-icon>
               จัดการสิทธิ์
             </v-btn>
           </head-bar>
           <v-col>
             <div style=" overflow-x:auto;">
-            <table style="width:100%">
-              <thead>
-              <tr>
-                <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
-                    style="color: #846537" class="pl-3"
-                    >{{ item.title }}
-                </th>
-                <th width="150px" style="background-color: #f3f1ed;">
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
-                <td class="pr-0" style="min-width: 150px">
-                  {{ item.name }}
-                </td>
-                <td class="pr-0" style="min-width: 90px">
-                  {{ item.email }}
-                </td>
-                <td class="pr-0" style="min-width: 130px">
-                  {{ convert.formatPhoneNumber(item.phone) }}
-                </td>
-                <td class="pr-0">
-                  {{ status(item.status) }}
-                </td>
-                <td class="pr-0">
-                  {{ item.roles.name }}
-                </td>
-                <td class="pr-0" style="min-width: 130px">
-                  {{ convert.datetime(item.created_at) }}
-                </td>
-                <td align="right" style="min-width: 140px">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn fab small text @click="openItem(item)" :disabled="item.roles.id === 1"
-                             v-role-or-permission="`super|edit.users`"
-                             v-bind="attrs"
-                             v-on="on">
-                        <v-icon>mdi-shield-key-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>รีเซ็ตรหัสผ่าน</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn fab small text @click="openItem(item)" :disabled="item.roles.id === 1"
-                             v-role-or-permission="`super|edit.users`"
-                             v-bind="attrs"
-                             v-on="on">
-                        <v-icon>mdi-pen</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>แก้ไขข้อมูล</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn fab small text @click="onDelete(item)" :disabled="item.roles.id === 1"
-                             v-role-or-permission="`super|edit.users`"
-                             v-bind="attrs"
-                             v-on="on">
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>ลบข้อมูล</span>
-                  </v-tooltip>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+              <table style="width:100%">
+                <thead>
+                <tr>
+                  <th v-for="(item, i) in tableHead" :key="i" :class="item.text"
+                      style="color: #846537" class="pl-3"
+                  >{{ item.title }}
+                  </th>
+                  <th width="150px" style="background-color: #f3f1ed;">
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
+                  <td class="pr-0" style="min-width: 150px">
+                    {{ item.name }}
+                  </td>
+                  <td class="pr-0" style="min-width: 90px">
+                    {{ item.email }}
+                  </td>
+                  <td class="pr-0" style="min-width: 130px">
+                    {{ convert.formatPhoneNumber(item.phone) }}
+                  </td>
+                  <td class="pr-0">
+                    {{ status(item.status) }}
+                  </td>
+                  <td class="pr-0">
+                    {{ item.roles.name }}
+                  </td>
+                  <td class="pr-0" style="min-width: 130px">
+                    {{ convert.datetime(item.created_at) }}
+                  </td>
+                  <td align="right" style="min-width: 140px">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn fab small text @click="openResetPass(item)" :disabled="item.isOwner === 1"
+                               v-role-or-permission="`admin|edit.users`"
+                               v-bind="attrs"
+                               v-on="on">
+                          <v-icon>mdi-shield-key-outline</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>รีเซ็ตรหัสผ่าน</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn fab small text @click="openItem(item)" :disabled="item.isOwner === 1"
+                               v-role-or-permission="`admin|edit.users`"
+                               v-bind="attrs"
+                               v-on="on">
+                          <v-icon>mdi-pen</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>แก้ไขข้อมูล</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn fab small text @click="onDelete(item)" :disabled="item.isOwner === 1"
+                               v-role-or-permission="`admin|edit.users`"
+                               v-bind="attrs"
+                               v-on="on">
+                          <v-icon>mdi-delete-outline</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>ลบข้อมูล</span>
+                    </v-tooltip>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </v-col>
+
           <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขผู้ใช้งาน" :callback="confirm">
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลส่วนตัว</p>
             <v-row class="m-0">
@@ -98,6 +99,10 @@
                   :rules="[rules.required]"/>
               </v-col>
               <v-col class="pb-0 pt-0" md="6">
+
+                <!--                <InputMask mask="(999) 999-9999" v-model="item.phone" placeholder="(999) 999-9999" label="เบอร์"-->
+                <!--                           :rules="[rules.required,rules.counter,rules.number]" required/>-->
+
                 <v-text-field
                   v-model="item.phone" label="เบอร์" outlined clearable dense style="border-radius: 15px"
                   required
@@ -106,8 +111,8 @@
                 />
               </v-col>
             </v-row>
-            <p class="p-3 m-0" style="font-weight: 500">ข้อมูลผู้ใช้งาน</p>
-            <v-row class="m-0">
+            <p class="p-3 m-0" style="font-weight: 500" v-if="hidePass">ข้อมูลผู้ใช้งาน</p>
+            <v-row class="m-0" v-if="hidePass">
               <v-col class="pb-0 pt-0" md="12">
                 <v-text-field
                   v-model="item.email" label="อีเมล" type="email" outlined clearable dense
@@ -118,22 +123,22 @@
                   :error="emailError"
                 />
               </v-col>
-              <v-col class="pb-0 pt-0" md="6" v-if="hidePass">
+              <v-col class="pb-0 pt-0" md="6">
                 <v-text-field
                   v-model="item.password" label="รหัสผ่าน" outlined dense
                   style="border-radius: 15px"
                   required
-                  :rules="[rules.required]"
+                  :rules="[rules.required,rules.password]"
                   :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="showPass ? 'text' : 'password'"
                   @click:append="showPass = !showPass"/>
               </v-col>
-              <v-col class="pb-0 pt-0" md="6" v-if="hidePass">
+              <v-col class="pb-0 pt-0" md="6">
                 <v-text-field
-                  v-model="item.password" label="รหัสผ่าน" outlined dense
+                  v-model="item.passwordConf" label="รหัสผ่านยืนยัง" outlined dense
                   style="border-radius: 15px"
                   required
-                  :rules="[rules.required]"
+                  :rules="[rules.required,rules.password]"
                   :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="showPass ? 'text' : 'password'"
                   @click:append="showPass = !showPass"/>
@@ -148,18 +153,18 @@
             </v-row>
             <p class="p-3 m-0" style="font-weight: 500">ข้อมูลอื่นๆ</p>
             <v-row class="m-0">
-<!--              <v-col class="pb-0 pt-0" md="6">-->
-<!--                <v-text-field-->
-<!--                  v-model="item.salary_id"-->
-<!--                  label="เงินเดือน"-->
-<!--                  outlined-->
-<!--                  clearable-->
-<!--                  dense-->
-<!--                  type="number" style="border-radius: 15px"-->
-<!--                  required-->
-<!--                  :rules="rules"-->
-<!--                ></v-text-field>-->
-<!--              </v-col>-->
+              <!--              <v-col class="pb-0 pt-0" md="6">-->
+              <!--                <v-text-field-->
+              <!--                  v-model="item.salary_id"-->
+              <!--                  label="เงินเดือน"-->
+              <!--                  outlined-->
+              <!--                  clearable-->
+              <!--                  dense-->
+              <!--                  type="number" style="border-radius: 15px"-->
+              <!--                  required-->
+              <!--                  :rules="rules"-->
+              <!--                ></v-text-field>-->
+              <!--              </v-col>-->
               <v-col class="pb-0 pt-0" md="6">
                 <v-autocomplete
                   outlined
@@ -202,7 +207,22 @@
               </v-col>
             </v-row>
           </dialog-mid>
+          <dialog-mid v-model="dialogReset" title="รีเซ็ตรหัสผ่าน" :callback="resetPassword">
+            <b-input-group class="mt-3 mb-3">
+              <b-input-group-prepend>
+                <b-button variant="outline-info" @click="genPass">สุ่มรหัส</b-button>
+              </b-input-group-prepend>
+              <b-form-input v-model="newPassword"></b-form-input>
+              <b-input-group-append>
+                <b-button variant="outline-success" @click="copyPass">คัดลอก</b-button>
+              </b-input-group-append>
+            </b-input-group>
+            <v-snackbar v-model="snackbarCopy" :timeout="2000" :value="true" app centered right top color="green" elevation="24" style="z-index: 30">
+              คัดลอกสำเร็จ
+            </v-snackbar>
+          </dialog-mid>
           <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
+
         </v-container>
       </v-main>
     </v-app>

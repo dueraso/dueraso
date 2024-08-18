@@ -140,71 +140,6 @@ export default {
         this.dialog = false
       }
     },
-
-    async createOrder(val = 2){
-      this.dialogPay = false
-      this.$nuxt.$loading.start()
-      await this.$axios.post("/posOrder",{
-        discount:this.discountSel.length>0?this.discountSel[0].id:null,
-        product:this.desserts,
-        customer:null,
-        branch:this.branch.id,
-        pay_type:val,
-        bill_number:this.branch.id+dayjs().format('YYMMDDHHmmss'),
-      }).then((res)=>{
-        this.desserts = []
-        this.discountSel = []
-        this.branch = {}
-        this.$nuxt.$loading.finish()
-        console.log(res.data)
-      }).catch((e)=>{
-        this.$nuxt.$loading.finish()
-        console.log(e)
-      })
-    },
-    getCash(val, isSum = true) {
-      if (isSum) {
-        this.cash = parseFloat(this.cash) + parseFloat(val)
-        this.changeMoney = parseFloat(this.cash - this.priceTotal)
-      } else {
-        this.cash = val
-        this.changeMoney = this.cash
-      }
-    },
-    sumChange(val, isDel = false) {
-      if (isDel) {
-        let _del = this.cash.toString().substring(0, this.cash.toString().length - 1)
-        this.cash = _del === "" ? 0 : _del
-      } else {
-        if (this.cash.toString().indexOf(".") > -1) {
-          if (this.cash.toString().substring(this.cash.toString().indexOf(".") + 1, this.cash.toString().length).length < 2) {
-            if (val === ".") return;
-            this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
-          }
-          // return
-        } else {
-          this.cash = val === "." ? this.cash.toString() + val : parseFloat(this.cash.toString() + val)
-        }
-      }
-      this.changeMoney = this.cash - this.priceTotal
-    },
-    confirmClose() {
-      this.dialogCancelPay = false
-      this.dialogPay = false
-    },
-    pay() {
-      this.dialogPay = true
-      const mobileNumber = '095-432-9380'
-      // const mobileNumber = '051-8-63753-3'
-      const IDCardNumber = '0-0000-00000-00-0'
-      let amount = this.priceTotal
-      const payload = generatePayload(mobileNumber, {amount}) //First parameter : mobileNumber || IDCardNumber
-      const options = {type: 'svg', color: {dark: '#000', light: '#fff'}}
-      qrcode.toString(payload, options, (err, svg) => {
-        if (err) return console.log(err)
-        this.qr = svg
-      })
-    },
     convertBranchSelect() {
       this.branch.name = this.branchSelect.organization.title + '(' + this.branchSelect.title + ')'
       this.branch.id = this.branchSelect.id
@@ -218,39 +153,13 @@ export default {
         console.log(e)
       })
     },
-    checkBranch() {
-      return this.$auth.user
-    },
     onDiscountTotal() {
       if (this.discountSel.length === 0) return
       let _discountSel = this.discountSel[0]
       this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(this.priceTotal / 100 * _discountSel.total)
       this.priceTotal -= this.discountTotal
     },
-    addDiscount(val) {
-      console.log(val)
-      this.discountSel.push(val)
-    },
-    removeDiscount(val) {
-      this.priceTotal += this.discountTotal
-      this.discountSel.splice(this.discountSel.indexOf(val), 1)
-    },
 
-    addOrder(val) {
-      val.total = 1
-      let s = this.desserts
-      s.push(val)
-      this.desserts = convert.countObjectArray(s)
-    },
-
-    removeOrder(val) {
-      this.desserts.splice(this.desserts.indexOf(val), 1)
-    },
-
-    onConfirm() {
-      console.log("")
-    },
-    myUtils,
     convertDay(day) {
       return dayjs(day).format("DD-MM-YYYY HH:mm:ss");
     },
@@ -264,22 +173,8 @@ export default {
     },
 
     async getData(_type = "") {
-      await this.$axios.get("/posProduct", {
-        params: {
-          type: _type
-        }
-      }).then((res) => {
+      await this.$axios.get("/posProduct").then((res) => {
         this.cards = res.data
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
-
-    async deleteItemConfirm() {
-      console.log(JSON.stringify(this.editedItem));
-      await this.$axios.delete(`/places/${this.editedItem.id}`).then(() => {
-        this.getData();
-        this.closeDelete();
       }).catch((error) => {
         console.log(error);
       });
@@ -291,40 +186,6 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
-    },
-
-    async searchPlaces() {
-      await this.$axios.get(`/filter_places`, {
-        params: {
-          search: this.search,
-        },
-      }).then((response) => {
-        this.desserts = response.data;
-      }).catch((error) => {
-        alert(error);
-        console.log(error);
-      });
-    },
-
-    async createItem() {
-      await this.getPlaceList();
-      this.$store.commit("setReadOnly", false);
-      // await this.$router.push("/update");
-    },
-
-    async editItem(item) {
-      // await this.$router.push({
-      //   path: "/update",
-      //   query: {
-      //     edite: Object.assign({}, item).id,
-      //   },
-      // });
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
     },
 
     closeDelete() {

@@ -47,7 +47,10 @@ export default {
         meta: {}
       },
       item: {},
-      page: 1
+      page: 1,
+      rules: [
+        v => !!v || 'จำเป็น',
+      ],
     };
   },
   mounted() {

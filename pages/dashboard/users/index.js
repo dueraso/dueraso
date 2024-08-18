@@ -1,7 +1,8 @@
 import isAdmin from "@/middleware/is-admin";
-import my from "@/utils/myFunction";
 import dayjs from "dayjs";
 import convert from "@/plugins/convert";
+import InputMask from 'primevue/inputmask';
+
 
 export default {
   layout: "seller-layout",
@@ -11,8 +12,15 @@ export default {
       title: this.headTitle,
     }
   },
+  components: {InputMask},
   watch: {
-    'item.email': 'validateEmailAvailability'
+    'item.email': 'validateEmailAvailability',
+    dialogReset(val){
+      if(!val){
+        this.newPassword = ""
+      }
+      return val
+    }
   },
   data() {
     return {
@@ -20,11 +28,13 @@ export default {
 
       loading: true,
       dialog: false,
+      dialogReset: false,
       hidePass: false,
       dialogDelete: false,
       b: true,
       rules: {
         required: value => !!value || 'จำเป็น',
+        password: value => (value && value.length >= 8) || 'รหัสขั้นต่ำ 8 ตัวขึ้นไป',
         counter: value => (value && value.length <= 10) && value.length === 10 || 'เบอร์โทรต้องครบ 10 ตัว',
         number: value => (value && !isNaN(value)) || 'กรอกตัวเลขเท่านั้น',
       }
@@ -75,9 +85,11 @@ export default {
       rolesSelect: {},
       branch: [],
       branchSelect: {},
+      newPassword: "",
 
       emailError: false,
       emailErrorMessages: '',
+      snackbarCopy: false,
     };
   },
   computed: {
@@ -86,8 +98,6 @@ export default {
     }
   },
   mounted() {
-    let d = "23d3233"
-    console.log(isNaN(d))
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
       this.loading = false
@@ -112,7 +122,6 @@ export default {
     },
 
     async validateEmailAvailability(value) {
-      console.log(value)
       try {
         let res = await this.$axios.get(`check-mail/${value}`);
 
@@ -178,11 +187,39 @@ export default {
 
     openItem(val) {
       // console.log("val> " + JSON.stringify(val))
-      this.hidePass = Object.keys(val) == 0
+      this.hidePass = Object.keys(val).length == 0
       this.dialog = true
       this.item = Object.assign({}, val)
       this.rolesSelect = this.item.roles
       this.branchSelect = this.item.branch
+    },
+
+    openResetPass(val){
+      this.item = Object.assign({}, val)
+      this.dialogReset = true
+    },
+
+    genPass() {
+      this.newPassword = convert.generatePasswork(12)
+      console.log(this.newPassword)
+    },
+
+    copyPass(){
+      navigator.clipboard.writeText(this.newPassword);
+      this.snackbarCopy = true
+    },
+
+    async resetPassword(){
+      this.$nuxt.$loading.start()
+      await this.$axios.put("/changePassword/" + this.item.id, {
+        password: this.newPassword,
+      }).then((res) => {
+        this.newPassword = ""
+        this.dialogReset = false
+        this.getData()
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
     async onUpdate() {
@@ -190,10 +227,9 @@ export default {
       await this.$axios.put("/users/" + this.item.id, {
         name: this.item.name,
         email: this.item.email,
-        password: this.item.password,
         phone: this.item.phone,
         salary_id: this.item.salary_id,
-        roles: !this.hidePass ? 1 : this.rolesSelect.id,
+        roles: this.rolesSelect.id,
         status: 1,
         branch: this.checkAdmin() ? this.branchSelect.id : null,
       }).then((res) => {
@@ -210,6 +246,7 @@ export default {
         name: this.item.name,
         email: this.item.email,
         password: this.item.password,
+        password_conf: this.item.passwordConf,
         phone: this.item.phone,
         salary_id: this.item.salary_id,
         roles: !this.hidePass ? 1 : this.rolesSelect.id,

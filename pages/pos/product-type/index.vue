@@ -27,10 +27,10 @@
                   {{ item.name }}
                 </td>
                 <td align="right">
-                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.product-type`">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`admin|edit.product-type`">
                     <v-icon>mdi-pen</v-icon>
                   </v-btn>
-                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.product-type`">
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`admin|delete.product-type`">
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-btn>
                 </td>
@@ -44,6 +44,7 @@
                     <v-pagination
                       v-model="page"
                       :length="desserts.meta.last_page"
+                      color="#A57156"
                       circle
                     ></v-pagination>
                   </div>

@@ -80,11 +80,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // console.log(this.$auth.user)
-      if (this.$auth.user.roles.name === "super" || this.$auth.user.roles.name === "admin") {
+      console.log(this.$auth.user)
+      if (/*this.$auth.user.roles.group === "*" || */this.$auth.user.roles.group === "admin") {
       this.$nuxt.$loading.start()
         this.getModule()
       } else {
+        if(localStorage.getItem("policy") === "null") return
         this.modules = convert.groupChildren(JSON.parse(localStorage.getItem("policy")).titleBar)
       }
     })

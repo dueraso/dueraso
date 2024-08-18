@@ -24,16 +24,16 @@
               <tbody>
               <tr v-for="(item, index) in desserts.data" :key="index" class="rounded-cell-all">
                 <td class="pr-0">
-                    {{ item.name }}
+                  {{ item.name }}
                 </td>
                 <td class="pr-0">
-                    {{ item.budget_type.name }}
+                  {{ item.budget_type.name }}
                 </td>
                 <td align="right">
-                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.budget`">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`admin|edit.budget`">
                     <v-icon>mdi-pen</v-icon>
                   </v-btn>
-                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.budget`">
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`admin|delete.budget`">
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-btn>
                 </td>
@@ -48,6 +48,7 @@
                       v-model="page"
                       :length="desserts.meta.last_page"
                       circle
+                      color="#A57156"
                     ></v-pagination>
                   </div>
                 </td>
@@ -55,49 +56,32 @@
               </tfoot>
             </table>
             <div class="text-center">
-              <v-dialog v-model="dialog" persistent width="786">
-                <v-form ref="form" v-model="valid">
-                  <v-card style="border-radius: 15px">
-                    <v-card-title>
-                      <h5 class="m-0" style="color: #5B4840">เพิ่ม/แก้ไขรายรับ รายจ่าย</h5>
-                      <v-spacer/>
-                      <v-btn icon @click="dialog = false">
-                        <v-icon color="#5B4840">mdi-close</v-icon>
-                      </v-btn>
-                    </v-card-title>
-
-                    <v-card-text class="p-3" style="background: #F6F6F6" align="center">
-                      <v-text-field
-                        v-model="item.name"
-                        label="ชื่อรายการ"
-                        outlined
-                        clearable
-                        dense
-                        :rules="rules" required
-                        style="border-radius: 15px"
-                      ></v-text-field>
-                      <v-autocomplete
-                        outlined
-                        auto-select-first
-                        style="border-radius: 15px"
-                        :items="instead"
-                        v-model="insteadSelect"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                        label="ประเภทรายการ"
-                        dense
-                        item-text="name"
-                        item-value="id"
-                        :rules="rules" required
-                      ></v-autocomplete>
-                      <v-btn color="#B27D41" @click="confirm" dark rounded width="340" class="mb-2">
-                        ตกลง
-                      </v-btn>
-                    </v-card-text>
-                  </v-card>
-                </v-form>
-              </v-dialog>
+              <dialog-mid v-model="dialog" title="เพิ่ม/แก้ไขรายรับ รายจ่าย" :callback="confirm">
+                <v-text-field
+                  v-model="item.name"
+                  label="ชื่อรายการ"
+                  outlined
+                  clearable
+                  dense
+                  :rules="rules" required
+                  style="border-radius: 15px"
+                ></v-text-field>
+                <v-autocomplete
+                  outlined
+                  auto-select-first
+                  style="border-radius: 15px"
+                  :items="instead"
+                  v-model="insteadSelect"
+                  hide-no-data
+                  hide-selected
+                  return-object
+                  label="ประเภทรายการ"
+                  dense
+                  item-text="name"
+                  item-value="id"
+                  :rules="rules" required
+                ></v-autocomplete>
+              </dialog-mid>
             </div>
             <dialog-delete v-model="dialogDelete" :confirm="confirmDel"/>
           </v-col>

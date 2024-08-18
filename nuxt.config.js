@@ -30,12 +30,16 @@ export default {
     },
     meta: [
       {charset: "utf-8"},
-      {name: "viewport", content: "width=device-width, initial-scale=1"},
+      // {name: "viewport", content: "width=device-width, initial-scale=1"},
       {hid: "description", name: "description", content: ""},
       {name: "format-detection", content: "telephone=no"},
+      {
+        name:"viewport",
+        content:"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+      }
     ],
     link: [
-      {rel: "icon", type: "image/x-icon", href: "/icon1.ico"},
+      {rel: "icon", type: "image/x-icon", href: "/dueraso.ico"},
       {
         href: "https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Belanosima&family=Indie+Flower&display=swap",
         rel: "stylesheet",
@@ -88,8 +92,8 @@ export default {
     "@nuxtjs/axios",
     // Doc: https://github.com/nuxt/content
     "@nuxt/content",
-    "@nuxtjs/auth",
-    // '@nuxtjs/auth-next',
+    // "@nuxtjs/auth",
+    '@nuxtjs/auth-next',
 
     "bootstrap-vue/nuxt",
 
@@ -123,9 +127,9 @@ export default {
     ],
   },
   //
-  // server: {
-  //   host: '0.0.0.0' // default: localhost
-  // },
+  server: {
+    host: '0.0.0.0' // default: localhost
+  },
 
   // serverMiddleware: [
   //   {
@@ -146,92 +150,54 @@ export default {
 
   auth: {
     strategies: {
-      local: false,
-      // google: {
-      //   token: {
-      //     property: "access_token",
-      //   },
-      //   user: {
-      //     property: "data",
-      //   },
-      //   endpoints: {
-      //     login: {
-      //       method: "post",
-      //       url: "https://oauth2.googleapis.com/token",
-      //       propertyName: "access_token",
-      //     },
-      //     user: {
-      //       method: "get",
-      //       url: "https://openidconnect.googleapis.com/v1/userinfo",
-      //       propertyName: "data",
-      //     },
-      //   },
-      // },
-
-      // google: {
-      //   endpoints: {
-      //     login: {
-      //       method: "post",
-      //       url: "https://oauth2.googleapis.com/token",
-      //       propertyName: "access_token",
-      //     },
-      //     user: {
-      //       method: "get",
-      //       url: "https://openidconnect.googleapis.com/v1/userinfo",
-      //       propertyName: "",
-      //     },
-      //   },
-      // },
-
-      local2: {
+      local1: {
+        scheme: "local",
         token: {
-          property: 'access_token',
+          property: "data.token",
           global: true,
-          // required: true,
-          // type: 'Bearer'
+          required: true,
+          type: "Bearer",
         },
         user: {
-          property: '',
-          // autoFetch: true
+          property: "data",
+          autoFetch: true,
         },
+        //      refreshToken: {  // it sends request automatically when the access token expires, and its expire time has set on the Back-end and does not need to we set it here, because is useless
+        //        property: "refresh_token",
+        //        data: "refresh_token",
+        //      },
         endpoints: {
-          token: {
-            method: "post",
-            url: "https://oauth2.googleapis.com/token",
-            propertyName: "access_token",
-          },
-          user: {
-            method: "get",
-            url: "https://openidconnect.googleapis.com/v1/userinfo",
-            propertyName: "",
-          },
+          login: { url: "/login", method: "post" },
+          //        refresh: { url: "/api/auth/refresh-token", method: "post" },
+          logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
+          user: { url: "/user", method: "get" },
         },
       },
 
-      // local: {
-      //   login: {
-      //     property: 'data.token',
-      //     global: true,
-      //     // required: true,
-      //     // type: 'Bearer'
-      //   },
-      //   user: {
-      //     property: 'data',
-      //     // autoFetch: true
-      //   },
-      //   endpoints: {
-      //     login: {
-      //       method: "post",
-      //       url: "login",
-      //       propertyName: "data.token",
-      //     },
-      //     user: {
-      //       method: "get",
-      //       url: "user",
-      //       propertyName: "data",
-      //     },
-      //   },
-      // },
+      local2: {
+        scheme: "local",
+        token: {
+          property: "access_token",
+          global: true,
+          required: true,
+          type: "Bearer",
+        },
+        user: {
+          property: "data",
+          autoFetch: true,
+        },
+        endpoints: {
+          login: {
+            method: "post",
+            url: "/auth/google/callback",
+            propertyName: "",
+          },
+          user: {
+            method: "get",
+            url: "/user",
+          },
+        },
+      },
     },
     redirect: {
       login: "/login",

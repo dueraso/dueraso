@@ -19,8 +19,8 @@ export default {
       dialogDelete: false,
       dialog: false,
       isLoading: false,
-      instead: null,
-      insteadSelect: null,
+      branchItems: null,
+      branchSelect: null,
       promptItems: null,
       promptSelect: null,
       typeSelect: null,
@@ -113,7 +113,7 @@ export default {
 
     async getOutlet() {
       await this.$axios.get("/organization").then((res) => {
-        this.instead = res.data.data
+        this.branchItems = res.data.data
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -148,7 +148,7 @@ export default {
     openItem(val) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      this.insteadSelect = Object.assign({}, val.organization)
+      this.branchSelect = Object.assign({}, val.organization)
       this.promptSelect = this.item.promptpay
       this.typeSelect = this.typeItems.find(d => d.id == this.item.type)
     },
@@ -159,7 +159,7 @@ export default {
         title: this.item.title,
         detail: this.item.detail,
         address: this.item.address,
-        organization: this.insteadSelect.id,
+        organization: this.branchSelect.id,
         promptpay: this.promptSelect.id,
         type: this.typeSelect.id
       }).then((res) => {
@@ -176,7 +176,7 @@ export default {
         title: this.item.title,
         detail: this.item.detail,
         address: this.item.address,
-        organization: this.insteadSelect.id,
+        organization: this.branchSelect.id,
         promptpay: this.promptSelect.id,
         type: this.typeSelect.id
       }).then((res) => {

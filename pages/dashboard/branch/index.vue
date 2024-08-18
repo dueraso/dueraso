@@ -33,10 +33,10 @@
                   {{ item.address ? item.address : '-' }}
                 </td>
                 <td align="right">
-                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`super|edit.branch`">
+                  <v-btn fab small text @click="openItem(item)" v-role-or-permission="`admin|edit.branch`">
                     <v-icon>mdi-pen</v-icon>
                   </v-btn>
-                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`super|delete.branch`">
+                  <v-btn fab small text @click="onDelete(item)" v-role-or-permission="`admin|delete.branch`">
                     <v-icon>mdi-delete-outline</v-icon>
                   </v-btn>
                 </td>
@@ -50,6 +50,7 @@
                     <v-pagination
                       v-model="page"
                       :length="desserts.meta.last_page"
+                      color="#A57156"
                       circle
                     ></v-pagination>
                   </div>
@@ -64,13 +65,13 @@
                     <v-autocomplete
                       outlined
                       auto-select-first
-                      :items="instead"
-                      v-model="insteadSelect"
+                      :items="branchItems"
+                      v-model="branchSelect"
+                      required
+                      :rules="rules"
                       hide-no-data
                       hide-selected
                       return-object
-                      required
-                      :rules="rules"
                       label="ชื่อร้าน"
                       dense
                       item-text="title"

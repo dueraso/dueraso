@@ -36,10 +36,10 @@
                     {{ convert.datetime(item.created_at) }}
                 </td>
                 <td align="right">
-                    <v-btn fab small text @click="openItem(item)" :disabled="item.id === 1" v-role-or-permission="`super|edit.role`">
+                    <v-btn fab small text @click="openItem(item)" :disabled="item.group === 'admin'" v-role-or-permission="`admin|edit.role`">
                       <v-icon>mdi-pen</v-icon>
                     </v-btn>
-                    <v-btn fab small text @click="onDelete(item)" :disabled="item.id === 1" v-role-or-permission="`super|edit.role`">
+                    <v-btn fab small text @click="onDelete(item)" :disabled="item.group === 'admin'" v-role-or-permission="`admin|edit.role`">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
                 </td>
@@ -53,6 +53,7 @@
                     <v-pagination
                       v-model="page"
                       :length="dessertsRole.meta.last_page"
+                      color="#A57156"
                       circle
                     ></v-pagination>
                   </div>

@@ -164,6 +164,7 @@
               </v-btn>
             </v-col>
           </v-row>
+
           <v-dialog v-model="dialog" width="600px" persistent>
             <v-card style="border-radius: 15px">
               <v-card-title style="font-size: 23px; color: #5B4840" class="lighten-2">
@@ -185,6 +186,43 @@
                     style="border-radius: 15px; mso-border-color-alt: #846537"
                     color="#846537"
                   ></v-autocomplete>
+                  <v-row class="m-0" v-if="checkType()">
+                  <v-col class="pl-0">
+                    <v-autocomplete
+                      outlined
+                      auto-select-first
+                      :items="provinceItems"
+                      v-model="provinceSelect"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                      label="จังหวัดที่ออกงาน"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      :rules="[rules.required]"
+                      required
+                      style="border-radius: 15px"
+                    ></v-autocomplete>
+                  </v-col>
+                    <v-col class="pr-0">
+                    <v-autocomplete
+                      outlined
+                      auto-select-first
+                      :items="districtItems"
+                      v-model="districtSelect"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                      label="อำเภอที่ออกงาน"
+                      dense
+                      item-text="name"
+                      item-value="id"
+                      :rules="[rules.required]" required
+                      style="border-radius: 15px"
+                    ></v-autocomplete>
+                  </v-col>
+                  </v-row>
                 </v-form>
                 <v-btn color="#B27D41" dark rounded @click="close" width="340px">
                   ตกลง
@@ -193,7 +231,7 @@
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialogPay" width="800" transition="dialog-bottom-transition" persistent>
-            <v-card style="border-radius: 15px; background-color: #F6F6F6">
+            <v-card style="border-radius: 15px; background-color: #F6F6F6" ref="modalContent">
               <v-toolbar>
                 <h5 style="color: #5B4840" class="m-0">
                   ชำระเงิน
@@ -392,6 +430,12 @@
   </div>
 </template>
 <style scoped>
+.no-scroll {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
 .truncate {
   max-width: 70%;
   white-space: nowrap;
@@ -416,6 +460,12 @@
 
 .v-text-field--outlined >>> fieldset {
   border-color: #A57156;
+}
+.no-scroll {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 </style>
 <script src="./index.js"/>
