@@ -27,16 +27,7 @@ export default {
       rules: [
         v => !!v || 'จำเป็น',
       ],
-      typeItems: [
-        {
-          id: 1,
-          name: "หน้าร้าน"
-        },
-        {
-          id: 2,
-          name: "ออกงาน"
-        }
-      ],
+      typeItems: [],
       tableHead: [
         {
           title: "ชื่อสาขา",
@@ -68,6 +59,7 @@ export default {
       this.getData()
       this.getOutlet()
       this.getPrompt()
+      this.branchTypeList()
     })
   },
 
@@ -115,6 +107,14 @@ export default {
       await this.$axios.get("/organization").then((res) => {
         this.branchItems = res.data.data
         this.$nuxt.$loading.finish()
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
+    async branchTypeList() {
+      await this.$axios.get("/branchTypeList").then((res) => {
+        this.typeItems = res.data
       }).catch((e) => {
         console.log(e);
       });

@@ -38,12 +38,12 @@
               </tbody>
               <tfoot>
               <tr>
-                <td colspan="1">รายการทั้งหมด {{ desserts.meta.to }}/{{ desserts.meta.total }} รายการ</td>
+                <td colspan="1">รายการทั้งหมด {{ desserts.to }}/{{ desserts.total }} รายการ</td>
                 <td colspan="1">
                   <div style="float: right;">
                     <v-pagination
                       v-model="page"
-                      :length="desserts.meta.last_page"
+                      :length="desserts.last_page"
                       color="#A57156"
                       circle
                     ></v-pagination>

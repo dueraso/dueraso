@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
-import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
-import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth',isAdmin],
@@ -14,7 +12,7 @@ export default {
   },
   data() {
     return {
-      headTitle: "จัดการประเภท",
+      headTitle: "จัดการประเภทสาขา",
       loading: true,
       search: "",
       dialogDelete: false,
@@ -24,7 +22,7 @@ export default {
       insteadSelect: null,
       tableHead: [
         {
-          title: "ชื่อสาขา",
+          title: "ชื่อประเภท",
           width: "",
           text: "text-left"
         },
@@ -54,18 +52,14 @@ export default {
   },
 
   methods: {
-    myUtils,
     convertDay(val) {
       if (val == undefined) return
       return dayjs(val).format('HH:mm')
     },
-    getColor(val) {
-      return (val !== 1) ? 'green' : 'red'
-    },
 
     async getData() {
       this.$nuxt.$loading.start()
-      await this.$axios.get("/budgetType",{
+      await this.$axios.get("/branchType",{
         params: {
           page: this.page,
           per:10
@@ -95,7 +89,7 @@ export default {
 
     async onUpdate(){
       this.dialog = false
-      await this.$axios.put("/budgetType/"+this.item.id,{
+      await this.$axios.put("/branchType/"+this.item.id,{
         name:this.item.name
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -107,7 +101,7 @@ export default {
 
     async onCreate(){
       this.dialog = false
-      await this.$axios.post("/budgetType",{
+      await this.$axios.post("/branchType",{
         name:this.item.name,
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -125,7 +119,7 @@ export default {
 
     async confirmDel(){
       this.dialogDelete = false
-      await this.$axios.delete("/budgetType/"+this.item.id).then((res) => {
+      await this.$axios.delete("/branchType/"+this.item.id).then((res) => {
         this.getData()
       }).catch((e) => {
         console.log(e)

@@ -98,7 +98,6 @@ export default {
         }
       }).then((res) => {
         this.modules = convert.groupChildren(res.data.data)
-        // console.log(this.modules)
         // console.log(JSON.parse(localStorage.getItem("policy")).titleBar)
         this.$nuxt.$loading.finish()
       }).catch((e) => {

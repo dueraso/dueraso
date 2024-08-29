@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      headTitle: "จัดการประเภท",
+      headTitle: "จัดการประเภทสินค้า",
       loading: true,
       search: "",
       valid: false,
