@@ -85,7 +85,9 @@ export default {
       enabled: false,
 
       provinceItems: [],
-      provinceSelect: null
+      provinceSelect: null,
+      districtItems: [],
+      districtSelect: null
     };
   },
 
@@ -115,6 +117,11 @@ export default {
       this.getData()
     },
 
+    provinceSelect(val) {
+      if(val == undefined) return
+      this.getDistrict()
+      return val
+    },
     async search(val) {
       if (val == null) return
       if (val.length < 2) return
@@ -146,6 +153,19 @@ export default {
     async getProvince() {
       await this.$axios.get("/province").then((res) => {
         this.provinceItems = res.data
+      }).catch((e) => {
+        console.log(e);
+      });
+    },
+
+    async getDistrict() {
+      console.log(this.provinceSelect)
+      await this.$axios.get("/district",{
+        params:{
+          "provinceNo": this.provinceSelect.no
+        }
+      }).then((res) => {
+        this.districtItems = res.data
       }).catch((e) => {
         console.log(e);
       });
@@ -224,13 +244,14 @@ export default {
     openItem(val) {
       this.dialog = true
       this.item = Object.assign({}, val)
-      // this.branchSelect = this.item.branch
+      this.branchSelect = val.branch
+      this.districtSelect = val.district
       this.insteadSelect = this.item.budget
       // this.usersSelect = this.item.employee
       this.provinceSelect = this.item.province
       this.total = this.item.total
 
-      this.branchSelect = this.$auth.user.branch
+      // this.branchSelect = this.$auth.user.branch
       this.usersSelect = this.users.find((d) => d.id === this.$auth.user.id)
     },
 
@@ -243,6 +264,7 @@ export default {
         budget: this.insteadSelect.id,
         total: this.total,
         province: this.checkType() ? this.provinceSelect.id : 0,
+        district: this.checkType() ? this.districtSelect.id : 0,
         summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {
         this.$nuxt.$loading.finish()
@@ -261,6 +283,7 @@ export default {
         budget: this.insteadSelect.id,
         total: this.total,
         province: this.checkType() ? this.provinceSelect.id : 0,
+        district: this.checkType() ? this.districtSelect.id : 0,
         summary_ref: 2,
         summary_at: this.enabled ? this.date + " " + dayjs().format("HH:mm:ss") : null,
       }).then((res) => {

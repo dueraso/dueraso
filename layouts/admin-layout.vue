@@ -1,106 +1,191 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-      dark
-      style="
-        background: linear-gradient(rgba(86, 97, 177, 1), rgba(30, 197, 169, 1)),
-          center center / cover no-repeat;">
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title"/>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <template v-slot:append>
-        <v-list>
-          <v-list-item @click="logout">
-            <v-list-item-action>
-              <v-icon>mdi-location-exit</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="'ออกจากระบบ'"/>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </template>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="#5561B0">
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" dark/>
-      <v-toolbar-title style="color: white" v-text="title"></v-toolbar-title>
-      <v-spacer/>
-      <v-icon dark>mdi-account-circle-outline</v-icon>
-      <p style="margin-bottom: 0px; color: white; margin-left: 12px">
-        ยินดีต้อนรับ, {{ name }}
-      </p>
+  <v-app dark style="background-color: #F3F1ED;">
+    <navigation-drawer v-model="drawer" :modules="modules"/>
+
+    <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
+      <!-- Top navigation -->
+      <div class="topnav" style="width: 100%">
+
+        <!-- Centered link -->
+        <div class="topnav-centered">
+          <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+            ADMIN
+          </strong>
+        </div>
+
+        <!-- Left-aligned links (default) -->
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="color: #B27D41"/>
+
+        <div class="topnav-right d-none d-md-flex ">
+          <v-row class="m-0">
+            <v-btn color="#E8AE0F" icon text>
+              <v-icon>mdi-bell-badge-outline</v-icon>
+            </v-btn>
+            <p class="m-0 mr-5 mt-2" style="font-size: 20px">
+              <v-icon>mdi-account-outline</v-icon>
+              ads
+<!--              {{ $auth.user.name }}-->
+            </p>
+            <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
+              <v-icon>mdi-keyboard-backspace</v-icon>
+              กลับหน้าเว็บ
+            </v-btn>
+            <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
+          </v-row>
+        </div>
+      </div>
     </v-app-bar>
-    <v-main>
-      <!--      <v-container style="padding: 0">-->
-      <Nuxt/>
-      <!--      </v-container>-->
-    </v-main>
+    <Nuxt/>
   </v-app>
 </template>
+<style>
+.topnav {
+  position: relative;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav-centered strong {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.topnav-centered pre {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 52%;
+  transform: translate(-37%, -58%);
+}
+
+.topnav-right {
+  float: right;
+}
+
+/* Responsive navigation menu (for mobile devices) */
+@media screen and (max-width: 1200px) {
+
+  .topnav-centered pre {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 53%;
+    transform: translate(-37%, -58%);
+  }
+}
+</style>
 <script>
-import Footer from "~/components/FooterBar";
-import Toolbar from "~/components/Toolbar-home.vue";
 
 export default {
-  components: {Footer, Toolbar},
   data() {
     return {
       clipped: true,
-      fixed: true,
-      miniVariant: false,
-      drawer: false,
-      name: "",
-      title: "TouristSpot",
-      items: [
+      drawer: true,
+      fixed: false,
+      right: false,
+      rightDrawer: false,
+      modules: [
         {
-          icon: "mdi-map-marker-radius-outline",
-          title: "ข้อมูลสถานที่",
-          to: "/",
+          title: "แดชบอร์ด",
+          icon: "mdi-home-variant-outline",
+          diractory: "/admin"
         },
-        // {
-        //   icon: "mdi-account-group-outline",
-        //   title: "ผู้ใช้งานในระบบ",
-        //   to: "/manage",
-        // },
-        // {
-        //   icon: "mdi-account-outline",
-        //   title: "ข้อมูลส่วนตัว",
-        //   to: "/profile",
-        // },
-      ],
+        {
+          title: "จัดการหน้าแรก",
+          icon: "mdi-folder-home-outline",
+          diractory: "/admin/home"
+        },
+        {
+          title: "จัดการบทความ",
+          icon: "mdi-newspaper-variant-multiple",
+          diractory: "/admin/blog"
+        },
+        {
+          title: "จัดการคำถาม",
+          icon: "mdi-help-box-multiple-outline",
+          diractory: "/admin/faq"
+        },
+        {
+          title: "จัดการติดต่อเรา",
+          icon: "mdi-card-account-phone-outline",
+          diractory: "/admin/contact-us"
+        },
+        {
+          title: "จัดการแพ็คเกจ",
+          icon: "mdi-gift-open",
+          diractory: "/admin/package"
+        },
+        {
+          title: "จัดการแอปพลิเคชัน",
+          icon: "mdi-apple-keyboard-command",
+          diractory: "/admin/all-apps"
+        },
+        {
+          title: "จัดการนโยบาย",
+          icon: "mdi-police-badge-outline",
+          diractory: "/admin/policy"
+        },
+        {
+          title: "จัดการคุกกี้",
+          icon: "mdi-cookie-outline",
+          diractory: "/admin/cookie"
+        },
+        {
+          title: "รายงาน",
+          icon: "mdi-chart-box-multiple-outline",
+          children:[
+            {
+              title: "รายงานการใช้งาน",
+              icon: "mdi-folder-home-outline",
+            },
+            {
+              title: "รายงาน",
+              icon: "mdi-folder-home-outline",
+            },
+          ],
+        }
+      ]
     };
   },
   mounted() {
-    // if(this.$auth.user.roles >= 2){
-    // this.items = this.items.filter((d)=>d.title !== 'รายงานระบบ')
-    this.items = this.items.filter((d) => d.title !== "ผู้ใช้งานในระบบ");
-    // }
-    // this.name = this.$auth.user.first_name;
-    // console.log(this.$auth.user.name )
+    this.$nextTick(() => {
+      // console.log(localStorage.getItem("admin"));
+      // if(localStorage.getItem("admin") === null) this.$router.push("/admin/login")
+      // this.saveLocal()
+    })
   },
-  methods: {
-    async logout() {
-      await this.$auth.logout();
-      await this.$router.push("/login");
-    },
-  },
+  // methods: {
+  //   saveLocal() {
+  //     let per = JSON.parse(localStorage.getItem("policy"))
+  //     if (per) {
+  //       this.$gates.setPermissions(per.permissions);
+  //     }
+  //     this.$gates.setRoles([this.$auth.user.roles.name]);
+  //   },
+  //   logout() {
+  //     this.$auth.logout()
+  //     localStorage.clear()
+  //   }
+  // }
 };
 </script>

@@ -198,6 +198,31 @@ export default {
           },
         },
       },
+
+      local3: {
+        scheme: "local",
+        token: {
+          property: "access_token",
+          global: true,
+          required: true,
+          type: "Bearer",
+        },
+        user: {
+          property: "data",
+          autoFetch: true,
+        },
+        endpoints: {
+          login: {
+            method: "post",
+            url: "/auth/google/callback",
+            propertyName: "",
+          },
+          user: {
+            method: "get",
+            url: "/user",
+          },
+        },
+      },
     },
     redirect: {
       login: "/login",
@@ -205,6 +230,23 @@ export default {
     },
   },
 
+  generate: {
+    fallback: false,
+    routes: [
+      '/admin',
+      '/admin/home',
+      '/admin/blog',
+      '/admin/faq',
+      '/admin/contact-us',
+      '/admin/package',
+      '/admin/all-apps',
+      '/admin/policy',
+      '/admin/cookie'
+    ],
+    exclude: [
+      /^\/admin/ // path starts with /admin
+    ]
+  },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ["~/assets/variables.scss"],

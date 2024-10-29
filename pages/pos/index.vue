@@ -26,8 +26,9 @@
               <v-row class="m-0">
                 <div style="height: 80dvh; overflow-y: auto;">
                   <v-col md="12" class="m-0 p-0">
-                    <v-sheet class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
-                             style="background-color: rgba(255,255,255,0)">
+                    <v-sheet
+                      class="p-0 m-0 ml-3 mr-3 ml-lg-0 mr-lg-0 pb-2"
+                      style="background-color: rgba(255,255,255,0)">
                       <v-chip-group mandatory active-class="brown--text">
                         <v-chip @click="getData()">
                           ทั้งหมด
@@ -69,24 +70,25 @@
             </v-col>
             <!--            order-->
             <v-col>
-              <v-row class="m-0">
+              <v-row class="m-0 pb-2">
                 <v-card
-                  class="m-1 text-center align-content-center"
-                  height="33.73" width="123.33"
+                  class="m-1 px-3 py-1 text-center" width="auto"
                   style="border-radius: 21px"
                   @click="customDiscount = true" :disabled="discountSel.length > 0">
                   <v-icon>mdi-ticket-percent-outline
                   </v-icon>
                   ระบุยอด
                 </v-card>
-                <v-col md="3" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i" class="mt-0 p-0 pb-2">
-                  <v-card class="m-1 p-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
-                          :disabled="discountSel.length > 0">
-                    <v-icon>mdi-ticket-percent-outline
-                    </v-icon>
-                    {{ item.name }}
-                  </v-card>
-                </v-col>
+                <!--                <v-col md="2" cols="6" xl="2" v-for="(item, i) in discount.data" :key="i" class="mt-0 mx-1 p-0 pb-2">-->
+                <v-card
+                  v-for="(item, i) in discount.data" :key="i"
+                  class="m-1 px-3 py-1 text-center" @click="addDiscount(item)" style="border-radius: 21px"
+                  width="auto" :disabled="discountSel.length > 0">
+                  <v-icon>mdi-ticket-percent-outline
+                  </v-icon>
+                  {{ item.name }}
+                </v-card>
+                <!--                </v-col>-->
               </v-row>
               <v-card class="p-3 mb-3" style="border-radius: 15px">
                 <v-row class="mb-0">
@@ -187,41 +189,41 @@
                     color="#846537"
                   ></v-autocomplete>
                   <v-row class="m-0" v-if="checkType()">
-                  <v-col class="pl-0">
-                    <v-autocomplete
-                      outlined
-                      auto-select-first
-                      :items="provinceItems"
-                      v-model="provinceSelect"
-                      hide-no-data
-                      hide-selected
-                      return-object
-                      label="จังหวัดที่ออกงาน"
-                      dense
-                      item-text="name"
-                      item-value="id"
-                      :rules="[rules.required]"
-                      required
-                      style="border-radius: 15px"
-                    ></v-autocomplete>
-                  </v-col>
+                    <v-col class="pl-0">
+                      <v-autocomplete
+                        outlined
+                        auto-select-first
+                        :items="provinceItems"
+                        v-model="provinceSelect"
+                        hide-no-data
+                        hide-selected
+                        return-object
+                        label="จังหวัดที่ออกงาน"
+                        dense
+                        item-text="name"
+                        item-value="id"
+                        :rules="[rules.required]"
+                        required
+                        style="border-radius: 15px"
+                      ></v-autocomplete>
+                    </v-col>
                     <v-col class="pr-0">
-                    <v-autocomplete
-                      outlined
-                      auto-select-first
-                      :items="districtItems"
-                      v-model="districtSelect"
-                      hide-no-data
-                      hide-selected
-                      return-object
-                      label="อำเภอที่ออกงาน"
-                      dense
-                      item-text="name"
-                      item-value="id"
-                      :rules="[rules.required]" required
-                      style="border-radius: 15px"
-                    ></v-autocomplete>
-                  </v-col>
+                      <v-autocomplete
+                        outlined
+                        auto-select-first
+                        :items="districtItems"
+                        v-model="districtSelect"
+                        hide-no-data
+                        hide-selected
+                        return-object
+                        label="อำเภอที่ออกงาน"
+                        dense
+                        item-text="name"
+                        item-value="id"
+                        :rules="[rules.required]" required
+                        style="border-radius: 15px"
+                      ></v-autocomplete>
+                    </v-col>
                   </v-row>
                 </v-form>
                 <v-btn color="#B27D41" dark rounded @click="close" width="340px">
@@ -436,6 +438,7 @@
   width: 100%;
   height: 100%;
 }
+
 .truncate {
   max-width: 70%;
   white-space: nowrap;
@@ -461,6 +464,7 @@
 .v-text-field--outlined >>> fieldset {
   border-color: #A57156;
 }
+
 .no-scroll {
   overflow: hidden !important;
   position: fixed;

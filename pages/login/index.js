@@ -48,7 +48,9 @@ export default {
   methods: {
     async googleOauth() {
       window.location.assign(`${serve.api}/auth/google`);
-        // `https://accounts.google.com/o/oauth2/v2/auth?client_id=${serve.clientId}&redirect_uri=${serve.redirectUri}&scope=${serve.scope}&response_type=code`
+      // window.location.assign(
+      //   `https://accounts.google.com/o/oauth2/v2/auth?client_id=${serve.clientId}&redirect_uri=${serve.redirectUri}&scope=${serve.scope}&prompt=consent&access_type=offline&response_type=code`
+      // )
     },
 
     async validate() {

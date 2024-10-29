@@ -1,6 +1,6 @@
 <template>
   <v-app dark style="background-color: #F3F1ED;">
-    <navigation-drawer v-model="drawer"/>
+    <navigation-drawer v-model="drawer" :modules="modules"/>
 
     <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
       <!-- Top navigation -->
@@ -11,6 +11,23 @@
           <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
             DUERASO
           </strong>
+          <pre class="m-0 pl-4" style="font-size: 10px; color: green">
+            Premium
+          </pre>
+<!--            <p>FREE</p>-->
+<!--          <v-chip-->
+<!--            class="ma-2 justify-center h1 test"-->
+<!--            color="success"-->
+<!--            outlined-->
+<!--            style="position: absolute;"-->
+<!--          >-->
+<!--            <v-icon left>-->
+<!--              mdi-vector-link-->
+<!--            </v-icon>-->
+<!--&lt;!&ndash;          <p>&ndash;&gt;-->
+<!--            Premium-->
+<!--&lt;!&ndash;          </p>&ndash;&gt;-->
+<!--          </v-chip>-->
         </div>
 
         <!-- Left-aligned links (default) -->
@@ -77,19 +94,35 @@
   transform: translate(-50%, -50%);
 }
 
+.topnav-centered pre {
+  float: none;
+  position: absolute;
+  top: 50%;
+  left: 52%;
+  transform: translate(-37%, -58%);
+}
+
 .topnav-right {
   float: right;
 }
 
 /* Responsive navigation menu (for mobile devices) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1200px) {
 
+  .topnav-centered pre {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 53%;
+    transform: translate(-37%, -58%);
+  }
 }
 </style>
 <script>
 import ToolbarSeller from "~/components/ToolbarSeller";
 import FooterBar from "~/components/FooterBar";
 import axios from "@/con/config";
+import convert from "@/plugins/convert";
 
 export default {
   components: {
@@ -103,14 +136,35 @@ export default {
       fixed: false,
       right: false,
       rightDrawer: false,
+      modules:[]
     };
   },
   mounted() {
     this.$nextTick(() => {
       this.saveLocal()
+
+      if (/*this.$auth.user.roles.group === "*" || */this.$auth.user.roles.group === "admin") {
+        this.$nuxt.$loading.start()
+        this.getModule()
+      } else {
+        if(localStorage.getItem("policy") === "null") return
+        this.modules = convert.groupChildren(JSON.parse(localStorage.getItem("policy")).titleBar)
+      }
     })
   },
   methods: {
+    async getModule() {
+      await this.$axios.get("module", {
+        params: {
+          per: 30
+        }
+      }).then((res) => {
+        this.modules = convert.groupChildren(res.data.data)
+        this.$nuxt.$loading.finish()
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     saveLocal() {
       let per = JSON.parse(localStorage.getItem("policy"))
       if(per) {

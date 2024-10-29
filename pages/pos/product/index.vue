@@ -12,10 +12,17 @@
           <!--          <button v-role="'add-budget.writer'">Add-Article</button>-->
           <!--          <p v-role:unless="'super_super'">You are not an Super Admin!</p>-->
           <head-bar :title="headTitle" :callback="openItem" per="add.product">
-            <!--            <v-row class="m-0 text-right">-->
-            <!--              <v-text-field outlined dense style="border-radius: 15px" hide-details></v-text-field>-->
-            <!--            </v-row>-->
+            <v-row class="m-0" style="justify-content: right;">
+              <v-text-field
+                outlined dense style="border-radius: 15px; max-width: 200px"
+                hide-details prepend-inner-icon="mdi-magnify" label="ค้นหา" placeholder="ค้นหาชื่อ" v-model="search"/>
 
+              <v-select
+                :items="itemsBranch" label="เลือกสาขา" outlined style="max-width: 200px; border-radius: 15px"
+                dense class="ml-2" hide-details return-object item-text="title" item-value="id" v-if="itemsBranch"
+                v-model="filterSelectBranch"/>
+<!--              {{JSON.stringify(branch.data)}}-->
+            </v-row>
           </head-bar>
           <v-col>
             <table style="width:100%">
@@ -95,6 +102,14 @@
                     style="border-radius: 15px"
                     :rules="rules"/>
                 </v-row>
+
+                <v-autocomplete
+                  outlined required :rules="rules" :items="branch" v-model="selectBranch" hide-no-data
+                  v-if="item.id != ''"
+                  hide-selected return-object label="สาขา" dense item-text="title" item-value="id"
+                  style="border-radius: 15px" multiple chips clearable deletable-chips small-chips
+                ></v-autocomplete>
+
                 <v-file-input
                   v-model="selectedFile"
                   accept="image/*"
@@ -133,7 +148,7 @@
         <v-row class="m-0">
           <div
             class="m-1 col-auto p-2 pb-0 pt-0" style="background-color: #ECE6E0; border-radius: 15px"
-            v-for="(item, i) in branch.data" :key="i">
+            v-for="(item, i) in branch" :key="i">
             <v-checkbox
               v-model="copy"
               :label="item.title"

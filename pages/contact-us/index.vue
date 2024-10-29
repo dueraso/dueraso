@@ -9,8 +9,7 @@
         </div>
         <v-container fluid v-if="!loading" style="max-width: 1200px">
           <head-bar :title="headTitle"/>
-          <v-img src="./contact-us.png"
-                 style="left: 2%; bottom: 10%; position: absolute;"></v-img>
+          <v-img src="./contact-us.png" style="left: 2%; bottom: 10%; position: absolute;"></v-img>
           <v-row justify="center">
             <v-col cols="12" sm="6" align="center">
               <v-card style="border-radius: 15px" class="p-3">

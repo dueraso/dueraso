@@ -19,7 +19,7 @@
                     <v-img :src="item.icon" width="73"></v-img>
                   </v-col>
                 </v-card>
-                <h4 class="m-0 mt-3 pb-3 pl-3 pr-3">{{item.title}}</h4>
+                <h4 class="m-0 mt-3 pb-3 pl-3 pr-3" style="color: #A44E1C">{{item.title}}</h4>
               </v-card>
             </v-col>
           </v-row>

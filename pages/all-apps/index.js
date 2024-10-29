@@ -31,13 +31,20 @@ export default {
         },
         {
           id:3,
+          title:"จัดการ TikTok",
+          icon:"/tiktok.png",
+          rout:"/tiktok",
+          status:false
+        },
+        {
+          id:4,
           title:"จัดการลูกจ้าง",
           icon:"/icon2.png",
           rout:"",
           status:true
         },
         {
-          id:4,
+          id:5,
           title:"จัดการร้านอาหาร",
           icon:"/icon2.png",
           rout:"",

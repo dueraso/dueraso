@@ -112,7 +112,6 @@ export default {
     })
   },
   methods: {
-    myUtils,
     convertDay(val = "") {
       return dayjs().format("DD/MM/YYYY HH:mm")
     },
@@ -123,6 +122,8 @@ export default {
         }
       }).then((res) => {
         this.desserts = JSON.parse(localStorage.getItem("modules"))
+        console.log(this.desserts)
+        console.log(res.data)
         // this.desserts = convert.groupChildren(res.data)
         // this.desserts = res.data.sort((a, b) => a.sort - b.sort)
       }).catch((e) => {

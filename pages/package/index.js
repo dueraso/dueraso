@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
 import convert from "../../plugins/convert";
-import myUtils from "@/plugins/myUtils";
-import generatePayload from "promptpay-qr";
-import qrcode from "qrcode";
+import Carousel from 'primevue/carousel';
 
 export default {
   head() {
@@ -10,74 +8,160 @@ export default {
       title: this.headTitle,
     }
   },
-  data: () => ({
-    headTitle: "แพ็คเกจ",
-    loading: false,
-    cards: {},
-    calories: '',
-    tableHead: [
-      {
-        title: "ชื่อรายการ",
-        width: "",
-        text: "text-left"
+  components: {
+    Carousel
+  },
+  data() {
+    return {
+      headTitle: "แพ็คเกจ",
+      loading: false,
+      cards: {},
+      calories: '',
+      tableHead: [
+        {
+          title: "ชื่อรายการ",
+          width: "",
+          text: "text-left"
+        },
+        {
+          title: "จำนวน",
+          width: "15%",
+          text: "text-center"
+        },
+        {
+          title: "ราคา",
+          width: "20%",
+          text: "text-right"
+        },
+      ],
+      desserts: [],
+      discount: [],
+      discountSel: [],
+      tags: {},
+      total: 1,
+      rules: {
+        required: value => !!value || 'จำเป็น.',
+        min: value => value >= 1,
+        max: value => value <= 99,
       },
-      {
-        title: "จำนวน",
-        width: "15%",
-        text: "text-center"
-      },
-      {
-        title: "ราคา",
-        width: "20%",
-        text: "text-right"
-      },
-    ],
-    desserts: [],
-    discount: [],
-    discountSel: [],
-    tags: {},
-    total: 1,
-    rules: {
-      required: value => !!value || 'จำเป็น.',
-      min: value => value >= 1,
-      max: value => value <= 99,
-    },
-    branch: {},
-    branchList: [],
-    branchSelect: null,
-    priceTotal: 0.00,
-    discountTotal: 0.00,
-    dialog: false,
-    dialogPay: false,
-    dialogCancelPay: false,
-    qr: "",
-    tab: null,
-    valid: true,
-    cash: 0,
-    price: [
-      1000, 500, 100
-    ],
-    items: [
-      'web', 'shopping', 'videos', 'images', 'news',
-    ],
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    changeMoney: 0.00,
-    checkPayMoney:false,
+      branch: {},
+      branchList: [],
+      branchSelect: null,
+      priceTotal: 0.00,
+      discountTotal: 0.00,
+      dialog: false,
+      dialogPay: false,
+      dialogCancelPay: false,
+      qr: "",
+      tab: null,
+      valid: true,
+      cash: 0,
+      price: [
+        1000, 500, 100
+      ],
+      items: [
+        'web', 'shopping', 'videos', 'images', 'news',
+      ],
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      changeMoney: 0.00,
+      checkPayMoney: false,
 
 
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    // select: null,
-    checkbox: false,
-  }),
+      name: '',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+      ],
+      email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      // select: null,
+      checkbox: false,
+      products: [
+          {
+            "id": "1000",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#70B183",
+          },
+          {
+            "id": "1001",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#48B4E3",
+          },
+          {
+            "id": "1002",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#906EC5",
+          },
+          {
+            "id": "1000",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#70B183",
+          },
+          {
+            "id": "1001",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#48B4E3",
+          },
+          {
+            "id": "1002",
+            "icon": "mdi-storefront-outline",
+            "title": "แพ็คเกจทั่วไป",
+            "sunTitle": "เหมาะสำหรับร้านค้าเดี่ยว และ ผู้ที่พึ่งเริ่มใช้งานระบบ",
+            "detail": "- ระบบแคชเชียร์ \n- ระบบจัดการร้านค้าหลังบ้าน\n- ใช้ได้ 5 ผู้ใช้งานในระบบ\n- พื้นที่เก็บข้อมูล 10 G",
+            "price": "ฟรี",
+            "category": "Electronics",
+            "color": "#906EC5",
+          },
+        ],
+      responsiveOptions: [
+        {
+          breakpoint: '1024px',
+          numVisible: 3,
+          numScroll: 3
+        },
+        {
+          breakpoint: '600px',
+          numVisible: 2,
+          numScroll: 2
+        },
+        {
+          breakpoint: '480px',
+          numVisible: 1,
+          numScroll: 1
+        }
+      ]
+    }
+  },
+  productService: null,
+
   computed: {
     convert() {
       return convert
@@ -115,10 +199,12 @@ export default {
   created() {
     this.$nextTick(() => {
       this.loading = false
+      // this.productService = new ProductService();
     })
   },
 
   mounted() {
+    // this.productService.getProductsSmall().then(data => this.products = data.slice(0,9));
     this.getData()
     this.getDiscount()
     this.getType()
@@ -136,7 +222,7 @@ export default {
   },
   methods: {
     close() {
-      if(this.$refs.form.validate()){
+      if (this.$refs.form.validate()) {
         this.dialog = false
       }
     },

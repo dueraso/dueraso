@@ -137,17 +137,15 @@
                     </v-card-title>
 
                     <v-card-text class="p-3" style="background: #F6F6F6" align="center">
-                      <v-row>
+                      <v-autocomplete
+                        outlined auto-select-first :items="branch" v-model="branchSelect"
+                        hide-no-data hide-selected return-object label="ชื่อสาขา/ออกงาน/ไลฟ์สด" dense
+                        item-text="title"
+                        item-value="id" :rules="rules" required style="border-radius: 15px"
+                        :disabled="!$gates.hasAnyRole('admin|super')"
+                      ></v-autocomplete>
+                      <v-row v-if="checkType()">
                         <v-col>
-                          <v-autocomplete
-                            outlined auto-select-first :items="branch" v-model="branchSelect"
-                            hide-no-data hide-selected return-object label="ชื่อสาขา/ออกงาน/ไลฟ์สด" dense
-                            item-text="title"
-                            item-value="id" :rules="rules" required style="border-radius: 15px"
-                            :disabled="!$gates.hasAnyRole('admin|super')"
-                          ></v-autocomplete>
-                        </v-col>
-                        <v-col v-if="checkType()">
                           <v-autocomplete
                             outlined
                             auto-select-first
@@ -157,6 +155,23 @@
                             hide-selected
                             return-object
                             label="จังหวัดที่ออกงาน"
+                            dense
+                            item-text="name"
+                            item-value="id"
+                            :rules="rules" required
+                            style="border-radius: 15px"
+                          ></v-autocomplete>
+                        </v-col>
+                        <v-col>
+                          <v-autocomplete
+                            outlined
+                            auto-select-first
+                            :items="districtItems"
+                            v-model="districtSelect"
+                            hide-no-data
+                            hide-selected
+                            return-object
+                            label="อำเภอที่ออกงาน"
                             dense
                             item-text="name"
                             item-value="id"

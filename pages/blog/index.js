@@ -1,5 +1,10 @@
 import dayjs from "dayjs";
 import convert from "../../plugins/convert";
+// import Toast from 'primevue/toast';
+// import ToastService from 'primevue/toastservice';
+// import Button from 'primevue/button';
+// import Editor from 'primevue/editor';
+
 
 export default {
   head() {
@@ -7,9 +12,10 @@ export default {
       title: this.headTitle,
     }
   },
+  components: {
+  },
   data: () => ({
     headTitle: "บทความ",
-
     loading: false,
     tableHead: [
       {
@@ -39,6 +45,12 @@ export default {
     convert() {
       return convert
     },
+    height () {
+      if(this.$vuetify) {
+        return this.$vuetify.breakpoint.name
+      }
+      return ""
+    }
   },
   watch: {
     // changeMoney(val) {
@@ -52,5 +64,6 @@ export default {
       this.loading = false
     })
   },
-
+  methods:{
+  }
 };

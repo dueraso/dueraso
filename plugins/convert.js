@@ -101,5 +101,12 @@ export default {
       }
       return result;
     }, []);
+  },
+
+  height (val) {
+    if(val) {
+      return val.breakpoint.name
+    }
+    return ""
   }
 }
