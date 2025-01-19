@@ -1,5 +1,7 @@
 import pkg from "@/package.json";
 import convert from "@/plugins/convert";
+import Cookies from 'js-cookie';
+import config from "@/con/config";
 
 export default {
   layout: "auth-layout",
@@ -9,7 +11,7 @@ export default {
     };
   },
   data: () => ({
-    headTitle: "หน้าล็อกอิน",
+    headTitle: "หน้าล็อกอิน Admin",
     overlay: false,
     valid: true,
     email: "",
@@ -46,17 +48,33 @@ export default {
     async validate() {
       if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start();
-      await this.$axios.post("login", {
+      await config.post('/admin/login', {
         email: this.userName,
         password: this.password,
       }).then((res) => {
-        this.$nuxt.$loading.finish();
+        Cookies.set('auth_token', res.data.data.token, {expires: 7}); // เก็บ token ไว้ใน cookie
+        this.getUser()
       }).catch((e) => {
-        console.log(e)
+        this.$nuxt.$loading.finish();
         this.message = e.response.data.message;
         this.again = true
-        this.$nuxt.$loading.finish();
-      })
+        console.log(e)
+      });
     },
+
+    async getUser(){
+      await config.get('/user',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${Cookies.get('auth_token')}`,
+        }
+      }).then((res) => {
+        this.$nuxt.$loading.finish();
+        Cookies.set('get_user', JSON.stringify(res.data.data)); // เก็บ token ไว้ใน cookie
+        this.$router.push('/admin');
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   },
 };

@@ -5,7 +5,7 @@
         <v-card-title>
           <h5 class="m-0" style="color: #5B4840">{{ title }}</h5>
           <v-spacer/>
-          <v-btn icon @click="show = false">
+          <v-btn icon @click="close">
             <v-icon color="#5B4840">mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -57,6 +57,11 @@ export default {
         if (!this.$refs.form.validate()) return;
         !this.callback({})
       }
+    },
+
+    close(){
+      this.show = false
+      this.$refs.form.reset()
     }
   }
 }

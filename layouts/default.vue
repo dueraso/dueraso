@@ -1,5 +1,5 @@
 <template>
-  <v-app dark app fixed style="background: #F3F1ED" align="center" class="elevation-0">
+  <v-app dark app fixed style="background: #F3F1ED" class="elevation-0">
     <Toolbar class="d-none d-lg-flex"/>
     <ToolbarMainMobile class="d-flex d-lg-none"/>
     <nuxt/>
@@ -10,9 +10,10 @@
         Copyright © {{ new Date().getFullYear() }} dueraso.com All rights reserved. | Dev by dueraso
       </v-card-text>
     </v-footer>
-    <v-card width="100%"
-            style="bottom: 0; position: absolute; border-top-left-radius: 15px; border-top-right-radius: 15px;"
-            v-if="allowCookie">
+    <v-card
+      width="100%"
+      style="bottom: 0; position: absolute; border-top-left-radius: 15px; border-top-right-radius: 15px;"
+      v-if="allowCookie">
       <v-container>
         <v-row>
           <v-col class="text-left">

@@ -59,11 +59,25 @@ export default {
     // },
   },
 
-  created() {
+  mounted() {
     this.$nextTick(() => {
       this.loading = false
+      this.$recaptcha.destroy()
+      this.getData()
     })
   },
+
   methods:{
+    async getData(){
+      this.$nuxt.$loading.start()
+      await this.$axios.get("/blog").then(res => {
+        this.desserts = res.data
+        console.log(res.data);
+      }).catch((e) => {
+        console.log(e)
+      }).finally(()=>{
+        this.$nuxt.$loading.finish()
+      })
+    }
   }
 };

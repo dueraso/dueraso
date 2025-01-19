@@ -29,7 +29,7 @@
 
 <!--          <v-carousel-item>-->
 <!--            <v-row>-->
-              <v-col cols="4" v-for="item in 1" :key="item">
+              <v-col cols="12" md="4" v-for="item in 1" :key="item">
                 <v-card style="border-radius: 15px; text-align: -webkit-center; padding: 10px">
                   <v-img src="./arin_sponser.png" style=""/>
                   <v-card-title class="text-left p-0" style="color: #B27D41">

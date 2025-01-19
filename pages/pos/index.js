@@ -1,11 +1,9 @@
 import dayjs from "dayjs";
 import convert from "../../plugins/convert";
-import myUtils from "@/plugins/myUtils";
 import generatePayload from "promptpay-qr";
 import qrcode from "qrcode";
 import isPos from "~/middleware/is-pos";
 import isAdmin from "~/middleware/is-admin";
-// import {select} from "underscore";
 import {GlobalEventEmitter} from '@/utils/GlobalEventEmitter'
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 

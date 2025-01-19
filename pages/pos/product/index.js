@@ -87,7 +87,6 @@ created() {
       this.getProductType()
 
       // this.search = this.$route.query.q?this.$route.query.q:"";
-      console.log(this.$route.query.branch)
       this.loading = false
     })
   },
@@ -103,7 +102,6 @@ created() {
       this.getData()
     },
     filterSelectBranch(val) {
-      console.log(val)
       if (val == null) return
       this.filterSelectBranch = val
       this.branchId = val.id

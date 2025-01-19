@@ -2,7 +2,6 @@
 import pkg from '~/package.json'
 import isAdmin from "@/middleware/is-admin";
 import dayjs from "dayjs";
-import myUtils from "@/plugins/myUtils";
 import convert from "@/plugins/convert";
 
 export default {

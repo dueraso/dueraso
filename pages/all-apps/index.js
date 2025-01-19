@@ -57,6 +57,7 @@ export default {
   created() {
     this.$nextTick(() => {
       this.loading = false
+      this.$recaptcha.destroy()
     })
   },
 };

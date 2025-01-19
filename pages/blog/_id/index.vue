@@ -8,24 +8,19 @@
           </v-col>
         </div>
         <v-container fluid v-if="!loading" style="max-width: 1200px">
-          <head-bar :title="headTitle">
-            <v-row class="m-0" style="justify-content: right;">
-              <v-text-field outlined dense label="ค้นหาบทความ222" style="min-width: 250px; max-width: 300px; border-radius: 15px;" hide-details></v-text-field>
-
-              <v-autocomplete
-                outlined required :rules="rules" :items="sort" v-model="sortItems" hide-no-data
-                class="ml-2" hide-spin-buttons
-                hide-selected return-object label="เรียงตามวันที่ล่าสุด" dense item-text="name" item-value="id"
-                hide-details
-                style="border-radius: 15px; min-width: 250px; max-width: 300px"
-              ></v-autocomplete>
-            </v-row>
-          </head-bar>
-          <v-img src="./forums.png"
-                 style="left: 2%; bottom: 10%; position: absolute;"></v-img>
-          <v-row class="m-0">
-          </v-row>
-          <p>ไม่มีข้อมูล</p>
+          <img
+            src="/forums.png"
+            style="left: 2%; top: 30%; position: absolute;" alt="forums"/>
+          <v-img :src="item.image_main" class="mb-4" max-height="539" contain/>
+          <v-card style="border-radius: 15px" class="p-3">
+            <p style="font-size: 30px; color: #B27D41" class="m-0">
+              {{ item.title }}
+            </p>
+            <p class="mb-6">
+              {{ convert.datetime(item.created_at, "DD/MM/YYYY") }}&nbsp;&nbsp;<v-icon>mdi-eye</v-icon>&nbsp;{{item.view}}&nbsp;views
+            </p>
+            <div v-if="item.detail" v-html="`${item.detail}`"></div>
+          </v-card>
         </v-container>
       </v-main>
     </v-app>
@@ -48,6 +43,9 @@
 
 .my-large-input-field {
   font-size: 3em;
+}
+img{
+  max-width: -webkit-fill-available;
 }
 </style>
 <script src="./index.js"/>

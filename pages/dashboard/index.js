@@ -1,7 +1,12 @@
 import dayjs from "dayjs";
+import auth from "@/middleware/auth";
+// import role from "@/middleware/role";
 
 export default {
-  middleware: "auth",
+  middleware: auth,
+  auth: {
+    strategy: 'local1',
+  },
   layout: "seller-layout",
   data(){
     return{
@@ -17,6 +22,7 @@ export default {
   },
 
   mounted() {
+    // console.log(this.$route)
   },
 
   methods: {

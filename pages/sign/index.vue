@@ -16,7 +16,7 @@
         <v-col cols="12" sm="6" align="center" style="align-self: center">
           <h1
             style="font-weight: bold; font-size: 60px; color: #a44e1c" class="m-0">
-            DUERASO
+            ADMIN
           </h1>
           <p style="font-size: 40px; color: #6e4c2e; font-weight: lighter">
             ยินดีต้อนรับ
@@ -79,27 +79,6 @@
                   </v-btn>
                 </v-form>
               </v-col>
-              <v-col align-self="center" class="p-0">
-                <v-divider
-                  :thickness="1"
-                  class="border-opacity-100; pb-1"
-                  color="#B27D41"
-                  style="border-radius: 20px; width: 200px"
-                />
-                <p
-                  style="font-size: 16px; font-weight: normal; color: #846537" class="pt-5 mb-2">
-                  หรือเข้าสู่ระบบด้วย
-                </p>
-              </v-col>
-              <p
-                style="font-size: 16px; font-weight: normal; color: #846537"
-                class="mt-3"
-              >
-                ยังไม่มีบัญชี?
-                <a @click="$router.push('/register')" style="color: #2196f3"
-                >สมัคร</a
-                >
-              </p>
             </v-card-text>
           </v-card>
         </v-col>

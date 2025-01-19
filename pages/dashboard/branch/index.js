@@ -1,7 +1,5 @@
 import dayjs from "dayjs";
-import B from "@/utils/myFunction";
 import isAdmin from "@/middleware/is-admin";
-import myUtils from "@/plugins/myUtils";
 
 export default {
   middleware: ['auth', isAdmin],

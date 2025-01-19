@@ -85,7 +85,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.modules)
+    // console.log(this.modules)
   }
 }
 </script>

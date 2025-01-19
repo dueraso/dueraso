@@ -21,16 +21,15 @@
             <v-btn color="#E8AE0F" icon text>
               <v-icon>mdi-bell-badge-outline</v-icon>
             </v-btn>
-            <p class="m-0 mr-5 mt-2" style="font-size: 20px">
+            <p class="m-0 mr-5 mt-2" style="font-size: 20px" v-if="user">
               <v-icon>mdi-account-outline</v-icon>
-              ads
-<!--              {{ $auth.user.name }}-->
+              {{ user.name }}
             </p>
             <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
               <v-icon>mdi-keyboard-backspace</v-icon>
               กลับหน้าเว็บ
             </v-btn>
-            <v-btn class="custom-primary mt-1" rounded>ออกจากระบบ</v-btn>
+            <v-btn class="custom-primary mt-1" rounded @click="logout">ออกจากระบบ</v-btn>
           </v-row>
         </div>
       </div>
@@ -95,6 +94,7 @@
 }
 </style>
 <script>
+import Cookies from 'js-cookie';
 
 export default {
   data() {
@@ -164,17 +164,18 @@ export default {
             },
           ],
         }
-      ]
+      ],
+      user:null
     };
   },
   mounted() {
     this.$nextTick(() => {
-      // console.log(localStorage.getItem("admin"));
+      this.user = JSON.parse(Cookies.get("get_user"));
       // if(localStorage.getItem("admin") === null) this.$router.push("/admin/login")
       // this.saveLocal()
     })
   },
-  // methods: {
+  methods: {
   //   saveLocal() {
   //     let per = JSON.parse(localStorage.getItem("policy"))
   //     if (per) {
@@ -182,10 +183,11 @@ export default {
   //     }
   //     this.$gates.setRoles([this.$auth.user.roles.name]);
   //   },
-  //   logout() {
-  //     this.$auth.logout()
-  //     localStorage.clear()
-  //   }
-  // }
+    logout() {
+      Cookies.remove('auth_token');
+      Cookies.remove('get_user');
+      this.$router.push('/sign');
+    }
+  }
 };
 </script>

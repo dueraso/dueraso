@@ -10,6 +10,7 @@ export default {
   data: () => ({
     headTitle: "บทความ",
 
+    item: {},
     loading: false,
     tableHead: [
       {
@@ -47,10 +48,23 @@ export default {
     // },
   },
 
-  created() {
+  mounted() {
     this.$nextTick(() => {
       this.loading = false
+      this.getData()
     })
   },
 
+  methods: {
+    async getData() {
+      this.$nuxt.$loading.start()
+      await this.$axios.get(`/blog/${this.$route.params.id}`).then(res => {
+        this.item = res.data
+      }).catch((e) => {
+        console.log(e)
+      }).finally(() => {
+        this.$nuxt.$loading.finish()
+      })
+    }
+  }
 };

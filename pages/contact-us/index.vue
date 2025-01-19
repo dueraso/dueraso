@@ -24,39 +24,57 @@
                   </v-row>
                 </v-row>
                 <v-row class="m-0">
-                  <v-row class="m-0 pb-6">
-                    <v-icon class="mr-1">mdi-email-outline</v-icon>
-                    <h6 class="m-0">info@dueraso.com</h6>
-                  </v-row>
-                  <v-row class="m-0 pb-6">
-                    <v-icon class="mr-1">mdi-clock-time-three-outline</v-icon>
-                    <h6 class="m-0">08:00 - 18:00 น.</h6>
-                  </v-row>
-                  <v-row class="m-0">
-                    <v-icon class="mr-1">mdi-map-check-outline</v-icon>
-                    <h6 class="m-0">ที่อยู่ 999/01 ซ.ชื่อซอย หมู่ 1 ถ.ชื่อถนน ชื่อเขต
-                      ชื่อแขวง ชื่อจังหวัด 10999</h6>
-                  </v-row>
+                  <v-col cols="6" class="m-0 p-0 pb-6">
+                    <v-row class="m-0">
+                      <v-icon class="mr-1">mdi-email-outline</v-icon>
+                      <h6 class="m-0">info@dueraso.com</h6>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="6" class="m-0 p-0 pb-6">
+                    <v-row class="m-0">
+                      <v-icon class="mr-1">mdi-clock-time-three-outline</v-icon>
+                      <h6 class="m-0">08:00 - 18:00 น.</h6>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="12" class="m-0 p-0">
+                    <v-row class="m-0">
+                      <v-icon class="mr-1">mdi-map-check-outline</v-icon>
+                      <h6 class="m-0">ที่อยู่ -</h6>
+                    </v-row>
+                  </v-col>
                 </v-row>
               </v-card>
             </v-col>
+
             <v-col cols="12" sm="6" align="center" style="align-self: center">
-              <v-card style="border-radius: 15px" class="p-3">
-                <h3 style="color: #846537; font-weight: 600" class="pb-4">แบบฟอร์มติดต่อ</h3>
-                <v-text-field label="ชื่อ-นามสกุล ผู้ติดต่อ*" outlined style="border-radius: 15px" dense></v-text-field>
-                <v-row class="p-0">
-                  <v-col class="m-0">
-                    <v-text-field label="เบอร์โทรศัพท์" outlined style="border-radius: 15px" dense></v-text-field>
-                  </v-col>
-                  <v-col class="m-0">
-                    <v-text-field label="อีเมล" outlined style="border-radius: 15px" dense></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-text-field label="สนใจติดต่อเรื่อง" outlined style="border-radius: 15px" dense></v-text-field>
-                <v-textarea label="รายละเอียด" outlined style="border-radius: 15px"></v-textarea>
-                <v-btn block color="#B27D41" rounded dark style="font-weight: 600">ส่ง</v-btn>
-              </v-card>
+
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-card style="border-radius: 15px" class="p-3">
+                  <h3 style="color: #846537; font-weight: 600" class="pb-4">แบบฟอร์มติดต่อ</h3>
+                  <v-text-field
+                    label="ชื่อ-นามสกุล ผู้ติดต่อ*" outlined style="border-radius: 15px" dense v-model="item.name"
+                    required :rules="[rules.required]"/>
+                  <v-row class="p-0">
+                    <v-col class="m-0">
+                      <v-text-field
+                        label="เบอร์โทรศัพท์" outlined style="border-radius: 15px" dense
+                        v-model="item.phone"/>
+                    </v-col>
+                    <v-col class="m-0">
+                      <v-text-field
+                        label="ไอดีไลน์*" outlined style="border-radius: 15px" dense v-model="item.line_id"
+                        required :rules="[rules.required]"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-text-field
+                    label="สนใจติดต่อเรื่อง*" outlined style="border-radius: 15px" dense v-model="item.title"
+                    required :rules="[rules.required]"/>
+                  <v-textarea label="รายละเอียด" outlined style="border-radius: 15px" v-model="item.detail"/>
+                  <v-btn block color="#B27D41" rounded dark style="font-weight: 600" @click="onSubmit">ส่ง</v-btn>
+                </v-card>
+              </v-form>
             </v-col>
+
           </v-row>
         </v-container>
       </v-main>
