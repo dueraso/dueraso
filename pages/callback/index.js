@@ -15,9 +15,14 @@ export default {
     this.$auth.loginWith("local2", {
       data: this.$route.query
     }).then((res) => {
+      console.log(res.data)
       this.saveLocal();
       this.setManu();
-      this.$router.push({ path: `/config` });
+      if(this.$auth.user.status === 1){
+        this.$router.replace('/all-apps');
+      }else {
+        this.$router.push({path: `/first`});
+      }
     })
     // this.Login()
     // console.log(this.$route.query.code)

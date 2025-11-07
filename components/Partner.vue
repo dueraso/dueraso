@@ -1,7 +1,4 @@
 <template>
-  <v-col style="background-color: white">
-    <v-img src="./partner.png" style="left: 2%; bottom: 5%; position: absolute;"></v-img>
-    <v-container>
       <v-row class="m-0">
         <v-col cols="12">
           <v-row class="justify-content-end m-0">
@@ -50,8 +47,8 @@
 <!--          </v-carousel-item>-->
 <!--        </v-carousel>-->
       </v-row>
-    </v-container>
-  </v-col>
+<!--    </v-container>-->
+<!--  </v-col>-->
 </template>
 <script>
 import convert from "@/plugins/convert";

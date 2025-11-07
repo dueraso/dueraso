@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import isAdmin from "@/middleware/is-admin";
-import {createOrganization} from "@/plugins/apiUtils";
 
 export default {
   middleware: ['auth', isAdmin],
@@ -12,7 +11,7 @@ export default {
   },
   data() {
     return {
-      headTitle: "จัดการหมวดหมู่รายรับ-จ่าย",
+      headTitle: "จัดการประเภทการทำรายการ",
       valid: false,
       dialogDelete: false,
       loading: true,

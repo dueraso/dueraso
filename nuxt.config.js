@@ -53,18 +53,24 @@ export default {
         rel: "stylesheet",
         href: "https://unpkg.com/swiper/swiper-bundle.min.css",
       },
+
     ],
     script: [
       {
         src: "https://accounts.google.com/o/oauth2/v2/auth",
       },
+      // {
+      //   src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+      //   async: true,
+      //   'data-ad-client': 'ca-pub-2963702512784132', // replace with your AdSense publisher ID
+      // }
     ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "@/assets/css/custom-vuetify.scss",
-    'primeflex/primeflex.css'
+    'primeflex/primeflex.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -73,7 +79,10 @@ export default {
     "@/plugins/convert.js",
     "@/plugins/Head-util.js",
     "@/plugins/vue-gates.js",
-    '~/plugins/apiUtils.js'
+    '~/plugins/apiUtils.js',
+    '~/plugins/primevue.js',
+    { src: '~/plugins/quill-editor.js', mode: 'client' }
+    // '~/plugins/axios.js'
     // "@/plugins/socket.io.js",
   ],
 
@@ -104,7 +113,21 @@ export default {
     // 'socket.io',
     // Doc: https://www.primefaces.org/primevue/showcase-v2/#/setup
     'primevue/nuxt',
+    '@nuxtjs/recaptcha',
+    '@nuxtjs/google-adsense'
   ],
+
+  'google-adsense': {
+    onPageLoad: false,
+    pageLevelAds: false,
+  },
+
+  recaptcha: {
+    // hideBadge: true,
+    siteKey: '6LfBdoYqAAAAAH0ZovGjlpHqhUh-w7Z1b-kiXE2j', // Use your reCAPTCHA Site Key here
+    version: 3, // Can be 2 or 3
+    size: 'normal' // 'compact' or 'invisible' for v2
+  },
 
   "google-gtag": {
     id: "G-1GY0045ZV5",
@@ -148,6 +171,10 @@ export default {
     // baseURL: 'http://183.88.227.207:81/gps-api/public/api',
   },
 
+  router: {
+    // middleware: ['role'],
+  },
+
   auth: {
     strategies: {
       local1: {
@@ -171,6 +198,10 @@ export default {
           //        refresh: { url: "/api/auth/refresh-token", method: "post" },
           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
           user: { url: "/user", method: "get" },
+        },
+        redirect: {
+          login: "/login",
+          home: "/dashboard",
         },
       },
 
@@ -197,6 +228,10 @@ export default {
             url: "/user",
           },
         },
+        redirect: {
+          login: "/login",
+          home: "/dashboard",
+        },
       },
 
       local3: {
@@ -222,27 +257,49 @@ export default {
             url: "/user",
           },
         },
+        redirect: {
+          login: "/login",
+          home: "/dashboard",
+        },
       },
+
+      // admin: {
+      //   // Define admin strategy here (e.g., local or custom scheme)
+      //   scheme: 'local',
+      //   token: {
+      //     property: 'data.token',
+      //     global: true,
+      //   },
+      //   endpoints: {
+      //     login: { url: '/login', method: 'post' },
+      //     logout: false,
+      //     user: { url: '/user', method: 'get' },
+      //   },
+      //   redirect: {
+      //     login: '/sign',
+      //     home: '/admin',
+      //   },
+      // },
     },
-    redirect: {
-      login: "/login",
-      home: "/dashboard",
-    },
+    // redirect: {
+    //   login: "/login",
+    //   home: "/dashboard",
+    // },
   },
 
   generate: {
     fallback: false,
-    routes: [
-      '/admin',
-      '/admin/home',
-      '/admin/blog',
-      '/admin/faq',
-      '/admin/contact-us',
-      '/admin/package',
-      '/admin/all-apps',
-      '/admin/policy',
-      '/admin/cookie'
-    ],
+    // routes: [
+    //   '/admin',
+    //   '/admin/home',
+    //   '/admin/blog',
+    //   '/admin/faq',
+    //   '/admin/contact-us',
+    //   '/admin/package',
+    //   '/admin/all-apps',
+    //   '/admin/policy',
+    //   '/admin/cookie'
+    // ],
     exclude: [
       /^\/admin/ // path starts with /admin
     ]

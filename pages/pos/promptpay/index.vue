@@ -65,8 +65,9 @@
 
             <dialog-mid v-model="dialog" title="เพิ่ม / แก้ไขพร้อมเพย์" :callback="confirm">
               <v-row class="m-0">
-                <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.name" label="ชื่อ"
-                              outlined dense required :rules="rules" class="pr-4"/>
+                <v-text-field
+                  color="#A57156" style="border-radius: 15px" v-model="item.name" label="ชื่อ"
+                  outlined dense required :rules="rules" class="pr-4"/>
                 <v-select
                   outlined required style="border-radius: 15px" :rules="rules" :items="instead"
                   v-model="insteadSelect" hide-no-data
@@ -79,10 +80,11 @@
                   color="#A57156"
                 ></v-select>
               </v-row>
-              <v-text-field color="#A57156" style="border-radius: 15px" v-model="item.promptpay"
-                            :label="insteadSelect.name"
-                            outlined dense type="number" required
-                            :rules="rules" v-if="insteadSelect.id != 3"/>
+              <v-text-field
+                color="#A57156" style="border-radius: 15px" v-model="item.promptpay"
+                :label="insteadSelect.name"
+                outlined dense type="number" required
+                :rules="rules" v-if="insteadSelect.id != 3"/>
               <div v-else>
                 <v-file-input
                   v-model="selectedFile"

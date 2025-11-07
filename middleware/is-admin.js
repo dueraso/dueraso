@@ -1,4 +1,5 @@
 export default function ({store, redirect, route, error}) {
+  if(store.state.auth.user.status === 3)return redirect('/config');
   if (store.state.auth.user.roles.group === "admin"/* || store.state.auth.user.roles.id === 2*/) return
   let policy = JSON.parse(store.state.auth.user.roles.policy)
   if (policy) {

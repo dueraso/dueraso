@@ -17,6 +17,9 @@
                 <v-col class="p-0">
                   <h4 class="m-2 pl-1 pt-0 pb-1" style="color: #5B4840">ร้าน {{ branch.name }}</h4>
                 </v-col>
+                <v-btn fab small class="mr-3" color="#B27D41">
+                  <v-icon color="white">mdi-smart-card-outline</v-icon>
+                </v-btn>
                 <div style=" width: 200px">
                   <v-text-field
                     label="ค้นหาชื่อ" dense hide-details outlined prepend-inner-icon="mdi-magnify"
@@ -362,7 +365,23 @@
                   <!--                    </v-tab-item>-->
                   <!--                    <v-tab-item>dddd</v-tab-item>-->
                   <v-container fluid v-else>
-                    ยังไม่พร้อมใช้งาน
+                    <!--                    ยังไม่พร้อมใช้งาน-->
+                    <v-row>
+                      <v-col class="m-0 p-0" align="center">
+                        <v-btn
+                          height="100%" rounded color="#B27D41" @click="createOrder(3)" outlined class="shadow-box"
+                          style="color: white">
+                          <img src="/KLK-Plus.png" width="130px" alt="klk-plus"/>
+                        </v-btn>
+                      </v-col>
+                      <v-col class="m-0 p-0" align="center">
+                        <v-btn
+                          height="100%" rounded color="#B27D41" @click="createOrder(3)" outlined class="shadow-box"
+                          style="color: white">
+                          <img src="/KLK-Plus.png" width="130px" alt="klk-plus"/>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-container>
                   <!--                  </v-tabs>-->
                 </v-col>

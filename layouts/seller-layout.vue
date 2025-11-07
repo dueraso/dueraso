@@ -1,6 +1,6 @@
 <template>
   <v-app dark style="background-color: #F3F1ED;">
-    <navigation-drawer v-model="drawer" :modules="modules"/>
+    <navigation-drawer v-model="drawer" :modules="modules" v-if="!this.dialog"/>
 
     <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
       <!-- Top navigation -->
@@ -14,20 +14,20 @@
           <pre class="m-0 pl-4" style="font-size: 10px; color: green">
             Premium
           </pre>
-<!--            <p>FREE</p>-->
-<!--          <v-chip-->
-<!--            class="ma-2 justify-center h1 test"-->
-<!--            color="success"-->
-<!--            outlined-->
-<!--            style="position: absolute;"-->
-<!--          >-->
-<!--            <v-icon left>-->
-<!--              mdi-vector-link-->
-<!--            </v-icon>-->
-<!--&lt;!&ndash;          <p>&ndash;&gt;-->
-<!--            Premium-->
-<!--&lt;!&ndash;          </p>&ndash;&gt;-->
-<!--          </v-chip>-->
+          <!--            <p>FREE</p>-->
+          <!--          <v-chip-->
+          <!--            class="ma-2 justify-center h1 test"-->
+          <!--            color="success"-->
+          <!--            outlined-->
+          <!--            style="position: absolute;"-->
+          <!--          >-->
+          <!--            <v-icon left>-->
+          <!--              mdi-vector-link-->
+          <!--            </v-icon>-->
+          <!--&lt;!&ndash;          <p>&ndash;&gt;-->
+          <!--            Premium-->
+          <!--&lt;!&ndash;          </p>&ndash;&gt;-->
+          <!--          </v-chip>-->
         </div>
 
         <!-- Left-aligned links (default) -->
@@ -44,12 +44,15 @@
             </p>
             <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
               <v-icon>mdi-keyboard-backspace</v-icon>
-              กลับหน้าเว็บ
+              กลับหน้าแอพ
             </v-btn>
             <v-btn class="custom-primary mt-1" rounded @click="logout">ออกจากระบบ</v-btn>
           </v-row>
         </div>
       </div>
+      <dialog-mid v-model="dialog" title="แจ้งเตือน">
+
+      </dialog-mid>
     </v-app-bar>
     <Nuxt/>
   </v-app>
@@ -135,8 +138,9 @@ export default {
       drawer: true,
       fixed: false,
       right: false,
+      dialog: false,
       rightDrawer: false,
-      modules:[]
+      modules: []
     };
   },
   mounted() {
@@ -144,10 +148,13 @@ export default {
       this.saveLocal()
 
       if (/*this.$auth.user.roles.group === "*" || */this.$auth.user.roles.group === "admin") {
-        this.$nuxt.$loading.start()
-        this.getModule()
+        console.log(this.$auth.user)
+        if (this.$auth.user.status == 1) {
+          this.$nuxt.$loading.start()
+          this.getModule()
+        }else this.dialog = true
       } else {
-        if(localStorage.getItem("policy") === "null") return
+        if (localStorage.getItem("policy") === "null") return
         this.modules = convert.groupChildren(JSON.parse(localStorage.getItem("policy")).titleBar)
       }
     })
@@ -167,7 +174,7 @@ export default {
     },
     saveLocal() {
       let per = JSON.parse(localStorage.getItem("policy"))
-      if(per) {
+      if (per) {
         this.$gates.setPermissions(per.permissions);
       }
       this.$gates.setRoles([this.$auth.user.roles.name]);

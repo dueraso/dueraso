@@ -9,20 +9,22 @@
         </div>
         <div v-if="!loading">
           <v-carousel cycle height="765" hide-delimiter-background show-arrows-on-hover>
-            <NuxtLink :href="item.route" :target="item.target"
-               v-for="(item,i) in items"
-               :key="i" :to="item.route">
+            <NuxtLink
+              :href="item.route" :target="item.target"
+              v-for="(item,i) in items"
+              :key="i" :to="item.route">
               <v-carousel-item
                 :src="item.src"
                 reverse-transition="fade-transition"
               ></v-carousel-item>
             </NuxtLink>
           </v-carousel>
+
           <div style="background-color: #F3F1ED">
             <v-img src="./dueraso.png" style="left: 2%; position: absolute;"></v-img>
-            <v-container>
+            <v-container style="max-width: 1200px;">
               <v-row class="align-items-center m-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="6" height="115" viewBox="0 0 6 115" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="115" viewBox="0 0 6 115" fill="none">
                   <path d="M6 0H0V115H6V0Z" fill="#B27D41"/>
                 </svg>
                 <v-col>
@@ -32,64 +34,35 @@
                 </v-col>
               </v-row>
               <v-row class="m-0" style="padding-top: 70px;">
-                <v-col cols="12" md="2" class="p-2 mt-12" v-for="(item,i) in 7" :key="i">
-                  <!--          <v-card style="border-radius: 15px" class="p-4 my-2">-->
-                  <!--            <v-card-->
-                  <!--              style="left: 30%; top: -20%; position: absolute; background: #6E4C2E; border-radius: 100%;" width="100px"-->
-                  <!--              class="p-3">-->
-                  <!--              <v-img width="70" class="m-1" src="./icon2.png" style="border-radius: unset"></v-img>-->
-                  <!--            </v-card>-->
-                  <!--            <v-card-title style="color: #A44E1C; padding-top: 40px" class="px-0">-->
-                  <!--              จัดการง่าย <br>-->
-                  <!--              ทุกยอดขายและเมนู-->
-                  <!--            </v-card-title>-->
-                  <!--            <v-card-text style="color: #686868;" class="px-0">-->
-                  <!--              ค้นหา และจัดการเมนูได้ไว<br>-->
-                  <!--              เปิดโต๊ะปิดบิล<br>-->
-                  <!--              บันทึกยอดการขายรายวัน<br>-->
-                  <!--              ใช้งานสะดวกหน้าตาดูง่าย-->
-                  <!--            </v-card-text>-->
-                  <!--          </v-card>-->
-
-
+                <v-col class="p-2 mt-12" v-for="(item, i) in itemOptions" :key="i">
                   <v-card style="border-radius: 15px; height: 100%;" class="p-3">
-                    <v-card color="#70B183" style="border-radius: 100px; justify-self: center;" class="icon">
+                    <v-card color="#6E4C2E" style="border-radius: 100px; justify-self: center;" class="icon">
                       <!--              <v-icon size="50" dark class="m-5">mdi-storefront-outline</v-icon>-->
                       <v-img max-width="50" class="m-1" src="./icon2.png" style="border-radius: unset"></v-img>
                     </v-card>
 
-                    <v-card-title style="color: #A44E1C; padding-top: 40px" class="px-0">
-                      จัดการง่าย ทุกยอดขายและเมนู
+                    <v-card-title style="color: #A44E1C; padding-top: 40px" class="px-0 justify-center">
+                      {{ item.title }}
                     </v-card-title>
-                    <v-card-text style="color: #686868;" class="px-0">
-                      ค้นหา และจัดการเมนูได้ไว<br>
-                      เปิดโต๊ะปิดบิล<br>
-                      บันทึกยอดการขายรายวัน<br>
-                      ใช้งานสะดวกหน้าตาดูง่าย
+                    <v-card-text style="color: #686868; font-size: 16px" class="px-0 text-center">
+                      {{ item.detail }}
                     </v-card-text>
-                    <!--            <p style="font-size: 24px; color: #70B183; font-weight: 700; padding-top: 35px" class="mb-3 text-center">-->
-                    <!--              แพ็คเกจระดับทดลองใช้-->
-                    <!--            </p>-->
-                    <!--            <h5 style="color: #686868; font-weight: 400;">-->
-                    <!--              เหมาะสำหรับร้านค้าเดี่ยว และ-->
-                    <!--            </h5>-->
-                    <!--            <h5 style="color: #686868; font-weight: 400;" class="mb-7">-->
-                    <!--              ผู้ที่พึ่งเริ่มใช้งานระบบ-->
-                    <!--            </h5>-->
-                    <!--            <h2 class="text-left" style="color: #846537; font-weight: 700;">-->
-                    <!--              <s style="color: gray; font-size: 20px">฿199.-</s>-->
-                    <!--              ฿99.- -->
-                    <!--            </h2>-->
                   </v-card>
                 </v-col>
               </v-row>
             </v-container>
           </div>
-          <Partner/>
+
+          <v-col style="background-color: white">
+            <v-img src="./partner.png" style="left: 2%; bottom: 5%; position: absolute;"></v-img>
+            <v-container style="max-width: 1200px;">
+              <Partner/>
+            </v-container>
+          </v-col>
 
           <v-col style="background-color: #F3F1ED">
-            <v-img src="./forums.png" style="right: -5%; bottom: 5%; position: absolute;"></v-img>
-            <v-container>
+            <img src="/forums.png" style="right: -5%; bottom: 5%; position: absolute;" alt=""/>
+            <v-container style="max-width: 1200px;">
               <v-row class="m-0">
                 <v-col cols="12">
                   <v-row class="justify-content-end m-0">
@@ -122,6 +95,7 @@
               </v-row>
             </v-container>
           </v-col>
+
         </div>
       </v-main>
     </v-app>

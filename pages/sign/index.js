@@ -52,7 +52,7 @@ export default {
         email: this.userName,
         password: this.password,
       }).then((res) => {
-        Cookies.set('auth_token', res.data.data.token, {expires: 7}); // เก็บ token ไว้ใน cookie
+        Cookies.set('auth_token', res.data.data.token); // เก็บ token ไว้ใน cookie
         this.getUser()
       }).catch((e) => {
         this.$nuxt.$loading.finish();

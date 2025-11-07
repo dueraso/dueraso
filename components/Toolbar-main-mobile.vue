@@ -25,6 +25,8 @@
         <a style="color: #818181" @click="onChangePage('/contact-us')">ติดต่อเรา</a>
         <a style="color: #818181" @click="onChangePage('/package')">แพ็คเกจ</a>
         <a style="color: #818181" @click="onChangePage('/all-apps')">รวมแอป</a>
+        <a style="color: #818181" @click="onChangePage('/login')">เข้าสู่ระบบ</a>
+        <a style="color: #818181" @click="onChangePage('/login')">ลงทะเบียน</a>
       </v-overlay>
     </div>
   </v-card>
@@ -64,7 +66,7 @@
   top: 10%;
   width: 100%;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 0;
 }
 
 .overlay a {

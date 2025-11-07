@@ -11,7 +11,7 @@
       </v-card-text>
     </v-footer>
     <v-card width="100%" style="bottom: 0; position: absolute; border-top-left-radius: 15px; border-top-right-radius: 15px;" v-if="allowCookie">
-      <v-container>
+      <v-container style="max-width: 1200px;">
         <v-row>
           <v-col class="text-left">
             <p style="color: #453C17">

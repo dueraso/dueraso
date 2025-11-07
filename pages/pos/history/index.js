@@ -47,7 +47,7 @@ export default {
           text: "text-left"
         },
         {
-          title: "ออเดอร์",
+          title: "รายการ",
           width: "",
           text: "text-left"
         },
@@ -96,7 +96,7 @@ export default {
           text: "text-left"
         },
         {
-          title: "ออเดอร์",
+          title: "รายการ",
           width: "",
           text: "text-left"
         },
@@ -126,6 +126,7 @@ export default {
   },
   watch: {
     page(val) {
+      this.page = val
       this.getData()
     },
   },

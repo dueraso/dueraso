@@ -146,7 +146,7 @@ export default {
     },
 
     confirm() {
-      if (!this.$refs.form.validate()) return;
+      // if (!this.$refs.form.validate()) return;
       this.$nuxt.$loading.start()
       if (this.item.id) {
         // console.log("Update> " + this.item.id)

@@ -61,7 +61,7 @@ export default {
 
     close(){
       this.show = false
-      this.$refs.form.reset()
+      // this.$refs.form.reset()
     }
   }
 }

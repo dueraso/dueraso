@@ -161,9 +161,11 @@
         <table style="width:100%">
           <thead>
           <tr>
-            <th v-for="(item, i) in orderHeads" :key="i" :class="item.text"
-                style="color: #846537" class="pl-3"
-                :width="item.width">{{ item.title }}
+            <th
+              v-for="(item, i) in orderHeads" :key="i" :class="item.text"
+              style="color: #846537" class="pl-3"
+              :width="item.width">
+              {{ item.title }}
             </th>
           </tr>
           </thead>

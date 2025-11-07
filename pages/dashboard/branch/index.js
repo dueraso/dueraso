@@ -11,7 +11,7 @@ export default {
   },
   data() {
     return {
-      headTitle: "จัดการสาขา/ออกงาน/ไลฟ์สด",
+      headTitle: "จัดการสาขา/ออกงาน",
       loading: true,
       search: "",
       dialogDelete: false,
