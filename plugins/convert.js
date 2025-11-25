@@ -14,6 +14,7 @@ export default {
   },
 
   money(val = "0.00", fraction = 2) {
+    if(val === undefined)return 0.00
     return parseFloat(val).toLocaleString(undefined, {
       minimumFractionDigits: fraction
     });
