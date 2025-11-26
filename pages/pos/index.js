@@ -19,6 +19,9 @@ export default {
   data: () => ({
     headTitle: "แคชเชียร์",
 
+    // POS Mode: 'unit' = ขายเป็นชิ้น, 'weight' = ขายเป็นกรัม (มาล่า)
+    posMode: 'unit',
+
     t: 0,
     loading: false,
     cards: {},
@@ -78,7 +81,13 @@ export default {
     provinceSelect: null,
     districtItems: [],
     districtSelect: null,
-    targetElement:null
+    targetElement: null,
+
+    // Weight mode (มาล่า) data
+    weightDialog: false,
+    selectedProduct: null,
+    weightGrams: 0,
+    calculatedPrice: 0.0,
   }),
   computed: {
     convert() {
@@ -86,6 +95,22 @@ export default {
     },
     roles() {
       return this.$auth.user.roles <= 2;
+    },
+    // Weight mode: คำนวณจำนวนรายการ
+    totalItems() {
+      return this.desserts.reduce((sum, item) => {
+        return sum + (item.weightGrams ? 1 : item.total || 1);
+      }, 0);
+    },
+    // Weight mode: คำนวณยอดรวมจาก desserts
+    calculatedTotal() {
+      return this.desserts.reduce((sum, item) => {
+        return sum + parseFloat(item.price || 0);
+      }, 0);
+    },
+    // ตรวจสอบว่าเป็น weight mode หรือไม่
+    isWeightMode() {
+      return this.posMode === 'weight';
     },
   },
   watch: {
@@ -116,7 +141,12 @@ export default {
       return val
     },
     desserts(val) {
-      this.priceTotal = convert.calculateArray(val, true)
+      // ใช้ calculatedTotal สำหรับ weight mode, convert.calculateArray สำหรับ unit mode
+      if (this.posMode === 'weight') {
+        this.priceTotal = this.calculatedTotal;
+      } else {
+        this.priceTotal = convert.calculateArray(val, true);
+      }
       this.onDiscountTotal()
       return val
     },
@@ -153,7 +183,11 @@ export default {
       this.branchSelect = this.$auth.user.branch
       this.convertBranchSelect()
     }
-    // this.qrTest()
+
+    // ตรวจสอบ query parameter สำหรับ mode
+    if (this.$route.query.mode === 'weight' || this.$route.query.type === 'mala') {
+      this.posMode = 'weight'
+    }
   },
   methods: {
     async lockScroll() {
@@ -240,10 +274,11 @@ export default {
         pay_type: val,
         bill_number: this.branch.id + dayjs().format('YYMMDDHHmmss'),
         price: this.priceTotal,
-        total: convert.calculateArray(this.desserts),
+        total: this.posMode === 'weight' ? this.totalItems : convert.calculateArray(this.desserts),
         discountTotal: this.discountTotal,
         province: this.provinceSelect?this.provinceSelect.id:null,
         district: this.districtSelect?this.districtSelect.id:null,
+        posMode: this.posMode, // เพิ่ม mode เพื่อ track ว่าเป็นออเดอร์แบบไหน
       }).then((res) => {
         this.desserts = []
         this.discountSel = []
@@ -327,24 +362,85 @@ export default {
     },
 
     onDiscountTotal() {
-      if (this.discountSel.length === 0) return
+      const baseTotal = this.posMode === 'weight' ? this.calculatedTotal : convert.calculateArray(this.desserts, true);
+      if (this.discountSel.length === 0) {
+        this.priceTotal = baseTotal;
+        this.discountTotal = 0.00;
+        return
+      }
       let _discountSel = this.discountSel[0]
-      this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(this.priceTotal / 100 * _discountSel.total)
-      this.priceTotal -= this.discountTotal
+      this.discountTotal = _discountSel.type_discount === 1 ? _discountSel.total : Math.round(baseTotal / 100 * _discountSel.total)
+      this.priceTotal = baseTotal - this.discountTotal
     },
     addDiscount(val) {
       this.discountSel.push(val)
     },
     removeDiscount(val) {
-      this.priceTotal += this.discountTotal
       this.discountSel.splice(this.discountSel.indexOf(val), 1)
+      const baseTotal = this.posMode === 'weight' ? this.calculatedTotal : convert.calculateArray(this.desserts, true);
+      this.priceTotal = baseTotal;
+      this.discountTotal = 0.00;
     },
 
+    // เพิ่มสินค้าแบบ unit (ขายเป็นชิ้น)
     addOrder(val) {
       val.total = 1
       let s = this.desserts
       s.push(val)
       this.desserts = convert.countObjectArray(s)
+    },
+
+    // Weight mode methods (มาล่า)
+    openWeightDialog(product) {
+      this.selectedProduct = Object.assign({}, product);
+      this.weightGrams = 0;
+      this.calculatedPrice = 0.0;
+      this.weightDialog = true;
+    },
+
+    closeWeightDialog() {
+      this.weightDialog = false;
+      this.selectedProduct = null;
+      this.weightGrams = 0;
+      this.calculatedPrice = 0.0;
+    },
+
+    calculateWeightPrice() {
+      if (this.weightGrams && this.selectedProduct) {
+        this.calculatedPrice = parseFloat(
+          (this.selectedProduct.price * this.weightGrams).toFixed(2)
+        );
+      } else {
+        this.calculatedPrice = 0.0;
+      }
+    },
+
+    confirmAddWeightOrder() {
+      if (this.selectedProduct && this.weightGrams > 0) {
+        const orderItem = {
+          id: this.selectedProduct.id,
+          name: `${this.selectedProduct.name} (${this.weightGrams}g)`,
+          price: this.calculatedPrice,
+          total: 1,
+          weightGrams: parseFloat(this.weightGrams),
+          originalPrice: this.selectedProduct.price,
+          imageUrl: this.selectedProduct.imageUrl,
+          type: this.selectedProduct.type,
+          branch: this.selectedProduct.branch,
+        };
+
+        this.desserts.push(orderItem);
+        this.closeWeightDialog();
+      }
+    },
+
+    // Handle click บนสินค้า - เลือกตาม mode
+    handleProductClick(card) {
+      if (this.posMode === 'weight') {
+        this.openWeightDialog(card);
+      } else {
+        this.addOrder(card);
+      }
     },
 
     removeOrder(val) {
