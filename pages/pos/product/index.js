@@ -181,7 +181,7 @@ created() {
           }, ...this.branch]
         // let ddd = this.itemsBranch.find(async d => await (d.id == this.branchId))
         // console.log(this.selectBranch)
-        // console.log(ddd)
+        console.log(this.itemsBranch)
       }).catch((e) => {
         console.log(e)
       })
@@ -229,8 +229,9 @@ created() {
     },
 
     async getProductType() {
-      await this.$axios.get("/posProductType").then((res) => {
+      await this.$axios.get("/productTypeAll").then((res) => {
         this.instead = res.data.data
+        console.log(this.instead);
         this.$nuxt.$loading.finish()
       }).catch((e) => {
         console.log(e);
@@ -277,6 +278,7 @@ created() {
       this.dialog = true
       this.item = Object.assign({}, val)
       this.insteadSelect = this.item.type
+      this.selectBranch = this.item.branch
       this.file = this.item.imageUrl != null ? JSON.parse(this.item.imageUrl) : null
     },
 

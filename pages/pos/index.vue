@@ -32,7 +32,7 @@
                   </v-btn>
                   <v-btn value="weight" small>
                     <v-icon small left>mdi-scale</v-icon>
-                    กรัม
+                    ขีด
                   </v-btn>
                 </v-btn-toggle>
                 <!-- <v-btn fab small class="mr-3" color="#B27D41">
@@ -99,7 +99,7 @@
                             <h6 class="p-1 m-0">
                               <v-icon dark>mdi-tag-outline</v-icon>
                               {{ card.price }}
-                              {{ posMode === "weight" ? "บาท/กรัม" : "บาท" }}
+                              {{ posMode === "weight" ? "บาท/ขีด" : "บาท" }}
                             </h6>
                           </v-img>
                         </a>
@@ -174,7 +174,7 @@
                         <td class="text-center">
                           {{
                             item.weightGrams
-                              ? item.weightGrams + "g"
+                              ? item.weightGrams + "ขีด"
                               : item.total
                           }}
                         </td>
@@ -339,10 +339,46 @@
               <v-toolbar>
                 <h5 style="color: #5b4840" class="m-0">ชำระเงิน</h5>
                 <v-spacer></v-spacer>
+                <!-- ปุ่มสะสมแต้ม -->
+                <v-btn
+                  rounded
+                  small
+                  class="mr-2"
+                  :color="selectedMember ? '#4CAF50' : '#B27D41'"
+                  :outlined="!selectedMember"
+                  @click="loyaltyDialog = true"
+                >
+                  <v-icon left small>mdi-card-account-details-star</v-icon>
+                  {{ selectedMember ? selectedMember.name : "สะสมแต้ม" }}
+                </v-btn>
                 <v-btn icon @click="dialogCancelPay = true" color="#5B4840">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-toolbar>
+              <!-- แสดงข้อมูลสมาชิก (ถ้าเลือกแล้ว) -->
+              <v-alert
+                v-if="selectedMember"
+                dense
+                type="success"
+                class="mx-3 mt-2 mb-0"
+                style="border-radius: 10px"
+              >
+                <v-row align="center" class="m-0">
+                  <v-col class="p-0">
+                    <strong>{{ selectedMember.name }}</strong> |
+                    {{ selectedMember.phone }}<br />
+                    <small
+                      >แต้มสะสม: {{ selectedMember.points }} | จะได้รับ: +{{
+                        Math.floor(priceTotal / 10)
+                      }}
+                      แต้ม</small
+                    >
+                  </v-col>
+                  <v-btn icon small @click="clearMember">
+                    <v-icon small>mdi-close</v-icon>
+                  </v-btn>
+                </v-row>
+              </v-alert>
               <v-row class="m-0">
                 <v-col>
                   <v-row class="m-0 p-0">
@@ -679,7 +715,7 @@
                       สินค้า: {{ selectedProduct.name }}
                     </h6>
                     <p class="m-0" style="font-size: 14px; color: #846537">
-                      ราคา: {{ selectedProduct.price }} บาท/กรัม
+                      ราคา: {{ selectedProduct.price }} บาท/ขีด
                     </p>
                   </v-col>
                 </v-row>
@@ -689,7 +725,7 @@
                   label="จำนวนกรัม"
                   placeholder="ตัวอย่าง 100"
                   type="number"
-                  suffix="กรัม"
+                  suffix="ขีด"
                   style="border-radius: 15px"
                   v-model="weightGrams"
                   color="#846537"
@@ -737,6 +773,265 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+
+          <!-- Loyalty Dialog สำหรับสะสมแต้ม -->
+          <v-dialog v-model="loyaltyDialog" width="600" persistent>
+            <v-card style="border-radius: 15px">
+              <v-card-title style="font-size: 20px; color: #5b4840">
+                <v-icon left color="#B27D41"
+                  >mdi-card-account-details-star</v-icon
+                >
+                สะสมแต้ม
+                <v-spacer />
+                <v-btn icon @click="loyaltyDialog = false">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-card-title>
+              <v-card-text class="pt-4 pb-4" style="background-color: #f6f6f6">
+                <!-- Tabs สำหรับเมนูต่างๆ -->
+                <v-tabs v-model="loyaltyTab" color="#B27D41" grow class="mb-4">
+                  <v-tab>
+                    <v-icon left small>mdi-magnify</v-icon>
+                    ค้นหาสมาชิก
+                  </v-tab>
+                  <v-tab>
+                    <v-icon left small>mdi-account-plus</v-icon>
+                    สมัครใหม่
+                  </v-tab>
+                  <v-tab>
+                    <v-icon left small>mdi-gift</v-icon>
+                    แลกแต้ม
+                  </v-tab>
+                </v-tabs>
+
+                <v-tabs-items v-model="loyaltyTab">
+                  <!-- Tab 1: ค้นหาสมาชิก -->
+                  <v-tab-item>
+                    <v-text-field
+                      outlined
+                      dense
+                      label="ค้นหาด้วยเบอร์โทร / ชื่อ / รหัสสมาชิก"
+                      placeholder="0812345678"
+                      prepend-inner-icon="mdi-magnify"
+                      style="border-radius: 15px"
+                      v-model="memberSearch"
+                      color="#846537"
+                      @keyup.enter="searchMember"
+                      clearable
+                    />
+                    <v-btn
+                      block
+                      rounded
+                      color="#B27D41"
+                      dark
+                      class="mb-4"
+                      @click="searchMember"
+                      :loading="memberSearching"
+                    >
+                      <v-icon left>mdi-magnify</v-icon>
+                      ค้นหา
+                    </v-btn>
+
+                    <!-- ผลการค้นหา -->
+                    <v-card
+                      v-if="memberSearchResults.length > 0"
+                      class="pa-0"
+                      style="border-radius: 15px"
+                    >
+                      <v-list dense>
+                        <v-list-item-group>
+                          <v-list-item
+                            v-for="member in memberSearchResults"
+                            :key="member.id"
+                            @click="selectMember(member)"
+                            class="py-2"
+                          >
+                            <v-list-item-avatar color="#ECE6E0">
+                              <v-icon color="#B27D41">mdi-account</v-icon>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                              <v-list-item-title style="color: #5b4840">
+                                {{ member.name }}
+                              </v-list-item-title>
+                              <v-list-item-subtitle>
+                                {{ member.phone }} | แต้มสะสม:
+                                {{ member.points }}
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                              <v-chip small color="#B27D41" dark>
+                                {{ member.tier }}
+                              </v-chip>
+                            </v-list-item-action>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-card>
+
+                    <!-- ไม่พบสมาชิก -->
+                    <v-alert
+                      v-if="memberNotFound"
+                      type="warning"
+                      dense
+                      style="border-radius: 10px"
+                    >
+                      ไม่พบสมาชิก กรุณาตรวจสอบข้อมูลหรือสมัครสมาชิกใหม่
+                    </v-alert>
+                  </v-tab-item>
+
+                  <!-- Tab 2: สมัครสมาชิกใหม่ -->
+                  <v-tab-item>
+                    <v-form ref="newMemberForm">
+                      <v-text-field
+                        outlined
+                        dense
+                        label="ชื่อ-นามสกุล *"
+                        prepend-inner-icon="mdi-account"
+                        style="border-radius: 15px"
+                        v-model="newMember.name"
+                        :rules="[rules.required]"
+                        color="#846537"
+                      />
+                      <v-text-field
+                        outlined
+                        dense
+                        label="เบอร์โทรศัพท์ *"
+                        prepend-inner-icon="mdi-phone"
+                        style="border-radius: 15px"
+                        v-model="newMember.phone"
+                        :rules="[rules.required]"
+                        color="#846537"
+                        type="tel"
+                      />
+                      <v-text-field
+                        outlined
+                        dense
+                        label="อีเมล (ไม่บังคับ)"
+                        prepend-inner-icon="mdi-email"
+                        style="border-radius: 15px"
+                        v-model="newMember.email"
+                        color="#846537"
+                        type="email"
+                      />
+                      <v-menu
+                        v-model="birthdayMenu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            outlined
+                            dense
+                            label="วันเกิด (ไม่บังคับ)"
+                            prepend-inner-icon="mdi-cake-variant"
+                            style="border-radius: 15px"
+                            v-model="newMember.birthday"
+                            color="#846537"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          />
+                        </template>
+                        <v-date-picker
+                          v-model="newMember.birthday"
+                          @input="birthdayMenu = false"
+                          color="#B27D41"
+                        />
+                      </v-menu>
+                      <v-btn
+                        block
+                        rounded
+                        color="#B27D41"
+                        dark
+                        @click="registerMember"
+                        :loading="memberRegistering"
+                      >
+                        <v-icon left>mdi-account-plus</v-icon>
+                        สมัครสมาชิก
+                      </v-btn>
+                    </v-form>
+                  </v-tab-item>
+
+                  <!-- Tab 3: แลกแต้ม -->
+                  <v-tab-item>
+                    <v-alert
+                      v-if="!selectedMember"
+                      type="info"
+                      dense
+                      style="border-radius: 10px"
+                    >
+                      กรุณาเลือกสมาชิกก่อนแลกแต้ม
+                    </v-alert>
+                    <div v-else>
+                      <v-card
+                        class="pa-3 mb-3"
+                        style="border-radius: 15px; background-color: #ece6e0"
+                      >
+                        <v-row align="center" class="m-0">
+                          <v-avatar color="#B27D41" class="mr-3">
+                            <v-icon dark>mdi-account</v-icon>
+                          </v-avatar>
+                          <div>
+                            <h6 class="m-0" style="color: #5b4840">
+                              {{ selectedMember.name }}
+                            </h6>
+                            <p
+                              class="m-0"
+                              style="font-size: 14px; color: #846537"
+                            >
+                              แต้มคงเหลือ:
+                              <strong style="color: #b27d41">{{
+                                selectedMember.points
+                              }}</strong>
+                            </p>
+                          </div>
+                        </v-row>
+                      </v-card>
+
+                      <h6 style="color: #5b4840" class="mb-2">
+                        รางวัลที่แลกได้
+                      </h6>
+                      <v-card
+                        v-for="reward in rewardList"
+                        :key="reward.id"
+                        class="mb-2 pa-3"
+                        style="border-radius: 15px"
+                        :disabled="selectedMember.points < reward.points"
+                        @click="redeemReward(reward)"
+                      >
+                        <v-row align="center" class="m-0">
+                          <v-icon color="#B27D41" class="mr-3">{{
+                            reward.icon
+                          }}</v-icon>
+                          <div class="flex-grow-1">
+                            <p class="m-0" style="color: #5b4840">
+                              {{ reward.name }}
+                            </p>
+                            <small style="color: #846537">{{
+                              reward.description
+                            }}</small>
+                          </div>
+                          <v-chip
+                            small
+                            :color="
+                              selectedMember.points >= reward.points
+                                ? '#B27D41'
+                                : 'grey'
+                            "
+                            dark
+                          >
+                            {{ reward.points }} แต้ม
+                          </v-chip>
+                        </v-row>
+                      </v-card>
+                    </div>
+                  </v-tab-item>
+                </v-tabs-items>
               </v-card-text>
             </v-card>
           </v-dialog>

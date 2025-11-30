@@ -28,7 +28,7 @@ export default {
       insteadSelect: null,
       tableHead: [
         {
-          title: "ชื่อ-สกุล",
+          title: "ชื่อร้าน/แบรนด์",
           width: "",
           text: "text-left"
         },

@@ -1,22 +1,27 @@
 <template>
-  <v-app dark style="background-color: #F3F1ED;">
-    <navigation-drawer v-model="drawer" :modules="modules"/>
+  <v-app dark style="background-color: #f3f1ed">
+    <navigation-drawer v-model="drawer" :modules="modules" />
 
     <v-app-bar :clipped-left="clipped" fixed app class="pl-1 pr-1">
       <!-- Top navigation -->
       <div class="topnav" style="width: 100%">
-
         <!-- Centered link -->
         <div class="topnav-centered">
-          <strong class="m-0 pl-4 pr-4 custom-secondary" style="font-size: 35px;">
+          <strong
+            class="m-0 pl-4 pr-4 custom-secondary"
+            style="font-size: 35px"
+          >
             ADMIN
           </strong>
         </div>
 
         <!-- Left-aligned links (default) -->
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="color: #B27D41"/>
+        <v-app-bar-nav-icon
+          @click.stop="drawer = !drawer"
+          style="color: #b27d41"
+        />
 
-        <div class="topnav-right d-none d-md-flex ">
+        <div class="topnav-right d-none d-md-flex">
           <v-row class="m-0">
             <v-btn color="#E8AE0F" icon text>
               <v-icon>mdi-bell-badge-outline</v-icon>
@@ -25,16 +30,24 @@
               <v-icon>mdi-account-outline</v-icon>
               {{ user.name }}
             </p>
-            <v-btn color="#B27D41" rounded outlined class="pl-2 mr-3 mt-1" @click="$router.push('/all-apps')">
+            <v-btn
+              color="#B27D41"
+              rounded
+              outlined
+              class="pl-2 mr-3 mt-1"
+              @click="$router.push('/all-apps')"
+            >
               <v-icon>mdi-keyboard-backspace</v-icon>
               กลับหน้าเว็บ
             </v-btn>
-            <v-btn class="custom-primary mt-1" rounded @click="logout">ออกจากระบบ</v-btn>
+            <v-btn class="custom-primary mt-1" rounded @click="logout"
+              >ออกจากระบบ</v-btn
+            >
           </v-row>
         </div>
       </div>
     </v-app-bar>
-    <Nuxt/>
+    <Nuxt />
   </v-app>
 </template>
 <style>
@@ -57,7 +70,7 @@
 }
 
 .topnav a.active {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
 }
 
@@ -83,7 +96,6 @@
 
 /* Responsive navigation menu (for mobile devices) */
 @media screen and (max-width: 1200px) {
-
   .topnav-centered pre {
     float: none;
     position: absolute;
@@ -94,7 +106,7 @@
 }
 </style>
 <script>
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 export default {
   data() {
@@ -108,52 +120,57 @@ export default {
         {
           title: "แดชบอร์ด",
           icon: "mdi-home-variant-outline",
-          diractory: "/admin"
+          diractory: "/admin",
         },
         {
           title: "จัดการหน้าแรก",
           icon: "mdi-folder-home-outline",
-          diractory: "/admin/home"
+          diractory: "/admin/home",
         },
         {
           title: "จัดการบทความ",
           icon: "mdi-newspaper-variant-multiple",
-          diractory: "/admin/blog"
+          diractory: "/admin/blog",
         },
         {
           title: "จัดการคำถาม",
           icon: "mdi-help-box-multiple-outline",
-          diractory: "/admin/faq"
+          diractory: "/admin/faq",
         },
         {
           title: "จัดการติดต่อเรา",
           icon: "mdi-card-account-phone-outline",
-          diractory: "/admin/contact-us"
+          diractory: "/admin/contact-us",
         },
         {
           title: "จัดการแพ็คเกจ",
           icon: "mdi-gift-open",
-          diractory: "/admin/package"
+          diractory: "/admin/package",
         },
         {
           title: "จัดการแอปพลิเคชัน",
           icon: "mdi-apple-keyboard-command",
-          diractory: "/admin/all-apps"
+          diractory: "/admin/all-apps",
         },
         {
           title: "จัดการนโยบาย",
           icon: "mdi-police-badge-outline",
-          diractory: "/admin/policy"
+          diractory: "/admin/policy",
         },
         {
           title: "จัดการคุกกี้",
           icon: "mdi-cookie-outline",
-          diractory: "/admin/cookie"
+          diractory: "/admin/cookie",
+        },
+        {
+          title: "จัดการ Modules",
+          icon: "mdi-view-module",
+          diractory: "/admin/modules",
         },
         {
           title: "รายงาน",
           icon: "mdi-chart-box-multiple-outline",
-          children:[
+          children: [
             {
               title: "รายงานการใช้งาน",
               icon: "mdi-folder-home-outline",
@@ -163,9 +180,9 @@ export default {
               icon: "mdi-folder-home-outline",
             },
           ],
-        }
+        },
       ],
-      user:null
+      user: null,
     };
   },
   mounted() {
@@ -173,21 +190,21 @@ export default {
       this.user = JSON.parse(Cookies.get("get_user"));
       // if(localStorage.getItem("admin") === null) this.$router.push("/admin/login")
       // this.saveLocal()
-    })
+    });
   },
   methods: {
-  //   saveLocal() {
-  //     let per = JSON.parse(localStorage.getItem("policy"))
-  //     if (per) {
-  //       this.$gates.setPermissions(per.permissions);
-  //     }
-  //     this.$gates.setRoles([this.$auth.user.roles.name]);
-  //   },
+    //   saveLocal() {
+    //     let per = JSON.parse(localStorage.getItem("policy"))
+    //     if (per) {
+    //       this.$gates.setPermissions(per.permissions);
+    //     }
+    //     this.$gates.setRoles([this.$auth.user.roles.name]);
+    //   },
     logout() {
-      Cookies.remove('auth_token');
-      Cookies.remove('get_user');
-      this.$router.push('/sign');
-    }
-  }
+      Cookies.remove("auth_token");
+      Cookies.remove("get_user");
+      this.$router.push("/sign");
+    },
+  },
 };
 </script>

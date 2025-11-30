@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueApexCharts from 'vue-apexcharts'
+import Vue from "vue";
+import VueApexCharts from "vue-apexcharts";
 
 // import { Bar, Line, Doughnut, Pie } from 'vue-chartjs/legacy'
 // import {
@@ -15,6 +15,5 @@ import VueApexCharts from 'vue-apexcharts'
 //   ArcElement
 // } from 'chart.js'
 
-Vue.component('ApexCharts', {
-  extends: VueApexCharts
-})
+Vue.use(VueApexCharts);
+Vue.component("apexchart", VueApexCharts);
