@@ -92,6 +92,7 @@ export default {
     this.$nextTick(() => {
       this.loading = false;
       this.getData();
+      this.getTiers();
     });
   },
   methods: {
@@ -116,15 +117,58 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        // const res = await this.apiGetMembers();
-        // this.desserts = res.data;
+        const res = await this.$axios.get("/loyalty/members", {
+          params: {
+            page: this.page,
+            per_page: this.itemsPerPage,
+            search: this.search || undefined,
+            tier_id: this.filterTier || undefined,
+            is_active: this.filterStatus,
+          },
+        });
 
-        await this.getMockData();
+        // แปลงข้อมูลให้ตรงกับ format ที่ใช้
+        this.desserts.data = res.data.data.map((m) => ({
+          id: m.id,
+          name: m.full_name || m.name,
+          phone: m.phone,
+          email: m.email || "",
+          tier: m.tier?.name || m.tier_name || "Bronze",
+          tier_color: m.tier?.color || "#CD7F32",
+          points: m.current_points || m.points || 0,
+          totalSpent: m.total_spent || 0,
+          status: m.status ? 1 : 0,
+          createdAt: new Date(m.created_at),
+          birthday: m.birthday,
+          member_code: m.member_code,
+        }));
+
+        this.totalCount = res.data.total;
+        this.totalPages = res.data.last_page;
+
+        // Get tier statistics
+        await this.getTierStats();
+
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
         this.$nuxt.$loading.finish();
+      }
+    },
+
+    async getTierStats() {
+      try {
+        const res = await this.$axios.get("/loyalty/members/statistics");
+        if (res.data) {
+          this.tierCounts = {
+            bronze: res.data.tier_distribution?.Bronze || 0,
+            silver: res.data.tier_distribution?.Silver || 0,
+            gold: res.data.tier_distribution?.Gold || 0,
+            platinum: res.data.tier_distribution?.Platinum || 0,
+          };
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
 
@@ -264,6 +308,7 @@ export default {
 
     openItem(val = {}) {
       this.item = Object.assign({}, val);
+      console.log(this.item);
       this.dialog = true;
     },
 
@@ -278,26 +323,45 @@ export default {
 
     async onCreate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiCreateMember(this.item);
-        console.log("Create member:", this.item);
+        await this.$axios.post("/loyalty/members", {
+          name: this.item.name,
+          phone: this.item.phone,
+          email: this.item.email || null,
+          birthday: this.item.birthday || null,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        if (e.response?.data?.errors) {
+          const errors = Object.values(e.response.data.errors).flat();
+          alert(errors.join("\n"));
+        } else {
+          alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
+        }
         this.$nuxt.$loading.finish();
       }
     },
 
     async onUpdate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateMember(this.item.id, this.item);
-        console.log("Update member:", this.item);
+        await this.$axios.put(`/loyalty/members/${this.item.id}`, {
+          name: this.item.name,
+          phone: this.item.phone,
+          email: this.item.email || null,
+          birthday: this.item.birthday || null,
+          status: this.item.status,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        if (e.response?.data?.errors) {
+          const errors = Object.values(e.response.data.errors).flat();
+          alert(errors.join("\n"));
+        } else {
+          alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
+        }
         this.$nuxt.$loading.finish();
       }
     },
@@ -309,13 +373,12 @@ export default {
 
     async confirmDel() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiDeleteMember(this.item.id);
-        console.log("Delete member:", this.item.id);
+        await this.$axios.delete(`/loyalty/members/${this.item.id}`);
         this.dialogDelete = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 
@@ -329,24 +392,29 @@ export default {
 
     async confirmAdjustPoints() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiAdjustPoints(this.selectedMember.id, {
-        //   action: this.pointAction,
-        //   amount: this.pointAmount,
-        //   reason: this.pointReason
-        // });
-        console.log("Adjust points:", {
-          memberId: this.selectedMember.id,
-          action: this.pointAction,
-          amount: this.pointAmount,
-          reason: this.pointReason,
-        });
+        if (this.pointAction === "add") {
+          await this.$axios.post(
+            `/loyalty/members/${this.selectedMember.id}/add-points`,
+            {
+              points: this.pointAmount,
+              description: this.pointReason || "ปรับแต้มด้วยมือ",
+            }
+          );
+        } else {
+          await this.$axios.post(
+            `/loyalty/members/${this.selectedMember.id}/deduct-points`,
+            {
+              points: this.pointAmount,
+              description: this.pointReason || "หักแต้มด้วยมือ",
+            }
+          );
+        }
         this.pointDialog = false;
         alert("ปรับแต้มสำเร็จ!");
         this.getData();
       } catch (e) {
         console.log(e);
-        alert("เกิดข้อผิดพลาด");
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 
@@ -355,60 +423,40 @@ export default {
       this.$nuxt.$loading.start();
 
       try {
-        // TODO: Replace with actual API
-        // const res = await this.apiGetPointHistory(member.id);
-        // this.pointHistory = res.data;
-
-        // Mock data
-        this.pointHistory = [
-          {
-            id: 1,
-            description: "ซื้อสินค้า Bill#001",
-            points: 45,
-            balance: 1250,
-            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
-          },
-          {
-            id: 2,
-            description: "แลกส่วนลด 50 บาท",
-            points: -200,
-            balance: 1205,
-            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
-          },
-          {
-            id: 3,
-            description: "ซื้อสินค้า Bill#002",
-            points: 120,
-            balance: 1405,
-            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48),
-          },
-          {
-            id: 4,
-            description: "โบนัสวันเกิด",
-            points: 100,
-            balance: 1285,
-            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 72),
-          },
-          {
-            id: 5,
-            description: "ซื้อสินค้า Bill#003",
-            points: 85,
-            balance: 1185,
-            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 96),
-          },
-        ];
+        const res = await this.$axios.get(
+          `/loyalty/members/${member.id}/point-history`
+        );
+        this.pointHistory = (res.data || []).map((h) => ({
+          id: h.id,
+          description: h.description || h.type,
+          points: h.points,
+          balance: h.balance || 0,
+          createdAt: new Date(h.created_at),
+        }));
 
         this.$nuxt.$loading.finish();
         this.historyDialog = true;
       } catch (e) {
         console.log(e);
         this.$nuxt.$loading.finish();
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 
     exportData() {
       // TODO: Implement export
       alert("กำลังพัฒนา...");
+    },
+
+    async getTiers() {
+      return await this.$axios
+        .get("/loyalty/tiers")
+        .then((res) => {
+          this.tierOptions = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     // API Functions (Ready for implementation)

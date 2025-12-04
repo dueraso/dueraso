@@ -95,8 +95,72 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        await this.getMockData();
+        // Load stats
+        const statsRes = await this.$axios
+          .get("/loyalty/points/statistics")
+          .catch(() => ({ data: {} }));
+        if (statsRes.data) {
+          this.stats = {
+            totalEarned: statsRes.data.total_earned || 0,
+            totalUsed: statsRes.data.total_used || 0,
+            expiringSoon: statsRes.data.expiring_soon || 0,
+            totalBalance: statsRes.data.total_balance || 0,
+          };
+        }
+
+        // Load data based on tab
+        const params = {
+          page: this.page,
+          search: this.search || undefined,
+          start_date: this.dateRange[0] || undefined,
+          end_date: this.dateRange[1] || undefined,
+        };
+
+        if (this.tab === 0) {
+          const res = await this.$axios.get("/loyalty/points/earned", {
+            params,
+          });
+          this.earnedPoints = (res.data?.data || res.data || []).map((p) => ({
+            id: p.id,
+            memberName: p.member?.name || p.member?.full_name || "-",
+            memberTier: p.member?.tier?.name || "Bronze",
+            description: p.description || p.type,
+            billNumber: p.reference_id ? `B${p.reference_id}` : null,
+            amount: p.amount || 0,
+            points: p.points,
+            createdAt: new Date(p.created_at),
+          }));
+          this.totalPages = res.data?.last_page || 1;
+        } else if (this.tab === 1) {
+          const res = await this.$axios.get("/loyalty/points/used", { params });
+          this.usedPoints = (res.data?.data || res.data || []).map((p) => ({
+            id: p.id,
+            memberName: p.member?.name || p.member?.full_name || "-",
+            memberTier: p.member?.tier?.name || "Bronze",
+            rewardName: p.description || "-",
+            points: Math.abs(p.points),
+            branch: p.branch?.name || "-",
+            createdAt: new Date(p.created_at),
+          }));
+          this.totalPages = res.data?.last_page || 1;
+        } else if (this.tab === 2) {
+          const res = await this.$axios.get("/loyalty/points/expiring", {
+            params,
+          });
+          this.expiringPoints = (res.data?.data || res.data || []).map((p) => ({
+            id: p.member_id || p.id,
+            name: p.member?.name || p.member?.full_name || "-",
+            phone: p.member?.phone || "-",
+            tier: p.member?.tier?.name || "Bronze",
+            expiringPoints: p.points || 0,
+            expiryDate: new Date(p.expire_date),
+            daysLeft: Math.ceil(
+              (new Date(p.expire_date) - new Date()) / (1000 * 60 * 60 * 24)
+            ),
+          }));
+          this.totalPages = res.data?.last_page || 1;
+        }
+
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);

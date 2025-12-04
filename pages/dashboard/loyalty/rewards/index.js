@@ -71,8 +71,25 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        await this.getMockData();
+        const res = await this.$axios.get("/loyalty/rewards");
+        this.rewards = (res.data || []).map((r) => ({
+          id: r.id,
+          name: r.name,
+          description: r.description || "",
+          points: r.points_required,
+          type: r.type,
+          value: r.value || 0,
+          stock: r.stock,
+          status: r.status ? 1 : 0,
+          redemptionCount: r.redemption_count || 0,
+          image: r.image,
+          startDate: r.start_date,
+          endDate: r.end_date,
+        }));
+        this.totalRedemptions = this.rewards.reduce(
+          (sum, r) => sum + r.redemptionCount,
+          0
+        );
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
@@ -178,38 +195,58 @@ export default {
 
     async onCreate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiCreateReward(this.item);
-        console.log("Create reward:", this.item);
+        await this.$axios.post("/loyalty/rewards", {
+          name: this.item.name,
+          description: this.item.description || null,
+          type: this.item.type,
+          points_required: this.item.points,
+          value: this.item.value || null,
+          stock: this.item.stock || null,
+          start_date: this.item.startDate || null,
+          end_date: this.item.endDate || null,
+          status: this.item.status,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
         this.$nuxt.$loading.finish();
       }
     },
 
     async onUpdate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateReward(this.item.id, this.item);
-        console.log("Update reward:", this.item);
+        await this.$axios.put(`/loyalty/rewards/${this.item.id}`, {
+          name: this.item.name,
+          description: this.item.description || null,
+          type: this.item.type,
+          points_required: this.item.points,
+          value: this.item.value || null,
+          stock: this.item.stock || null,
+          start_date: this.item.startDate || null,
+          end_date: this.item.endDate || null,
+          status: this.item.status,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
         this.$nuxt.$loading.finish();
       }
     },
 
     async toggleStatus(reward) {
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateReward(reward.id, { status: reward.status === 1 ? 0 : 1 });
-        reward.status = reward.status === 1 ? 0 : 1;
-        console.log("Toggle status:", reward.id, reward.status);
+        const newStatus = reward.status === 1 ? 0 : 1;
+        await this.$axios.put(`/loyalty/rewards/${reward.id}`, {
+          status: newStatus,
+        });
+        reward.status = newStatus;
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 
@@ -220,13 +257,12 @@ export default {
 
     async confirmDel() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiDeleteReward(this.item.id);
-        console.log("Delete reward:", this.item.id);
+        await this.$axios.delete(`/loyalty/rewards/${this.item.id}`);
         this.dialogDelete = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 

@@ -51,8 +51,41 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        await this.getMockData();
+        const [tiersRes, statsRes, distRes] = await Promise.all([
+          this.$axios.get("/loyalty/tiers"),
+          this.$axios
+            .get("/loyalty/tiers/upgrade-stats")
+            .catch(() => ({ data: {} })),
+          this.$axios
+            .get("/loyalty/tiers/distribution")
+            .catch(() => ({ data: {} })),
+        ]);
+
+        this.tiers = (tiersRes.data || []).map((t) => ({
+          id: t.id,
+          name: t.name,
+          color: t.color || "#846537",
+          icon: t.icon || "mdi-medal",
+          minPoints: t.min_points || 0,
+          pointMultiplier: t.point_multiplier || 1,
+          discount: t.discount_percent || 0,
+          memberCount: distRes.data?.[t.name] || 0,
+          perks:
+            typeof t.perks === "string"
+              ? JSON.parse(t.perks || "[]")
+              : t.perks || [],
+        }));
+
+        this.chartSeries = this.tiers.map((t) => t.memberCount);
+
+        if (statsRes.data) {
+          this.upgradeStats = {
+            thisMonth: statsRes.data.upgrades_this_month || 0,
+            downgradeThisMonth: statsRes.data.downgrades_this_month || 0,
+            pendingUpgrade: statsRes.data.pending_upgrades || 0,
+          };
+        }
+
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
@@ -136,13 +169,20 @@ export default {
     async confirm() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateTier(this.item.id, this.item);
-        console.log("Update tier:", this.item);
+        await this.$axios.put(`/loyalty/tiers/${this.item.id}`, {
+          name: this.item.name,
+          color: this.item.color,
+          icon: this.item.icon,
+          min_points: this.item.minPoints,
+          point_multiplier: this.item.pointMultiplier,
+          discount_percent: this.item.discount,
+          perks: JSON.stringify(this.item.perks || []),
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
         this.$nuxt.$loading.finish();
       }
     },

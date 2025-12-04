@@ -148,16 +148,19 @@ export default {
       return colors[tier] || "#846537";
     },
 
-    // API Functions (Mock data for now)
+    // API Functions
     async getDashboardData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API calls
-        // const res = await this.$axios.get('/loyalty/dashboard');
-        // this.stats = res.data.stats;
-
-        // Mock data
-        await this.getMockDashboardData();
+        // Load all dashboard data in parallel
+        await Promise.all([
+          this.loadOverview(),
+          this.loadRecentMembers(),
+          this.loadRecentRedemptions(),
+          this.loadTopMembers(),
+          this.loadTierDistribution(),
+          this.loadMembersChart(),
+        ]);
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
@@ -165,118 +168,104 @@ export default {
       }
     },
 
-    async getMockDashboardData() {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      console.log("งงงง");
+    async loadOverview() {
+      try {
+        const res = await this.$axios.get("/loyalty/dashboard/overview");
+        if (res.data) {
+          this.stats = {
+            totalMembers: res.data.total_members || 0,
+            newMembersToday: res.data.new_members_today || 0,
+            totalPointsGiven: res.data.total_points_earned || 0,
+            pointsThisMonth: res.data.points_this_month || 0,
+            totalPointsUsed: res.data.total_points_used || 0,
+            totalRedemptions: res.data.total_redemptions || 0,
+            topReward: res.data.top_reward?.name || "-",
+            topRewardCount: res.data.top_reward?.count || 0,
+          };
+        }
+      } catch (e) {
+        console.log("loadOverview error:", e);
+      }
+    },
 
-      // Mock Stats
-      this.stats = {
-        totalMembers: 1234,
-        newMembersToday: 12,
-        totalPointsGiven: 456789,
-        pointsThisMonth: 23456,
-        totalPointsUsed: 123456,
-        totalRedemptions: 567,
-        topReward: "ส่วนลด 50 บาท",
-        topRewardCount: 234,
-      };
+    async loadRecentMembers() {
+      try {
+        const res = await this.$axios.get("/loyalty/dashboard/recent-members");
+        this.recentMembers = (res.data || []).map((m) => ({
+          id: m.id,
+          name: m.full_name || m.name,
+          phone: m.phone,
+          tier: m.tier?.name || m.tier_name || "Bronze",
+          points: m.current_points || m.points || 0,
+        }));
+      } catch (e) {
+        console.log("loadRecentMembers error:", e);
+      }
+    },
 
-      // Mock Recent Members
-      this.recentMembers = [
-        {
-          id: 1,
-          name: "สมชาย ใจดี",
-          phone: "081-234-5678",
-          tier: "Gold",
-          points: 1250,
-        },
-        {
-          id: 2,
-          name: "สมหญิง รักเรียน",
-          phone: "082-345-6789",
-          tier: "Silver",
-          points: 580,
-        },
-        {
-          id: 3,
-          name: "สมศรี มั่งมี",
-          phone: "083-456-7890",
-          tier: "Platinum",
-          points: 3200,
-        },
-        {
-          id: 4,
-          name: "สมพร สุขใจ",
-          phone: "084-567-8901",
-          tier: "Bronze",
-          points: 120,
-        },
-        {
-          id: 5,
-          name: "สมบัติ รวยมาก",
-          phone: "085-678-9012",
-          tier: "Gold",
-          points: 890,
-        },
-      ];
+    async loadRecentRedemptions() {
+      try {
+        const res = await this.$axios.get(
+          "/loyalty/dashboard/recent-redemptions"
+        );
+        this.recentRedemptions = (res.data || []).map((r) => ({
+          id: r.id,
+          memberName: r.member?.name || r.member?.full_name || "-",
+          rewardName: r.reward?.name || "-",
+          points: r.points_used || 0,
+          createdAt: new Date(r.created_at),
+        }));
+      } catch (e) {
+        console.log("loadRecentRedemptions error:", e);
+      }
+    },
 
-      // Mock Recent Redemptions
-      this.recentRedemptions = [
-        {
-          id: 1,
-          memberName: "สมชาย ใจดี",
-          rewardName: "ส่วนลด 50 บาท",
-          points: 200,
-          createdAt: new Date(Date.now() - 1000 * 60 * 30),
-        },
-        {
-          id: 2,
-          memberName: "สมหญิง รักเรียน",
-          rewardName: "ส่วนลด 20 บาท",
-          points: 100,
-          createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
-        },
-        {
-          id: 3,
-          memberName: "สมศรี มั่งมี",
-          rewardName: "ส่วนลด 10%",
-          points: 300,
-          createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5),
-        },
-        {
-          id: 4,
-          memberName: "สมพร สุขใจ",
-          rewardName: "ฟรีเครื่องดื่ม",
-          points: 150,
-          createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
-        },
-        {
-          id: 5,
-          memberName: "สมบัติ รวยมาก",
-          rewardName: "ส่วนลด 50 บาท",
-          points: 200,
-          createdAt: new Date(Date.now() - 1000 * 60 * 60 * 48),
-        },
-      ];
+    async loadTopMembers() {
+      try {
+        const res = await this.$axios.get("/loyalty/dashboard/top-members");
+        this.topMembers = (res.data || []).map((m) => ({
+          id: m.id,
+          name: m.full_name || m.name,
+          points: m.total_points_earned || m.points || 0,
+          tier: m.tier?.name || m.tier_name || "Bronze",
+        }));
+      } catch (e) {
+        console.log("loadTopMembers error:", e);
+      }
+    },
 
-      // Mock Top Members
-      this.topMembers = [
-        { id: 1, name: "สมศรี มั่งมี", points: 5800, tier: "Platinum" },
-        { id: 2, name: "สมบัติ รวยมาก", points: 4500, tier: "Platinum" },
-        { id: 3, name: "สมชาย ใจดี", points: 3200, tier: "Gold" },
-        { id: 4, name: "สมใจ ดีงาม", points: 2800, tier: "Gold" },
-        { id: 5, name: "สมปอง รักดี", points: 2100, tier: "Gold" },
-      ];
+    async loadTierDistribution() {
+      try {
+        const res = await this.$axios.get(
+          "/loyalty/dashboard/tier-distribution"
+        );
+        if (res.data) {
+          this.tierChartSeries = [
+            res.data.Bronze || 0,
+            res.data.Silver || 0,
+            res.data.Gold || 0,
+            res.data.Platinum || 0,
+          ];
+        }
+      } catch (e) {
+        console.log("loadTierDistribution error:", e);
+      }
+    },
 
-      // Mock Chart Data
-      this.memberChartSeries = [
-        {
-          name: "สมาชิกใหม่",
-          data: [45, 52, 38, 65, 72, 85, 91, 78, 82, 95, 88, 102],
-        },
-      ];
-
-      this.tierChartSeries = [450, 320, 280, 184]; // Bronze, Silver, Gold, Platinum
+    async loadMembersChart() {
+      try {
+        const res = await this.$axios.get("/loyalty/dashboard/members-chart");
+        if (res.data && res.data.length > 0) {
+          this.memberChartSeries = [
+            {
+              name: "สมาชิกใหม่",
+              data: res.data.map((d) => d.count || 0),
+            },
+          ];
+        }
+      } catch (e) {
+        console.log("loadMembersChart error:", e);
+      }
     },
 
     // API Functions (Ready for implementation)

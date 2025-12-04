@@ -40,6 +40,8 @@
                   :items="tierOptions"
                   label="ระดับสมาชิก"
                   outlined
+                  item-text="name"
+                  item-value="id"
                   dense
                   style="border-radius: 15px"
                   clearable
@@ -62,7 +64,7 @@
 
             <!-- Stats Cards -->
             <v-row class="mb-4">
-              <v-col cols="6" sm="3">
+              <v-col cols="6" sm="">
                 <v-card class="pa-3 text-center" style="border-radius: 15px">
                   <p class="m-0" style="color: #846537; font-size: 12px">
                     ทั้งหมด
@@ -72,34 +74,45 @@
                   </h4>
                 </v-card>
               </v-col>
-              <v-col cols="6" sm="3">
+
+              <v-col cols="6" sm="" v-for="(tier,i) in tierOptions" :key="i">
                 <v-card class="pa-3 text-center" style="border-radius: 15px">
-                  <p class="m-0" style="color: #cd7f32; font-size: 12px">
-                    Bronze
+                  <p class="m-0" :style="{color: tier.color}" style="font-size: 12px">
+                    {{ tier.name }}
                   </p>
-                  <h4 class="m-0" style="color: #cd7f32">
-                    {{ convert.money(tierCounts.bronze, 0) }}
+                  <h4 class="m-0" :style="{color: tier.color}">
+                    {{ convert.money(tier.members_count, 0) }}
                   </h4>
                 </v-card>
               </v-col>
-              <v-col cols="6" sm="3">
-                <v-card class="pa-3 text-center" style="border-radius: 15px">
-                  <p class="m-0" style="color: #9e9e9e; font-size: 12px">
-                    Silver
-                  </p>
-                  <h4 class="m-0" style="color: #9e9e9e">
-                    {{ convert.money(tierCounts.silver, 0) }}
-                  </h4>
-                </v-card>
-              </v-col>
-              <v-col cols="6" sm="3">
-                <v-card class="pa-3 text-center" style="border-radius: 15px">
-                  <p class="m-0" style="color: #ffd700; font-size: 12px">Gold</p>
-                  <h4 class="m-0" style="color: #ffd700">
-                    {{ convert.money(tierCounts.gold, 0) }}
-                  </h4>
-                </v-card>
-              </v-col>
+<!--              <v-col cols="6" sm="3">-->
+<!--                <v-card class="pa-3 text-center" style="border-radius: 15px">-->
+<!--                  <p class="m-0" style="color: #cd7f32; font-size: 12px">-->
+<!--                    Bronze-->
+<!--                  </p>-->
+<!--                  <h4 class="m-0" style="color: #cd7f32">-->
+<!--                    {{ convert.money(tierCounts.bronze, 0) }}-->
+<!--                  </h4>-->
+<!--                </v-card>-->
+<!--              </v-col>-->
+<!--              <v-col cols="6" sm="3">-->
+<!--                <v-card class="pa-3 text-center" style="border-radius: 15px">-->
+<!--                  <p class="m-0" style="color: #9e9e9e; font-size: 12px">-->
+<!--                    Silver-->
+<!--                  </p>-->
+<!--                  <h4 class="m-0" style="color: #9e9e9e">-->
+<!--                    {{ convert.money(tierCounts.silver, 0) }}-->
+<!--                  </h4>-->
+<!--                </v-card>-->
+<!--              </v-col>-->
+<!--              <v-col cols="6" sm="3">-->
+<!--                <v-card class="pa-3 text-center" style="border-radius: 15px">-->
+<!--                  <p class="m-0" style="color: #ffd700; font-size: 12px">Gold</p>-->
+<!--                  <h4 class="m-0" style="color: #ffd700">-->
+<!--                    {{ convert.money(tierCounts.gold, 0) }}-->
+<!--                  </h4>-->
+<!--                </v-card>-->
+<!--              </v-col>-->
             </v-row>
 
           </v-col>
@@ -233,26 +246,24 @@
                   </td>
                 </tr>
                 </tbody>
+
+                <tfoot>
+                <tr>
+                  <td colspan="3">รายการทั้งหมด {{ desserts.data.length }}/{{ totalCount }} รายการ</td>
+                  <td colspan="7">
+                    <div style="float: right;">
+                      <v-pagination
+                        v-model="page"
+                        :length="totalPages"
+                        circle
+                        color="#A57156"
+                      ></v-pagination>
+                    </div>
+                  </td>
+                </tr>
+                </tfoot>
               </table>
             </div>
-
-            <!-- Pagination -->
-            <v-row class="mt-4" align="center">
-              <v-col cols="12" sm="6">
-                <p class="m-0" style="color: #846537">
-                  แสดง {{ desserts.data.length }} จาก {{ totalCount }} รายการ
-                </p>
-              </v-col>
-              <v-col cols="12" sm="6" class="text-right">
-                <v-pagination
-                  v-model="page"
-                  :length="totalPages"
-                  :total-visible="5"
-                  color="#B27D41"
-                  @input="getData"
-                />
-              </v-col>
-            </v-row>
           </v-col>
           <!-- Add/Edit Dialog -->
           <dialog-mid
@@ -331,6 +342,8 @@
                   :items="tierOptions"
                   label="ระดับสมาชิก"
                   outlined
+                  item-text="name"
+                  item-value="id"
                   dense
                   style="border-radius: 15px"
                 />

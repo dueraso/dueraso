@@ -108,8 +108,20 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        await this.getMockData();
+        const res = await this.$axios.get("/loyalty/campaigns");
+        this.allCampaigns = (res.data || []).map((c) => ({
+          id: c.id,
+          name: c.name,
+          description: c.description || "",
+          type: c.type,
+          value: c.value || 0,
+          icon: c.icon || "mdi-star",
+          color: c.color || "#B27D41",
+          status: c.status ? 1 : 0,
+          startDate: c.start_date,
+          endDate: c.end_date,
+          usageCount: c.usage_count || 0,
+        }));
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
@@ -208,38 +220,58 @@ export default {
 
     async onCreate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiCreateCampaign(this.item);
-        console.log("Create campaign:", this.item);
+        await this.$axios.post("/loyalty/campaigns", {
+          name: this.item.name,
+          description: this.item.description || null,
+          type: this.item.type,
+          value: this.item.value || null,
+          icon: this.item.icon,
+          color: this.item.color,
+          start_date: this.item.startDate || null,
+          end_date: this.item.endDate || null,
+          status: this.item.status,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
         this.$nuxt.$loading.finish();
       }
     },
 
     async onUpdate() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateCampaign(this.item.id, this.item);
-        console.log("Update campaign:", this.item);
+        await this.$axios.put(`/loyalty/campaigns/${this.item.id}`, {
+          name: this.item.name,
+          description: this.item.description || null,
+          type: this.item.type,
+          value: this.item.value || null,
+          icon: this.item.icon,
+          color: this.item.color,
+          start_date: this.item.startDate || null,
+          end_date: this.item.endDate || null,
+          status: this.item.status,
+        });
         this.dialog = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
         this.$nuxt.$loading.finish();
       }
     },
 
     async toggleCampaign(campaign) {
       try {
-        // TODO: Replace with actual API
-        // await this.apiUpdateCampaign(campaign.id, { status: campaign.status === 1 ? 0 : 1 });
-        campaign.status = campaign.status === 1 ? 0 : 1;
-        console.log("Toggle campaign:", campaign.id, campaign.status);
+        const newStatus = campaign.status === 1 ? 0 : 1;
+        await this.$axios.post(
+          `/loyalty/campaigns/${campaign.id}/toggle-status`
+        );
+        campaign.status = newStatus;
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 
@@ -250,13 +282,12 @@ export default {
 
     async confirmDel() {
       try {
-        // TODO: Replace with actual API
-        // await this.apiDeleteCampaign(this.item.id);
-        console.log("Delete campaign:", this.item.id);
+        await this.$axios.delete(`/loyalty/campaigns/${this.item.id}`);
         this.dialogDelete = false;
         this.getData();
       } catch (e) {
         console.log(e);
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       }
     },
 

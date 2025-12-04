@@ -996,12 +996,25 @@
                       <h6 style="color: #5b4840" class="mb-2">
                         รางวัลที่แลกได้
                       </h6>
+
+                      <!-- แสดงข้อความเมื่อไม่มีรางวัล -->
+                      <v-alert
+                        v-if="rewardList.length === 0"
+                        type="info"
+                        dense
+                        style="border-radius: 10px"
+                      >
+                        ยังไม่มีรางวัลที่สามารถแลกได้ในขณะนี้
+                      </v-alert>
+
                       <v-card
                         v-for="reward in rewardList"
                         :key="reward.id"
                         class="mb-2 pa-3"
-                        style="border-radius: 15px"
-                        :disabled="selectedMember.points < reward.points"
+                        style="border-radius: 15px; cursor: pointer"
+                        :disabled="
+                          selectedMember.points < reward.points_required
+                        "
                         @click="redeemReward(reward)"
                       >
                         <v-row align="center" class="m-0">
@@ -1019,13 +1032,13 @@
                           <v-chip
                             small
                             :color="
-                              selectedMember.points >= reward.points
+                              selectedMember.points >= reward.points_required
                                 ? '#B27D41'
                                 : 'grey'
                             "
                             dark
                           >
-                            {{ reward.points }} แต้ม
+                            {{ reward.points_required }} แต้ม
                           </v-chip>
                         </v-row>
                       </v-card>

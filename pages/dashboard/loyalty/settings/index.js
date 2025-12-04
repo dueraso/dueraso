@@ -54,10 +54,26 @@ export default {
     async getData() {
       this.$nuxt.$loading.start();
       try {
-        // TODO: Replace with actual API
-        // const res = await this.apiGetSettings();
-        // this.settings = res.data;
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        const res = await this.$axios.get("/loyalty/settings");
+        if (res.data) {
+          const s = res.data;
+          this.settings = {
+            systemEnabled: s.system_enabled ?? true,
+            pointsPerBaht: s.points_per_baht ?? 10,
+            pointExpireDays: s.point_expire_days ?? 365,
+            minPurchaseForPoints: s.min_purchase_for_points ?? 0,
+            maxPointsPerTransaction: s.max_points_per_transaction ?? 0,
+            enableRounding: s.enable_rounding ?? true,
+            enableBirthdayBonus: s.enable_birthday_bonus ?? true,
+            birthdayBonusPoints: s.birthday_bonus_points ?? 100,
+            enableReferral: s.enable_referral ?? true,
+            referralPoints: s.referral_points ?? 50,
+            notifyPointsEarned: s.notify_points_earned ?? true,
+            notifyPointsExpiring: s.notify_points_expiring ?? true,
+            expiryNotifyDays: s.expiry_notify_days ?? 7,
+            notifyTierUpgrade: s.notify_tier_upgrade ?? true,
+          };
+        }
         this.$nuxt.$loading.finish();
       } catch (e) {
         console.log(e);
@@ -68,14 +84,26 @@ export default {
     async saveSettings() {
       this.saving = true;
       try {
-        // TODO: Replace with actual API
-        // await this.apiSaveSettings(this.settings);
-        console.log("Save settings:", this.settings);
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await this.$axios.put("/loyalty/settings", {
+          system_enabled: this.settings.systemEnabled,
+          points_per_baht: this.settings.pointsPerBaht,
+          point_expire_days: this.settings.pointExpireDays,
+          min_purchase_for_points: this.settings.minPurchaseForPoints,
+          max_points_per_transaction: this.settings.maxPointsPerTransaction,
+          enable_rounding: this.settings.enableRounding,
+          enable_birthday_bonus: this.settings.enableBirthdayBonus,
+          birthday_bonus_points: this.settings.birthdayBonusPoints,
+          enable_referral: this.settings.enableReferral,
+          referral_points: this.settings.referralPoints,
+          notify_points_earned: this.settings.notifyPointsEarned,
+          notify_points_expiring: this.settings.notifyPointsExpiring,
+          expiry_notify_days: this.settings.expiryNotifyDays,
+          notify_tier_upgrade: this.settings.notifyTierUpgrade,
+        });
         alert("บันทึกการตั้งค่าสำเร็จ!");
       } catch (e) {
         console.log(e);
-        alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด กรุณาลองใหม่");
       } finally {
         this.saving = false;
       }
@@ -107,19 +135,15 @@ export default {
 
       try {
         if (this.confirmAction === "resetPoints") {
-          // TODO: Replace with actual API
-          // await this.apiResetAllPoints();
-          console.log("Reset all points");
+          await this.$axios.post("/loyalty/settings/reset");
           alert("รีเซ็ตแต้มทั้งหมดสำเร็จ!");
         } else if (this.confirmAction === "deleteAllMembers") {
-          // TODO: Replace with actual API
-          // await this.apiDeleteAllMembers();
-          console.log("Delete all members");
-          alert("ลบสมาชิกทั้งหมดสำเร็จ!");
+          // Not recommended - implement with caution
+          alert("ฟังก์ชันนี้ถูกปิดเพื่อความปลอดภัย");
         }
       } catch (e) {
         console.log(e);
-        alert("เกิดข้อผิดพลาด");
+        alert(e.response?.data?.message || "เกิดข้อผิดพลาด");
       } finally {
         this.$nuxt.$loading.finish();
       }

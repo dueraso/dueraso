@@ -12,7 +12,7 @@ export default {
   layout: "pos-layout",
   head() {
     return {
-      title: this.headTitle,
+      title: this.headTitle
     };
   },
   data: () => ({
@@ -29,18 +29,18 @@ export default {
       {
         title: "ชื่อรายการ",
         width: "",
-        text: "text-left",
+        text: "text-left"
       },
       {
         title: "จำนวน",
         width: "15%",
-        text: "text-center",
+        text: "text-center"
       },
       {
         title: "ราคา",
         width: "20%",
-        text: "text-right",
-      },
+        text: "text-right"
+      }
     ],
     desserts: [],
     discount: [],
@@ -50,7 +50,7 @@ export default {
     rules: {
       required: (value) => !!value || "จำเป็น.",
       min: (value) => value >= 1,
-      max: (value) => value <= 99,
+      max: (value) => value <= 99
     },
     branch: {},
     branchList: [],
@@ -100,47 +100,10 @@ export default {
       name: "",
       phone: "",
       email: "",
-      birthday: null,
+      birthday: null
     },
-    // ตัวอย่างรางวัลที่แลกได้
-    rewardList: [
-      {
-        id: 1,
-        name: "ส่วนลด 20 บาท",
-        description: "ใช้เป็นส่วนลดในบิลนี้",
-        points: 100,
-        icon: "mdi-ticket-percent",
-        value: 20,
-        type: "discount",
-      },
-      {
-        id: 2,
-        name: "ส่วนลด 50 บาท",
-        description: "ใช้เป็นส่วนลดในบิลนี้",
-        points: 200,
-        icon: "mdi-ticket-percent",
-        value: 50,
-        type: "discount",
-      },
-      {
-        id: 3,
-        name: "ฟรี เครื่องดื่ม 1 แก้ว",
-        description: "เลือกเครื่องดื่มฟรี 1 แก้ว",
-        points: 150,
-        icon: "mdi-cup",
-        value: 0,
-        type: "free_item",
-      },
-      {
-        id: 4,
-        name: "ส่วนลด 10%",
-        description: "ลดราคา 10% ทั้งบิล",
-        points: 300,
-        icon: "mdi-percent",
-        value: 10,
-        type: "percent",
-      },
-    ],
+    // ตัวอย่างรางวัลที่แลกได้ (จะโหลดจาก API)
+    rewardList: []
   }),
   computed: {
     convert() {
@@ -164,7 +127,7 @@ export default {
     // ตรวจสอบว่าเป็น weight mode หรือไม่
     isWeightMode() {
       return this.posMode === "weight";
-    },
+    }
   },
   watch: {
     provinceSelect(val) {
@@ -209,6 +172,20 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    // โหลด rewards เมื่อเลือกสมาชิก
+    selectedMember(val) {
+      if (val) {
+        this.loadAvailableRewards();
+      } else {
+        this.rewardList = [];
+      }
+    },
+    // โหลด rewards เมื่อเปิด tab แลกแต้ม
+    loyaltyTab(val) {
+      if (val === 2 && this.selectedMember) {
+        this.loadAvailableRewards();
+      }
+    }
   },
 
   mounted() {
@@ -260,8 +237,8 @@ export default {
       await this.$axios
         .get("/district", {
           params: {
-            provinceNo: this.provinceSelect.no,
-          },
+            provinceNo: this.provinceSelect.no
+          }
         })
         .then((res) => {
           this.districtItems = res.data;
@@ -291,7 +268,7 @@ export default {
         id: 1,
         name: this.extra + " บาท",
         type_discount: 1,
-        total: this.extra,
+        total: this.extra
       };
       this.addDiscount(this.extraSelect);
       this.extra = 0;
@@ -302,8 +279,8 @@ export default {
       await this.$axios
         .get("searchPro", {
           params: {
-            s: this.search,
-          },
+            s: this.search
+          }
         })
         .then((res) => {
           this.cards = res.data;
@@ -331,37 +308,44 @@ export default {
       this.dialogPay = false;
       this.unLockScroll();
       this.$nuxt.$loading.start();
-      await this.$axios
-        .post("/posOrder", {
-          discount: this.discountSel.length > 0 ? this.discountSel[0].id : null,
-          product: this.desserts,
-          customer: null,
-          branch: this.branch.id,
-          pay_type: val,
-          bill_number: this.branch.id + dayjs().format("YYMMDDHHmmss"),
-          price: this.priceTotal,
-          total:
-            this.posMode === "weight"
-              ? this.totalItems
-              : convert.calculateArray(this.desserts),
-          discountTotal: this.discountTotal,
-          province: this.provinceSelect ? this.provinceSelect.id : null,
-          district: this.districtSelect ? this.districtSelect.id : null,
-          posMode: this.posMode, // เพิ่ม mode เพื่อ track ว่าเป็นออเดอร์แบบไหน
-        })
-        .then((res) => {
-          this.desserts = [];
-          this.discountSel = [];
-          this.cash = 0;
-          this.changeMoney = 0.0;
-          this.discountTotal = 0.0;
-          this.$nuxt.$loading.finish();
-        })
-        .catch((e) => {
-          this.$nuxt.$loading.finish();
-          console.log(e);
-        });
+
+      // เก็บข้อมูลสมาชิกก่อน reset
+      const memberForPoints = this.selectedMember;
+      const totalAmount = this.priceTotal;
+
+      await this.$axios.post("/posOrder", {
+        discount: this.discountSel.length > 0 ? this.discountSel[0].id : null,
+        product: this.desserts,
+        customer: null,
+        branch: this.branch.id,
+        pay_type: val,
+        bill_number: this.branch.id + dayjs().format("YYMMDDHHmmss"),
+        price: this.priceTotal,
+        total: this.posMode === "weight" ? this.totalItems : convert.calculateArray(this.desserts),
+        discountTotal: this.discountTotal,
+        province: this.provinceSelect ? this.provinceSelect.id : null,
+        district: this.districtSelect ? this.districtSelect.id : null,
+        posMode: this.posMode,
+        loyalty_member_id: memberForPoints ? memberForPoints.id : null // ส่ง member_id ไปด้วย
+      }).then(async (res) => {
+        // เพิ่มแต้มให้สมาชิกหลังชำระเงินสำเร็จ
+        if (memberForPoints && totalAmount > 0) {
+          await this.addPointsToMember(memberForPoints.id, totalAmount);
+        }
+
+        this.desserts = [];
+        this.discountSel = [];
+        this.cash = 0;
+        this.changeMoney = 0.0;
+        this.discountTotal = 0.0;
+        this.selectedMember = null; // reset สมาชิก
+        this.$nuxt.$loading.finish();
+      }).catch((e) => {
+        this.$nuxt.$loading.finish();
+        console.log(e);
+      });
     },
+
     getCash(val, isSum = true) {
       if (isSum) {
         this.cash = parseFloat(this.cash) + parseFloat(val);
@@ -371,6 +355,7 @@ export default {
         this.changeMoney = this.cash;
       }
     },
+
     sumChange(val, isDel = false) {
       if (isDel) {
         let _del = this.cash
@@ -425,8 +410,8 @@ export default {
           type: "svg",
           color: {
             dark: "#000",
-            light: "#fff",
-          },
+            light: "#fff"
+          }
           // image: document.getElementById('image'),
         };
         qrcode.toString(payload, options, (err, svg) => {
@@ -531,7 +516,7 @@ export default {
           originalPrice: this.selectedProduct.price,
           imageUrl: this.selectedProduct.imageUrl,
           type: this.selectedProduct.type,
-          branch: this.selectedProduct.branch,
+          branch: this.selectedProduct.branch
         };
 
         this.desserts.push(orderItem);
@@ -573,8 +558,8 @@ export default {
         .get("/posProduct", {
           params: {
             type: _type,
-            branch: this.branch.id,
-          },
+            branch: this.branch.id
+          }
         })
         .then((res) => {
           this.cards = res.data;
@@ -590,8 +575,8 @@ export default {
       await this.$axios
         .get("/posProductType", {
           params: {
-            branch: this.branch.id,
-          },
+            branch: this.branch.id
+          }
         })
         .then((res) => {
           this.tags = res.data;
@@ -620,41 +605,20 @@ export default {
       this.memberSearchResults = [];
 
       try {
-        // TODO: เปลี่ยนเป็น API จริง
-        // const res = await this.$axios.get('/loyalty/search', { params: { q: this.memberSearch } });
-        // this.memberSearchResults = res.data;
+        const res = await this.$axios.get("/loyalty/members/search", {
+          params: { q: this.memberSearch }
+        });
 
-        // ตัวอย่างข้อมูล Mock
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const mockMembers = [
-          {
-            id: 1,
-            name: "สมชาย ใจดี",
-            phone: "0812345678",
-            points: 350,
-            tier: "Gold",
-          },
-          {
-            id: 2,
-            name: "สมหญิง รักเรียน",
-            phone: "0823456789",
-            points: 120,
-            tier: "Silver",
-          },
-          {
-            id: 3,
-            name: "สมศรี มั่งมี",
-            phone: "0834567890",
-            points: 580,
-            tier: "Platinum",
-          },
-        ];
-
-        this.memberSearchResults = mockMembers.filter(
-          (m) =>
-            m.phone.includes(this.memberSearch) ||
-            m.name.toLowerCase().includes(this.memberSearch.toLowerCase())
-        );
+        // แปลงข้อมูลให้ตรงกับ format ที่ใช้
+        this.memberSearchResults = res.data.map((m) => ({
+          id: m.id,
+          name: m.full_name || m.name,
+          phone: m.phone,
+          points: m.current_points || m.points || 0,
+          tier: m.tier?.name || "Bronze",
+          tier_color: m.tier?.color || "#CD7F32",
+          member_code: m.member_code
+        }));
 
         if (this.memberSearchResults.length === 0) {
           this.memberNotFound = true;
@@ -684,22 +648,23 @@ export default {
       this.memberRegistering = true;
 
       try {
-        // TODO: เปลี่ยนเป็น API จริง
-        // const res = await this.$axios.post('/loyalty/register', this.newMember);
-
-        // ตัวอย่าง Mock
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const newMemberData = {
-          id: Date.now(),
-          name: this.newMember.name,
+        const res = await this.$axios.post("/loyalty/members", {
+          name: this.newMember.name.trim(),
           phone: this.newMember.phone,
-          email: this.newMember.email,
-          birthday: this.newMember.birthday,
-          points: 0,
-          tier: "Bronze",
-        };
+          email: this.newMember.email || null,
+          birthday: this.newMember.birthday || null
+        });
 
-        this.selectedMember = newMemberData;
+        const member = res.data.data;
+        this.selectedMember = {
+          id: member.id,
+          name: member.full_name || member.name,
+          phone: member.phone,
+          points: member.current_points || member.points || 0,
+          tier: member.tier?.name || "Bronze",
+          tier_color: member.tier?.color || "#CD7F32",
+          member_code: member.member_code
+        };
         this.loyaltyDialog = false;
 
         // Reset form
@@ -708,44 +673,127 @@ export default {
         alert("สมัครสมาชิกสำเร็จ!");
       } catch (e) {
         console.log(e);
-        alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+        if (e.response?.data?.message) {
+          alert(e.response.data.message);
+        } else if (e.response?.data?.errors) {
+          const errors = Object.values(e.response.data.errors).flat();
+          alert(errors.join("\n"));
+        } else {
+          alert("เกิดข้อผิดพลาด กรุณาลองใหม่");
+        }
       } finally {
         this.memberRegistering = false;
       }
     },
 
-    redeemReward(reward) {
-      if (!this.selectedMember || this.selectedMember.points < reward.points)
+    async redeemReward(reward) {
+      if (
+        !this.selectedMember ||
+        this.selectedMember.points < reward.points_required
+      )
         return;
 
       if (
         confirm(
-          `ต้องการแลก "${reward.name}" (${reward.points} แต้ม) ใช่หรือไม่?`
+          `ต้องการแลก "${reward.name}" (${reward.points_required} แต้ม) ใช่หรือไม่?`
         )
       ) {
-        // TODO: เรียก API แลกแต้ม
-        this.selectedMember.points -= reward.points;
+        try {
+          const res = await this.$axios.post(
+            `/loyalty/rewards/${reward.id}/redeem`,
+            {
+              member_id: this.selectedMember.id
+            }
+          );
 
-        // เพิ่มส่วนลดตาม reward type
-        if (reward.type === "discount") {
-          this.addDiscount({
-            id: `reward_${reward.id}`,
-            name: `แลกแต้ม: ${reward.name}`,
-            type_discount: 1,
-            total: reward.value,
-          });
-        } else if (reward.type === "percent") {
-          this.addDiscount({
-            id: `reward_${reward.id}`,
-            name: `แลกแต้ม: ${reward.name}`,
-            type_discount: 2,
-            total: reward.value,
-          });
+          // อัปเดตแต้มสมาชิก
+          this.selectedMember.points = res.data.remaining_points;
+
+          // เพิ่มส่วนลดตาม reward type
+          if (reward.type === "discount") {
+            this.addDiscount({
+              id: `reward_${reward.id}`,
+              name: `แลกแต้ม: ${reward.name}`,
+              type_discount: 1,
+              total: reward.value
+            });
+          } else if (reward.type === "voucher" && reward.value) {
+            this.addDiscount({
+              id: `reward_${reward.id}`,
+              name: `แลกแต้ม: ${reward.name}`,
+              type_discount: 1,
+              total: reward.value
+            });
+          }
+
+          this.loyaltyDialog = false;
+          alert("แลกรางวัลสำเร็จ!");
+        } catch (e) {
+          console.log(e);
+          if (e.response?.data?.message) {
+            alert(e.response.data.message);
+          } else {
+            alert("เกิดข้อผิดพลาดในการแลกรางวัล");
+          }
         }
-
-        this.loyaltyDialog = false;
-        alert("แลกรางวัลสำเร็จ!");
       }
     },
-  },
+
+    // โหลดรางวัลที่สามารถแลกได้สำหรับสมาชิก
+    async loadAvailableRewards() {
+      if (!this.selectedMember) {
+        this.rewardList = [];
+        return;
+      }
+
+      try {
+        const res = await this.$axios.get(
+          `/loyalty/rewards/available/${this.selectedMember.id}`
+        );
+        this.rewardList = res.data.map((r) => ({
+          id: r.id,
+          name: r.name,
+          description: r.description,
+          points_required: r.points_required,
+          icon: this.getRewardIcon(r.type),
+          value: r.value,
+          type: r.type
+        }));
+      } catch (e) {
+        console.log(e);
+        this.rewardList = [];
+      }
+    },
+
+    // Helper: กำหนด icon ตาม reward type
+    getRewardIcon(type) {
+      const icons = {
+        discount: "mdi-ticket-percent",
+        voucher: "mdi-ticket-confirmation",
+        product: "mdi-gift",
+        service: "mdi-room-service"
+      };
+      return icons[type] || "mdi-star";
+    },
+
+    // เพิ่มแต้มให้สมาชิกหลังจากชำระเงิน
+    async addPointsToMember(memberId, amount) {
+      try {
+        // คำนวณแต้ม: ทุก 10 บาท = 1 แต้ม
+        const points = Math.floor(amount / 10);
+        if (points <= 0) return;
+
+        await this.$axios.post(`/loyalty/members/${memberId}/add-points`, {
+          points: points,
+          type: "purchase",
+          description: `ซื้อสินค้า ${this.convert.money(amount)}`
+        });
+
+        console.log(`Added ${points} points to member ${memberId}`);
+      } catch (e) {
+        console.log("Failed to add loyalty points:", e);
+        // ไม่แสดง error ให้ user เพราะการซื้อสำเร็จแล้ว
+      }
+    }
+  }
 };
